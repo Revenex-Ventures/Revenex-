@@ -1,6 +1,6 @@
-# [Project name]
+# Revenex
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A School ERP SaaS marketing site for the Indian K-12/higher-ed market, with visitor-facing marketing pages, auth (email + Google), reviews, contact/demo-request forms, an admin panel, and a support chatbot.
 
 ## Run & Operate
 
@@ -22,15 +22,26 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- Frontend: `artifacts/revenex` (Vite + React, wouter routing, previewPath `/`)
+- API: `artifacts/api-server` (Express, routes in `src/routes/*`, mounted at `/api`)
+- DB schema: `lib/db/src/schema/*` (users, reviews, contacts, demo_requests)
+- API contract: `lib/api-spec/openapi.yaml` (source of truth; codegen produces `lib/api-zod` and `lib/api-client-react`)
+- Seeded admin account: `team@revenex.in` / `Revenex@2205` (created by `seed.ts` on API server startup)
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Frontend fetch calls to `/api/...` are NOT prefixed with `BASE_URL` — the API artifact's own previewPath is `/api`, so relative `/api/...` paths resolve correctly through the proxy as-is.
+- Google Sign-In degrades gracefully (shows a disabled placeholder) when `VITE_GOOGLE_CLIENT_ID` is unset — not required for core auth flows.
+- Optional features (email via `RESEND_API_KEY`, chatbot via `OPENROUTER_API_KEY`) degrade/return 503 without their env vars set; this is intentional, not a bug.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Marketing pages: Home, About, Security, Our Story, Founders, feature detail pages
+- Auth: email/password signup+login, Google sign-in (optional), password reset
+- Contact form and demo-booking form (stored in DB, visible in admin panel)
+- Reviews (public GET, admin moderation)
+- Admin panel (`/admin`, admin-role only): stats dashboard, contacts, demos, reviews, users management
+- Support chatbot widget
 
 ## User preferences
 
@@ -38,7 +49,7 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- When an endpoint like `/api/auth/me` is consumed, verify its actual response shape with curl rather than assuming it matches a sibling endpoint (e.g. `/auth/login`) — a shape mismatch here previously caused a silent redirect bounce back to `/login` right after a successful login.
 
 ## Pointers
 
