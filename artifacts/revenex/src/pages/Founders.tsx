@@ -22,7 +22,7 @@ function TiltCard({ children, className = '', style }: { children: React.ReactNo
     const y = (e.clientY - rect.top) / rect.height - 0.5
     el.style.transition = 'transform 0.08s linear, box-shadow 0.08s linear'
     el.style.transform = `perspective(900px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) translateZ(12px)`
-    el.style.boxShadow = `${-x * 20}px ${y * 20}px 60px rgba(0,229,195,0.08), 0 40px 80px rgba(0,0,0,0.4)`
+    el.style.boxShadow = `${-x * 20}px ${y * 20}px 60px rgba(124, 61, 15,0.08), 0 40px 80px rgba(0,0,0,0.4)`
   }
 
   const onMouseLeave = () => {
@@ -56,8 +56,8 @@ const founders = [
     bioHi: 'संस्थापक और CEO। स्कूल प्रशासन को आधुनिक करने के लिए उत्पाद रणनीति और भागीदारी का नेतृत्व करते हैं।',
     expertise: ['Product Strategy', 'EdTech Vision', 'Business Development', 'Partnerships'],
     photo: rounakImg,
-    accentColor: '#00E5C3',
-    gradient: 'from-[#00D4C6] to-[#6E56CF]',
+    accentColor: '#7C3D0F',
+    gradient: 'from-[#7C3D0F] to-[#8B4513]',
     email: null,
   },
   {
@@ -69,8 +69,8 @@ const founders = [
     bioHi: 'सह-संस्थापक। इंजीनियरिंग और प्लेटफ़ॉर्म आर्किटेक्चर का नेतृत्व करते हैं, विश्वसनीयता और स्केलेबिलिटी पर केंद्रित।',
     expertise: ['Full-Stack Engineering', 'Cloud Architecture', 'AI/ML', 'DevOps'],
     photo: rohanImg,
-    accentColor: '#7C4DFF',
-    gradient: 'from-[#6E56CF] to-[#00D4C6]',
+    accentColor: '#8B4513',
+    gradient: 'from-[#8B4513] to-[#7C3D0F]',
     email: null,
   },
 ]
@@ -85,17 +85,17 @@ const cto = {
   bioHi: 'REVENEX प्लेटफॉर्म और वेबसाइट बनाईं। भरोसेमंद कोड, स्केलेबल सिस्टम और सुचारू तैनाती पर ध्यान।',
   photo: prasannaImg,
   expertise: ['Software Architecture', 'Full-Stack Development', 'Cloud Infrastructure', 'ERP Systems'],
-  accentColor: '#3B82F6',
-  gradient: 'from-[#00D4C6] to-[#3B82F6]',
+  accentColor: '#166534',
+  gradient: 'from-[#7C3D0F] to-[#166534]',
 }
 
 const techStack = [
   {
-    category: 'Frontend', categoryHi: 'फ्रंटएंड', color: 'text-blue-400', bg: 'bg-blue-400/10', border: 'border-blue-400/20', icon: Code2,
+    category: 'Frontend', categoryHi: 'फ्रंटएंड', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', border: 'border-[#E8E0D4]', icon: Code2,
     items: [{ name: 'React', desc: 'UI library' }, { name: 'TypeScript', desc: 'Type safety' }, { name: 'Tailwind CSS', desc: 'Styling' }, { name: 'Framer Motion', desc: 'Animations' }],
   },
   {
-    category: 'Backend', categoryHi: 'बैकएंड', color: 'text-green-400', bg: 'bg-green-400/10', border: 'border-green-400/20', icon: Server,
+    category: 'Backend', categoryHi: 'बैकएंड', color: 'text-green-700', bg: 'bg-green-700/10', border: 'border-green-700/20', icon: Server,
     items: [{ name: 'Node.js', desc: 'Runtime' }, { name: 'Express', desc: 'API framework' }, { name: 'PostgreSQL', desc: 'Database' }, { name: 'Drizzle ORM', desc: 'ORM' }],
   },
   {
@@ -103,15 +103,15 @@ const techStack = [
     items: [{ name: 'Google Cloud', desc: 'Cloud platform' }, { name: 'Firebase', desc: 'Auth & storage' }, { name: 'Cloud Run', desc: 'Containers' }, { name: 'Cloud SQL', desc: 'Managed DB' }],
   },
   {
-    category: 'Payments', categoryHi: 'भुगतान', color: 'text-yellow-400', bg: 'bg-yellow-400/10', border: 'border-yellow-400/20', icon: CreditCard,
+    category: 'Payments', categoryHi: 'भुगतान', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', border: 'border-[#E8E0D4]', icon: CreditCard,
     items: [{ name: 'Razorpay', desc: 'Payment gateway' }, { name: 'UPI', desc: 'Instant payments' }, { name: 'Bank transfers', desc: 'NEFT/RTGS' }, { name: 'Auto-receipts', desc: 'PDF generation' }],
   },
   {
-    category: 'Communication', categoryHi: 'संचार', color: 'text-red-400', bg: 'bg-red-400/10', border: 'border-red-400/20', icon: MessageSquare,
+    category: 'Communication', categoryHi: 'संचार', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', border: 'border-[#E8E0D4]', icon: MessageSquare,
     items: [{ name: 'Twilio', desc: 'SMS & WhatsApp' }, { name: 'Push Notifications', desc: 'Mobile alerts' }, { name: 'Email', desc: 'SMTP service' }, { name: 'In-app chat', desc: 'Real-time' }],
   },
   {
-    category: 'AI & Analytics', categoryHi: 'AI और एनालिटिक्स', color: 'text-purple-400', bg: 'bg-purple-400/10', border: 'border-purple-400/20', icon: Brain,
+    category: 'AI & Analytics', categoryHi: 'AI और एनालिटिक्स', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', border: 'border-[#E8E0D4]', icon: Brain,
     items: [{ name: 'Gemini AI', desc: 'Google AI' }, { name: 'Analytics', desc: 'Dashboards' }, { name: 'Predictions', desc: 'ML models' }, { name: 'Reports', desc: 'Auto-generated' }],
   },
 ]
@@ -172,15 +172,15 @@ export default function Founders() {
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-16">
         <div className="absolute inset-0 hero-glow opacity-50 pointer-events-none" />
-        <div className="absolute top-20 left-1/3 w-[500px] h-[500px] bg-[#7C4DFF]/5 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-20 left-1/3 w-[500px] h-[500px] bg-[#8B4513]/5 rounded-full blur-[120px] pointer-events-none" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-6">
               <Sparkles className="h-3.5 w-3.5 text-aqua" />
-              <span className="text-xs font-semibold text-white/50 uppercase tracking-widest">Founders</span>
+              <span className="text-xs font-semibold text-[#3D3128] uppercase tracking-widest">Founders</span>
             </div>
-            <h1 className="text-5xl font-black text-white sm:text-6xl lg:text-7xl mb-6">{t('founders.title')}</h1>
-            <p className="mx-auto max-w-2xl text-lg text-white/40">{t('founders.subtitle')}</p>
+            <h1 className="text-5xl font-black text-[#1A1410] sm:text-6xl lg:text-7xl mb-6">{t('founders.title')}</h1>
+            <p className="mx-auto max-w-2xl text-lg text-[#6B5D52]">{t('founders.subtitle')}</p>
           </motion.div>
         </div>
       </section>
@@ -204,28 +204,28 @@ export default function Founders() {
                       <img
                         src={founder.photo}
                         alt={founder.name}
-                        className="w-20 h-20 rounded-3xl object-cover object-top border-2 border-white/10"
+                        className="w-20 h-20 rounded-3xl object-cover object-top border-2 border-[#E8E0D4]"
                       />
                       <a
                         href={founder.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-white/50 hover:text-aqua hover:border-aqua/30 hover:bg-aqua/5 transition-all text-sm"
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-aqua hover:border-aqua/30 hover:bg-aqua/5 transition-all text-sm"
                       >
                         <Linkedin className="h-4 w-4" />
                         LinkedIn
                       </a>
                     </div>
-                    <h3 className="text-2xl font-black text-white mb-1">{founder.name}</h3>
+                    <h3 className="text-2xl font-black text-[#1A1410] mb-1">{founder.name}</h3>
                     <p className="text-sm font-semibold mb-4" style={{ color: founder.accentColor }}>
                       {language === 'en' ? founder.role : founder.roleHi}
                     </p>
-                    <p className="text-sm text-white/50 leading-relaxed mb-6">
+                    <p className="text-sm text-[#3D3128] leading-relaxed mb-6">
                       {language === 'en' ? founder.bioEn : founder.bioHi}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {founder.expertise.map((skill) => (
-                        <span key={skill} className="px-3 py-1 rounded-full text-xs font-medium border border-white/10 bg-white/5 text-white/60 hover:text-white hover:border-white/20 transition-colors">
+                        <span key={skill} className="px-3 py-1 rounded-full text-xs font-medium border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-[#1A1410] hover:border-[#1A1410]/20 transition-colors">
                           {skill}
                         </span>
                       ))}
@@ -251,13 +251,13 @@ export default function Founders() {
                   <img
                     src={cto.photo}
                     alt={cto.name}
-                    className="w-20 h-20 rounded-3xl object-cover border-2 border-white/10 mb-4 lg:mb-0 lg:w-24 lg:h-24" style={{ objectPosition: '50% 15%' }}
+                    className="w-20 h-20 rounded-3xl object-cover border-2 border-[#E8E0D4] mb-4 lg:mb-0 lg:w-24 lg:h-24" style={{ objectPosition: '50% 15%' }}
                   />
                 </div>
                 <div>
                   <div className="flex flex-wrap items-start gap-3 mb-4">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-2xl font-black text-white mb-1">{cto.name}</h3>
+                      <h3 className="text-2xl font-black text-[#1A1410] mb-1">{cto.name}</h3>
                       <p className="text-sm font-semibold" style={{ color: cto.accentColor }}>
                         {language === 'en' ? cto.role : cto.roleHi}
                       </p>
@@ -267,24 +267,24 @@ export default function Founders() {
                         href={cto.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-white/50 hover:text-aqua hover:border-aqua/30 hover:bg-aqua/5 transition-all text-sm"
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-aqua hover:border-aqua/30 hover:bg-aqua/5 transition-all text-sm"
                       >
                         <Linkedin className="h-4 w-4" /> LinkedIn
                       </a>
                       <a
                         href={`mailto:${cto.email}`}
-                        className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/5 text-white/50 hover:text-aqua hover:border-aqua/30 hover:bg-aqua/5 transition-all text-sm"
+                        className="flex items-center gap-2 px-4 py-2 rounded-xl border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-aqua hover:border-aqua/30 hover:bg-aqua/5 transition-all text-sm"
                       >
                         <Mail className="h-4 w-4" /> Email
                       </a>
                     </div>
                   </div>
-                  <p className="text-sm text-white/50 leading-relaxed mb-5">
+                  <p className="text-sm text-[#3D3128] leading-relaxed mb-5">
                     {language === 'en' ? cto.bioEn : cto.bioHi}
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {cto.expertise.map((skill) => (
-                      <span key={skill} className="px-3 py-1 rounded-full text-xs font-medium border border-white/10 bg-white/5 text-white/60 hover:text-white hover:border-white/20 transition-colors">
+                      <span key={skill} className="px-3 py-1 rounded-full text-xs font-medium border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-[#1A1410] hover:border-[#1A1410]/20 transition-colors">
                         {skill}
                       </span>
                     ))}
@@ -297,17 +297,17 @@ export default function Founders() {
       </section>
 
       {/* Technology Stack */}
-      <section className="py-16 lg:py-24 relative border-t border-white/5">
-        <div className="absolute inset-0 bg-white/[0.01]" />
+      <section className="py-16 lg:py-24 relative border-t border-[#E8E0D4]">
+        <div className="absolute inset-0 bg-transparent" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-4">
-              <span className="text-xs font-semibold text-white/50 uppercase tracking-widest">Tech Stack</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-4">
+              <span className="text-xs font-semibold text-[#3D3128] uppercase tracking-widest">Tech Stack</span>
             </div>
-            <h2 className="text-4xl font-black text-white sm:text-5xl mb-4">
+            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">
               {language === 'en' ? 'Built on Enterprise Technology' : 'एंटरप्राइज तकनीक पर निर्मित'}
             </h2>
-            <p className="text-white/40 text-lg max-w-2xl mx-auto">
+            <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">
               {language === 'en'
                 ? 'REVENEX is powered by modern, battle-tested technologies trusted by leading global companies'
                 : 'REVENEX आधुनिक, परीक्षित तकनीकों द्वारा संचालित है'}
@@ -333,8 +333,8 @@ export default function Founders() {
                   <div className="space-y-2.5">
                     {stack.items.map((item) => (
                       <div key={item.name} className="flex items-center justify-between">
-                        <span className="text-sm font-semibold text-white">{item.name}</span>
-                        <span className="text-xs text-white/30">{item.desc}</span>
+                        <span className="text-sm font-semibold text-[#1A1410]">{item.name}</span>
+                        <span className="text-xs text-[#6B5D52]">{item.desc}</span>
                       </div>
                     ))}
                   </div>
@@ -350,7 +350,7 @@ export default function Founders() {
             viewport={{ once: true }}
             className="mt-14"
           >
-            <p className="text-center text-xs font-semibold text-white/25 uppercase tracking-widest mb-8">
+            <p className="text-center text-xs font-semibold text-[#6B5D52] uppercase tracking-widest mb-8">
               {language === 'en' ? 'Official Technology Partners' : 'आधिकारिक प्रौद्योगिकी भागीदार'}
             </p>
             <div className="flex flex-wrap justify-center gap-5">
@@ -362,7 +362,7 @@ export default function Founders() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.07 }}
                 >
-                  <TiltCard className="glass-card rounded-2xl p-5 flex flex-col items-center gap-2.5 border border-white/5 cursor-default w-28"
+                  <TiltCard className="glass-card rounded-2xl p-5 flex flex-col items-center gap-2.5 border border-[#E8E0D4] cursor-default w-28"
                     style={{ '--partner-color': partner.color } as React.CSSProperties}
                   >
                     <div
@@ -372,8 +372,8 @@ export default function Founders() {
                       <PartnerLogo name={partner.name} />
                     </div>
                     <div className="text-center">
-                      <p className="text-xs font-bold text-white/75 leading-snug">{partner.name}</p>
-                      <p className="text-[10px] text-white/30 mt-0.5">{partner.desc}</p>
+                      <p className="text-xs font-bold text-[#3D3128] leading-snug">{partner.name}</p>
+                      <p className="text-[10px] text-[#6B5D52] mt-0.5">{partner.desc}</p>
                     </div>
                   </TiltCard>
                 </motion.div>
@@ -389,7 +389,7 @@ export default function Founders() {
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <TiltCard className="glass-card animated-border rounded-3xl p-12 text-center">
               <div className="text-5xl text-aqua font-serif mb-6">"</div>
-              <p className="text-xl text-white/70 leading-relaxed italic mb-8">
+              <p className="text-xl text-[#1A1410] leading-relaxed italic mb-8">
                 {language === 'en'
                   ? '"Every school deserves powerful, easy-to-use tools. We built REVENEX to make school management reliable, affordable, and simple."'
                   : 'हर विद्यालय के पास सरल और भरोसेमंद उपकरण होने चाहिए। हमने REVENEX को स्कूल प्रबंधन को आसान, सस्ता और भरोसेमंद बनाने के लिए बनाया।'}
@@ -408,10 +408,10 @@ export default function Founders() {
         <div className="absolute inset-0 hero-glow opacity-40 pointer-events-none" />
         <div className="relative mx-auto max-w-4xl px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-4xl font-black text-white sm:text-5xl mb-6">{t('cta.title')}</h2>
-            <p className="text-white/50 mb-8 text-lg">{t('cta.subtitle')}</p>
+            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-6">{t('cta.title')}</h2>
+            <p className="text-[#3D3128] mb-8 text-lg">{t('cta.subtitle')}</p>
             <Link href="/book-demo">
-              <motion.span whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center gap-2 gradient-bg text-black font-bold px-8 py-4 rounded-2xl cursor-pointer shadow-[0_0_30px_rgba(0,229,195,0.3)]">
+              <motion.span whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="inline-flex items-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl cursor-pointer shadow-[0_0_30px_rgba(124,61,15,0.3)]">
                 {t('cta.demo')} <ArrowRight className="h-4 w-4" />
               </motion.span>
             </Link>

@@ -79,7 +79,7 @@ export default function BookDemo() {
   }
 
   const inputClass = (err?: string) =>
-    `w-full rounded-xl border ${err ? 'border-red-500/50 bg-red-500/5' : 'border-white/10 bg-white/5'} px-4 py-3 text-white placeholder-white/20 outline-none focus:border-aqua/40 focus:bg-white/8 transition-all text-sm`
+    `w-full rounded-xl border ${err ? 'border-red-500/50 bg-red-500/5' : 'border-[#E8E0D4] bg-[#F0E8DC]'} px-4 py-3 text-[#1A1410] placeholder-[#6B5D52] outline-none focus:border-aqua/40 focus:bg-[#F0E8DC] transition-all text-sm`
 
   const timeSlots = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM']
 
@@ -102,21 +102,21 @@ export default function BookDemo() {
             >
               <CheckCircle2 className="h-10 w-10 text-black" />
             </motion.div>
-            <h2 className="text-3xl font-black text-white mb-3">
+            <h2 className="text-3xl font-black text-[#1A1410] mb-3">
               {language === 'en' ? 'Demo Requested!' : 'डेमो अनुरोध भेजा!'}
             </h2>
-            <p className="text-white/50 mb-2">
+            <p className="text-[#3D3128] mb-2">
               {language === 'en'
                 ? `Thank you, ${form.name}! We've received your request for ${form.schoolName}.`
                 : `धन्यवाद, ${form.name}! हमें ${form.schoolName} के लिए आपका अनुरोध मिल गया है।`}
             </p>
-            <p className="text-white/40 text-sm mb-8">
+            <p className="text-[#6B5D52] text-sm mb-8">
               {language === 'en'
                 ? 'Our team will reach out within 24 hours to confirm your demo slot.'
                 : 'हमारी टीम 24 घंटों के भीतर आपके डेमो स्लॉट की पुष्टि के लिए संपर्क करेगी।'}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <a href="tel:+919021744355" className="inline-flex items-center justify-center gap-2 border border-white/20 text-white font-semibold px-6 py-3 rounded-2xl hover:bg-white/5 transition-all text-sm">
+              <a href="tel:+919021744355" className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-6 py-3 rounded-2xl hover:bg-[#F0E8DC] transition-all text-sm">
                 <Phone className="h-4 w-4 text-aqua" />
                 +91 90217 44355
               </a>
@@ -141,12 +141,12 @@ export default function BookDemo() {
         <div className="absolute inset-0 hero-glow opacity-50 pointer-events-none" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-6">
               <Calendar className="h-3.5 w-3.5 text-aqua" />
-              <span className="text-xs font-semibold text-white/50 uppercase tracking-widest">Book a Demo</span>
+              <span className="text-xs font-semibold text-[#3D3128] uppercase tracking-widest">Book a Demo</span>
             </div>
-            <h1 className="text-4xl font-black text-white sm:text-5xl lg:text-6xl mb-4">{t('demo.subtitle')}</h1>
-            <p className="mx-auto max-w-xl text-white/40 text-lg">
+            <h1 className="text-4xl font-black text-[#1A1410] sm:text-5xl lg:text-6xl mb-4">{t('demo.subtitle')}</h1>
+            <p className="mx-auto max-w-xl text-[#6B5D52] text-lg">
               {language === 'en'
                 ? 'Schedule a personalized walkthrough of REVENEX for your institution. Free, no obligation.'
                 : 'अपने संस्थान के लिए REVENEX का व्यक्तिगत वॉकथ्रू शेड्यूल करें। मुफ्त, कोई बाध्यता नहीं।'}
@@ -167,10 +167,10 @@ export default function BookDemo() {
               className="lg:col-span-2 space-y-6"
             >
               <div className="glass-card rounded-3xl p-8">
-                <h2 className="text-xl font-black text-white mb-2">
+                <h2 className="text-xl font-black text-[#1A1410] mb-2">
                   {language === 'en' ? 'What to expect' : 'क्या अपेक्षा करें'}
                 </h2>
-                <p className="text-sm text-white/40 mb-6">
+                <p className="text-sm text-[#6B5D52] mb-6">
                   {language === 'en' ? 'A 45-minute live session covering your specific needs.' : '45-मिनट का लाइव सत्र जो आपकी विशिष्ट जरूरतों को कवर करता है।'}
                 </p>
                 {[
@@ -183,21 +183,21 @@ export default function BookDemo() {
                     <div className="w-8 h-8 rounded-xl bg-aqua/10 border border-aqua/20 flex items-center justify-center shrink-0">
                       <item.icon className="h-4 w-4 text-aqua" />
                     </div>
-                    <p className="text-sm text-white/60 mt-1">{language === 'en' ? item.textEn : item.textHi}</p>
+                    <p className="text-sm text-[#3D3128] mt-1">{language === 'en' ? item.textEn : item.textHi}</p>
                   </div>
                 ))}
               </div>
 
               <div className="glass-card rounded-2xl p-6 border border-aqua/10">
-                <p className="text-xs text-white/30 mb-1 uppercase tracking-wide">
+                <p className="text-xs text-[#6B5D52] mb-1 uppercase tracking-wide">
                   {language === 'en' ? 'Or contact directly' : 'या सीधे संपर्क करें'}
                 </p>
                 <div className="space-y-2 mt-3">
-                  <a href="tel:+919021744355" className="flex items-center gap-2 text-sm text-white/60 hover:text-aqua transition-colors">
+                  <a href="tel:+919021744355" className="flex items-center gap-2 text-sm text-[#3D3128] hover:text-aqua transition-colors">
                     <Phone className="h-4 w-4 text-aqua" />
                     +91 90217 44355
                   </a>
-                  <a href="mailto:team@revenex.in" className="flex items-center gap-2 text-sm text-white/60 hover:text-aqua transition-colors">
+                  <a href="mailto:team@revenex.in" className="flex items-center gap-2 text-sm text-[#3D3128] hover:text-aqua transition-colors">
                     <Mail className="h-4 w-4 text-aqua" />
                     team@revenex.in
                   </a>
@@ -215,22 +215,22 @@ export default function BookDemo() {
               <form onSubmit={handleSubmit} className="form-card glass-card animated-border rounded-3xl p-8 space-y-5">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-white/60 mb-2">
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">
                       {t('demo.form.name')} *
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                      <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
                       <input type="text" placeholder="Full name" required value={form.name} onChange={set('name')}
                         className={`${inputClass(errors.name)} pl-10`} />
                     </div>
                     {errors.name && <p className="text-xs text-red-400 mt-1">{errors.name}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-white/60 mb-2">
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">
                       {t('demo.form.school')} *
                     </label>
                     <div className="relative">
-                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                      <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
                       <input type="text" placeholder="School / Institute name" required value={form.schoolName} onChange={set('schoolName')}
                         className={`${inputClass(errors.schoolName)} pl-10`} />
                     </div>
@@ -240,7 +240,7 @@ export default function BookDemo() {
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-white/60 mb-2">
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">
                       {t('demo.form.type')} *
                     </label>
                     <select required value={form.type} onChange={set('type')}
@@ -254,7 +254,7 @@ export default function BookDemo() {
                     {errors.type && <p className="text-xs text-red-400 mt-1">{errors.type}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-white/60 mb-2">
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">
                       {language === 'en' ? 'No. of Students' : 'छात्रों की संख्या'}
                     </label>
                     <select value={form.students} onChange={set('students')}
@@ -271,22 +271,22 @@ export default function BookDemo() {
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-white/60 mb-2">
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">
                       {t('demo.form.email')} *
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
                       <input type="email" placeholder="your@email.com" required value={form.email} onChange={set('email')}
                         className={`${inputClass(errors.email)} pl-10`} />
                     </div>
                     {errors.email && <p className="text-xs text-red-400 mt-1">{errors.email}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-white/60 mb-2">
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">
                       {t('demo.form.phone')} *
                     </label>
                     <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20" />
+                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
                       <input type="tel" placeholder="10-digit mobile" required value={form.phone} onChange={set('phone')}
                         className={`${inputClass(errors.phone)} pl-10`} />
                     </div>
@@ -296,7 +296,7 @@ export default function BookDemo() {
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <label className="block text-sm font-medium text-white/60 mb-2">
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">
                       {language === 'en' ? 'Preferred Date' : 'पसंदीदा तारीख'}
                     </label>
                     <input type="date" value={form.preferredDate} onChange={set('preferredDate')}
@@ -304,7 +304,7 @@ export default function BookDemo() {
                       className={`${inputClass()} [color-scheme:dark]`} />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-white/60 mb-2">
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">
                       {language === 'en' ? 'Preferred Time (IST)' : 'पसंदीदा समय (IST)'}
                     </label>
                     <select value={form.preferredTime} onChange={set('preferredTime')}
@@ -316,7 +316,7 @@ export default function BookDemo() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/60 mb-2">
+                  <label className="block text-sm font-medium text-[#3D3128] mb-2">
                     {t('demo.form.message')}
                   </label>
                   <textarea
@@ -357,7 +357,7 @@ export default function BookDemo() {
                   )}
                 </motion.button>
 
-                <p className="text-xs text-white/25 text-center">
+                <p className="text-xs text-[#6B5D52] text-center">
                   {language === 'en'
                     ? 'By submitting, you agree to our Privacy Policy and Terms of Service.'
                     : 'सबमिट करके, आप हमारी गोपनीयता नीति और सेवा की शर्तों से सहमत होते हैं।'}

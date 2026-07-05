@@ -49,8 +49,8 @@ function GoogleButton({ onSuccess, onError, mode = 'signin' }: Props) {
   return (
     <motion.button type='button' disabled={loading} onClick={() => login()}
       whileHover={!loading ? { scale: 1.01 } : {}} whileTap={!loading ? { scale: 0.99 } : {}}
-      className='w-full flex items-center justify-center gap-3 border border-white/10 bg-white/5 text-white/80 font-semibold py-3.5 rounded-2xl hover:bg-white/8 hover:border-white/20 transition-all text-sm disabled:opacity-60 disabled:cursor-not-allowed'>
-      {loading ? (<><motion.div className='w-4 h-4 border-2 border-white/30 border-t-white rounded-full' animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />{mode === 'signin' ? 'Signing in...' : 'Creating account...'}</>) : (<><GoogleIcon />{mode === 'signin' ? 'Sign in with Google' : 'Sign up with Google'}</>)}
+      className='w-full flex items-center justify-center gap-3 border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] font-semibold py-3.5 rounded-2xl hover:bg-[#F0E8DC] hover:border-[#1A1410]/20 transition-all text-sm disabled:opacity-60 disabled:cursor-not-allowed'>
+      {loading ? (<><motion.div className='w-4 h-4 border-2 border-[#1A1410]/30 border-t-[#1A1410] rounded-full' animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />{mode === 'signin' ? 'Signing in...' : 'Creating account...'}</>) : (<><GoogleIcon />{mode === 'signin' ? 'Sign in with Google' : 'Sign up with Google'}</>)}
     </motion.button>
   )
 }
@@ -74,7 +74,7 @@ function OriginMismatchHelp() {
 
 function NotConfigured({ mode }: { mode: 'signin' | 'signup' }) {
   return (
-    <div className='w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-white/8 bg-white/3 text-white/25 text-sm cursor-not-allowed select-none'>
+    <div className='w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border border-[#E8E0D4] bg-[#F0E8DC] text-[#6B5D52] text-sm cursor-not-allowed select-none'>
       <Settings className='h-4 w-4' />
       {mode === 'signin' ? 'Google sign-in' : 'Google sign-up'} — see GOOGLE-OAUTH-SETUP.md to enable
     </div>

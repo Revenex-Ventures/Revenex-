@@ -56,16 +56,16 @@ import { useState, useEffect } from 'react'
       return { label: 'Weak', color: 'bg-red-400', width: 'w-1/3' }
     }
 
-    const inputClass = `w-full rounded-xl border border-white/10 bg-white/5 pl-10 pr-12 py-3.5 text-white placeholder-white/25 outline-none focus:border-aqua/50 transition-all text-sm`
+    const inputClass = `w-full rounded-xl border border-[#E8E0D4] bg-[#F0E8DC] pl-10 pr-12 py-3.5 text-[#1A1410] placeholder-white/25 outline-none focus:border-aqua/50 transition-all text-sm`
 
     return (
       <main className="min-h-screen flex items-center justify-center px-4 py-16 relative overflow-hidden">
         <div className="absolute inset-0 hero-glow pointer-events-none" />
-        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#7C4DFF]/5 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#8B4513]/5 rounded-full blur-[140px] pointer-events-none" />
 
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-md">
           <Link href="/" className="flex justify-center mb-8">
-            <span className="text-2xl font-black"><span className="text-white">REVEN</span><span className="text-aqua">EX</span></span>
+            <span className="text-2xl font-black"><span className="text-[#1A1410]">REVEN</span><span className="text-aqua">EX</span></span>
           </Link>
 
           <div className="glass-card animated-border rounded-3xl overflow-hidden">
@@ -73,18 +73,18 @@ import { useState, useEffect } from 'react'
             <div className="p-8">
               <div className="text-center mb-8">
                 <div className="mx-auto mb-4 w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center">
-                  <KeyRound className="h-7 w-7 text-black" />
+                  <KeyRound className="h-7 w-7 text-[#1A1410]" />
                 </div>
-                <h1 className="text-2xl font-black text-white mb-1">Set New Password</h1>
-                <p className="text-sm text-white/40">Enter your new password below</p>
+                <h1 className="text-2xl font-black text-[#1A1410] mb-1">Set New Password</h1>
+                <p className="text-sm text-[#6B5D52]">Enter your new password below</p>
               </div>
 
               {success ? (
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-4">
                   <CheckCircle2 className="h-16 w-16 text-aqua mx-auto mb-4" />
-                  <h2 className="text-xl font-bold text-white mb-2">Password Updated!</h2>
-                  <p className="text-white/50 text-sm mb-1">Your password has been reset successfully.</p>
-                  <p className="text-white/30 text-xs">A confirmation email has been sent. Redirecting to sign in...</p>
+                  <h2 className="text-xl font-bold text-[#1A1410] mb-2">Password Updated!</h2>
+                  <p className="text-[#3D3128] text-sm mb-1">Your password has been reset successfully.</p>
+                  <p className="text-[#6B5D52] text-xs">A confirmation email has been sent. Redirecting to sign in...</p>
                 </motion.div>
               ) : (
                 <>
@@ -108,47 +108,47 @@ import { useState, useEffect } from 'react'
                       )}
 
                       <div>
-                        <label className="block text-sm font-medium text-white/60 mb-2">New Password</label>
+                        <label className="block text-sm font-medium text-[#3D3128] mb-2">New Password</label>
                         <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/25" />
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
                           <input type={showPass ? 'text' : 'password'} placeholder="Min. 8 characters" required autoComplete="new-password"
                             value={form.password} onChange={e => { setForm(f => ({ ...f, password: e.target.value })); setError('') }}
                             className={inputClass} />
-                          <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/60">
+                          <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B5D52] hover:text-[#3D3128]">
                             {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                           </button>
                         </div>
                         {passwordStrength() && (
                           <div className="mt-2 flex items-center gap-2">
-                            <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+                            <div className="flex-1 h-1 bg-[#E8E0D4] rounded-full overflow-hidden">
                               <div className={`h-full rounded-full transition-all ${passwordStrength()!.color} ${passwordStrength()!.width}`} />
                             </div>
-                            <span className="text-xs text-white/40">{passwordStrength()!.label}</span>
+                            <span className="text-xs text-[#6B5D52]">{passwordStrength()!.label}</span>
                           </div>
                         )}
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-white/60 mb-2">Confirm Password</label>
+                        <label className="block text-sm font-medium text-[#3D3128] mb-2">Confirm Password</label>
                         <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/25" />
+                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
                           <input type={showConfirm ? 'text' : 'password'} placeholder="Re-enter password" required autoComplete="new-password"
                             value={form.confirm} onChange={e => { setForm(f => ({ ...f, confirm: e.target.value })); setError('') }}
                             className={inputClass} />
-                          <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/60">
+                          <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B5D52] hover:text-[#3D3128]">
                             {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                           </button>
                         </div>
                       </div>
 
-                      <motion.button type="submit" disabled={loading} whileHover={!loading ? { scale: 1.02, boxShadow: '0 0 30px rgba(0,229,195,0.3)' } : {}} whileTap={!loading ? { scale: 0.98 } : {}}
-                        className="w-full gradient-bg text-black font-bold py-4 rounded-2xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed mt-2">
+                      <motion.button type="submit" disabled={loading} whileHover={!loading ? { scale: 1.02, boxShadow: '0 0 30px rgba(124, 61, 15,0.3)' } : {}} whileTap={!loading ? { scale: 0.98 } : {}}
+                        className="w-full gradient-bg text-[#1A1410] font-bold py-4 rounded-2xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed mt-2">
                         {loading ? (
                           <><motion.div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />Updating password...</>
                         ) : (<>Update Password<ArrowRight className="h-4 w-4" /></>)}
                       </motion.button>
 
-                      <p className="text-center text-xs text-white/30">
+                      <p className="text-center text-xs text-[#6B5D52]">
                         <Link href="/login"><span className="text-aqua/70 hover:text-aqua cursor-pointer hover:underline">← Back to Sign In</span></Link>
                       </p>
                     </form>

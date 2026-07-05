@@ -21,9 +21,9 @@ const featureData: Record<string, {
     title: 'One Platform, Everything Connected',
     subtitle: 'Replace 8+ fragmented tools with a single unified ERP built specifically for Indian schools.',
     icon: Server,
-    color: '#00E5C3',
-    glow: 'rgba(0,229,195,0.25)',
-    bgGlow: 'rgba(0,229,195,0.06)',
+    color: '#7C3D0F',
+    glow: 'rgba(124, 61, 15,0.25)',
+    bgGlow: 'rgba(124, 61, 15,0.06)',
     stats: [
       { value: '8+', label: 'Apps Replaced' },
       { value: '40hrs', label: 'Saved Per Month' },
@@ -66,9 +66,9 @@ const featureData: Record<string, {
     title: 'AI-Powered Insights with Gemini',
     subtitle: 'Real-time analytics that predict problems before they happen and automate routine reporting.',
     icon: Sparkles,
-    color: '#7C4DFF',
-    glow: 'rgba(124,77,255,0.25)',
-    bgGlow: 'rgba(124,77,255,0.06)',
+    color: '#8B4513',
+    glow: 'rgba(139, 69, 19,0.25)',
+    bgGlow: 'rgba(139, 69, 19,0.06)',
     stats: [
       { value: '90%', label: 'Faster Reporting' },
       { value: '15min', label: 'Monthly Report Time' },
@@ -105,9 +105,9 @@ const featureData: Record<string, {
     title: 'Built for India\'s Schools',
     subtitle: 'Not a foreign SaaS adapted for India — built ground-up for Indian curriculum, payments, and connectivity.',
     icon: Globe2,
-    color: '#3B82F6',
-    glow: 'rgba(59,130,246,0.25)',
-    bgGlow: 'rgba(59,130,246,0.06)',
+    color: '#166534',
+    glow: 'rgba(22, 101, 52,0.25)',
+    bgGlow: 'rgba(22, 101, 52,0.06)',
     stats: [
       { value: '2', label: 'Languages (EN + HI)' },
       { value: 'UPI', label: 'Razorpay Payments' },
@@ -144,9 +144,9 @@ const featureData: Record<string, {
     title: 'Zero Friction, Live in 48 Hours',
     subtitle: 'No IT team. No months of implementation. Teachers trained in 30 minutes. Full support, always.',
     icon: Zap,
-    color: '#10B981',
-    glow: 'rgba(16,185,129,0.25)',
-    bgGlow: 'rgba(16,185,129,0.06)',
+    color: '#166534',
+    glow: 'rgba(22, 101, 52,0.25)',
+    bgGlow: 'rgba(22, 101, 52,0.06)',
     stats: [
       { value: '48hrs', label: 'Average Go-Live Time' },
       { value: '30min', label: 'Teacher Onboarding' },
@@ -186,19 +186,19 @@ const moduleData: Record<string, {
 }> = {
   'student-management': {
     badge: 'Module', title: 'Student Management & Scalability', subtitle: 'Complete student lifecycle from admission to graduation — scales from 100 to 10,000+ students effortlessly.',
-    icon: Users, color: '#7C4DFF', glow: 'rgba(124,77,255,0.25)',
+    icon: Users, color: '#8B4513', glow: 'rgba(139, 69, 19,0.25)',
     desc: 'Manage every student record digitally. Track admission, academic history, attendance, fee status, and behaviour records — all in one unified profile. Built to handle institutions of any size without performance degradation.',
     points: ['Digital admission with document uploads', 'Academic history and subject tracking', 'Attendance linked to student profiles', 'Fee dues and payment history per student', 'Parent contact management', 'Student ID generation', 'Graduation and alumni records', 'Scales from 100 to 10,000+ students seamlessly'],
   },
   'fee-management': {
     badge: 'Module', title: 'Fee Management', subtitle: 'Online fee collection, receipts, dues tracking and Razorpay integration.',
-    icon: CreditCard, color: '#F59E0B', glow: 'rgba(245,158,11,0.25)',
+    icon: CreditCard, color: '#7C3D0F', glow: 'rgba(124, 61, 15,0.25)',
     desc: 'Collect fees online via Razorpay UPI, cards, and NetBanking. Automatically generate receipts, track dues, and send automated WhatsApp reminders.',
     points: ['Razorpay UPI & card integration', 'Automated digital receipts', 'Due date tracking with WhatsApp alerts', 'Partial payment and installment support', 'Fee structure by class/section', 'Monthly collection dashboards', 'GST-compliant invoicing'],
   },
   'fees': {
     badge: 'Affordable', title: 'Transparent & Affordable Pricing', subtitle: 'One plan, all features. Designed specifically for Indian schools — no hidden costs, no per-module charges.',
-    icon: CreditCard, color: '#10B981', glow: 'rgba(16,185,129,0.25)',
+    icon: CreditCard, color: '#166534', glow: 'rgba(22, 101, 52,0.25)',
     desc: 'REVENEX is priced to be accessible for every Indian school — from small private schools to large multi-campus institutions. One flat subscription covers every feature, with no surprise add-ons.',
     points: [
       'Single flat subscription — all features included',
@@ -213,7 +213,7 @@ const moduleData: Record<string, {
   },
   'security': {
     badge: 'Secure & Cloud', title: 'Bank-Grade Security on Google Cloud', subtitle: '256-bit AES encryption, role-based access, GDPR-compliant data handling — hosted on Google Cloud with 99.9% uptime.',
-    icon: Shield, color: '#00E5C3', glow: 'rgba(0,229,195,0.25)',
+    icon: Shield, color: '#7C3D0F', glow: 'rgba(124, 61, 15,0.25)',
     desc: 'REVENEX uses the same encryption standards as Indian banks. Hosted on Google Cloud infrastructure, your school data is protected around the clock — with role-based access ensuring every user sees only what they need.',
     points: [
       '256-bit AES encryption at rest and in transit',
@@ -228,7 +228,7 @@ const moduleData: Record<string, {
   },
   'ai-analytics': {
     badge: 'AI Powered', title: 'AI-Powered School Intelligence', subtitle: 'Gemini AI generates reports, predicts dropout risks, and automates routine admin tasks — so you focus on education.',
-    icon: BarChart3, color: '#8B5CF6', glow: 'rgba(139,92,246,0.25)',
+    icon: BarChart3, color: '#8B4513', glow: 'rgba(139, 69, 19,0.25)',
     desc: 'Natural language queries, automated monthly reports, dropout risk alerts, and real-time KPI dashboards — all powered by Google Gemini AI. Ask questions about your school in plain English and get instant, precise answers.',
     points: [
       'Natural language analytics queries in Hindi & English',
@@ -243,13 +243,13 @@ const moduleData: Record<string, {
   },
   'security-access': {
     badge: 'Module', title: 'Security & Access Control', subtitle: 'Role-based access, data encryption, and GDPR-compliant handling.',
-    icon: Shield, color: '#EF4444', glow: 'rgba(239,68,68,0.25)',
+    icon: Shield, color: '#8B4513', glow: 'rgba(139, 69, 19,0.25)',
     desc: '256-bit AES encryption at rest and in transit. Role-based access ensures principals, teachers, and parents see exactly what they need — nothing more.',
     points: ['256-bit AES encryption', 'Role-based access control', 'GDPR-compliant data handling', 'Audit logs for all actions', '24/7 security monitoring', 'Automated backups', 'Zero data selling policy'],
   },
   'attendance': {
     badge: 'Module', title: 'Attendance Tracking', subtitle: 'Biometric, RFID and manual attendance with instant parent SMS and WhatsApp alerts.',
-    icon: Calendar, color: '#10B981', glow: 'rgba(16,185,129,0.25)',
+    icon: Calendar, color: '#166534', glow: 'rgba(22, 101, 52,0.25)',
     desc: 'Mark and track attendance digitally across every class and section. Biometric and RFID integrations allow fully automated marking — and parents are notified the moment their child is marked absent.',
     points: [
       'Biometric and RFID-based auto attendance',
@@ -309,7 +309,7 @@ const moduleData: Record<string, {
   },
   'cloud-based': {
     badge: 'Cloud Infrastructure', title: 'Cloud Based on Google Cloud', subtitle: 'Hosted on Google Cloud with 99.9% uptime target. Access your ERP from any device, anywhere, anytime.',
-    icon: Cloud, color: '#3B82F6', glow: 'rgba(59,130,246,0.25)',
+    icon: Cloud, color: '#166534', glow: 'rgba(22, 101, 52,0.25)',
     desc: 'REVENEX runs on Google Cloud — enterprise-grade infrastructure trusted by thousands of businesses globally. Your school data is always available, always fast, and always protected, whether you\'re on a mobile in a classroom or a laptop in the principal\'s office.',
     points: [
       '99.9% uptime target on Google Cloud infrastructure',
@@ -335,7 +335,7 @@ export default function FeatureDetail() {
       <main className="min-h-screen flex items-center justify-center">
         <Navbar />
         <div className="text-center pt-32">
-          <h1 className="text-3xl font-black text-white mb-4">Feature Not Found</h1>
+          <h1 className="text-3xl font-black text-[#1A1410] mb-4">Feature Not Found</h1>
           <Link href="/">
             <span className="text-aqua hover:underline cursor-pointer">← Back to home</span>
           </Link>
@@ -360,7 +360,7 @@ export default function FeatureDetail() {
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <Link href="/">
-              <motion.span whileHover={{ x: -3 }} className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-white/70 transition-colors cursor-pointer mb-8">
+              <motion.span whileHover={{ x: -3 }} className="inline-flex items-center gap-2 text-sm text-[#6B5D52] hover:text-[#1A1410] transition-colors cursor-pointer mb-8">
                 <ArrowLeft className="h-4 w-4" /> Back to home
               </motion.span>
             </Link>
@@ -374,23 +374,23 @@ export default function FeatureDetail() {
               </span>
             </div>
 
-            <h1 className="text-4xl font-black text-white sm:text-5xl lg:text-6xl mb-6 leading-tight">
+            <h1 className="text-4xl font-black text-[#1A1410] sm:text-5xl lg:text-6xl mb-6 leading-tight">
               {data.title}
             </h1>
-            <p className="text-xl text-white/50 leading-relaxed max-w-2xl">{data.subtitle}</p>
+            <p className="text-xl text-[#3D3128] leading-relaxed max-w-2xl">{data.subtitle}</p>
           </motion.div>
         </div>
       </section>
 
       {/* Stats row (full features only) */}
       {full && (
-        <section className="border-y border-white/5 py-10">
+        <section className="border-y border-[#E8E0D4] py-10">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
               {full.stats.map((stat, i) => (
                 <motion.div key={stat.label} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="text-center">
                   <div className="text-3xl font-black mb-1" style={{ color: full.color }}>{stat.value}</div>
-                  <div className="text-sm text-white/40">{stat.label}</div>
+                  <div className="text-sm text-[#6B5D52]">{stat.label}</div>
                 </motion.div>
               ))}
             </div>
@@ -411,14 +411,14 @@ export default function FeatureDetail() {
               className="glass-card rounded-3xl p-8 lg:p-10"
               style={{ border: `1px solid ${full.color}18` }}
             >
-              <h2 className="text-2xl font-black text-white mb-4">{section.heading}</h2>
-              <p className="text-white/55 leading-relaxed mb-6">{section.body}</p>
+              <h2 className="text-2xl font-black text-[#1A1410] mb-4">{section.heading}</h2>
+              <p className="text-[#1A1410]/55 leading-relaxed mb-6">{section.body}</p>
               {section.points && (
                 <div className="grid gap-3 sm:grid-cols-2">
                   {section.points.map((point, j) => (
                     <div key={point} className="flex items-start gap-3">
                       <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" style={{ color: full.color }} />
-                      <span className="text-sm text-white/65">{point}</span>
+                      <span className="text-sm text-[#1A1410]/65">{point}</span>
                     </div>
                   ))}
                 </div>
@@ -428,13 +428,13 @@ export default function FeatureDetail() {
 
           {mod && (
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-card rounded-3xl p-8 lg:p-10" style={{ border: `1px solid ${mod.color}18` }}>
-              <h2 className="text-2xl font-black text-white mb-4">What's Included</h2>
-              <p className="text-white/55 leading-relaxed mb-6">{mod.desc}</p>
+              <h2 className="text-2xl font-black text-[#1A1410] mb-4">What's Included</h2>
+              <p className="text-[#1A1410]/55 leading-relaxed mb-6">{mod.desc}</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 {mod.points.map((point, j) => (
                   <div key={point} className="flex items-start gap-3">
                     <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" style={{ color: mod.color }} />
-                    <span className="text-sm text-white/65">{point}</span>
+                    <span className="text-sm text-[#1A1410]/65">{point}</span>
                   </div>
                 ))}
               </div>
@@ -448,13 +448,13 @@ export default function FeatureDetail() {
         <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 60% 40% at 50% 100%, ${data.bgGlow}, transparent)` }} />
         <div className="relative mx-auto max-w-2xl px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-3xl font-black text-white mb-4">Ready to see it in action?</h2>
-            <p className="text-white/45 mb-8">Book a free demo and see how REVENEX transforms your school operations.</p>
+            <h2 className="text-3xl font-black text-[#1A1410] mb-4">Ready to see it in action?</h2>
+            <p className="text-[#3D3128] mb-8">Book a free demo and see how REVENEX transforms your school operations.</p>
             <Link href="/book-demo">
               <motion.span
                 whileHover={{ scale: 1.04, boxShadow: `0 0 30px ${data.glow}` }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 gradient-bg text-black font-bold px-8 py-4 rounded-2xl cursor-pointer"
+                className="inline-flex items-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl cursor-pointer"
               >
                 Book Free Demo <ArrowRight className="h-4 w-4" />
               </motion.span>

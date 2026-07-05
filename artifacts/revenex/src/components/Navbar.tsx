@@ -1,9 +1,89 @@
 import { useState, useEffect, useRef } from 'react'
   import { Link, useLocation } from 'wouter'
   import { motion, AnimatePresence } from 'framer-motion'
-  import { Menu, X, Globe, LogIn, LogOut, User, ChevronDown, Shield } from 'lucide-react'
+  import { Menu, X, Globe, LogIn, LogOut, User, ChevronDown, Shield, GraduationCap, Building2 } from 'lucide-react'
   import { useLanguage } from '@/lib/language-context'
   import { useAuth } from '@/lib/auth-context'
+
+  const productColumns = [
+    {
+      title: 'School ERP',
+      icon: GraduationCap,
+      items: [
+        { label: 'Principal Dashboard', href: '/#products' },
+        { label: 'Teacher Dashboard', href: '/#products' },
+        { label: 'Parent Dashboard', href: '/#products' },
+      ],
+    },
+    {
+      title: 'Business CRM',
+      icon: Building2,
+      items: [
+        { label: 'Hotel Management', href: '/#products' },
+        { label: 'Restaurant Management', href: '/#products' },
+        { label: 'Retail Management', href: '/#products' },
+      ],
+    },
+  ]
+
+  function ProductsMenu({ closeMobile }: { closeMobile?: () => void }) {
+    const [open, setOpen] = useState(false)
+    const ref = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+      function handler(e: MouseEvent) {
+        if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+      }
+      document.addEventListener('mousedown', handler)
+      return () => document.removeEventListener('mousedown', handler)
+    }, [])
+
+    return (
+      <div className="relative" ref={ref}>
+        <motion.button
+          whileHover={{ y: -1 }}
+          onClick={() => setOpen(v => !v)}
+          className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer text-[#3D3128] hover:text-[#1A1410]"
+        >
+          Products
+          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
+        </motion.button>
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{ opacity: 0, y: 8, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.97 }}
+              transition={{ duration: 0.18 }}
+              className="absolute left-1/2 -translate-x-1/2 mt-3 w-[420px] glass rounded-2xl border border-[#E8E0D4] shadow-2xl p-5 grid grid-cols-2 gap-5 z-50"
+            >
+              {productColumns.map((col) => (
+                <div key={col.title}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-7 h-7 rounded-lg bg-[#F0E8DC] flex items-center justify-center shrink-0">
+                      <col.icon className="h-3.5 w-3.5 text-[#7C3D0F]" />
+                    </div>
+                    <span className="text-xs font-black uppercase tracking-widest text-[#1A1410]">{col.title}</span>
+                  </div>
+                  <ul className="space-y-1">
+                    {col.items.map((it) => (
+                      <li key={it.label}>
+                        <Link href={it.href}>
+                          <span onClick={() => { setOpen(false); closeMobile?.() }} className="block rounded-lg px-2 py-1.5 text-sm text-[#6B5D52] hover:text-[#1A1410] hover:bg-[#F0E8DC] transition-colors cursor-pointer">
+                            {it.label}
+                          </span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    )
+  }
 
   function scrollToSection(id: string) {
     const el = document.getElementById(id)
@@ -41,13 +121,13 @@ import { useState, useEffect, useRef } from 'react'
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => setOpen(v => !v)}
-          className="flex items-center gap-2 border border-white/20 bg-white/5 px-3 py-2 rounded-xl text-sm font-medium text-white/90 hover:bg-white/10 hover:border-white/30 transition-all"
+          className="flex items-center gap-2 border border-[#E8E0D4] bg-[#F0E8DC] px-3 py-2 rounded-xl text-sm font-medium text-[#6B5D52] hover:bg-[#F0E8DC] hover:border-[#E8E0D4] transition-all"
         >
-          <div className="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center text-black text-xs font-black">
+          <div className="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center text-white text-xs font-black">
             {initials}
           </div>
           <span className="max-w-[120px] truncate">{user.name.split(' ')[0]}</span>
-          <ChevronDown className={`h-3.5 w-3.5 text-white/50 transition-transform ${open ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`h-3.5 w-3.5 text-[#3D3128] transition-transform ${open ? 'rotate-180' : ''}`} />
         </motion.button>
 
         <AnimatePresence>
@@ -57,16 +137,16 @@ import { useState, useEffect, useRef } from 'react'
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.95 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 mt-2 w-52 glass rounded-2xl border border-white/10 overflow-hidden shadow-2xl z-50"
+              className="absolute right-0 mt-2 w-52 glass rounded-2xl border border-[#E8E0D4] overflow-hidden shadow-2xl z-50"
             >
-              <div className="px-4 py-3 border-b border-white/10">
-                <p className="text-sm font-semibold text-white truncate">{user.name}</p>
-                <p className="text-xs text-white/40 truncate mt-0.5">{user.email}</p>
+              <div className="px-4 py-3 border-b border-[#E8E0D4]">
+                <p className="text-sm font-semibold text-[#1A1410] truncate">{user.name}</p>
+                <p className="text-xs text-[#6B5D52] truncate mt-0.5">{user.email}</p>
               </div>
               <div className="py-1">
                 {user.role === 'admin' && (
                   <Link href="/admin">
-                    <button onClick={() => setOpen(false)} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-aqua hover:bg-white/5 transition-colors text-left">
+                    <button onClick={() => setOpen(false)} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-aqua hover:bg-[#F0E8DC] transition-colors text-left">
                       <Shield className="h-4 w-4" />
                       Admin Dashboard
                     </button>
@@ -74,7 +154,7 @@ import { useState, useEffect, useRef } from 'react'
                 )}
                 <button
                   onClick={() => void handleLogout()}
-                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-white/70 hover:bg-white/5 hover:text-white transition-colors text-left"
+                  className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410] transition-colors text-left"
                 >
                   <LogOut className="h-4 w-4" />
                   Sign Out
@@ -109,11 +189,26 @@ import { useState, useEffect, useRef } from 'react'
       else { navigate('/'); setTimeout(() => scrollToSection('security'), 400) }
     }
 
+    function handleFeaturesClick(e: React.MouseEvent) {
+      e.preventDefault()
+      setIsMobileMenuOpen(false)
+      if (location === '/') scrollToSection('features')
+      else { navigate('/'); setTimeout(() => scrollToSection('features'), 400) }
+    }
+
+    function handlePricingClick(e: React.MouseEvent) {
+      e.preventDefault()
+      setIsMobileMenuOpen(false)
+      if (location === '/') scrollToSection('pricing')
+      else { navigate('/'); setTimeout(() => scrollToSection('pricing'), 400) }
+    }
+
     const navItems = [
       { label: t('nav.home'), href: '/', isAnchor: false },
+      { label: 'Features', href: '#features', isAnchor: true, onClick: handleFeaturesClick },
+      { label: 'Pricing', href: '#pricing', isAnchor: true, onClick: handlePricingClick },
       { label: t('nav.about'), href: '/about', isAnchor: false },
       { label: t('nav.security'), href: '#security', isAnchor: true, onClick: handleSecurityClick },
-      { label: t('nav.ourStory'), href: '/our-story', isAnchor: false },
       { label: t('nav.contact'), href: '/contact', isAnchor: false },
     ]
 
@@ -124,22 +219,32 @@ import { useState, useEffect, useRef } from 'react'
             <Link href="/" className="flex items-center gap-2">
               <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-1">
                 <span className="text-xl font-black lg:text-2xl tracking-tight">
-                  <span className="text-white">REVEN</span><span className="text-aqua">EX</span>
+                  <span className="text-[#1A1410]">REVEN</span><span className="text-aqua">EX</span>
                 </span>
               </motion.div>
             </Link>
 
             <div className="hidden items-center gap-1 lg:flex">
-              {navItems.map((item) =>
+              {navItems[0] && (
+                <Link href={navItems[0].href}>
+                  <motion.span whileHover={{ y: -1 }}
+                    className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer inline-block ${location === navItems[0].href ? 'text-aqua' : 'text-[#3D3128] hover:text-[#1A1410]'}`}>
+                    {navItems[0].label}
+                    {location === navItems[0].href && <motion.div layoutId="nav-indicator" className="absolute bottom-0 left-0 right-0 h-0.5 bg-aqua rounded-full" />}
+                  </motion.span>
+                </Link>
+              )}
+              <ProductsMenu />
+              {navItems.slice(1).map((item) =>
                 item.isAnchor ? (
                   <motion.button key={item.label} whileHover={{ y: -1 }} onClick={item.onClick}
-                    className="relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer text-white/70 hover:text-white">
+                    className="relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer text-[#3D3128] hover:text-[#1A1410]">
                     {item.label}
                   </motion.button>
                 ) : (
                   <Link key={item.href} href={item.href}>
                     <motion.span whileHover={{ y: -1 }}
-                      className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer inline-block ${location === item.href ? 'text-aqua' : 'text-white/70 hover:text-white'}`}>
+                      className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer inline-block ${location === item.href ? 'text-aqua' : 'text-[#3D3128] hover:text-[#1A1410]'}`}>
                       {item.label}
                       {location === item.href && <motion.div layoutId="nav-indicator" className="absolute bottom-0 left-0 right-0 h-0.5 bg-aqua rounded-full" />}
                     </motion.span>
@@ -151,7 +256,7 @@ import { useState, useEffect, useRef } from 'react'
             <div className="flex items-center gap-2">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
-                className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium text-white/70 transition-all hover:bg-white/5 hover:text-white border border-white/10 hover:border-white/20">
+                className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium text-[#3D3128] transition-all hover:bg-[#F0E8DC] hover:text-[#1A1410] border border-[#E8E0D4] hover:border-[#E8E0D4]">
                 <Globe className="h-4 w-4 text-aqua" />
                 <span className="hidden sm:inline font-semibold">{language === 'en' ? 'EN' : 'हिं'}</span>
               </motion.button>
@@ -161,7 +266,7 @@ import { useState, useEffect, useRef } from 'react'
               ) : (
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="hidden sm:block">
                   <Link href="/login">
-                    <span className="inline-flex items-center gap-1.5 border border-white/20 text-white/80 font-semibold px-4 py-2.5 rounded-xl text-sm transition-all hover:bg-white/5 hover:border-white/30 cursor-pointer">
+                    <span className="inline-flex items-center gap-1.5 border border-[#E8E0D4] text-[#6B5D52] font-semibold px-4 py-2.5 rounded-xl text-sm transition-all hover:bg-[#F0E8DC] hover:border-[#E8E0D4] cursor-pointer">
                       <LogIn className="h-3.5 w-3.5" />
                       Sign In
                     </span>
@@ -171,14 +276,14 @@ import { useState, useEffect, useRef } from 'react'
 
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="hidden sm:block">
                 <Link href="/book-demo">
-                  <span className="inline-flex items-center gap-2 gradient-bg text-black font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:opacity-90 glow-aqua cursor-pointer">
+                  <span className="inline-flex items-center gap-2 gradient-bg text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:opacity-90 glow-aqua cursor-pointer">
                     Get Started →
                   </span>
                 </Link>
               </motion.div>
 
               <motion.button whileTap={{ scale: 0.9 }} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="rounded-xl p-2 text-white/80 hover:bg-white/5 lg:hidden border border-white/10">
+                className="rounded-xl p-2 text-[#6B5D52] hover:bg-[#F0E8DC] lg:hidden border border-[#E8E0D4]">
                 <AnimatePresence mode="wait">
                   {isMobileMenuOpen ? (
                     <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
@@ -198,40 +303,51 @@ import { useState, useEffect, useRef } from 'react'
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }}
-              className="glass lg:hidden border-t border-white/10 overflow-hidden">
+              className="glass lg:hidden border-t border-[#E8E0D4] overflow-hidden">
               <div className="space-y-1 px-4 pb-6 pt-3">
                 {navItems.map((item, i) => (
                   <motion.div key={item.label} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}>
                     {item.isAnchor ? (
-                      <button onClick={item.onClick} className="block w-full text-left rounded-xl px-4 py-3 text-base font-medium text-white/70 hover:bg-white/5 hover:text-white transition-all">
+                      <button onClick={item.onClick} className="block w-full text-left rounded-xl px-4 py-3 text-base font-medium text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410] transition-all">
                         {item.label}
                       </button>
                     ) : (
                       <Link href={item.href}>
-                        <span className={`block rounded-xl px-4 py-3 text-base font-medium transition-all cursor-pointer ${location === item.href ? 'bg-white/5 text-aqua border border-aqua/20' : 'text-white/70 hover:bg-white/5 hover:text-white'}`}>
+                        <span className={`block rounded-xl px-4 py-3 text-base font-medium transition-all cursor-pointer ${location === item.href ? 'bg-[#F0E8DC] text-aqua border border-aqua/20' : 'text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410]'}`}>
                           {item.label}
                         </span>
                       </Link>
+                    )}
+                    {i === 0 && (
+                      <div className="pl-4 mt-1 space-y-0.5">
+                        {productColumns.flatMap(c => c.items).map((it) => (
+                          <Link key={it.label} href={it.href}>
+                            <span onClick={() => setIsMobileMenuOpen(false)} className="block rounded-lg px-4 py-2 text-sm text-[#6B5D52] hover:text-[#1A1410] hover:bg-[#F0E8DC] transition-colors cursor-pointer">
+                              {it.label}
+                            </span>
+                          </Link>
+                        ))}
+                      </div>
                     )}
                   </motion.div>
                 ))}
                 {user ? (
                   <>
                     <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: navItems.length * 0.05 }}>
-                      <div className="flex items-center gap-3 px-4 py-3 border border-white/10 rounded-xl mb-1">
-                        <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-black text-xs font-black flex-shrink-0">
+                      <div className="flex items-center gap-3 px-4 py-3 border border-[#E8E0D4] rounded-xl mb-1">
+                        <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-white text-xs font-black flex-shrink-0">
                           {user.name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase()}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-semibold text-white truncate">{user.name}</p>
-                          <p className="text-xs text-white/40 truncate">{user.email}</p>
+                          <p className="text-sm font-semibold text-[#1A1410] truncate">{user.name}</p>
+                          <p className="text-xs text-[#6B5D52] truncate">{user.email}</p>
                         </div>
                       </div>
                     </motion.div>
                     {user.role === 'admin' && (
                       <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (navItems.length + 1) * 0.05 }}>
                         <Link href="/admin">
-                          <span onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-aqua hover:bg-white/5 transition-all cursor-pointer border border-aqua/20 mb-1">
+                          <span onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-aqua hover:bg-[#F0E8DC] transition-all cursor-pointer border border-aqua/20 mb-1">
                             <Shield className="h-4 w-4" />
                             Admin Dashboard
                           </span>
@@ -240,7 +356,7 @@ import { useState, useEffect, useRef } from 'react'
                     )}
                     <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (navItems.length + 2) * 0.05 }}>
                       <button onClick={() => { setIsMobileMenuOpen(false); void logout().then(() => navigate('/')) }}
-                        className="flex items-center gap-2 w-full rounded-xl px-4 py-3 text-base font-medium text-white/70 hover:bg-white/5 hover:text-white transition-all">
+                        className="flex items-center gap-2 w-full rounded-xl px-4 py-3 text-base font-medium text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410] transition-all">
                         <LogOut className="h-4 w-4 text-red-400" />
                         Sign Out
                       </button>
@@ -249,7 +365,7 @@ import { useState, useEffect, useRef } from 'react'
                 ) : (
                   <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: navItems.length * 0.05 }}>
                     <Link href="/login">
-                      <span className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-white/70 hover:bg-white/5 hover:text-white transition-all cursor-pointer border border-white/10 mb-2">
+                      <span className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410] transition-all cursor-pointer border border-[#E8E0D4] mb-2">
                         <LogIn className="h-4 w-4 text-aqua" />
                         Sign In
                       </span>
@@ -258,7 +374,7 @@ import { useState, useEffect, useRef } from 'react'
                 )}
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (navItems.length + 3) * 0.05 }} className="pt-1">
                   <Link href="/book-demo">
-                    <span className="block gradient-bg text-black font-bold px-4 py-3 rounded-xl text-center cursor-pointer">Get Started →</span>
+                    <span className="block gradient-bg text-white font-bold px-4 py-3 rounded-xl text-center cursor-pointer">Get Started →</span>
                   </Link>
                 </motion.div>
               </div>

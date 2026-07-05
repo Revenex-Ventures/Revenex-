@@ -73,7 +73,7 @@ import { useState } from 'react'
       setForm(f => ({ ...f, [key]: e.target.value })); setErrors(er => ({ ...er, [key]: undefined }))
     }
     const inputClass = (err?: string) =>
-      `w-full rounded-xl border ${err ? 'border-red-500/50 bg-red-500/5' : 'border-white/10 bg-white/5'} pl-10 pr-4 py-3.5 text-white placeholder-white/25 outline-none focus:border-aqua/50 transition-all text-sm`
+      `w-full rounded-xl border ${err ? 'border-red-500/50 bg-red-500/5' : 'border-[#E8E0D4] bg-[#F0E8DC]'} pl-10 pr-4 py-3.5 text-[#1A1410] placeholder-white/25 outline-none focus:border-aqua/50 transition-all text-sm`
 
     if (done) return (
       <main className="min-h-screen flex items-center justify-center px-4">
@@ -81,9 +81,9 @@ import { useState } from 'react'
           <div className="w-20 h-20 gradient-bg rounded-3xl flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="h-10 w-10 text-black" />
           </div>
-          <h1 className="text-2xl font-black text-white mb-2">Welcome, {googleName.split(' ')[0]}!</h1>
-          <p className="text-white/50 text-sm mb-2">Your account has been created successfully.</p>
-          <p className="text-white/30 text-xs">Redirecting you home...</p>
+          <h1 className="text-2xl font-black text-[#1A1410] mb-2">Welcome, {googleName.split(' ')[0]}!</h1>
+          <p className="text-[#3D3128] text-sm mb-2">Your account has been created successfully.</p>
+          <p className="text-[#6B5D52] text-xs">Redirecting you home...</p>
         </motion.div>
       </main>
     )
@@ -94,7 +94,7 @@ import { useState } from 'react'
         <div className="absolute inset-0 hero-glow pointer-events-none" />
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-md">
           <Link href="/" className="flex justify-center mb-8">
-            <span className="text-2xl font-black"><span className="text-white">REVEN</span><span className="text-aqua">EX</span></span>
+            <span className="text-2xl font-black"><span className="text-[#1A1410]">REVEN</span><span className="text-aqua">EX</span></span>
           </Link>
           <div className="glass-card animated-border rounded-3xl overflow-hidden">
             <div className="h-1 w-full gradient-bg" />
@@ -103,8 +103,8 @@ import { useState } from 'react'
                 <div className="mx-auto mb-4 w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center">
                   <UserPlus className="h-7 w-7 text-black" />
                 </div>
-                <h1 className="text-2xl font-black text-white mb-1">Create Account</h1>
-                <p className="text-sm text-white/40">Join REVENEX — India's School ERP Platform</p>
+                <h1 className="text-2xl font-black text-[#1A1410] mb-1">Create Account</h1>
+                <p className="text-sm text-[#6B5D52]">Join REVENEX — India's School ERP Platform</p>
               </div>
               {(errors as { general?: string }).general && (
                 <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
@@ -115,8 +115,8 @@ import { useState } from 'react'
               )}
               <GoogleSignInButton mode="signup" onSuccess={handleGoogleSuccess} onError={(msg) => setErrors({ general: msg } as typeof errors)} />
               <div className="relative my-5">
-                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/8" /></div>
-                <div className="relative flex justify-center text-xs"><span className="px-3 bg-transparent text-white/25 font-medium">or sign up with email</span></div>
+                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[#E8E0D4]" /></div>
+                <div className="relative flex justify-center text-xs"><span className="px-3 bg-transparent text-[#6B5D52] font-medium">or sign up with email</span></div>
               </div>
               <form onSubmit={handleSubmit} className="space-y-4">
                 {[
@@ -126,9 +126,9 @@ import { useState } from 'react'
                   { key: 'school', label: 'School / Institution', icon: Building2, placeholder: 'Name of your institution', type: 'text', autoComplete: 'organization' },
                 ].map(({ key, label, icon: Icon, placeholder, type, autoComplete }) => (
                   <div key={key}>
-                    <label className="block text-sm font-medium text-white/60 mb-2">{label}</label>
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">{label}</label>
                     <div className="relative">
-                      <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/25" />
+                      <Icon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
                       <input type={type} placeholder={placeholder} required autoComplete={autoComplete}
                         value={form[key as keyof typeof form]} onChange={set(key as keyof typeof form)}
                         className={inputClass(errors[key as keyof typeof errors])} />
@@ -137,34 +137,34 @@ import { useState } from 'react'
                   </div>
                 ))}
                 <div>
-                  <label className="block text-sm font-medium text-white/60 mb-2">Password</label>
+                  <label className="block text-sm font-medium text-[#3D3128] mb-2">Password</label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/25" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
                     <input type={showPass ? 'text' : 'password'} placeholder="Min. 8 characters" required autoComplete="new-password" value={form.password}
                       onChange={e => { setForm(f => ({ ...f, password: e.target.value })); setErrors(er => ({ ...er, password: undefined })) }}
                       className={`${inputClass(errors.password)} pr-12`} />
-                    <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/60">
+                    <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B5D52] hover:text-[#3D3128]">
                       {showPass ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                   {strength && (
                     <div className="mt-2 flex items-center gap-2">
-                      <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+                      <div className="flex-1 h-1 bg-[#E8E0D4] rounded-full overflow-hidden">
                         <div className={`h-full rounded-full transition-all ${strength.color} ${strength.width}`} />
                       </div>
-                      <span className="text-xs text-white/40">{strength.label}</span>
+                      <span className="text-xs text-[#6B5D52]">{strength.label}</span>
                     </div>
                   )}
                   {errors.password && <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1"><AlertCircle className="h-3 w-3" />{errors.password}</p>}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-white/60 mb-2">Confirm Password</label>
+                  <label className="block text-sm font-medium text-[#3D3128] mb-2">Confirm Password</label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/25" />
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
                     <input type={showConfirm ? 'text' : 'password'} placeholder="Re-enter password" required autoComplete="new-password" value={form.confirm}
                       onChange={e => { setForm(f => ({ ...f, confirm: e.target.value })); setErrors(er => ({ ...er, confirm: undefined })) }}
                       className={`${inputClass(errors.confirm)} pr-12`} />
-                    <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/60">
+                    <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B5D52] hover:text-[#3D3128]">
                       {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
@@ -177,8 +177,8 @@ import { useState } from 'react'
                   ) : (<>Create Account<ArrowRight className="h-4 w-4" /></>)}
                 </motion.button>
               </form>
-              <div className="mt-6 pt-6 border-t border-white/5 text-center">
-                <p className="text-sm text-white/40">Already have an account?{' '}
+              <div className="mt-6 pt-6 border-t border-[#E8E0D4] text-center">
+                <p className="text-sm text-[#6B5D52]">Already have an account?{' '}
                   <Link href="/login"><span className="text-aqua font-semibold hover:underline cursor-pointer">Sign in</span></Link>
                 </p>
               </div>

@@ -37,10 +37,10 @@ function TiltCard({ children, className = '', style }: { children: React.ReactNo
 }
 
 const stats = [
-  { value: '2024', label: 'Founded', icon: Zap, color: '#00E5C3' },
-  { value: '8+', label: 'Modules Built', icon: BookOpen, color: '#7C4DFF' },
-  { value: '99.9%', label: 'Uptime Target', icon: Shield, color: '#3B82F6' },
-  { value: '48hr', label: 'Setup Time', icon: TrendingUp, color: '#10B981' },
+  { value: '2024', label: 'Founded', icon: Zap, color: '#7C3D0F' },
+  { value: '8+', label: 'Modules Built', icon: BookOpen, color: '#8B4513' },
+  { value: '99.9%', label: 'Uptime Target', icon: Shield, color: '#7C3D0F' },
+  { value: '48hr', label: 'Setup Time', icon: TrendingUp, color: '#166534' },
 ]
 
 const timeline = [
@@ -48,19 +48,19 @@ const timeline = [
     year: '2024',
     title: 'The Idea',
     desc: 'Three engineers noticed that Indian schools were still managing fee records in Excel and attendance in paper registers. The gap was clear: no ERP built truly for Indian classrooms.',
-    color: '#00E5C3',
+    color: '#7C3D0F',
   },
   {
     year: '2024',
     title: 'Building REVENEX',
     desc: 'Development began in earnest — a modern cloud-first ERP with bilingual support, Razorpay integration, and Gemini AI analytics. Built for the 1.5 million schools across India.',
-    color: '#7C4DFF',
+    color: '#8B4513',
   },
   {
     year: '2025',
     title: 'Going Live',
     desc: 'REVENEX enters the market with a full suite: student management, attendance, fee collection, parent communication, exam management, staff payroll, and AI-powered reporting.',
-    color: '#3B82F6',
+    color: '#7C3D0F',
   },
 ]
 
@@ -71,7 +71,7 @@ const coFounders = [
     img: rounakImg,
     desc: 'Product strategist and business leader. Drives REVENEX\'s vision of modernizing school administration across India.',
     linkedin: 'https://www.linkedin.com/in/rounaksute/',
-    color: '#00E5C3',
+    color: '#7C3D0F',
     tags: ['Product Vision', 'Business Strategy', 'Partnerships'],
   },
   {
@@ -80,16 +80,16 @@ const coFounders = [
     img: rohanImg,
     desc: 'Full-stack architect. Designed and built the REVENEX platform on Google Cloud with enterprise-grade reliability.',
     linkedin: 'https://www.linkedin.com/in/rohan-raundal/',
-    color: '#7C4DFF',
+    color: '#8B4513',
     tags: ['Full Stack', 'Cloud Architecture', 'AI/ML'],
   },
 ]
 
 const values = [
-  { icon: Users, title: 'Students First', desc: 'Every feature we build starts with: how does this help the student learn better?', color: '#00E5C3' },
-  { icon: Shield, title: 'Data Privacy', desc: 'Student data is sacred. We handle it with bank-level encryption and strict access controls.', color: '#7C4DFF' },
-  { icon: Globe2, title: 'India First', desc: 'Built for Indian boards, Indian languages, Indian payment rails. Not a Western product adapted for India.', color: '#3B82F6' },
-  { icon: CheckCircle2, title: 'Reliability', desc: '99.9% uptime target, 2-hour support SLA. When schools depend on you, downtime isn\'t an option.', color: '#10B981' },
+  { icon: Users, title: 'Students First', desc: 'Every feature we build starts with: how does this help the student learn better?', color: '#7C3D0F' },
+  { icon: Shield, title: 'Data Privacy', desc: 'Student data is sacred. We handle it with bank-level encryption and strict access controls.', color: '#8B4513' },
+  { icon: Globe2, title: 'India First', desc: 'Built for Indian boards, Indian languages, Indian payment rails. Not a Western product adapted for India.', color: '#7C3D0F' },
+  { icon: CheckCircle2, title: 'Reliability', desc: '99.9% uptime target, 2-hour support SLA. When schools depend on you, downtime isn\'t an option.', color: '#166534' },
 ]
 
 function TimelineItem({ item, i, total }: { item: typeof timeline[0]; i: number; total: number }) {
@@ -110,18 +110,18 @@ function TimelineItem({ item, i, total }: { item: typeof timeline[0]; i: number;
           <div className="w-1.5 h-1.5 rounded-full" style={{ background: item.color }} />
           <span className="text-xs font-black" style={{ color: item.color }}>{item.year}</span>
         </div>
-        <h3 className="text-xl font-black text-white mb-3">{item.title}</h3>
-        <p className="text-white/50 text-sm leading-relaxed">{item.desc}</p>
+        <h3 className="text-xl font-black text-[#1A1410] mb-3">{item.title}</h3>
+        <p className="text-[#3D3128] text-sm leading-relaxed">{item.desc}</p>
       </div>
 
       {/* Center column — line + dot */}
       <div className="hidden lg:flex flex-col items-center self-stretch lg:[direction:ltr]">
-        <div className="flex-1 w-px" style={{ background: i === 0 ? 'transparent' : 'rgba(255,255,255,0.06)' }} />
+        <div className="flex-1 w-px" style={{ background: i === 0 ? 'transparent' : 'rgba(139,69,19,0.15)' }} />
         <div className="w-5 h-5 rounded-full shrink-0 flex items-center justify-center"
           style={{ background: item.color, boxShadow: `0 0 16px ${item.color}60` }}>
-          <div className="w-2 h-2 rounded-full bg-black" />
+          <div className="w-2 h-2 rounded-full bg-[#1A1410]" />
         </div>
-        <div className="flex-1 w-px" style={{ background: i === total - 1 ? 'transparent' : 'rgba(255,255,255,0.06)' }} />
+        <div className="flex-1 w-px" style={{ background: i === total - 1 ? 'transparent' : 'rgba(139,69,19,0.15)' }} />
       </div>
 
       {/* Empty side on desktop */}
@@ -140,28 +140,28 @@ export default function About() {
       {/* ── HERO ── */}
       <section className="relative overflow-hidden pt-36 pb-20">
         <div className="absolute inset-0 hero-glow opacity-60 pointer-events-none" />
-        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[#7C4DFF]/5 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[#8B4513]/5 rounded-full blur-[140px] pointer-events-none" />
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
-          style={{ backgroundImage: 'radial-gradient(circle, rgba(0,229,195,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+          style={{ backgroundImage: 'radial-gradient(circle, rgba(124,61,15,0.5) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-6">
               <div className="w-1.5 h-1.5 rounded-full bg-aqua animate-pulse" />
-              <span className="text-xs font-black text-white/50 uppercase tracking-widest">About REVENEX</span>
+              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">About REVENEX</span>
             </div>
-            <h1 className="text-5xl font-black text-white sm:text-6xl lg:text-7xl mb-5 leading-none">
+            <h1 className="text-5xl font-black text-[#1A1410] sm:text-6xl lg:text-7xl mb-5 leading-none">
               {language === 'en' ? (
                 <>Modernising <span className="gradient-text">India's</span><br />School Management</>
               ) : (
                 <><span className="gradient-text">भारत</span> की शिक्षा को<br />बेहतर बना रहे हैं</>
               )}
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-white/40 leading-relaxed mb-10">
+            <p className="mx-auto max-w-2xl text-lg text-[#6B5D52] leading-relaxed mb-10">
               REVENEX VENTURES PRIVATE LIMITED is building the operating system for India's 1.5 million schools — cloud-native, bilingual, and live in 48 hours.
             </p>
             <div className="flex items-center justify-center gap-6 flex-wrap">
               {['Pune, India', 'Est. 2024', 'Cloud-First ERP'].map((tag) => (
-                <div key={tag} className="flex items-center gap-1.5 text-sm text-white/35">
+                <div key={tag} className="flex items-center gap-1.5 text-sm text-[#6B5D52]">
                   {tag === 'Pune, India' ? <MapPin className="h-3.5 w-3.5 text-aqua" /> : <CheckCircle2 className="h-3.5 w-3.5 text-aqua" />}
                   {tag}
                 </div>
@@ -172,7 +172,7 @@ export default function About() {
       </section>
 
       {/* ── STATS ── */}
-      <section className="py-12 border-y border-white/5">
+      <section className="py-12 border-y border-[#E8E0D4]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
             {stats.map((s, i) => (
@@ -189,7 +189,7 @@ export default function About() {
                     <s.icon className="h-5 w-5" style={{ color: s.color }} />
                   </div>
                   <div className="text-3xl font-black mb-1" style={{ color: s.color }}>{s.value}</div>
-                  <div className="text-sm text-white/40">{s.label}</div>
+                  <div className="text-sm text-[#6B5D52]">{s.label}</div>
                 </TiltCard>
               </motion.div>
             ))}
@@ -202,10 +202,10 @@ export default function About() {
         <div className="absolute inset-0 section-glow-left pointer-events-none" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-4">
-              <span className="text-xs font-black text-white/50 uppercase tracking-widest">Purpose</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-4">
+              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">Purpose</span>
             </div>
-            <h2 className="text-4xl font-black text-white sm:text-5xl">Mission & Vision</h2>
+            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl">Mission & Vision</h2>
           </motion.div>
 
           <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
@@ -213,12 +213,12 @@ export default function About() {
               {
                 icon: Target, title: language === 'en' ? t('about.mission.title') : 'हमारा मिशन',
                 desc: language === 'en' ? t('about.mission.desc') : 'भारत के हर स्कूल को आधुनिक ERP से सशक्त बनाना।',
-                color: '#00E5C3', bg: 'bg-aqua/10', detail: 'Democratize enterprise-grade school management tools for every Indian institution — from elite city schools to rural government schools.',
+                color: '#7C3D0F', bg: 'bg-aqua/10', detail: 'Democratize enterprise-grade school management tools for every Indian institution — from elite city schools to rural government schools.',
               },
               {
                 icon: Eye, title: language === 'en' ? t('about.vision.title') : 'हमारा विजन',
                 desc: language === 'en' ? t('about.vision.desc') : 'हर छात्र के लिए बेहतर शिक्षा परिणाम।',
-                color: '#7C4DFF', bg: 'bg-purple-400/10', detail: 'A future where every Indian student\'s academic journey is tracked, supported, and optimized by intelligent software — enabling better outcomes for 250M+ learners.',
+                color: '#8B4513', bg: 'bg-[#F0E8DC]', detail: 'A future where every Indian student\'s academic journey is tracked, supported, and optimized by intelligent software — enabling better outcomes for 250M+ learners.',
               },
             ].map((item, i) => (
               <motion.div key={typeof item.title === 'string' ? item.title : i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.12 }}>
@@ -226,9 +226,9 @@ export default function About() {
                   <div className={`inline-flex rounded-2xl p-4 mb-5 ${item.bg}`}>
                     <item.icon className="h-7 w-7" style={{ color: item.color }} />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
-                  <p className="text-white/50 leading-relaxed mb-4">{item.desc}</p>
-                  <p className="text-white/30 text-sm leading-relaxed border-t border-white/5 pt-4">{item.detail}</p>
+                  <h3 className="text-2xl font-bold text-[#1A1410] mb-3">{item.title}</h3>
+                  <p className="text-[#3D3128] leading-relaxed mb-4">{item.desc}</p>
+                  <p className="text-[#6B5D52] text-sm leading-relaxed border-t border-[#E8E0D4] pt-4">{item.detail}</p>
                 </TiltCard>
               </motion.div>
             ))}
@@ -237,18 +237,18 @@ export default function About() {
       </section>
 
       {/* ── OUR JOURNEY (timeline) ── */}
-      <section className="py-20 lg:py-24 relative border-t border-white/5">
-        <div className="absolute inset-0 bg-white/[0.01]" />
+      <section className="py-20 lg:py-24 relative border-t border-[#E8E0D4]">
+        <div className="absolute inset-0 bg-transparent" />
         <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-4">
-              <span className="text-xs font-black text-white/50 uppercase tracking-widest">Our Journey</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-4">
+              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">Our Journey</span>
             </div>
-            <h2 className="text-4xl font-black text-white sm:text-5xl">From Idea to Platform</h2>
+            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl">From Idea to Platform</h2>
           </motion.div>
           <div className="space-y-8">
             {timeline.map((item, i) => (
-              <TimelineItem key={item.year} item={item} i={i} total={timeline.length} />
+              <TimelineItem key={`${item.year}-${i}`} item={item} i={i} total={timeline.length} />
             ))}
           </div>
         </div>
@@ -259,20 +259,20 @@ export default function About() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <TiltCard className="glass-card animated-border rounded-3xl p-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-6">
-                <span className="text-xs font-black text-white/50 uppercase tracking-widest">Why We Exist</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-6">
+                <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">Why We Exist</span>
               </div>
-              <h2 className="text-3xl font-black text-white mb-6">
+              <h2 className="text-3xl font-black text-[#1A1410] mb-6">
                 {language === 'en' ? "The Problem We're Solving" : 'हम किस समस्या को हल कर रहे हैं'}
               </h2>
-              <div className="space-y-4 text-white/50 leading-relaxed">
+              <div className="space-y-4 text-[#3D3128] leading-relaxed">
                 <p>
                   Indian schools were running on WhatsApp groups, paper registers, and broken Excel sheets. Fee collection was manual. Attendance was unreliable. Parents had zero visibility. Principals couldn't see real data.
                 </p>
                 <p>
                   Existing ERP solutions were either too expensive (₹5–20 lakhs for implementation), too foreign (built for Western academic systems), or too complex (requiring dedicated IT staff). Tier-2 and tier-3 city schools couldn't access them at all.
                 </p>
-                <p className="text-white/70 font-semibold">
+                <p className="text-[#1A1410] font-semibold">
                   REVENEX was built to fix this. Modern, affordable, India-first — and live in 48 hours.
                 </p>
               </div>
@@ -282,14 +282,14 @@ export default function About() {
       </section>
 
       {/* ── CORE VALUES ── */}
-      <section className="py-20 lg:py-24 border-t border-white/5 relative">
+      <section className="py-20 lg:py-24 border-t border-[#E8E0D4] relative">
         <div className="absolute inset-0 section-glow-right pointer-events-none" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-4">
-              <span className="text-xs font-black text-white/50 uppercase tracking-widest">Values</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-4">
+              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">Values</span>
             </div>
-            <h2 className="text-4xl font-black text-white sm:text-5xl">What We Stand For</h2>
+            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl">What We Stand For</h2>
           </motion.div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {values.map((v, i) => (
@@ -299,8 +299,8 @@ export default function About() {
                     style={{ background: `${v.color}14`, border: `1px solid ${v.color}28` }}>
                     <v.icon className="h-5 w-5" style={{ color: v.color }} />
                   </div>
-                  <h3 className="text-base font-bold text-white mb-2">{v.title}</h3>
-                  <p className="text-sm text-white/40 leading-relaxed">{v.desc}</p>
+                  <h3 className="text-base font-bold text-[#1A1410] mb-2">{v.title}</h3>
+                  <p className="text-sm text-[#6B5D52] leading-relaxed">{v.desc}</p>
                 </TiltCard>
               </motion.div>
             ))}
@@ -309,15 +309,15 @@ export default function About() {
       </section>
 
       {/* ── CO-FOUNDERS ── */}
-      <section className="py-20 lg:py-24 relative border-t border-white/5">
-        <div className="absolute inset-0 bg-white/[0.008]" />
+      <section className="py-20 lg:py-24 relative border-t border-[#E8E0D4]">
+        <div className="absolute inset-0 bg-transparent" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-4">
-              <span className="text-xs font-black text-white/50 uppercase tracking-widest">Leadership</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-4">
+              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">Leadership</span>
             </div>
-            <h2 className="text-4xl font-black text-white mb-2">{t('founders.title')}</h2>
-            <p className="text-white/40">{t('founders.subtitle')}</p>
+            <h2 className="text-4xl font-black text-[#1A1410] mb-2">{t('founders.title')}</h2>
+            <p className="text-[#6B5D52]">{t('founders.subtitle')}</p>
           </motion.div>
 
           <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
@@ -333,11 +333,11 @@ export default function About() {
                         style={{ background: `radial-gradient(circle at center, ${founder.color} 0%, transparent 70%)` }} />
                     </div>
                     <div>
-                      <h3 className="text-lg font-black text-white mb-0.5">{founder.name}</h3>
+                      <h3 className="text-lg font-black text-[#1A1410] mb-0.5">{founder.name}</h3>
                       <p className="text-sm font-semibold" style={{ color: founder.color }}>{founder.role}</p>
                     </div>
                   </div>
-                  <p className="text-white/45 text-sm leading-relaxed mb-5">{founder.desc}</p>
+                  <p className="text-[#3D3128] text-sm leading-relaxed mb-5">{founder.desc}</p>
                   <div className="flex flex-wrap gap-2 mb-6">
                     {founder.tags.map((tag) => (
                       <span key={tag} className="text-xs px-2.5 py-1 rounded-lg font-medium"
@@ -362,20 +362,20 @@ export default function About() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="py-20 relative overflow-hidden border-t border-white/5">
+      <section className="py-20 relative overflow-hidden border-t border-[#E8E0D4]">
         <div className="absolute inset-0 hero-glow opacity-40 pointer-events-none" />
         <div className="relative mx-auto max-w-4xl px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-4xl font-black text-white sm:text-5xl mb-6">{t('cta.title')}</h2>
-            <p className="text-white/50 mb-8 text-lg">{t('cta.subtitle')}</p>
+            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-6">{t('cta.title')}</h2>
+            <p className="text-[#3D3128] mb-8 text-lg">{t('cta.subtitle')}</p>
             <div className="flex gap-4 justify-center flex-wrap">
               <Link href="/book-demo">
-                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 gradient-bg text-black font-bold px-8 py-4 rounded-2xl cursor-pointer">
+                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl cursor-pointer">
                   {t('cta.demo')} <ArrowRight className="h-4 w-4" />
                 </motion.span>
               </Link>
               <Link href="/contact">
-                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 border border-white/20 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-white/5 cursor-pointer">
+                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-4 rounded-2xl hover:bg-[#F0E8DC] cursor-pointer">
                   {t('cta.contact')}
                 </motion.span>
               </Link>

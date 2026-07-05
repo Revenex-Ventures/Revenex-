@@ -41,11 +41,11 @@ export default function Contact() {
         <div className="absolute inset-0 hero-glow opacity-50 pointer-events-none" />
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 mb-6">
-              <span className="text-xs font-semibold text-white/50 uppercase tracking-widest">Contact</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-6">
+              <span className="text-xs font-semibold text-[#3D3128] uppercase tracking-widest">Contact</span>
             </div>
-            <h1 className="text-5xl font-black text-white sm:text-6xl lg:text-7xl mb-6">{t('contact.title')}</h1>
-            <p className="mx-auto max-w-2xl text-lg text-white/40">{t('contact.subtitle')}</p>
+            <h1 className="text-5xl font-black text-[#1A1410] sm:text-6xl lg:text-7xl mb-6">{t('contact.title')}</h1>
+            <p className="mx-auto max-w-2xl text-lg text-[#6B5D52]">{t('contact.subtitle')}</p>
           </motion.div>
         </div>
       </section>
@@ -60,10 +60,10 @@ export default function Contact() {
               viewport={{ once: true }}
               className="space-y-6"
             >
-              <h2 className="text-3xl font-black text-white">
+              <h2 className="text-3xl font-black text-[#1A1410]">
                 Let's talk
               </h2>
-              <p className="text-white/40 leading-relaxed">
+              <p className="text-[#6B5D52] leading-relaxed">
                 Have questions about REVENEX? We're here to help. Reach out and our team will respond within 2 hours on business days.
               </p>
 
@@ -85,15 +85,15 @@ export default function Contact() {
                     <info.icon className="h-5 w-5 text-aqua" />
                   </div>
                   <div>
-                    <div className="text-xs text-white/30 mb-0.5">{info.label}</div>
-                    <div className="font-semibold text-white group-hover:text-aqua transition-colors">{info.value}</div>
+                    <div className="text-xs text-[#6B5D52] mb-0.5">{info.label}</div>
+                    <div className="font-semibold text-[#1A1410] group-hover:text-aqua transition-colors">{info.value}</div>
                   </div>
                 </motion.a>
               ))}
 
-              <div className="glass-card rounded-2xl p-6 border border-white/5">
-                <h3 className="font-bold text-white mb-2">Business Hours</h3>
-                <div className="space-y-1 text-sm text-white/40">
+              <div className="glass-card rounded-2xl p-6 border border-[#E8E0D4]">
+                <h3 className="font-bold text-[#1A1410] mb-2">Business Hours</h3>
+                <div className="space-y-1 text-sm text-[#6B5D52]">
                   <p>Monday – Friday: 9:00 AM – 7:00 PM IST</p>
                   <p>Saturday: 10:00 AM – 4:00 PM IST</p>
                   <p>Sunday: Closed</p>
@@ -116,8 +116,8 @@ export default function Contact() {
                   <div className="mx-auto mb-6 w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center">
                     <CheckCircle2 className="h-8 w-8 text-black" />
                   </div>
-                  <h3 className="text-2xl font-black text-white mb-3">Message Sent!</h3>
-                  <p className="text-white/40">Thank you for reaching out. Our team will get back to you within 2 business hours.</p>
+                  <h3 className="text-2xl font-black text-[#1A1410] mb-3">Message Sent!</h3>
+                  <p className="text-[#6B5D52]">Thank you for reaching out. Our team will get back to you within 2 business hours.</p>
                   <button
                     onClick={() => setSubmitted(false)}
                     className="mt-6 text-sm text-aqua hover:underline"
@@ -134,26 +134,26 @@ export default function Contact() {
                     { key: 'subject', label: 'Subject', type: 'text', placeholder: 'e.g., Pricing enquiry, Feature question…', required: false },
                   ].map((field) => (
                     <div key={field.key}>
-                      <label className="block text-sm font-medium text-white/60 mb-2">{field.label}</label>
+                      <label className="block text-sm font-medium text-[#3D3128] mb-2">{field.label}</label>
                       <input
                         type={field.type}
                         placeholder={field.placeholder}
                         required={field.required}
                         value={(form as any)[field.key]}
                         onChange={(e) => setForm({ ...form, [field.key]: e.target.value })}
-                        className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/20 outline-none focus:border-aqua/40 focus:bg-white/8 transition-all text-sm"
+                        className="w-full rounded-xl border border-[#E8E0D4] bg-[#F0E8DC] px-4 py-3 text-[#1A1410] placeholder-[#6B5D52] outline-none focus:border-aqua/40 focus:bg-[#F0E8DC] transition-all text-sm"
                       />
                     </div>
                   ))}
                   <div>
-                    <label className="block text-sm font-medium text-white/60 mb-2">{t('contact.form.message')}</label>
+                    <label className="block text-sm font-medium text-[#3D3128] mb-2">{t('contact.form.message')}</label>
                     <textarea
                       placeholder="Tell us how we can help..."
                       rows={4}
                       required
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder-white/20 outline-none focus:border-aqua/40 transition-all text-sm resize-none"
+                      className="w-full rounded-xl border border-[#E8E0D4] bg-[#F0E8DC] px-4 py-3 text-[#1A1410] placeholder-[#6B5D52] outline-none focus:border-aqua/40 transition-all text-sm resize-none"
                     />
                   </div>
                   {error && (

@@ -7,7 +7,7 @@ import {
   BarChart3, Shield, Cpu, CheckCircle2, Zap, Cloud, Sparkles,
   GraduationCap, TrendingUp, Lock, Activity, Server,
   MessageSquare, Award, Star, Send, Globe2, Linkedin,
-  Mail, Phone, MapPin
+  Mail, Phone, MapPin, Building2
 } from 'lucide-react'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
@@ -23,8 +23,8 @@ const rohanNewImg = '/Rohan.jpg'
 function SectionBadge({ label }: { label: string }) {
   return (
     <div className="flex justify-center mb-5">
-      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5">
-        <span className="text-[11px] font-black text-white/50 uppercase tracking-widest">{label}</span>
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC]">
+        <span className="text-[11px] font-black text-[#3D3128] uppercase tracking-widest">{label}</span>
       </div>
     </div>
   )
@@ -66,14 +66,14 @@ function TiltCard({ children, className = '', style }: { children: React.ReactNo
 
 /* ─── Features ─── */
 const features = [
-  { icon: Users, title: 'Student Management', desc: 'Manage student records from admission to graduation.', color: 'text-blue-400', bg: 'bg-blue-400/10', slug: 'student-management' },
-  { icon: Calendar, title: 'Attendance Tracking', desc: 'Automate attendance and send SMS alerts to parents.', color: 'text-green-400', bg: 'bg-green-400/10', slug: 'attendance' },
-  { icon: CreditCard, title: 'Fee Management', desc: 'Collect fees online, issue receipts, and integrate with Razorpay.', color: 'text-yellow-400', bg: 'bg-yellow-400/10', slug: 'fees' },
-  { icon: Bell, title: 'Parent Communication', desc: 'Send SMS, WhatsApp, and app notifications to parents.', color: 'text-orange-400', bg: 'bg-orange-400/10', slug: 'parent-communication' },
-  { icon: BookOpen, title: 'Exam & Results', desc: 'Run exams, grade work, and share report cards.', color: 'text-purple-400', bg: 'bg-purple-400/10', slug: 'exam-results' },
-  { icon: BarChart3, title: 'AI Analytics', desc: 'Simple dashboards and insights for principals.', color: 'text-pink-400', bg: 'bg-pink-400/10', slug: 'ai-analytics' },
-  { icon: Users, title: 'Staff Management', desc: 'Manage payroll, leaves, and staff performance.', color: 'text-cyan-400', bg: 'bg-cyan-400/10', slug: 'staff-management' },
-  { icon: Shield, title: 'Security & Access', desc: 'Role-based access and strong data protection.', color: 'text-red-400', bg: 'bg-red-400/10', slug: 'security' },
+  { icon: Users, title: 'Student Management', desc: 'Manage student records from admission to graduation.', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', slug: 'student-management' },
+  { icon: Calendar, title: 'Attendance Tracking', desc: 'Automate attendance and send SMS alerts to parents.', color: 'text-green-700', bg: 'bg-green-700/10', slug: 'attendance' },
+  { icon: CreditCard, title: 'Fee Management', desc: 'Collect fees online, issue receipts, and integrate with Razorpay.', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', slug: 'fees' },
+  { icon: Bell, title: 'Parent Communication', desc: 'Send SMS, WhatsApp, and app notifications to parents.', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', slug: 'parent-communication' },
+  { icon: BookOpen, title: 'Exam & Results', desc: 'Run exams, grade work, and share report cards.', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', slug: 'exam-results' },
+  { icon: BarChart3, title: 'AI Analytics', desc: 'Simple dashboards and insights for principals.', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', slug: 'ai-analytics' },
+  { icon: Users, title: 'Staff Management', desc: 'Manage payroll, leaves, and staff performance.', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', slug: 'staff-management' },
+  { icon: Shield, title: 'Security & Access', desc: 'Role-based access and strong data protection.', color: 'text-green-700', bg: 'bg-green-700/10', slug: 'security' },
 ]
 
 /* ─── How It Works steps ─── */
@@ -85,9 +85,9 @@ const howItWorks = [
     descEn: 'Tell us about your institution and needs.',
     detailEn: 'We schedule a short call to understand your requirements.',
     tags: ['Free Consultation', 'No Commitment', 'Same-day Response'],
-    color: '#00E5C3',
-    glow: 'rgba(0,229,195,0.22)',
-    bg: 'rgba(0,229,195,0.09)',
+    color: '#8B4513',
+    glow: 'rgba(139, 69, 19,0.22)',
+    bg: 'rgba(139, 69, 19,0.09)',
   },
   {
     step: '02',
@@ -96,9 +96,9 @@ const howItWorks = [
     descEn: 'We set up the platform to match your processes and rules.',
     detailEn: 'We migrate data and apply your branding.',
     tags: ['Zero Data Loss', 'Custom Branding', '48hr Turnaround'],
-    color: '#7C4DFF',
-    glow: 'rgba(124,77,255,0.22)',
-    bg: 'rgba(124,77,255,0.09)',
+    color: '#7C3D0F',
+    glow: 'rgba(124, 61, 15,0.22)',
+    bg: 'rgba(124, 61, 15,0.09)',
   },
   {
     step: '03',
@@ -107,9 +107,9 @@ const howItWorks = [
     descEn: 'We train your staff and provide clear guides.',
     detailEn: 'Live sessions and support until your team is ready.',
     tags: ['Role-Based Access', 'Live Training', 'Video Guides'],
-    color: '#3B82F6',
-    glow: 'rgba(59,130,246,0.22)',
-    bg: 'rgba(59,130,246,0.09)',
+    color: '#166534',
+    glow: 'rgba(22, 101, 52,0.22)',
+    bg: 'rgba(22, 101, 52,0.09)',
   },
   {
     step: '04',
@@ -118,9 +118,9 @@ const howItWorks = [
     descEn: 'We launch the system and provide ongoing support.',
     detailEn: 'Ongoing help, regular updates, and monthly reports.',
     tags: ['2hr Support SLA', '99.9% Uptime', 'Free Updates'],
-    color: '#10B981',
-    glow: 'rgba(16,185,129,0.22)',
-    bg: 'rgba(16,185,129,0.09)',
+    color: '#166534',
+    glow: 'rgba(22, 101, 52,0.22)',
+    bg: 'rgba(22, 101, 52,0.09)',
   },
 ]
 
@@ -200,10 +200,10 @@ function PartnersMarquee() {
         {doubled.map((p, i) => (
           <div
             key={`${p.name}-${i}`}
-            className="flex items-center gap-2.5 shrink-0 px-5 py-3 rounded-2xl bg-white border border-white/90 hover:shadow-lg transition-all"
+            className="flex items-center gap-2.5 shrink-0 px-5 py-3 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
           >
             <p.Svg />
-            <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{p.name}</span>
+            <span className="text-sm font-semibold text-[#3D3128] whitespace-nowrap">{p.name}</span>
           </div>
         ))}
       </div>
@@ -271,9 +271,9 @@ function HowStep({ step, isLast }: { step: typeof howItWorks[0]; isLast: boolean
           </span>
         </div>
 
-        <h3 className="text-xl lg:text-2xl font-black text-white mb-3 leading-snug">{step.titleEn}</h3>
-        <p className="text-white/60 leading-relaxed text-[15px] mb-2">{step.descEn}</p>
-        <p className="text-white/35 text-sm leading-relaxed mb-5">{step.detailEn}</p>
+        <h3 className="text-xl lg:text-2xl font-black text-[#1A1410] mb-3 leading-snug">{step.titleEn}</h3>
+        <p className="text-[#3D3128] leading-relaxed text-[15px] mb-2">{step.descEn}</p>
+        <p className="text-[#6B5D52] text-sm leading-relaxed mb-5">{step.detailEn}</p>
 
         <div className="flex flex-wrap gap-2">
           {step.tags.map((tag) => (
@@ -298,9 +298,9 @@ function HowStep({ step, isLast }: { step: typeof howItWorks[0]; isLast: boolean
 /* ─── How It Works vertical timeline (MessPass-style) ─── */
 function HowItWorksSection({ language }: { language: string }) {
   return (
-    <section className="py-20 lg:py-28 relative overflow-hidden border-t border-white/5" id="how-it-works">
-      <div className="absolute inset-0 bg-white/[0.012]" />
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#7C4DFF]/4 rounded-full blur-[160px] pointer-events-none" />
+    <section className="py-20 lg:py-28 relative overflow-hidden border-t border-[#E8E0D4]" id="how-it-works">
+      <div className="absolute inset-0 bg-[#F0E8DC]" />
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#7C3D0F]/4 rounded-full blur-[160px] pointer-events-none" />
       <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
 
         {/* Header */}
@@ -311,12 +311,12 @@ function HowItWorksSection({ language }: { language: string }) {
           className="mb-16 text-center"
         >
           <SectionBadge label="How It Works" />
-          <h2 className="text-4xl font-black text-white sm:text-5xl lg:text-[3.2rem] leading-[1.05] mb-4">
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl lg:text-[3.2rem] leading-[1.05] mb-4">
             {language === 'en'
               ? <>From signup to live —<br /><span className="gradient-text">in 4 simple steps.</span></>
               : <>4 आसान चरणों में<br /><span className="gradient-text">शुरू करें।</span></>}
           </h2>
-          <p className="text-white/45 text-[15px] leading-relaxed max-w-xl mx-auto">
+          <p className="text-[#6B5D52] text-[15px] leading-relaxed max-w-xl mx-auto">
             {language === 'en'
               ? 'No long contracts. No complicated setup. No IT team needed. Just contact us and we handle everything — from configuration to training to go-live.'
               : 'कोई लंबे अनुबंध नहीं। कोई जटिल सेटअप नहीं। बस हमसे संपर्क करें।'}
@@ -337,16 +337,16 @@ function HowItWorksSection({ language }: { language: string }) {
 /* ─── Security section (inline) ─── */
 function SecuritySection({ language }: { language: string }) {
   const features = [
-    { icon: Lock, title: '256-bit AES Encryption', desc: 'All data encrypted at rest and in transit.', color: 'text-aqua' },
-    { icon: Server, title: 'Google Cloud Hosting', desc: 'Redundant infrastructure, 99.9% uptime target.', color: 'text-blue-400' },
-    { icon: Shield, title: 'Role-Based Access', desc: 'Principals, teachers, parents — each gets exactly what they need.', color: 'text-purple-400' },
-    { icon: Activity, title: '24/7 Monitoring', desc: 'Automated alerts and continuous security scanning.', color: 'text-green-400' },
-    { icon: CheckCircle2, title: 'GDPR Compliant', desc: 'Student data handled with full regulatory compliance.', color: 'text-yellow-400' },
-    { icon: Zap, title: '2-Hour Support SLA', desc: 'Critical issues resolved fast. Real humans, no bots.', color: 'text-orange-400' },
+    { icon: Lock, title: '256-bit AES Encryption', desc: 'All data encrypted at rest and in transit.', color: 'text-[#7C3D0F]' },
+    { icon: Server, title: 'Google Cloud Hosting', desc: 'Redundant infrastructure, 99.9% uptime target.', color: 'text-[#8B4513]' },
+    { icon: Shield, title: 'Role-Based Access', desc: 'Principals, teachers, parents — each gets exactly what they need.', color: 'text-[#7C3D0F]' },
+    { icon: Activity, title: '24/7 Monitoring', desc: 'Automated alerts and continuous security scanning.', color: 'text-green-700' },
+    { icon: CheckCircle2, title: 'GDPR Compliant', desc: 'Student data handled with full regulatory compliance.', color: 'text-[#8B4513]' },
+    { icon: Zap, title: '2-Hour Support SLA', desc: 'Critical issues resolved fast. Real humans, no bots.', color: 'text-[#7C3D0F]' },
   ]
 
   return (
-    <section id="security" className="py-20 lg:py-28 relative border-t border-white/5 scroll-mt-20">
+    <section id="security" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
       <div className="absolute inset-0 section-glow-left pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -356,10 +356,10 @@ function SecuritySection({ language }: { language: string }) {
           className="text-center mb-14"
         >
           <SectionBadge label="Security" />
-          <h2 className="text-4xl font-black text-white sm:text-5xl mb-4">
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">
             {language === 'en' ? 'Built for Trust' : 'विश्वास के लिए निर्मित'}
           </h2>
-          <p className="text-white/40 text-lg max-w-2xl mx-auto">
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">
             {language === 'en'
               ? 'Your students\' data is your responsibility. We treat it like ours.'
               : 'आपके छात्रों का डेटा आपकी जिम्मेदारी है। हम इसे अपना मानते हैं।'}
@@ -374,251 +374,17 @@ function SecuritySection({ language }: { language: string }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.07 }}
-              className="glass-card animated-border rounded-2xl p-6 flex items-start gap-4 group hover:border-white/10 transition-all"
+              className="glass-card animated-border rounded-2xl p-6 flex items-start gap-4 group hover:border-[#E8E0D4] transition-all"
             >
-              <div className="w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-white/[0.08] transition-colors">
+              <div className="w-11 h-11 rounded-xl bg-[#F0E8DC] border border-[#E8E0D4] flex items-center justify-center shrink-0 group-hover:bg-[#F0E8DC] transition-colors">
                 <f.icon className={`h-5 w-5 ${f.color}`} />
               </div>
               <div>
-                <h3 className="font-bold text-white mb-1 text-[15px]">{f.title}</h3>
-                <p className="text-sm text-white/40 leading-relaxed">{f.desc}</p>
+                <h3 className="font-bold text-[#1A1410] mb-1 text-[15px]">{f.title}</h3>
+                <p className="text-sm text-[#6B5D52] leading-relaxed">{f.desc}</p>
               </div>
             </motion.div>
           ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ─── Tech logo icons (chip size and tile size) ─── */
-function TechChipIcon({ name, big = false }: { name: string; big?: boolean }) {
-  const s = big ? 'w-5 h-5 shrink-0' : 'w-3.5 h-3.5 shrink-0'
-  const bs = big ? 'w-5 h-5 rounded-[4px] text-[8px]' : 'w-3.5 h-3.5 rounded-[3px] text-[7px]'
-  if (name === 'React') return (
-    <svg viewBox="0 0 24 24" className={s} fill="none" stroke="#61DAFB" strokeWidth="1.6">
-      <circle cx="12" cy="12" r="2.2" fill="#61DAFB" stroke="none"/>
-      <ellipse cx="12" cy="12" rx="10" ry="3.8" />
-      <ellipse cx="12" cy="12" rx="10" ry="3.8" transform="rotate(60 12 12)"/>
-      <ellipse cx="12" cy="12" rx="10" ry="3.8" transform="rotate(120 12 12)"/>
-    </svg>
-  )
-  if (name === 'TypeScript') return (
-    <span className={`inline-flex items-center justify-center font-black text-white shrink-0 ${bs}`} style={{ background: '#3178C6' }}>TS</span>
-  )
-  if (name === 'Tailwind CSS') return (
-    <svg viewBox="0 0 24 24" className={s} fill="#06B6D4">
-      <path d="M12 6c-2 0-3.33 1-4 3 .67-1 1.33-1.33 2.33-1.17.51.09.87.43 1.27.83C12.23 9.37 13.11 10.25 15 10.25c2 0 3.33-1 4-3-.67 1-1.33 1.33-2.33 1.17-.51-.09-.87-.43-1.27-.83C14.77 6.88 13.89 6 12 6zm-4 5c-2 0-3.33 1-4 3 .67-1 1.33-1.33 2.33-1.17.51.09.87.43 1.27.83C8.23 14.37 9.11 15.25 11 15.25c2 0 3.33-1 4-3-.67 1-1.33 1.33-2.33 1.17-.51-.09-.87-.43-1.27-.83C10.77 11.88 9.89 11 8 11z"/>
-    </svg>
-  )
-  if (name === 'Framer Motion') return (
-    <svg viewBox="0 0 24 24" className={s} fill="#BB4DFF">
-      <path d="M4 3h16v6H4zM4 9h8l8 6H4zM4 15l8 6H4z"/>
-    </svg>
-  )
-  if (name === 'Node.js') return (
-    <svg viewBox="0 0 24 24" className={s} fill="#68A063">
-      <path d="M12 2L3 7v10l9 5 9-5V7L12 2zm0 2.3L19.5 8v8L12 19.7 4.5 16V8L12 4.3z"/>
-    </svg>
-  )
-  if (name === 'Express') return (
-    <span className={`inline-flex items-center justify-center font-black text-black shrink-0 ${bs}`} style={{ background: '#aaaaaa' }}>Ex</span>
-  )
-  if (name === 'PostgreSQL') return (
-    <svg viewBox="0 0 24 24" className={s}>
-      <ellipse cx="12" cy="7" rx="8" ry="4" fill="#336791"/>
-      <path d="M4 7v10c0 2.2 3.58 4 8 4s8-1.8 8-4V7" fill="none" stroke="#336791" strokeWidth="2.2"/>
-    </svg>
-  )
-  if (name === 'Drizzle ORM') return (
-    <svg viewBox="0 0 24 24" className={s} fill="#C5F74F">
-      <circle cx="7" cy="12" r="2.8"/>
-      <circle cx="17" cy="8" r="2.8"/>
-      <circle cx="17" cy="17" r="2.8"/>
-    </svg>
-  )
-  if (name === 'Google Cloud') return (
-    <svg viewBox="0 0 24 24" className={s}>
-      <path d="M12 4.5C8.4 4.5 5.4 6.9 4.4 10.1c-2.1.5-3.6 2.3-3.6 4.5 0 2.5 2 4.5 4.5 4.5H18c2.2 0 4-1.8 4-4 0-2.1-1.6-3.9-3.7-4.1C17.4 7 15 4.5 12 4.5z" fill="#4285F4"/>
-    </svg>
-  )
-  if (name === 'Firebase') return (
-    <svg viewBox="0 0 24 24" className={s}>
-      <path d="M5.5 19L10 7l2.5 5L15 9l3 10H5.5z" fill="#FFC107"/>
-      <path d="M10 7L5.5 19l6-7L10 7z" fill="#FF9800" opacity=".8"/>
-    </svg>
-  )
-  if (name === 'Razorpay') return (
-    <svg viewBox="0 0 20 20" className={s}>
-      <path d="M3 3l6 14 3-8 5-6H3z" fill="#3395FF"/>
-    </svg>
-  )
-  if (name === 'Twilio') return (
-    <svg viewBox="0 0 24 24" className={s} fill="none" stroke="#F22F46" strokeWidth="1.8">
-      <circle cx="12" cy="12" r="9.5"/>
-      <circle cx="8.5" cy="8.5" r="1.8" fill="#F22F46" stroke="none"/>
-      <circle cx="15.5" cy="8.5" r="1.8" fill="#F22F46" stroke="none"/>
-      <circle cx="8.5" cy="15.5" r="1.8" fill="#F22F46" stroke="none"/>
-      <circle cx="15.5" cy="15.5" r="1.8" fill="#F22F46" stroke="none"/>
-    </svg>
-  )
-  if (name === 'Prisma') return (
-    <svg viewBox="0 0 24 24" className={s} fill="none">
-      <path d="M3 17.5L12 3l9 14.5H3z" fill="#0C344B" stroke="#0C344B" strokeWidth="1.2"/>
-      <path d="M3 17.5l6-7 3 7H3z" fill="#16A394" stroke="none"/>
-      <path d="M12 3v14.5" stroke="#16A394" strokeWidth="1.4"/>
-    </svg>
-  )
-  if (name === 'Resend') return (
-    <svg viewBox="0 0 24 24" className={s} fill="none">
-      <rect width="24" height="24" rx="6" fill="#000"/>
-      <path d="M6 8h7a3 3 0 010 6H9l6 4" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-    </svg>
-  )
-  return <div className={`rounded-full bg-white/30 shrink-0 ${big ? 'w-5 h-5' : 'w-2 h-2'}`} />
-}
-
-/* ─── Tech ecosystem items for the floating tile grid ─── */
-const techItems = [
-  { name: 'React',        cat: 'Frontend',  catColor: '#00E5C3' },
-  { name: 'TypeScript',   cat: 'Frontend',  catColor: '#00E5C3' },
-  { name: 'Tailwind CSS', cat: 'Frontend',  catColor: '#00E5C3' },
-  { name: 'Framer Motion',cat: 'Frontend',  catColor: '#00E5C3' },
-  { name: 'Node.js',      cat: 'Backend',   catColor: '#7C4DFF' },
-  { name: 'Express',      cat: 'Backend',   catColor: '#7C4DFF' },
-  { name: 'PostgreSQL',   cat: 'Backend',   catColor: '#7C4DFF' },
-  { name: 'Prisma',       cat: 'Backend',   catColor: '#7C4DFF' },
-  { name: 'Google Cloud', cat: 'Cloud',     catColor: '#3B82F6' },
-  { name: 'Firebase',     cat: 'Cloud',     catColor: '#3B82F6' },
-  { name: 'Razorpay',     cat: 'Payments',  catColor: '#F59E0B' },
-  { name: 'Twilio',       cat: 'Comms',     catColor: '#EF4444' },
-  { name: 'Resend',       cat: 'Email',     catColor: '#00E5C3' },
-]
-
-function DeveloperSection({ language }: { language: string }) {
-  return (
-    <section className="py-20 lg:py-28 relative border-t border-white/5">
-      <div className="absolute inset-0 section-glow-right pointer-events-none" />
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-14"
-        >
-          <SectionBadge label="About the Builder" />
-          <h2 className="text-4xl font-black text-white sm:text-5xl lg:text-6xl">
-            Built by{' '}
-            <span className="gradient-text">Prasanna Mate</span>
-            {' '}— for India's schools.
-          </h2>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
-          {/* Left — profile card with 3D tilt */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-          >
-            <TiltCard className="glass-card animated-border rounded-3xl p-8 h-full">
-              <div className="flex items-center gap-4 mb-6">
-                <img
-                  src={prasannaImg}
-                  alt="Prasanna Mate"
-                  className="w-16 h-16 rounded-2xl object-cover object-top border-2 border-white/10 shrink-0"
-                />
-                <div>
-                  <h3 className="text-xl font-black text-white">Prasanna Mate</h3>
-                  <p className="text-sm font-semibold text-aqua">CTO & Software Developer</p>
-                </div>
-              </div>
-
-              <p className="text-white/50 leading-relaxed text-[15px] mb-5">
-                Built REVENEX from scratch. Leads platform engineering to ensure reliability, performance, and smooth deployments.
-              </p>
-
-              {/* Stats row */}
-              <div className="grid grid-cols-3 gap-3 mb-5">
-                {[
-                  { num: '2+', label: 'Years Building' },
-                  { num: '10+', label: 'Schools Served' },
-                  { num: '99.9%', label: 'Uptime SLA' },
-                ].map((s) => (
-                  <div key={s.label} className="glass-card rounded-xl p-3 text-center border border-white/5">
-                    <div className="text-lg font-black gradient-text">{s.num}</div>
-                    <div className="text-[10px] text-white/40 font-medium mt-0.5 leading-tight">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex items-center gap-3 flex-wrap">
-                <a
-                  href="https://www.linkedin.com/in/prasanna-mate-a247b5328/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-aqua hover:border-aqua/30 hover:bg-aqua/5 transition-all text-sm font-medium"
-                >
-                  <Linkedin className="h-4 w-4" /> LinkedIn
-                </a>
-                <a
-                  href="mailto:prasannamate1754@gmail.com"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-aqua hover:border-aqua/30 hover:bg-aqua/5 transition-all text-sm font-medium"
-                >
-                  <Mail className="h-4 w-4" /> Email
-                </a>
-                <a
-                  href="https://www.revenex.in"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white/60 hover:text-aqua hover:border-aqua/30 hover:bg-aqua/5 transition-all text-sm font-medium"
-                >
-                  <Globe2 className="h-4 w-4" /> Website
-                </a>
-              </div>
-            </TiltCard>
-          </motion.div>
-
-          {/* Right — tech stack categorized glass cards */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col gap-4"
-          >
-            {[
-              { label: 'FRONTEND', color: '#00E5C3', techs: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'] },
-              { label: 'BACKEND', color: '#7C4DFF', techs: ['Node.js', 'Express', 'PostgreSQL', 'Drizzle ORM'] },
-              { label: 'CLOUD & INFRA', color: '#3B82F6', techs: ['Google Cloud', 'Firebase', 'Razorpay', 'Resend'] },
-            ].map((cat, ci) => (
-              <motion.div
-                key={cat.label}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: ci * 0.1 }}
-                className="glass-card rounded-2xl p-5 border border-white/5 hover:border-white/10 transition-colors"
-              >
-                <div className="flex items-center gap-2 mb-3.5">
-                  <div className="w-2 h-2 rounded-full shrink-0" style={{ background: cat.color }} />
-                  <span className="text-[11px] font-black tracking-widest uppercase" style={{ color: cat.color }}>
-                    {cat.label}
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {cat.techs.map((tech) => (
-                    <div
-                      key={tech}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 hover:border-white/20 hover:bg-white/[0.08] transition-all cursor-default"
-                    >
-                      <TechChipIcon name={tech} />
-                      <span className="text-xs font-medium text-white/70">{tech}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
         </div>
       </div>
     </section>
@@ -659,7 +425,7 @@ function ReviewsSection() {
   }
 
   return (
-    <section className="py-20 lg:py-28 border-t border-white/5">
+    <section className="py-20 lg:py-28 border-t border-[#E8E0D4]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -668,8 +434,8 @@ function ReviewsSection() {
           className="text-center mb-14"
         >
           <SectionBadge label="Reviews" />
-          <h2 className="text-4xl font-black text-white sm:text-5xl mb-3">What people are saying</h2>
-          <p className="text-white/40">Real feedback from schools and educators trying REVENEX.</p>
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-3">What people are saying</h2>
+          <p className="text-[#6B5D52]">Real feedback from schools and educators trying REVENEX.</p>
         </motion.div>
 
         {/* Review cards — floating marquee right to left */}
@@ -684,32 +450,32 @@ function ReviewsSection() {
         ) : allReviews.length > 0 ? (
           <div className="relative overflow-hidden mb-12 py-2">
             {/* Fade masks */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#040712] to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#040712] to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#F5F0E8] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#F5F0E8] to-transparent z-10 pointer-events-none" />
             <div className="reviews-marquee-track">
               {[...allReviews, ...allReviews, ...allReviews].map((review, i) => (
                 <div
                   key={`${review.id}-${i}`}
-                  className="glass-card rounded-2xl p-5 border border-white/5 shrink-0 mx-3"
+                  className="glass-card rounded-2xl p-5 border border-[#E8E0D4] shrink-0 mx-3"
                   style={{ width: '320px' }}
                 >
                   <div className="flex items-center gap-1 mb-3">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <Star
                         key={s}
-                        className={`h-4 w-4 ${s <= review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-white/20'}`}
+                        className={`h-4 w-4 ${s <= review.rating ? 'text-[#8B4513] fill-[#8B4513]' : 'text-[#6B5D52]'}`}
                       />
                     ))}
-                    <span className="ml-auto text-xs text-white/25">
+                    <span className="ml-auto text-xs text-[#6B5D52]">
                       {new Date(review.createdAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
                     </span>
                   </div>
-                  <p className="text-white/60 text-sm leading-relaxed mb-4 italic line-clamp-3">"{review.content}"</p>
+                  <p className="text-[#3D3128] text-sm leading-relaxed mb-4 italic line-clamp-3">"{review.content}"</p>
                   <div className="flex items-center gap-2.5">
-                    <div className="w-7 h-7 rounded-full gradient-bg flex items-center justify-center text-black text-xs font-black shrink-0">
+                    <div className="w-7 h-7 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-black shrink-0">
                       {review.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="text-sm font-semibold text-white">{review.name}</span>
+                    <span className="text-sm font-semibold text-[#1A1410]">{review.name}</span>
                   </div>
                 </div>
               ))}
@@ -722,8 +488,8 @@ function ReviewsSection() {
             viewport={{ once: true }}
             className="text-center py-12 mb-12"
           >
-            <Star className="h-10 w-10 text-yellow-400/30 mx-auto mb-3" />
-            <p className="text-white/30 font-medium">No reviews yet — be the first to share your experience!</p>
+            <Star className="h-10 w-10 text-[#8B4513]/30 mx-auto mb-3" />
+            <p className="text-[#6B5D52] font-medium">No reviews yet — be the first to share your experience!</p>
           </motion.div>
         )}
 
@@ -734,46 +500,46 @@ function ReviewsSection() {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto form-card glass-card animated-border rounded-3xl p-8"
         >
-          <h3 className="text-xl font-black text-white mb-1">Leave a review</h3>
-          <p className="text-white/40 text-sm mb-6">Share your experience with REVENEX.</p>
+          <h3 className="text-xl font-black text-[#1A1410] mb-1">Leave a review</h3>
+          <p className="text-[#6B5D52] text-sm mb-6">Share your experience with REVENEX.</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">Your Name *</label>
+                <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">Your Name *</label>
                 <input
                   type="text"
                   placeholder="e.g., Rajesh Sharma"
                   value={form.name}
                   onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-aqua/40 transition-colors"
+                  className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-4 py-3 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">Your Role</label>
+                <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">Your Role</label>
                 <input
                   type="text"
                   placeholder="e.g., Principal, Teacher, Admin"
                   value={form.role}
                   onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-aqua/40 transition-colors"
+                  className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-4 py-3 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">School / Institution</label>
+              <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">School / Institution</label>
               <input
                 type="text"
                 placeholder="e.g., Pune Public School"
                 value={form.school}
                 onChange={(e) => setForm((p) => ({ ...p, school: e.target.value }))}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-aqua/40 transition-colors"
+                className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-4 py-3 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">Rating *</label>
+              <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">Rating *</label>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <button
@@ -786,7 +552,7 @@ function ReviewsSection() {
                   >
                     <Star
                       className={`h-7 w-7 transition-colors ${
-                        s <= (hoverRating || form.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-white/20'
+                        s <= (hoverRating || form.rating) ? 'text-[#8B4513] fill-[#8B4513]' : 'text-[#6B5D52]'
                       }`}
                     />
                   </button>
@@ -795,13 +561,13 @@ function ReviewsSection() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">Your Review</label>
+              <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">Your Review</label>
               <textarea
                 rows={4}
                 placeholder="Share your experience..."
                 value={form.content}
                 onChange={(e) => setForm((p) => ({ ...p, content: e.target.value }))}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-aqua/40 transition-colors resize-none"
+                className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-4 py-3 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors resize-none"
               />
             </div>
 
@@ -810,7 +576,7 @@ function ReviewsSection() {
               disabled={mutation.isPending}
               whileHover={!mutation.isPending ? { scale: 1.02 } : {}}
               whileTap={!mutation.isPending ? { scale: 0.98 } : {}}
-              className="w-full gradient-bg text-black font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+              className="w-full gradient-bg text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
             >
               {mutation.isPending ? (
                 <motion.div
@@ -865,12 +631,12 @@ function LetsTalkSection({ language }: { language: string }) {
   }
 
   return (
-    <section className="py-20 lg:py-28 border-t border-white/5">
+    <section className="py-20 lg:py-28 border-t border-[#E8E0D4]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <SectionBadge label="Get in Touch" />
-          <h2 className="text-4xl font-black text-white sm:text-5xl">Let's talk.</h2>
-          <p className="text-white/40 mt-3 max-w-lg mx-auto">
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl">Let's talk.</h2>
+          <p className="text-[#6B5D52] mt-3 max-w-lg mx-auto">
             Have a question or want to partner with us? We'd love to hear from you.
           </p>
         </div>
@@ -893,14 +659,14 @@ function LetsTalkSection({ language }: { language: string }) {
                   <Icon className="h-4.5 w-4.5 text-aqua h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-white/30 uppercase tracking-wider mb-0.5">{label}</p>
-                  <a href={href} className="text-white/70 hover:text-aqua transition-colors text-sm">{value}</a>
+                  <p className="text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-0.5">{label}</p>
+                  <a href={href} className="text-[#3D3128] hover:text-aqua transition-colors text-sm">{value}</a>
                 </div>
               </div>
             ))}
 
-            <div className="pt-4 border-t border-white/5">
-              <p className="text-xs text-white/30 leading-relaxed">
+            <div className="pt-4 border-t border-[#E8E0D4]">
+              <p className="text-xs text-[#6B5D52] leading-relaxed">
                 We reply to all messages within 24 hours — no auto-replies, real humans.
               </p>
             </div>
@@ -913,52 +679,52 @@ function LetsTalkSection({ language }: { language: string }) {
             viewport={{ once: true }}
             className="form-card glass-card animated-border rounded-3xl p-8"
           >
-            <h3 className="text-lg font-black text-white mb-1">Send Message</h3>
-            <p className="text-white/35 text-sm mb-6">We'll get back to you within 24 hours.</p>
+            <h3 className="text-lg font-black text-[#1A1410] mb-1">Send Message</h3>
+            <p className="text-[#6B5D52] text-sm mb-6">We'll get back to you within 24 hours.</p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-white/35 mb-1.5">Your Name</label>
+                  <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">Your Name</label>
                   <input
                     type="text"
                     placeholder="Rahul Sharma"
                     value={form.name}
                     onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-aqua/40 transition-colors"
+                    className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-3 py-2.5 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-white/35 mb-1.5">Email Address</label>
+                  <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">Email Address</label>
                   <input
                     type="email"
                     placeholder="rahul@school.in"
                     value={form.email}
                     onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-aqua/40 transition-colors"
+                    className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-3 py-2.5 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-white/35 mb-1.5">Institution / School Name</label>
+                <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">Institution / School Name</label>
                 <input
                   type="text"
                   placeholder="St. Mary's High School"
                   value={form.institution}
                   onChange={(e) => setForm((p) => ({ ...p, institution: e.target.value }))}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-aqua/40 transition-colors"
+                  className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-3 py-2.5 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-white/35 mb-1.5">Message</label>
+                <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">Message</label>
                 <textarea
                   rows={4}
                   placeholder="Tell us about your school and what you need..."
                   value={form.message}
                   onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-aqua/40 transition-colors resize-none"
+                  className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-3 py-2.5 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors resize-none"
                 />
               </div>
 
@@ -971,7 +737,7 @@ function LetsTalkSection({ language }: { language: string }) {
                 disabled={isPending || sent}
                 whileHover={isPending || sent ? {} : { scale: 1.02 }}
                 whileTap={isPending || sent ? {} : { scale: 0.98 }}
-                className="w-full gradient-bg text-black font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full gradient-bg text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {sent ? (
                   <><CheckCircle2 className="h-4 w-4" /> Message sent!</>
@@ -995,49 +761,49 @@ const whyReasons = [
     icon: Lock,
     title: 'Secure',
     desc: '256-bit AES encryption, role-based access control, and GDPR-compliant data handling keep your school data safe.',
-    color: '#00E5C3', bg: 'rgba(0,229,195,0.10)', border: 'rgba(0,229,195,0.22)',
+    color: '#8B4513', bg: 'rgba(139, 69, 19,0.10)', border: 'rgba(139, 69, 19,0.22)',
     slug: 'security',
   },
   {
     icon: Server,
     title: 'Scalable',
     desc: 'Handles 100 to 10,000+ students with zero performance degradation. Grows with your institution seamlessly.',
-    color: '#7C4DFF', bg: 'rgba(124,77,255,0.10)', border: 'rgba(124,77,255,0.22)',
+    color: '#7C3D0F', bg: 'rgba(124, 61, 15,0.10)', border: 'rgba(124, 61, 15,0.22)',
     slug: 'student-management',
   },
   {
     icon: Cloud,
     title: 'Cloud Based',
     desc: 'Hosted on Google Cloud with 99.9% uptime target. Access your ERP from any device, anywhere, anytime.',
-    color: '#3B82F6', bg: 'rgba(59,130,246,0.10)', border: 'rgba(59,130,246,0.22)',
+    color: '#166534', bg: 'rgba(22, 101, 52,0.10)', border: 'rgba(22, 101, 52,0.22)',
     slug: 'cloud-based',
   },
   {
     icon: Sparkles,
     title: 'AI Powered',
     desc: 'Gemini AI generates performance reports, predicts dropout risks, and automates routine administrative tasks.',
-    color: '#8B5CF6', bg: 'rgba(139,92,246,0.10)', border: 'rgba(139,92,246,0.22)',
+    color: '#8B4513', bg: 'rgba(139, 69, 19,0.10)', border: 'rgba(139, 69, 19,0.22)',
     slug: 'ai-analytics',
   },
   {
     icon: TrendingUp,
     title: 'Affordable',
     desc: 'Transparent pricing designed for Indian schools. No hidden costs, no per-module charges — one plan, all features.',
-    color: '#10B981', bg: 'rgba(16,185,129,0.10)', border: 'rgba(16,185,129,0.22)',
+    color: '#166534', bg: 'rgba(22, 101, 52,0.10)', border: 'rgba(22, 101, 52,0.22)',
     slug: 'fees',
   },
   {
     icon: GraduationCap,
     title: 'Built For Indian Schools',
     desc: 'Hindi + English bilingual, Razorpay UPI payments, CBSE/ICSE formats — built ground-up for India\'s classrooms.',
-    color: '#F59E0B', bg: 'rgba(245,158,11,0.10)', border: 'rgba(245,158,11,0.22)',
+    color: '#7C3D0F', bg: 'rgba(124, 61, 15,0.10)', border: 'rgba(124, 61, 15,0.22)',
     slug: 'one-platform',
   },
 ]
 
 function WhyRevenexSection({ language }: { language: string }) {
   return (
-    <section className="py-20 lg:py-28 relative border-t border-white/5">
+    <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4]">
       <div className="absolute inset-0 section-glow-right pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -1047,14 +813,14 @@ function WhyRevenexSection({ language }: { language: string }) {
           className="text-center mb-16"
         >
           <SectionBadge label="Why REVENEX" />
-          <h2 className="text-4xl font-black text-white sm:text-5xl mb-4">
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">
             {language === 'en' ? (
               <>Why Schools Choose <span className="gradient-text">REVENEX</span></>
             ) : (
               <>स्कूल <span className="gradient-text">REVENEX</span> क्यों चुनते हैं</>
             )}
           </h2>
-          <p className="text-white/40 text-lg max-w-2xl mx-auto">
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">
             {language === 'en'
               ? "We didn't just build a school app. We built a complete operations platform."
               : 'हमने सिर्फ एक ऐप नहीं बनाया। हमने एक पूरा ऑपरेशन प्लेटफॉर्म बनाया।'}
@@ -1085,8 +851,8 @@ function WhyRevenexSection({ language }: { language: string }) {
                     >
                       <reason.icon className="h-6 w-6" style={{ color: reason.color }} />
                     </div>
-                    <h3 className="text-base font-bold text-white mb-3">{reason.title}</h3>
-                    <p className="text-sm text-white/45 leading-relaxed mb-5">{reason.desc}</p>
+                    <h3 className="text-base font-bold text-[#1A1410] mb-3">{reason.title}</h3>
+                    <p className="text-sm text-[#6B5D52] leading-relaxed mb-5">{reason.desc}</p>
                     <div
                       className="flex items-center gap-1.5 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0"
                       style={{ color: reason.color }}
@@ -1113,7 +879,7 @@ function MeetFoundersSection() {
       img: rounakNewImg,
       desc: 'Leads business growth, client relationships, and strategic decision-making to deliver impactful digital solutions.',
       linkedin: 'https://www.linkedin.com/in/rounaksute/',
-      color: '#00E5C3',
+      color: '#8B4513',
     },
     {
       name: 'Rohan Rajendra Raundal',
@@ -1121,12 +887,20 @@ function MeetFoundersSection() {
       img: rohanNewImg,
       desc: 'Leads technology, product development, and innovation to build reliable and scalable digital products.',
       linkedin: 'https://www.linkedin.com/in/rohan-raundal/',
-      color: '#7C4DFF',
+      color: '#7C3D0F',
+    },
+    {
+      name: 'Prasanna Mate',
+      role: 'CTO',
+      img: prasannaImg,
+      desc: 'Built REVENEX from scratch. Leads platform engineering to ensure reliability, performance, and smooth deployments.',
+      linkedin: 'https://www.linkedin.com/in/prasanna-mate-a247b5328/',
+      color: '#3D3128',
     },
   ]
 
   return (
-    <section className="py-20 lg:py-28 relative border-t border-white/5">
+    <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4]">
       <div className="absolute inset-0 section-glow-left pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -1136,11 +910,11 @@ function MeetFoundersSection() {
           className="text-center mb-14"
         >
           <SectionBadge label="Leadership" />
-          <h2 className="text-4xl font-black text-white sm:text-5xl mb-3">Meet the Founders</h2>
-          <p className="text-white/40">The team building India's school ERP of tomorrow.</p>
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-3">Meet the Team</h2>
+          <p className="text-[#6B5D52]">The team building India's school ERP of tomorrow.</p>
         </motion.div>
 
-        <div className="grid gap-6 sm:grid-cols-2 max-w-3xl mx-auto">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">
           {homeFounders.map((f, i) => (
             <motion.div
               key={f.name}
@@ -1162,9 +936,9 @@ function MeetFoundersSection() {
                     style={{ background: `radial-gradient(circle at center, ${f.color} 0%, transparent 70%)` }}
                   />
                 </div>
-                <h3 className="text-xl font-black text-white mb-1">{f.name}</h3>
+                <h3 className="text-xl font-black text-[#1A1410] mb-1">{f.name}</h3>
                 <p className="text-sm font-semibold mb-4" style={{ color: f.color }}>{f.role}</p>
-                <p className="text-white/45 text-sm leading-relaxed mb-6">{f.desc}</p>
+                <p className="text-[#6B5D52] text-sm leading-relaxed mb-6">{f.desc}</p>
                 <a
                   href={f.linkedin}
                   target="_blank"
@@ -1175,6 +949,161 @@ function MeetFoundersSection() {
                   <Linkedin className="h-4 w-4" /> LinkedIn Profile
                 </a>
               </TiltCard>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Products section (School ERP vs Business CRM tabs) ─── */
+function ProductsSection() {
+  const [tab, setTab] = useState<'school' | 'business'>('school')
+
+  const tabs = {
+    school: {
+      label: 'School ERP',
+      icon: GraduationCap,
+      blurb: 'Everything a K-12 or higher-ed institution needs to run smoothly — from admissions to alumni.',
+      cards: [
+        { title: 'Principal Dashboard', desc: 'School-wide analytics, staff oversight, and approvals in one view.', icon: BarChart3 },
+        { title: 'Teacher Dashboard', desc: 'Attendance, grading, and lesson planning without the paperwork.', icon: BookOpen },
+        { title: 'Parent Dashboard', desc: 'Live updates on attendance, fees, and academic progress.', icon: Users },
+      ],
+    },
+    business: {
+      label: 'Business CRM',
+      icon: Building2,
+      blurb: 'A lightweight CRM for hospitality and retail businesses to manage operations and customers.',
+      cards: [
+        { title: 'Hotel Management', desc: 'Bookings, housekeeping, and guest billing in a single system.', icon: Calendar },
+        { title: 'Restaurant Management', desc: 'Orders, table turnover, and inventory tracked in real time.', icon: CreditCard },
+        { title: 'Retail Management', desc: 'Inventory, billing, and customer loyalty made simple.', icon: TrendingUp },
+      ],
+    },
+  } as const
+
+  const active = tabs[tab]
+
+  return (
+    <section id="products" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+          <SectionBadge label="Products" />
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">One platform, two products</h2>
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Purpose-built software for education and for service businesses.</p>
+        </motion.div>
+
+        <div className="flex justify-center gap-3 mb-12">
+          {(Object.keys(tabs) as Array<keyof typeof tabs>).map((key) => (
+            <button
+              key={key}
+              onClick={() => setTab(key)}
+              className={`flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-bold transition-all ${
+                tab === key ? 'gradient-bg text-white shadow-lg' : 'bg-white border border-[#E8E0D4] text-[#3D3128] hover:border-[#8B4513]/30'
+              }`}
+            >
+              {(() => { const Icon = tabs[key].icon; return <Icon className="h-4 w-4" /> })()}
+              {tabs[key].label}
+            </button>
+          ))}
+        </div>
+
+        <motion.p key={tab + '-blurb'} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-[#6B5D52] max-w-xl mx-auto mb-10">
+          {active.blurb}
+        </motion.p>
+
+        <motion.div key={tab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="grid gap-5 sm:grid-cols-3">
+          {active.cards.map((card, i) => (
+            <motion.div key={card.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
+              <div className="glass-card animated-border rounded-2xl p-6 h-full">
+                <div className="inline-flex rounded-2xl p-3 mb-4 bg-[#F0E8DC]">
+                  <card.icon className="h-6 w-6 text-[#7C3D0F]" />
+                </div>
+                <h3 className="text-base font-bold text-[#1A1410] mb-2">{card.title}</h3>
+                <p className="text-sm text-[#6B5D52] leading-relaxed">{card.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Pricing section ─── */
+function PricingSection() {
+  const plans = [
+    {
+      name: 'Starter',
+      price: '₹0',
+      period: '/forever',
+      desc: 'For schools and businesses just getting started with digital management.',
+      features: ['Up to 100 students/records', 'Attendance & basic reporting', 'Parent/customer dashboard', 'Email support'],
+      cta: 'Get Started Free',
+      highlighted: false,
+    },
+    {
+      name: 'Growth',
+      price: '₹20,000',
+      period: '/year',
+      desc: 'For institutions ready to scale with automation and priority support.',
+      features: ['Unlimited students/records', 'Fee collection & payroll automation', 'Advanced analytics & reports', 'Priority support', 'Custom onboarding'],
+      cta: 'Schedule a Demo',
+      highlighted: true,
+    },
+  ]
+
+  return (
+    <section id="pricing" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
+      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+          <SectionBadge label="Pricing" />
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Simple, transparent pricing</h2>
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Start free. Upgrade when you're ready to grow.</p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+          {plans.map((plan, i) => (
+            <motion.div
+              key={plan.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.12 }}
+              className={`rounded-3xl p-8 border ${plan.highlighted ? 'border-[#1A1410]' : 'border-[#E8E0D4]'} bg-white relative`}
+            >
+              {plan.highlighted && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full gradient-bg text-white text-xs font-bold uppercase tracking-widest">
+                  Most Popular
+                </div>
+              )}
+              <h3 className="text-xl font-black text-[#1A1410] mb-1">{plan.name}</h3>
+              <p className="text-sm text-[#6B5D52] mb-5">{plan.desc}</p>
+              <div className="flex items-end gap-1 mb-6">
+                <span className="text-4xl font-black text-[#1A1410]">{plan.price}</span>
+                <span className="text-sm text-[#6B5D52] mb-1">{plan.period}</span>
+              </div>
+              <ul className="space-y-3 mb-8">
+                {plan.features.map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-[#3D3128]">
+                    <CheckCircle2 className="h-4 w-4 text-[#7C3D0F] shrink-0 mt-0.5" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/book-demo">
+                <motion.span
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-sm font-bold cursor-pointer transition-all ${
+                    plan.highlighted ? 'gradient-bg text-white shadow-lg' : 'border border-[#1A1410] text-[#1A1410] hover:bg-[#F0E8DC]'
+                  }`}
+                >
+                  {plan.cta} <ArrowRight className="h-4 w-4" />
+                </motion.span>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -1197,17 +1126,18 @@ export default function Home() {
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 hero-glow pointer-events-none" />
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#7C4DFF]/6 rounded-full blur-[140px]" />
-          <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#00E5C3]/6 rounded-full blur-[120px]" />
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#7C3D0F]/6 rounded-full blur-[140px]" />
+          <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#8B4513]/6 rounded-full blur-[120px]" />
         </div>
-        <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(0,229,195,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(139, 69, 19,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-left">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#00E5C3]/20 bg-[#00E5C3]/5 backdrop-blur-sm">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#00E5C3] animate-pulse" />
-                <span className="text-xs font-semibold text-[#00E5C3] tracking-widest uppercase">{t('hero.badge')}</span>
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#8B4513] animate-pulse" />
+                <span className="text-xs font-semibold text-[#7C3D0F] tracking-widest uppercase">{t('hero.badge')}</span>
               </div>
             </motion.div>
 
@@ -1215,20 +1145,20 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-5xl font-black tracking-tight sm:text-6xl lg:text-7xl xl:text-[5.5rem] mb-6 leading-none"
+              className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl xl:text-[4.2rem] mb-6 leading-[1.05]"
             >
-              <span className="text-white">{t('hero.title')}</span>
+              <span className="text-[#1A1410]">{t('hero.title')}</span>
               <br />
               <span className="gradient-text">{t('hero.titleHighlight')}</span>
               <br />
-              <span className="text-white">{t('hero.titleEnd')}</span>
+              <span className="text-[#1A1410]">{t('hero.titleEnd')}</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.25 }}
-              className="mx-auto max-w-2xl text-lg text-white/50 leading-relaxed mb-10"
+              className="max-w-xl text-lg text-[#3D3128] leading-relaxed mb-8"
             >
               {t('hero.subtitle')}
             </motion.p>
@@ -1237,13 +1167,13 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-6"
+              className="flex flex-col sm:flex-row gap-4 mb-8"
             >
               <Link href="/book-demo">
                 <motion.span
-                  whileHover={{ scale: 1.04, boxShadow: '0 0 40px rgba(0,229,195,0.45)' }}
+                  whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 gradient-bg text-black font-bold px-8 py-4 rounded-2xl text-base transition-all cursor-pointer shadow-lg"
+                  className="inline-flex items-center justify-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl text-base transition-all cursor-pointer shadow-lg"
                 >
                   {t('hero.cta.demo')} <ArrowRight className="h-5 w-5" />
                 </motion.span>
@@ -1252,7 +1182,7 @@ export default function Home() {
                 <motion.span
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 border border-white/15 text-white font-semibold px-8 py-4 rounded-2xl text-base transition-all hover:bg-white/5 cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-4 rounded-2xl text-base transition-all hover:bg-[#F0E8DC] cursor-pointer"
                 >
                   {language === 'en' ? 'Sign In' : 'साइन इन करें'} <ArrowRight className="h-5 w-5 opacity-60" />
                 </motion.span>
@@ -1263,85 +1193,84 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.55 }}
-              className="flex items-center justify-center gap-6 mb-16 flex-wrap"
+              className="flex items-center gap-3 flex-wrap"
             >
               {['Enterprise Security', '99.9% Uptime Target', 'Indian EdTech'].map((item) => (
-                <div key={item} className="flex items-center gap-1.5 text-xs text-white/30">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-[#00E5C3]" />
+                <div key={item} className="flex items-center gap-1.5 text-xs text-[#6B5D52] px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-white">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-[#7C3D0F]" />
                   {item}
                 </div>
               ))}
             </motion.div>
+          </div>
 
             {/* Dashboard preview */}
             <motion.div
-              initial={{ opacity: 0, y: 70 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              className="relative mx-auto max-w-5xl"
+              initial={{ opacity: 0, y: 50, x: 30 }}
+              animate={{ opacity: 1, y: 0, x: 0 }}
+              transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="relative"
             >
-              <div className="glass-card rounded-3xl overflow-hidden border border-white/10" style={{ boxShadow: '0 0 0 1px rgba(255,255,255,0.04), 0 40px 80px rgba(0,0,0,0.6), 0 0 100px rgba(0,229,195,0.04)' }}>
-                <div className="flex items-center gap-2 px-5 py-4 border-b border-white/5 bg-white/[0.02]">
+              <div className="glass-card rounded-3xl overflow-hidden border border-[#E8E0D4]" style={{ boxShadow: '0 0 0 1px rgba(255,255,255,0.04), 0 40px 80px rgba(0,0,0,0.6), 0 0 100px rgba(139, 69, 19,0.04)' }}>
+                <div className="flex items-center gap-2 px-5 py-4 border-b border-[#E8E0D4] bg-[#F0E8DC]">
                   <div className="w-3 h-3 rounded-full bg-red-500/60" />
                   <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
                   <div className="w-3 h-3 rounded-full bg-green-500/60" />
                   <div className="ml-4 flex-1 flex items-center justify-center">
-                    <div className="flex items-center gap-2 bg-white/5 rounded-lg px-4 py-1.5 max-w-xs w-full">
-                      <Lock className="h-3 w-3 text-[#00E5C3]" />
-                      <span className="text-xs text-white/30">app.revenex.in/dashboard</span>
+                    <div className="flex items-center gap-2 bg-[#F0E8DC] rounded-lg px-4 py-1.5 max-w-xs w-full">
+                      <Lock className="h-3 w-3 text-[#8B4513]" />
+                      <span className="text-xs text-[#6B5D52]">app.revenex.in/dashboard</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#00E5C3] animate-pulse" />
-                    <span className="text-xs text-[#00E5C3] font-medium">Preview</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#8B4513] animate-pulse" />
+                    <span className="text-xs text-[#8B4513] font-medium">Preview</span>
                   </div>
                 </div>
                 <div className="p-5">
-                  <div className="grid grid-cols-4 gap-3 mb-4">
+                  <div className="grid grid-cols-2 gap-3 mb-4">
                     {[
-                      { label: 'Total Students', value: '2,847', icon: Users, color: 'text-[#00E5C3]', bg: 'bg-[#00E5C3]/10' },
-                      { label: 'Attendance Today', value: '94.2%', icon: CheckCircle2, color: 'text-green-400', bg: 'bg-green-400/10' },
-                      { label: 'Fees Collected', value: '₹12.4L', icon: CreditCard, color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
-                      { label: 'Staff Active', value: '142', icon: Award, color: 'text-purple-400', bg: 'bg-purple-400/10' },
+                      { label: 'Total Students', value: '2,847', icon: Users, color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]' },
+                      { label: 'Attendance Today', value: '94.2%', icon: CheckCircle2, color: 'text-green-700', bg: 'bg-green-700/10' },
+                      { label: 'Fees Collected', value: '₹12.4L', icon: CreditCard, color: 'text-amber-700', bg: 'bg-amber-700/10' },
+                      { label: 'Staff Active', value: '142', icon: Award, color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]' },
                     ].map((kpi, i) => (
-                      <motion.div key={kpi.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 + i * 0.08 }} className={`${kpi.bg} rounded-xl p-3 border border-white/5`}>
+                      <motion.div key={kpi.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 + i * 0.08 }} className={`${kpi.bg} rounded-xl p-3 border border-[#E8E0D4]`}>
                         <kpi.icon className={`h-4 w-4 ${kpi.color} mb-2`} />
                         <div className={`text-xl font-black ${kpi.color} mb-0.5`}>{kpi.value}</div>
-                        <div className="text-xs text-white/35">{kpi.label}</div>
+                        <div className="text-xs text-[#6B5D52]">{kpi.label}</div>
                       </motion.div>
                     ))}
                   </div>
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="col-span-2 bg-white/[0.03] rounded-xl p-4 border border-white/5">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="text-xs font-semibold text-white/70">Attendance Trend</div>
-                        <div className="flex items-center gap-1.5">
-                          <Activity className="h-3.5 w-3.5 text-[#00E5C3]" />
-                          <span className="text-xs text-[#00E5C3] font-semibold">94.2%</span>
-                        </div>
-                      </div>
-                      <div className="flex items-end gap-1.5 h-16">
-                        {barHeights.map((h, i) => (
-                          <motion.div key={`bar-${i}`} className="flex-1 rounded-t-sm" initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ delay: 1.0 + i * 0.04, ease: 'easeOut' }} style={{ background: i >= 9 ? 'linear-gradient(to top, rgba(0,181,154,0.8), rgba(0,181,154,0.4))' : 'rgba(255,255,255,0.08)' }} />
-                        ))}
+                  <div className="bg-[#F0E8DC] rounded-xl p-4 border border-[#E8E0D4] mb-3">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="text-xs font-semibold text-[#3D3128]">Attendance Trend</div>
+                      <div className="flex items-center gap-1.5">
+                        <Activity className="h-3.5 w-3.5 text-[#7C3D0F]" />
+                        <span className="text-xs text-[#7C3D0F] font-semibold">94.2%</span>
                       </div>
                     </div>
-                    <div className="bg-white/[0.03] rounded-xl p-3 border border-white/5">
-                      <div className="text-xs font-semibold text-white/60 mb-3 flex items-center gap-1.5">
-                        <Sparkles className="h-3.5 w-3.5 text-[#7C4DFF]" /> AI Activity
-                      </div>
-                      <div className="space-y-2.5">
-                        {[
-                          { text: 'Fee reminder sent', color: 'bg-yellow-400' },
-                          { text: 'Report generated', color: 'bg-[#00B59A]' },
-                          { text: 'Payroll processed', color: 'bg-green-400' },
-                        ].map((item) => (
-                          <div key={item.text} className="flex items-center gap-2">
-                            <div className={`w-1.5 h-1.5 rounded-full ${item.color} shrink-0`} />
-                            <p className="text-[10px] text-white/55">{item.text}</p>
-                          </div>
-                        ))}
-                      </div>
+                    <div className="flex items-end gap-1.5 h-16">
+                      {barHeights.map((h, i) => (
+                        <motion.div key={`bar-${i}`} className="flex-1 rounded-t-sm" initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ delay: 1.0 + i * 0.04, ease: 'easeOut' }} style={{ background: i >= 9 ? 'linear-gradient(to top, #7C3D0F, #8B4513)' : 'rgba(139,69,19,0.12)' }} />
+                      ))}
+                    </div>
+                  </div>
+                  <div className="bg-[#F0E8DC] rounded-xl p-3 border border-[#E8E0D4]">
+                    <div className="text-xs font-semibold text-[#3D3128] mb-3 flex items-center gap-1.5">
+                      <Sparkles className="h-3.5 w-3.5 text-[#7C3D0F]" /> AI Activity
+                    </div>
+                    <div className="space-y-2.5">
+                      {[
+                        { text: 'Fee reminder sent', color: 'bg-amber-600' },
+                        { text: 'Report generated', color: 'bg-[#7C3D0F]' },
+                        { text: 'Payroll processed', color: 'bg-green-700' },
+                      ].map((item) => (
+                        <div key={item.text} className="flex items-center gap-2">
+                          <div className={`w-1.5 h-1.5 rounded-full ${item.color} shrink-0`} />
+                          <p className="text-[10px] text-[#6B5D52]">{item.text}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -1352,9 +1281,9 @@ export default function Home() {
       </section>
 
       {/* ── TECH PARTNERS (white pill badges) ── */}
-      <section className="py-10 border-y border-white/5 overflow-hidden bg-[#040712]/50">
+      <section className="py-10 border-y border-[#E8E0D4] overflow-hidden bg-[#EDE8DC]">
         <div className="mx-auto max-w-7xl px-4 mb-5">
-          <p className="text-center text-[11px] font-black text-white/25 uppercase tracking-widest">
+          <p className="text-center text-[11px] font-black text-[#6B5D52] uppercase tracking-widest">
             Trusted Partners Powering the REVENEX Platform
           </p>
         </div>
@@ -1367,8 +1296,8 @@ export default function Home() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
             <SectionBadge label="Features" />
-            <h2 className="text-4xl font-black text-white sm:text-5xl mb-4">{t('features.title')}</h2>
-            <p className="text-white/40 text-lg max-w-2xl mx-auto">{t('features.subtitle')}</p>
+            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{t('features.title')}</h2>
+            <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{t('features.subtitle')}</p>
           </motion.div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((feature, i) => (
@@ -1383,14 +1312,14 @@ export default function Home() {
                   <TiltCard className="glass-card animated-border rounded-2xl p-6 h-full cursor-pointer group relative overflow-hidden">
                     <div
                       className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{ background: `linear-gradient(135deg, rgba(0,181,154,0.06) 0%, transparent 100%)` }}
+                      style={{ background: `linear-gradient(135deg, rgba(139, 69, 19,0.06) 0%, transparent 100%)` }}
                     />
                     <div className="relative z-10">
                       <div className={`inline-flex rounded-2xl p-3 mb-4 ${feature.bg}`}>
                         <feature.icon className={`h-6 w-6 ${feature.color}`} />
                       </div>
-                      <h3 className="text-base font-bold text-white mb-2">{feature.title}</h3>
-                      <p className="text-sm text-white/40 leading-relaxed mb-4">{feature.desc}</p>
+                      <h3 className="text-base font-bold text-[#1A1410] mb-2">{feature.title}</h3>
+                      <p className="text-sm text-[#6B5D52] leading-relaxed mb-4">{feature.desc}</p>
                     </div>
                   </TiltCard>
                 </Link>
@@ -1399,6 +1328,57 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── PROBLEM (Before/After) ── */}
+      <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4]">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+            <SectionBadge label="The Problem" />
+            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Running an institution shouldn't feel this hard</h2>
+            <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Most schools and businesses juggle spreadsheets, paper registers, and disconnected apps. REVENEX brings it all together.</p>
+          </motion.div>
+          <div className="grid md:grid-cols-2 gap-6">
+            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-3xl p-8 border border-[#E8E0D4]" style={{ background: '#FFFFFF' }}>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold uppercase tracking-widest mb-5">Before REVENEX</div>
+              <ul className="space-y-4">
+                {[
+                  'Attendance tracked on paper, fees collected in cash registers',
+                  'Parents left in the dark about their child\'s progress',
+                  'Staff payroll and reports done manually every month',
+                  'Data scattered across spreadsheets and WhatsApp groups',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-[#3D3128]">
+                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-red-400 shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-3xl p-8 border border-[#E8E0D4] glass-card animated-border">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F0E8DC] text-[#7C3D0F] text-xs font-bold uppercase tracking-widest mb-5">With REVENEX</div>
+              <ul className="space-y-4">
+                {[
+                  'Attendance and fees automated, tracked in real time',
+                  'Parents get live updates through their own dashboard',
+                  'Payroll and reports generated automatically, every time',
+                  'All your data in one secure, searchable place',
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-[#1A1410] font-medium">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 text-[#7C3D0F] shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PRODUCTS ── */}
+      <ProductsSection />
+
+      {/* ── PRICING ── */}
+      <PricingSection />
 
       {/* ── WHY REVENEX ── */}
       <WhyRevenexSection language={language} />
@@ -1410,29 +1390,26 @@ export default function Home() {
       <SecuritySection language={language} />
 
       {/* ── ENGINEERING SPECS ── */}
-      <section className="py-12 border-y border-white/5">
+      <section className="py-12 border-y border-[#E8E0D4]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
             {[
               { value: '99.9%', label: 'Uptime SLA Target', color: 'text-aqua' },
-              { value: '2hr', label: 'Support Response', color: 'text-purple-400' },
-              { value: '256-bit', label: 'AES Encryption', color: 'text-green-400' },
-              { value: '24/7', label: 'Monitoring', color: 'text-yellow-400' },
+              { value: '2hr', label: 'Support Response', color: 'text-[#8B4513]' },
+              { value: '256-bit', label: 'AES Encryption', color: 'text-green-700' },
+              { value: '24/7', label: 'Monitoring', color: 'text-amber-700' },
             ].map((stat, i) => (
               <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="text-center">
                 <div className={`text-3xl font-black lg:text-4xl mb-1 ${stat.color}`}>{stat.value}</div>
-                <div className="text-sm text-white/40">{stat.label}</div>
+                <div className="text-sm text-[#6B5D52]">{stat.label}</div>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── MEET THE FOUNDERS ── */}
+      {/* ── MEET THE TEAM ── */}
       <MeetFoundersSection />
-
-      {/* ── DEVELOPER SECTION ── */}
-      <DeveloperSection language={language} />
 
       {/* ── LET'S TALK ── */}
       <LetsTalkSection language={language} />
@@ -1441,20 +1418,20 @@ export default function Home() {
       <ReviewsSection />
 
       {/* ── CTA ── */}
-      <section className="py-20 relative overflow-hidden border-t border-white/5">
+      <section className="py-20 relative overflow-hidden border-t border-[#E8E0D4]">
         <div className="absolute inset-0 hero-glow opacity-30 pointer-events-none" />
         <div className="relative mx-auto max-w-4xl px-4 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-4xl font-black text-white sm:text-5xl mb-6">{t('cta.title')}</h2>
-            <p className="text-white/50 mb-8 text-lg">{t('cta.subtitle')}</p>
+            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-6">{t('cta.title')}</h2>
+            <p className="text-[#3D3128] mb-8 text-lg">{t('cta.subtitle')}</p>
             <div className="flex gap-4 justify-center flex-wrap">
               <Link href="/book-demo">
-                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 gradient-bg text-black font-bold px-8 py-4 rounded-2xl cursor-pointer">
+                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl cursor-pointer">
                   {t('cta.demo')} <ArrowRight className="h-4 w-4" />
                 </motion.span>
               </Link>
               <Link href="/contact">
-                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 border border-white/20 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-white/5 cursor-pointer">
+                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 border border-[#E8E0D4] text-[#1A1410] font-semibold px-8 py-4 rounded-2xl hover:bg-[#F0E8DC] cursor-pointer">
                   {t('cta.contact')}
                 </motion.span>
               </Link>

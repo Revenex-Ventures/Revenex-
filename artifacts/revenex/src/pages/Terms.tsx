@@ -108,7 +108,7 @@ export default function Terms() {
         <div className="relative mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <Link href="/">
-              <span className="inline-flex items-center gap-2 text-sm text-white/40 hover:text-aqua transition-colors cursor-pointer mb-8 group">
+              <span className="inline-flex items-center gap-2 text-sm text-[#6B5D52] hover:text-aqua transition-colors cursor-pointer mb-8 group">
                 <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
                 Back to Home
               </span>
@@ -118,11 +118,11 @@ export default function Terms() {
                 <FileText className="h-6 w-6 text-black" />
               </div>
               <div>
-                <h1 className="text-4xl font-black text-white sm:text-5xl">Terms of Service</h1>
-                <p className="text-white/30 text-sm mt-1">Last updated: June 2026</p>
+                <h1 className="text-4xl font-black text-[#1A1410] sm:text-5xl">Terms of Service</h1>
+                <p className="text-[#6B5D52] text-sm mt-1">Last updated: June 2026</p>
               </div>
             </div>
-            <p className="text-white/50 leading-relaxed mt-4">
+            <p className="text-[#3D3128] leading-relaxed mt-4">
               Please read these Terms of Service carefully before using the REVENEX platform operated by REVENEX VENTURES PRIVATE LIMITED. These Terms govern your access to and use of the REVENEX school ERP platform and services.
             </p>
           </motion.div>
@@ -146,7 +146,7 @@ export default function Terms() {
                   {section.content.map((item, j) => (
                     <li key={item} className="flex items-start gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-aqua/50 mt-2 shrink-0" />
-                      <p className="text-sm text-white/55 leading-relaxed">{item}</p>
+                      <p className="text-sm text-[#3D3128] leading-relaxed">{item}</p>
                     </li>
                   ))}
                 </ul>
@@ -160,7 +160,7 @@ export default function Terms() {
             viewport={{ once: true }}
             className="mt-8 glass-card rounded-2xl p-6 border border-aqua/10 text-center"
           >
-            <p className="text-sm text-white/40">
+            <p className="text-sm text-[#6B5D52]">
               Questions about these Terms? Contact us at{' '}
               <a href="mailto:team@revenex.in" className="text-aqua hover:underline">team@revenex.in</a>
             </p>
