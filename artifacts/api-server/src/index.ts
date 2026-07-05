@@ -1,6 +1,5 @@
 import app from "./app";
 import { logger } from "./lib/logger";
-import { seedAdmin } from "./lib/seed";
 
 const rawPort = process.env["PORT"];
 
@@ -23,6 +22,4 @@ app.listen(port, (err) => {
   }
 
   logger.info({ port }, "Server listening");
-
-  void seedAdmin().catch((e) => logger.warn({ e }, "Seed failed"));
 });

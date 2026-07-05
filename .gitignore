@@ -1,47 +1,49 @@
-# Dependencies
-node_modules/
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-# Build outputs
-dist/
-tmp/
-out-tsc/
+# compiled output
+dist
+tmp
+out-tsc
 *.tsbuildinfo
+.expo
+.expo-shared
 
-# Secrets — never commit these
-.env
-.env.local
-.env.production
-.env.*.local
-artifacts/api-server/.env
-artifacts/revenex/.env.local
+# dependencies
+node_modules
 
-# pnpm lock (has registry URLs)
-pnpm-lock.yaml
-
-# Expo
-.expo/
-.expo-shared/
-
-# IDE
-.idea/
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
 *.sublime-workspace
 
-# OS
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
 .DS_Store
 Thumbs.db
 
-# Logs
-npm-debug.log*
-yarn-error.log*
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md
 
-# Replit / CI
+# Replit
 .cache/
 .local/
-.agents/
-attached_assets/
-.replit
-.replitignore
-.replit-artifact/

@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+tmp/
+out-tsc/
+*.tsbuildinfo
+
+# Secrets — never commit these
+.env
+.env.local
+.env.production
+.env.*.local
+artifacts/api-server/.env
+artifacts/revenex/.env.local
+
+# pnpm lock (has registry URLs)
+pnpm-lock.yaml
+
+# Expo
+.expo/
+.expo-shared/
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+
+# Replit / CI
+.cache/
+.local/
+.agents/
+attached_assets/
+.replit
+.replitignore
+.replit-artifact/
