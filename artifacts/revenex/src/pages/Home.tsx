@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence } from 'framer-motion'
@@ -31,6 +31,38 @@ function SectionBadge({ label }: { label: string }) {
     <div className="flex justify-center mb-5">
       <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC]">
         <span className="text-[11px] font-black text-[#3D3128] uppercase tracking-widest">{label}</span>
+      </div>
+    </div>
+  )
+}
+
+/* ─── Animated section divider ─── */
+function SectionDivider() {
+  return (
+    <div className="relative w-full h-10 overflow-hidden">
+      <div
+        className="absolute top-1/2 left-0 w-full h-px -translate-y-1/2"
+        style={{ background: 'linear-gradient(90deg, transparent 0%, #D4B896 20%, #8B4513 50%, #D4B896 80%, transparent 100%)' }}
+      />
+      <motion.div
+        className="absolute top-1/2 w-3 h-3 rounded-full -translate-y-1/2"
+        style={{ background: '#8B4513', opacity: 0.6 }}
+        animate={{ x: ['-10vw', '110vw'] }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+      />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-3">
+        <motion.div
+          className="w-2 h-2 rotate-45"
+          style={{ background: '#8B4513' }}
+          animate={{ rotate: [45, 405] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+        />
+        <motion.div
+          className="w-2 h-2 rotate-45"
+          style={{ background: '#8B4513' }}
+          animate={{ rotate: [45, 405] }}
+          transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+        />
       </div>
     </div>
   )
@@ -94,10 +126,15 @@ const howItWorks = [
     color: '#8B4513',
     glow: 'rgba(139, 69, 19,0.22)',
     bg: 'rgba(139, 69, 19,0.09)',
+    iconBg: 'linear-gradient(135deg, #F0E8DC, #E8DDD0)',
+    iconColor: '#8B4513',
+    dark: false,
+    iconAnim: { y: [0, -4, 0] },
+    iconAnimTransition: { repeat: Infinity, duration: 2 },
   },
   {
     step: '02',
-    icon: Cpu,
+    icon: Settings2,
     titleEn: 'Custom ERP Setup',
     descEn: 'We set up the platform to match your processes and rules.',
     detailEn: 'We migrate data and apply your branding.',
@@ -105,6 +142,11 @@ const howItWorks = [
     color: '#7C3D0F',
     glow: 'rgba(124, 61, 15,0.22)',
     bg: 'rgba(124, 61, 15,0.09)',
+    iconBg: 'linear-gradient(135deg, #1A1410, #3D2810)',
+    iconColor: '#FFFFFF',
+    dark: true,
+    iconAnim: { rotate: [0, 360] },
+    iconAnimTransition: { repeat: Infinity, duration: 6, ease: 'linear' },
   },
   {
     step: '03',
@@ -116,6 +158,11 @@ const howItWorks = [
     color: '#166534',
     glow: 'rgba(22, 101, 52,0.22)',
     bg: 'rgba(22, 101, 52,0.09)',
+    iconBg: 'linear-gradient(135deg, #F0E8DC, #E8DDD0)',
+    iconColor: '#8B4513',
+    dark: false,
+    iconAnim: { y: [0, -4, 0] },
+    iconAnimTransition: { repeat: Infinity, duration: 2.5 },
   },
   {
     step: '04',
@@ -127,6 +174,11 @@ const howItWorks = [
     color: '#166534',
     glow: 'rgba(22, 101, 52,0.22)',
     bg: 'rgba(22, 101, 52,0.09)',
+    iconBg: 'linear-gradient(135deg, #1A1410, #3D2810)',
+    iconColor: '#FFFFFF',
+    dark: true,
+    iconAnim: { scaleX: [1, 1.2, 1] },
+    iconAnimTransition: { repeat: Infinity, duration: 1.5 },
   },
 ]
 
@@ -159,95 +211,119 @@ function PartnersMarquee() {
 }
 
 /* ─── How It Works step item (left vertical timeline, icon box + tag pills) ─── */
-function HowStep({ step, isLast }: { step: typeof howItWorks[0]; isLast: boolean }) {
+function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: number; isLast: boolean }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-15% 0px -15% 0px' })
   const Icon = step.icon
+  const iconOnLeft = index % 2 === 0
 
-  return (
+  const iconEntrance = iconOnLeft
+    ? { initial: { opacity: 0, x: -60 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.55 } }
+    : { initial: { opacity: 0, x: 60 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.55, delay: 0.1 } }
+  const contentEntrance = iconOnLeft
+    ? { initial: { opacity: 0, x: 60 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.55, delay: 0.1 } }
+    : { initial: { opacity: 0, x: -60 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.55 } }
+
+  const iconBlock = (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.3, y: 12 }}
-      transition={{ duration: 0.55 }}
-      className="relative grid grid-cols-[64px_1fr] gap-6 lg:gap-8"
+      initial={iconEntrance.initial}
+      whileInView={iconEntrance.animate}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={iconEntrance.transition}
+      className="relative flex flex-col items-center shrink-0"
     >
-      {/* Left column — icon box + connector dot */}
-      <div className="relative flex flex-col items-center">
-        <motion.div
-          animate={isInView
-            ? { boxShadow: `0 0 22px ${step.glow}, 0 0 44px ${step.glow}` }
-            : { boxShadow: '0 0 0px transparent' }}
-          transition={{ duration: 0.55 }}
-          className="relative z-10 w-14 h-14 lg:w-[60px] lg:h-[60px] rounded-2xl flex items-center justify-center shrink-0 bg-white"
-          style={{ border: `1.5px solid ${step.color}30` }}
-        >
-          <div className="absolute inset-0 rounded-2xl" style={{ background: step.bg }} />
-          <Icon className="relative h-6 w-6" style={{ color: step.color }} />
-          <span
-            className="absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black text-white leading-none z-10"
-            style={{ background: step.color }}
-          >
-            {step.step}
-          </span>
+      <motion.div
+        className="relative z-10 w-20 h-20 rounded-3xl flex items-center justify-center"
+        style={{ background: step.iconBg, boxShadow: '0 8px 32px rgba(139,69,19,0.15)' }}
+      >
+        <motion.div animate={step.iconAnim} transition={step.iconAnimTransition}>
+          <Icon className="h-8 w-8" style={{ color: step.iconColor }} />
         </motion.div>
-        {!isLast && (
-          <motion.span
-            className="w-2 h-2 rounded-full mt-3 shrink-0"
-            animate={{ opacity: isInView ? 1 : 0.3, scale: isInView ? 1 : 0.6 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-            style={{ background: step.color }}
-          />
-        )}
-      </div>
+        <motion.span
+          initial={{ scale: 0 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ type: 'spring', stiffness: 400 }}
+          className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white leading-none z-10"
+          style={{ background: '#8B4513' }}
+        >
+          {step.step}
+        </motion.span>
+      </motion.div>
+      {!isLast && (
+        <motion.span
+          className="w-5 h-5 rounded-full mt-3 shrink-0"
+          initial={{ scale: 0 }}
+          whileInView={{ scale: [0, 1.5, 1] }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, type: 'spring' }}
+          style={{ background: '#8B4513', border: '3px solid #F5F0E8', boxShadow: '0 0 0 3px rgba(139,69,19,0.2)' }}
+        />
+      )}
+    </motion.div>
+  )
 
-      {/* Right column — content */}
-      <div className={`${isLast ? 'pb-0' : 'pb-10 lg:pb-14'}`}>
-        <div className="flex items-center gap-2 mb-3">
-          <span
-            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-widest uppercase"
+  const contentBlock = (
+    <motion.div
+      initial={contentEntrance.initial}
+      whileInView={contentEntrance.animate}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={contentEntrance.transition}
+      className="rounded-3xl p-8 max-w-md"
+      style={{
+        background: 'linear-gradient(135deg, #FDF8F3, #F5EDE0)',
+        border: '1px solid #E0D4C0',
+        boxShadow: '0 4px 20px rgba(139,69,19,0.07)',
+      }}
+    >
+      <span
+        className="inline-block px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.15em] mb-4"
+        style={{ background: '#1A1410', color: '#FFFFFF' }}
+      >
+        STEP {step.step}
+      </span>
+
+      <h3 className="text-2xl font-bold text-[#1A1410] mb-3">{step.titleEn}</h3>
+      <p className="text-[#3D3128] font-medium text-base">{step.descEn}</p>
+      <p className="text-[#6B5D52] text-sm mt-1 mb-5">{step.detailEn}</p>
+
+      <div className="flex flex-wrap gap-2 mt-5">
+        {step.tags.map((tag) => (
+          <motion.span
+            key={tag}
+            whileHover={{ y: -2, borderColor: '#8B4513', color: '#8B4513' }}
+            transition={{ duration: 0.2 }}
+            className="px-4 py-2 rounded-full text-xs font-medium"
             style={{
-              color: step.color,
-              background: `${step.color}14`,
-              border: `1px solid ${step.color}28`,
+              background: '#FFFFFF',
+              border: '1px solid #D4C4B0',
+              color: '#3D3128',
+              boxShadow: '0 2px 8px rgba(139,69,19,0.06)',
             }}
           >
-            STEP {step.step}
-          </span>
-        </div>
-
-        <h3 className="text-xl lg:text-2xl font-black text-[#1A1410] mb-3 leading-snug">{step.titleEn}</h3>
-        <p className="text-[#3D3128] leading-relaxed text-[15px] mb-2">{step.descEn}</p>
-        <p className="text-[#6B5D52] text-sm leading-relaxed mb-5">{step.detailEn}</p>
-
-        <div className="flex flex-wrap gap-2">
-          {step.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-3 py-1 rounded-full text-xs font-semibold"
-              style={{
-                color: step.color,
-                background: `${step.color}10`,
-                border: `1px solid ${step.color}22`,
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
+            {tag}
+          </motion.span>
+        ))}
       </div>
     </motion.div>
   )
+
+  return (
+    <div className={`relative flex items-center gap-8 lg:gap-12 ${isLast ? 'pb-0' : 'pb-14 lg:pb-20'} ${iconOnLeft ? 'flex-row' : 'flex-row-reverse'}`}>
+      {iconBlock}
+      {contentBlock}
+    </div>
+  )
 }
 
-/* ─── How It Works — left vertical timeline with scroll-driven progress line ─── */
+/* ─── How It Works — alternating left/right timeline with scroll-driven progress line ─── */
 function HowItWorksSection({ language }: { language: string }) {
   const timelineRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: timelineRef,
     offset: ['start 0.75', 'end 0.6'],
   })
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
+  const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
     <section className="py-20 lg:py-28 relative overflow-hidden border-t border-[#E8E0D4]" id="how-it-works">
@@ -275,16 +351,21 @@ function HowItWorksSection({ language }: { language: string }) {
           </p>
         </motion.div>
 
-        {/* Left vertical timeline with animated progress line */}
-        <div ref={timelineRef} className="relative max-w-3xl">
-          <div className="absolute left-[27px] lg:left-[29px] top-7 bottom-7 w-px bg-[#E8E0D4]" />
-          <motion.div
-            className="absolute left-[27px] lg:left-[29px] top-7 w-px origin-top bg-gradient-to-b from-[#8B4513] via-[#7C3D0F] to-[#166534]"
-            style={{ height: lineHeight }}
+        {/* Center vertical timeline with scroll-driven progress line, alternating steps */}
+        <div ref={timelineRef} className="relative max-w-3xl mx-auto">
+          <div
+            className="absolute left-1/2 -translate-x-1/2 top-10 bottom-10 w-[2px]"
+            style={{ background: 'linear-gradient(180deg, #1A1410 0%, #8B4513 25%, #C4722A 50%, #8B4513 75%, #E8E0D4 100%)' }}
           />
-          {howItWorks.map((step) => (
-            <HowStep key={step.step} step={step} isLast={step.step === howItWorks[howItWorks.length - 1].step} />
-          ))}
+          <motion.div
+            className="absolute left-1/2 -translate-x-1/2 top-10 w-[2px] origin-top"
+            style={{ height: 'calc(100% - 5rem)', background: 'linear-gradient(180deg, #8B4513, #C4722A)', scaleY: lineScale }}
+          />
+          <div className="relative flex flex-col">
+            {howItWorks.map((step, i) => (
+              <HowStep key={step.step} step={step} index={i} isLast={i === howItWorks.length - 1} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -726,43 +807,29 @@ function WhyRevenexSection({ language }: { language: string }) {
               : 'हमने सिर्फ एक ऐप नहीं बनाया। हमने एक पूरा ऑपरेशन प्लेटफॉर्म बनाया।'}
           </p>
         </motion.div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {whyReasons.map((reason, i) => (
-            <motion.div
+        <div className="grid gap-5 sm:grid-cols-3">
+          {[whyReasons[0], whyReasons[1], whyReasons[2]].map((reason, i) => (
+            <BentoCard
               key={reason.slug}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-            >
-              <Link href={`/features/${reason.slug}`}>
-                <TiltCard
-                  className="glass-card rounded-2xl p-6 h-full cursor-pointer group relative overflow-hidden"
-                  style={{ border: `1px solid ${reason.border}` } as React.CSSProperties}
-                >
-                  <div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: `linear-gradient(135deg, ${reason.color}09 0%, transparent 100%)` }}
-                  />
-                  <div className="relative z-10">
-                    <div
-                      className="w-12 h-12 rounded-2xl mb-5 flex items-center justify-center"
-                      style={{ background: reason.bg }}
-                    >
-                      <reason.icon className="h-6 w-6" style={{ color: reason.color }} />
-                    </div>
-                    <h3 className="text-base font-bold text-[#1A1410] mb-3">{reason.title}</h3>
-                    <p className="text-sm text-[#6B5D52] leading-relaxed mb-5">{reason.desc}</p>
-                    <div
-                      className="flex items-center gap-1.5 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0"
-                      style={{ color: reason.color }}
-                    >
-                      Learn More <ArrowRight className="h-3.5 w-3.5" />
-                    </div>
-                  </div>
-                </TiltCard>
-              </Link>
-            </motion.div>
+              icon={reason.icon}
+              title={reason.title}
+              desc={reason.desc}
+              wide={reason.slug === 'security'}
+              index={i}
+            />
+          ))}
+        </div>
+        <div className="grid gap-5 sm:grid-cols-3 mt-5">
+          {[whyReasons[3], whyReasons[4], whyReasons[5]].map((reason, i) => (
+            <BentoCard
+              key={reason.slug}
+              icon={reason.icon}
+              title={reason.title}
+              desc={reason.desc}
+              wide={reason.slug === 'one-platform'}
+              index={i + 3}
+              onLearnMore={reason.slug === 'one-platform' ? () => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }) : undefined}
+            />
           ))}
         </div>
       </div>
@@ -780,6 +847,11 @@ function MeetFoundersSection() {
       desc: 'Leads business growth, client relationships, and strategic decision-making to deliver impactful digital solutions.',
       linkedin: 'https://www.linkedin.com/in/rounaksute/',
       color: '#8B4513',
+      cardBg: 'linear-gradient(160deg, #FDF8F3, #F0E8DC)',
+      band: 'linear-gradient(90deg, #8B4513, #C4722A)',
+      badgeBg: '#8B4513',
+      number: '01',
+      entrance: { initial: { opacity: 0, x: -80, rotate: -3 }, animate: { opacity: 1, x: 0, rotate: 0 }, transition: { duration: 0.6 } },
     },
     {
       name: 'Rohan Rajendra Raundal',
@@ -787,7 +859,12 @@ function MeetFoundersSection() {
       img: rohanNewImg,
       desc: 'Leads technology, product development, and innovation to build reliable and scalable digital products.',
       linkedin: 'https://www.linkedin.com/in/rohan-raundal/',
-      color: '#7C3D0F',
+      color: '#1A1410',
+      cardBg: 'linear-gradient(160deg, #F7F2EA, #EDE4D6)',
+      band: 'linear-gradient(90deg, #1A1410, #3D2810)',
+      badgeBg: '#1A1410',
+      number: '02',
+      entrance: { initial: { opacity: 0, y: 80 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: 0.15 } },
     },
     {
       name: 'Prasanna Mate',
@@ -795,7 +872,12 @@ function MeetFoundersSection() {
       img: prasannaImg,
       desc: 'Built REVENEX from scratch. Leads platform engineering to ensure reliability, performance, and smooth deployments.',
       linkedin: 'https://www.linkedin.com/in/prasanna-mate-a247b5328/',
-      color: '#3D3128',
+      color: '#8B4513',
+      cardBg: 'linear-gradient(160deg, #FDF8F3, #F0E8DC)',
+      band: 'linear-gradient(90deg, #8B4513, #C4722A)',
+      badgeBg: '#8B4513',
+      number: '03',
+      entrance: { initial: { opacity: 0, x: 80, rotate: 3 }, animate: { opacity: 1, x: 0, rotate: 0 }, transition: { duration: 0.6, delay: 0.1 } },
     },
   ]
 
@@ -815,40 +897,67 @@ function MeetFoundersSection() {
         </motion.div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto">
-          {homeFounders.map((f, i) => (
+          {homeFounders.map((f) => (
             <motion.div
               key={f.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={f.entrance.initial}
+              whileInView={f.entrance.animate}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.12 }}
+              transition={f.entrance.transition}
+              whileHover={{ scale: 1.03, y: -8, borderColor: '#C4A882', boxShadow: '0 24px 60px rgba(139,69,19,0.16)' }}
+              className="relative rounded-3xl overflow-hidden group text-center p-8 flex flex-col items-center"
+              style={{
+                background: f.cardBg,
+                border: '1px solid #E0D4C0',
+                boxShadow: '0 4px 24px rgba(139,69,19,0.08)',
+                minHeight: '480px',
+                transition: 'box-shadow 0.2s, border-color 0.2s',
+              }}
             >
-              <TiltCard className="glass-card animated-border rounded-3xl p-8 text-center group h-full">
-                <div className="relative inline-block mb-5">
-                  <img
-                    src={f.img}
-                    alt={f.name}
-                    className="w-24 h-24 rounded-2xl object-cover object-top mx-auto"
-                    style={{ border: `2px solid ${f.color}30` }}
-                  />
-                  <div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity duration-500"
-                    style={{ background: `radial-gradient(circle at center, ${f.color} 0%, transparent 70%)` }}
-                  />
+              <motion.div
+                className="absolute top-0 left-0 right-0 h-1.5"
+                style={{ background: f.band }}
+                whileHover={{ filter: 'brightness(1.15)' }}
+              />
+
+              <div className="relative inline-block mb-5 mt-2">
+                <div className="rounded-2xl p-1" style={{ border: '2px solid #D4C4B0' }}>
+                  <div className="rounded-2xl p-1" style={{ border: '2px solid #E0D4C0' }}>
+                    <motion.img
+                      src={f.img}
+                      alt={f.name}
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.3 }}
+                      className="w-28 h-28 rounded-xl object-cover object-top mx-auto"
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-black text-[#1A1410] mb-1">{f.name}</h3>
-                <p className="text-sm font-semibold mb-4" style={{ color: f.color }}>{f.role}</p>
-                <p className="text-[#6B5D52] text-sm leading-relaxed mb-6">{f.desc}</p>
-                <a
-                  href={f.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 rounded-xl border transition-all hover:scale-105"
-                  style={{ color: f.color, borderColor: `${f.color}30`, background: `${f.color}08` }}
-                >
-                  <Linkedin className="h-4 w-4" /> LinkedIn Profile
-                </a>
-              </TiltCard>
+              </div>
+
+              <h3 className="text-2xl font-bold text-[#1A1410] mt-1 mb-1">{f.name}</h3>
+              <span
+                className="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-semibold text-white mb-4"
+                style={{ background: f.badgeBg }}
+              >
+                {f.role}
+              </span>
+              <p className="text-[#3D3128] text-sm leading-relaxed mt-4 mb-6">{f.desc}</p>
+
+              <motion.a
+                href={f.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.02, backgroundColor: '#1A1410', color: '#FFFFFF' }}
+                whileTap={{ scale: 0.98 }}
+                className="inline-flex items-center gap-2 rounded-full px-6 py-2.5 font-semibold text-sm mt-auto"
+                style={{ background: 'transparent', border: '1.5px solid #1A1410', color: '#1A1410' }}
+              >
+                <Linkedin className="h-4 w-4" /> LinkedIn Profile
+              </motion.a>
+
+              <span className="absolute bottom-6 right-6 text-6xl font-black opacity-40 pointer-events-none select-none" style={{ color: '#E0D4C0' }}>
+                {f.number}
+              </span>
             </motion.div>
           ))}
         </div>
@@ -857,8 +966,83 @@ function MeetFoundersSection() {
   )
 }
 
+/* ─── Bento feature card (shared by Features + Why Revenex) ─── */
+function BentoCard({
+  icon: Icon, title, desc, wide, index, pills, onLearnMore, learnMoreLabel,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  desc: string
+  wide?: boolean
+  index: number
+  pills?: string[]
+  onLearnMore?: () => void
+  learnMoreLabel?: string
+}) {
+  const fromLeft = index % 2 === 0
+  const cardBg = wide
+    ? 'linear-gradient(135deg, #FDF8F3, #F0E8DC)'
+    : index % 2 === 0
+    ? '#FDF8F3'
+    : '#F7F2EA'
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: fromLeft ? -80 : 80 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      viewport={{ once: true, margin: '-60px' }}
+      transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.1 }}
+      whileHover={{ scale: 1.03, y: -6, borderColor: '#C4A882' }}
+      className={`group relative rounded-3xl border border-[#EDE8E3] p-8 overflow-hidden ${
+        wide ? 'sm:col-span-2 min-h-[180px] flex flex-col sm:flex-row items-center gap-8' : 'min-h-[220px]'
+      }`}
+      style={{ transition: 'box-shadow 0.2s', background: cardBg }}
+    >
+      <div
+        className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: 'linear-gradient(90deg, #8B4513, #C4722A, #8B4513)' }}
+      />
+      <div className={wide ? 'flex-1' : ''}>
+        <div
+          className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-colors duration-300"
+          style={{ background: 'linear-gradient(135deg, #F0E8DC, #E8DDD0)' }}
+        >
+          <Icon className="h-6 w-6 text-[#8B4513]" />
+        </div>
+        <h3 className="text-xl font-bold text-[#1A1410] mb-2">{title}</h3>
+        <p className="text-[#3D3128] text-sm leading-relaxed">{desc}</p>
+      </div>
+
+      {wide && pills && (
+        <div className="flex flex-wrap gap-2 sm:justify-end sm:shrink-0">
+          {pills.map((pill) => (
+            <span key={pill} className="bg-[#F0E8DC] text-[#8B4513] rounded-full px-4 py-2 text-sm font-medium">
+              {pill}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {wide && onLearnMore && (
+        <motion.button
+          onClick={onLearnMore}
+          whileHover={{ x: 4, backgroundColor: '#8B4513' }}
+          className="bg-[#1A1410] text-white rounded-full px-6 py-3 font-semibold text-sm shrink-0 whitespace-nowrap"
+        >
+          {learnMoreLabel || 'Learn More →'}
+        </motion.button>
+      )}
+
+      <Icon className="absolute bottom-3 right-3 h-20 w-20 text-[#F0E8DC] opacity-20 pointer-events-none" />
+    </motion.div>
+  )
+}
+
 /* ─── Features section ─── */
 function FeaturesSection({ t }: { t: (key: string) => string }) {
+  const wideSlugs = ['student-management', 'security']
+  const studentPills = ['2,847+ Students', 'Admission to Alumni', 'Bulk Import Ready']
+  const securityPills = ['256-bit Encryption', 'Role-Based Access', 'GDPR Compliant']
+
   return (
     <section id="features" className="py-20 lg:py-28 relative">
       <div className="absolute inset-0 section-glow-left pointer-events-none" />
@@ -868,8 +1052,24 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{t('features.title')}</h2>
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{t('features.subtitle')}</p>
         </motion.div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, i) => (
+        <div className="grid gap-5 sm:grid-cols-3">
+          {[features[0], features[1], features[2], features[3], features[4], features[7]].map((feature, i) => {
+            const isWide = wideSlugs.includes(feature.slug)
+            return (
+              <BentoCard
+                key={feature.slug}
+                icon={feature.icon}
+                title={feature.title}
+                desc={feature.desc}
+                wide={isWide}
+                index={i}
+                pills={feature.slug === 'student-management' ? studentPills : feature.slug === 'security' ? securityPills : undefined}
+              />
+            )
+          })}
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 mt-5">
+          {[features[5], features[6]].map((feature, i) => (
             <motion.div
               key={feature.slug}
               initial={{ opacity: 0, y: 30 }}
@@ -1102,44 +1302,75 @@ function ProductsSection() {
         </motion.p>
 
         <motion.div key={tab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="grid gap-6 sm:grid-cols-3">
-          {active.cards.map((card, i) => (
-            <motion.div
-              key={card.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-              whileHover={{ y: -6 }}
-              className="group relative rounded-3xl p-7 h-full bg-white border border-[#E8E0D4] hover:border-transparent transition-all duration-300 hover:shadow-2xl overflow-hidden"
-            >
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{ background: `linear-gradient(160deg, ${card.color}0d 0%, transparent 60%)` }}
-              />
-              <div className="relative z-10">
-                <div className="inline-flex rounded-2xl p-3.5 mb-5" style={{ background: `${card.color}14` }}>
-                  <card.icon className="h-6 w-6" style={{ color: card.color }} />
-                </div>
-                <h3 className="text-lg font-black text-[#1A1410] mb-2">{card.title}</h3>
-                <p className="text-sm text-[#6B5D52] leading-relaxed mb-5">{card.desc}</p>
-                <ul className="space-y-2.5 mb-6">
-                  {card.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-[13px] text-[#3D3128]">
-                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: card.color }} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link href={`/features/${card.slug}`}>
-                  <span
-                    className="inline-flex items-center gap-1.5 text-sm font-bold opacity-70 group-hover:opacity-100 group-hover:gap-2.5 transition-all"
-                    style={{ color: card.color }}
-                  >
-                    Explore Features <ArrowRight className="h-3.5 w-3.5" />
+          {active.cards.map((card, i) => {
+            const entrance = i === 0
+              ? { initial: { opacity: 0, x: -100 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.65 } }
+              : i === 1
+              ? { initial: { opacity: 0, y: 80 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: 0.15 } }
+              : { initial: { opacity: 0, x: 100 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.65, delay: 0.1 } }
+            return (
+              <motion.div
+                key={card.title}
+                initial={entrance.initial}
+                whileInView={entrance.animate}
+                viewport={{ once: true }}
+                transition={entrance.transition}
+                whileHover={{ y: -8 }}
+                className="group relative rounded-3xl overflow-hidden min-h-[520px]"
+                style={{
+                  boxShadow: '0 4px 20px rgba(139,69,19,0.06)',
+                  background: i === 0
+                    ? 'linear-gradient(160deg, #FDF8F3, #F5EDE0)'
+                    : i === 1
+                    ? 'linear-gradient(160deg, #F7F2EA, #EDE4D6)'
+                    : 'linear-gradient(160deg, #FDF8F3, #F5EDE0)',
+                }}
+              >
+                <motion.div
+                  className="h-2 w-full"
+                  style={{ background: 'linear-gradient(90deg, #8B4513, #C4722A, #8B4513)', backgroundSize: '200% 100%' }}
+                  animate={{ backgroundPosition: ['0% 0%', '200% 0%'] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                />
+                <div className="relative p-8">
+                  <span className="absolute top-6 right-6 text-5xl font-black text-[#F0E8DC] opacity-50 pointer-events-none select-none">
+                    {String(i + 1).padStart(2, '0')}
                   </span>
-                </Link>
-              </div>
-            </motion.div>
-          ))}
+                  <motion.div
+                    whileHover={{ rotate: [0, -10, 10, 0] }}
+                    transition={{ duration: 0.4 }}
+                    className="w-20 h-20 rounded-3xl mb-6 flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, #1A1410, #3D2810)', boxShadow: '0 8px 32px rgba(26,20,16,0.25)' }}
+                  >
+                    <card.icon className="h-8 w-8 text-white" />
+                  </motion.div>
+                  <h3 className="text-2xl font-bold text-[#1A1410] mb-2">{card.title}</h3>
+                  <p className="text-[#6B5D52] text-sm leading-relaxed mb-6">{card.desc}</p>
+                  <div className="h-px mb-6" style={{ background: 'linear-gradient(90deg, transparent, #E8E0D4, transparent)' }} />
+                  <ul className="mb-6">
+                    {card.features.map((f) => (
+                      <li key={f} className="group/item flex items-start gap-3 py-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#8B4513] mt-2 shrink-0 transition-all duration-200 group-hover/item:w-3 group-hover/item:h-3" />
+                        <span className="text-[#3D3128] text-sm font-medium transition-all duration-200 group-hover/item:translate-x-1.5 group-hover/item:text-[#8B4513]">
+                          {f}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex items-center justify-between">
+                    <span className="bg-[#F0E8DC] text-[#8B4513] rounded-full px-4 py-2 text-xs font-bold uppercase">
+                      {tab === 'school' ? 'School ERP' : 'Business CRM'}
+                    </span>
+                    <Link href={`/features/${card.slug}`}>
+                      <span className="text-[#8B4513] font-bold text-sm hover:translate-x-1.5 inline-block transition-transform">
+                        Explore →
+                      </span>
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            )
+          })}
         </motion.div>
       </div>
     </section>
@@ -1147,23 +1378,66 @@ function ProductsSection() {
 }
 
 /* ─── Pricing section (luxury upgrade) ─── */
+function useCountUp(target: number, duration: number, trigger: boolean) {
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (!trigger) return
+    let start = 0
+    const step = target / (duration / 16)
+    const timer = setInterval(() => {
+      start += step
+      if (start >= target) {
+        setCount(target)
+        clearInterval(timer)
+      } else {
+        setCount(Math.floor(start))
+      }
+    }, 16)
+    return () => clearInterval(timer)
+  }, [trigger, target, duration])
+  return count
+}
+
 function PricingSection() {
   const starter = {
     name: 'Starter',
     price: '₹0',
     period: '/forever',
     desc: 'For schools and businesses just getting started with digital management.',
-    features: ['Up to 100 students/records', 'Attendance & basic reporting', 'Parent/customer dashboard', 'Email support'],
+    features: [
+      'Up to 500 students/records',
+      'Principal, Teacher & Parent dashboards',
+      'Digital attendance management',
+      'Fee tracking & payment reminders',
+      'Student result upload & report cards',
+      'Basic analytics & reporting dashboard',
+      'WhatsApp & SMS notifications',
+      'Free onboarding & setup support',
+    ],
     cta: 'Get Started Free',
   }
   const growth = {
     name: 'Growth',
-    price: '₹20,000',
     period: '/year',
     desc: 'For institutions ready to scale with automation and priority support.',
-    features: ['Unlimited students/records', 'Fee collection & payroll automation', 'Advanced analytics & reports', 'Priority support', 'Custom onboarding'],
+    features: [
+      'Everything in Starter',
+      'Unlimited students & records',
+      'Advanced analytics & custom reports',
+      'AI-powered fee reminder engine',
+      'Multi-teacher & multi-class management',
+      'Staff payroll management system',
+      'Parent mobile app full access',
+      'Priority support & dedicated manager',
+      'Data export & migration support',
+      'Custom branding & white-label option',
+    ],
     cta: 'Schedule a Demo',
   }
+
+  const growthRef = useRef(null)
+  const growthInView = useInView(growthRef, { once: true, margin: '-100px' })
+  const growthPrice = useCountUp(20000, 1500, growthInView)
 
   return (
     <section id="pricing" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
@@ -1174,78 +1448,132 @@ function PricingSection() {
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Start free. Upgrade when you're ready to grow.</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto items-center">
-          {/* Starter — flat, minimal white card */}
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto items-center">
+          {/* Starter — flat, minimal white luxury card */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -60 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="rounded-3xl p-8 border border-[#E8E0D4] bg-white"
+            transition={{ duration: 0.6 }}
+            className="rounded-3xl p-10 bg-white min-h-[680px] flex flex-col"
+            style={{ border: '1.5px solid #E8E0D4', boxShadow: '0 8px 40px rgba(139,69,19,0.08)' }}
           >
-            <h3 className="text-xl font-black text-[#1A1410] mb-1">{starter.name}</h3>
-            <p className="text-sm text-[#6B5D52] mb-5">{starter.desc}</p>
-            <div className="flex items-end gap-1 mb-6">
-              <span className="text-4xl font-black text-[#1A1410]">{starter.price}</span>
-              <span className="text-sm text-[#6B5D52] mb-1">{starter.period}</span>
+            <span className="text-xs uppercase tracking-[0.25em] text-[#6B5D52] font-medium">Starter</span>
+            <p className="text-[#6B5D52] text-sm mt-1 mb-6">{starter.desc}</p>
+            <div className="flex items-end gap-1">
+              <span className="text-3xl font-black text-[#1A1410] self-start mt-2">₹</span>
+              <span className="text-8xl font-black text-[#1A1410] leading-none">0</span>
+              <span className="text-[#6B5D52] text-lg self-end mb-3">/forever</span>
             </div>
-            <ul className="space-y-3 mb-8">
-              {starter.features.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm text-[#3D3128]">
-                  <CheckCircle2 className="h-4 w-4 text-[#7C3D0F] shrink-0 mt-0.5" />
-                  {f}
-                </li>
+            <span className="inline-block bg-[#F0E8DC] text-[#8B4513] rounded-full text-xs px-4 py-2 font-medium mt-3 w-fit">
+              Free for schools under 500 students
+            </span>
+            <div className="h-px my-8" style={{ background: 'linear-gradient(90deg, transparent, #E8E0D4, transparent)' }} />
+            <ul className="space-y-1 mb-8 flex-1">
+              {starter.features.map((f, idx) => (
+                <motion.li
+                  key={f}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.05 }}
+                  className="group flex items-center gap-3 py-1.5 transition-transform duration-200 hover:translate-x-1"
+                >
+                  <span className="w-5 h-5 rounded-full bg-[#F0E8DC] flex items-center justify-center shrink-0 transition-colors duration-200 group-hover:bg-[#8B4513]">
+                    <CheckCircle2 className="h-3 w-3 text-[#8B4513] group-hover:text-white transition-colors duration-200" />
+                  </span>
+                  <span className="text-[#3D3128] text-sm">{f}</span>
+                </motion.li>
               ))}
             </ul>
             <Link href="/book-demo">
               <motion.span
                 whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-sm font-bold cursor-pointer border border-[#1A1410] text-[#1A1410] hover:bg-[#F0E8DC] transition-all"
+                whileTap={{ scale: 0.97 }}
+                className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl text-base font-bold cursor-pointer border-2 border-[#1A1410] text-[#1A1410] hover:bg-[#1A1410] hover:text-white hover:shadow-lg transition-all"
               >
                 {starter.cta} <ArrowRight className="h-4 w-4" />
               </motion.span>
             </Link>
           </motion.div>
 
-          {/* Growth — elevated dark gradient, most popular */}
+          {/* Growth — elevated dark gradient, breathing glow, most popular */}
           <motion.div
-            initial={{ opacity: 0, y: 30, scale: 0.96 }}
-            whileInView={{ opacity: 1, y: -14, scale: 1 }}
+            ref={growthRef}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: -20 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative rounded-3xl p-8"
-            style={{ background: 'linear-gradient(155deg, #2A1A0F 0%, #1A1410 100%)', boxShadow: '0 30px 60px -15px rgba(26,20,16,0.5)' }}
+            transition={{ duration: 0.6, delay: 0.18 }}
           >
             <motion.div
-              animate={{ y: [0, -4, 0] }}
-              transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
-              className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full gradient-bg text-white text-xs font-bold uppercase tracking-widest shadow-lg whitespace-nowrap"
+              animate={{
+                boxShadow: [
+                  '0 0 40px rgba(139,69,19,0.2), 0 32px 80px rgba(26,20,16,0.4)',
+                  '0 0 80px rgba(139,69,19,0.4), 0 32px 80px rgba(26,20,16,0.4)',
+                  '0 0 40px rgba(139,69,19,0.2), 0 32px 80px rgba(26,20,16,0.4)',
+                ],
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              className="relative rounded-3xl p-10 min-h-[720px] flex flex-col overflow-hidden"
+              style={{ background: 'linear-gradient(160deg, #1A1410 0%, #2D1F14 60%, #1A1410 100%)' }}
             >
-              Most Popular
-            </motion.div>
-            <h3 className="text-xl font-black text-white mb-1">{growth.name}</h3>
-            <p className="text-sm text-white/60 mb-5">{growth.desc}</p>
-            <div className="flex items-end gap-1 mb-6">
-              <span className="text-4xl font-black text-white">{growth.price}</span>
-              <span className="text-sm text-white/50 mb-1">{growth.period}</span>
-            </div>
-            <ul className="space-y-3 mb-8">
-              {growth.features.map((f) => (
-                <li key={f} className="flex items-start gap-2.5 text-sm text-white/80">
-                  <CheckCircle2 className="h-4 w-4 text-[#D4A574] shrink-0 mt-0.5" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Link href="/book-demo">
-              <motion.span
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-sm font-bold cursor-pointer gradient-bg text-white shadow-lg"
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <motion.div
+                  className="absolute -top-16 -right-16 w-64 h-64 rounded-full"
+                  style={{ background: 'rgba(139,69,19,0.08)' }}
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 6, repeat: Infinity }}
+                />
+                <motion.div
+                  className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full"
+                  style={{ background: 'rgba(196,114,42,0.06)' }}
+                  animate={{ scale: [1.2, 1, 1.2] }}
+                  transition={{ duration: 6, repeat: Infinity }}
+                />
+              </div>
+
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-8 py-2.5 rounded-full text-white font-bold text-xs uppercase tracking-[0.15em] whitespace-nowrap"
+                style={{ background: 'linear-gradient(90deg, #8B4513, #C4722A)', boxShadow: '0 4px 20px rgba(139,69,19,0.5)' }}
               >
-                {growth.cta} <ArrowRight className="h-4 w-4" />
-              </motion.span>
-            </Link>
+                Most Popular
+              </motion.div>
+
+              <span className="relative text-xs uppercase tracking-[0.25em] text-white/45 font-medium">Growth</span>
+              <p className="relative text-white/60 text-sm mt-1 mb-6">{growth.desc}</p>
+              <div className="relative flex items-end gap-1">
+                <span className="text-3xl font-black text-white self-start mt-2">₹</span>
+                <span className="text-7xl font-black text-white leading-none">{growthPrice.toLocaleString('en-IN')}</span>
+                <span className="text-white/60 text-lg self-end mb-3">{growth.period}</span>
+              </div>
+              <p className="relative text-sm text-white/40 mt-1">₹1,667/month billed annually</p>
+
+              <div className="relative h-px my-8" style={{ background: 'rgba(255,255,255,0.1)' }} />
+
+              <ul className="relative space-y-1 mb-8 flex-1">
+                {growth.features.map((f) => (
+                  <li key={f} className="group flex items-center gap-3 py-1.5 transition-transform duration-200 hover:translate-x-1">
+                    <span className="w-5 h-5 rounded-full flex items-center justify-center shrink-0 transition-colors duration-200 group-hover:bg-[#8B4513]" style={{ background: 'rgba(255,255,255,0.1)' }}>
+                      <CheckCircle2 className="h-3 w-3 text-[#C4722A] group-hover:text-white transition-colors duration-200" />
+                    </span>
+                    <span className="text-sm" style={{ color: 'rgba(255,255,255,0.85)' }}>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <Link href="/book-demo">
+                <motion.span
+                  whileHover={{ scale: 1.02, filter: 'brightness(1.08)' }}
+                  whileTap={{ scale: 0.97 }}
+                  className="relative flex items-center justify-center gap-2 w-full py-4 rounded-2xl text-base font-bold cursor-pointer text-white"
+                  style={{ background: 'linear-gradient(90deg, #8B4513, #C4722A)', boxShadow: '0 8px 32px rgba(139,69,19,0.45)' }}
+                >
+                  {growth.cta} <ArrowRight className="h-4 w-4" />
+                </motion.span>
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </div>
@@ -1434,29 +1762,45 @@ export default function Home() {
       {/* ── PROBLEM (Before/After) ── */}
       <ProblemSection />
 
+      <SectionDivider />
+
       {/* ── FEATURES ── */}
       <FeaturesSection t={t} />
+
+      <SectionDivider />
 
       {/* ── WHY REVENEX ── */}
       <WhyRevenexSection language={language} />
 
+      <SectionDivider />
+
       {/* ── PRODUCTS ── */}
       <ProductsSection />
+
+      <SectionDivider />
 
       {/* ── HOW IT WORKS (vertical animated timeline) ── */}
       <HowItWorksSection language={language} />
 
+      <SectionDivider />
+
       {/* ── PRICING ── */}
       <PricingSection />
 
-      {/* ── REVIEWS / TESTIMONIALS ── */}
-      <ReviewsSection />
+      <SectionDivider />
 
       {/* ── MEET THE TEAM / ABOUT ── */}
       <MeetFoundersSection />
 
+      <SectionDivider />
+
       {/* ── LET'S TALK / CONTACT ── */}
       <LetsTalkSection language={language} />
+
+      <SectionDivider />
+
+      {/* ── REVIEWS / TESTIMONIALS ── */}
+      <ReviewsSection />
 
       {/* ── ENGINEERING SPECS ── */}
       <section className="py-12 border-y border-[#E8E0D4]">
