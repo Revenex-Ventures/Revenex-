@@ -1,13 +1,14 @@
 import { useRef, useState } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
-import { motion, useScroll, useSpring, useInView, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence } from 'framer-motion'
 import {
   ArrowRight, Users, BookOpen, CreditCard, Bell, Calendar,
   BarChart3, Shield, Cpu, CheckCircle2, Zap, Cloud, Sparkles,
   GraduationCap, TrendingUp, Lock, Activity, Server,
   MessageSquare, Award, Star, Send, Globe2, Linkedin,
-  Mail, Phone, MapPin, Building2
+  Mail, Phone, MapPin, Building2, FileBarChart, Smartphone,
+  LayoutDashboard, BedDouble, UtensilsCrossed, ShoppingBag, Settings2,
 } from 'lucide-react'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
@@ -15,6 +16,11 @@ import { Chatbot } from '@/components/Chatbot'
 import Testimonials from '@/components/Testimonials'
 import { useLanguage } from '@/lib/language-context'
 import { useListReviews, getListReviewsQueryKey, useSubmitReview, useSubmitContact } from '@workspace/api-client-react'
+import googleCloudLogo from '@assets/image_1783259012481.png'
+import geminiLogo from '@assets/image_1783259044391.png'
+import razorpayLogo from '@assets/image_1783259072151.png'
+import firebaseLogo from '@assets/image_1783259104105.png'
+import twilioLogo from '@assets/image_1783259146914.png'
 const prasannaImg = '/Prasanna.jpg'
 const rounakNewImg = '/Rounak.jpg'
 const rohanNewImg = '/Rohan.jpg'
@@ -125,71 +131,12 @@ const howItWorks = [
 ]
 
 /* ─── Partner logos (white pill style) ─── */
-function FirebaseSVG() {
-  return (
-    <svg viewBox="0 0 58 83" className="h-5 w-auto shrink-0" aria-label="Firebase">
-      <path d="M1.87 59.8l.6-1.1 19.4-36.1.22-.41L10.57 5.11C8.87.83 3.11-.43.8 3.32L1.87 59.8z" fill="#FFC24A"/>
-      <path d="M1.87 59.8l.37-.25 5.76-2.94 13.64-7.45L9.31 22.2l-7.44 37.6z" fill="#FFA712"/>
-      <path d="M29.36 27.8l-5.89-6.63-13.51 26.99 19.4 11.64V27.8z" fill="#F4BD62"/>
-      <path d="M9.96 22.17L29.36 27.8v31.8L1.87 59.8z" fill="#FFA50E"/>
-      <path d="M57.2 59.8l-.37-.25L43.1 52.1l-5.89-12.65 5.89 2.06 5.89-31.5 8.21 49.79z" fill="#F6820C"/>
-      <path d="M29.36 27.8v31.8l27.84.2L29.36 27.8z" fill="#FDE068"/>
-      <path d="M29.36 59.6l27.84.2-.74.49L37.21 72l-7.85-12.4z" fill="#FCCA3F"/>
-      <path d="M29.36 59.6L1.87 59.8l27.49 12.2V59.6z" fill="#FFCD40"/>
-    </svg>
-  )
-}
-function GoogleCloudSVG() {
-  return (
-    <svg viewBox="0 0 256 212" className="h-5 w-auto shrink-0" aria-label="Google Cloud">
-      <path d="M158.752 50.392L128.03 21.015l-30.72 29.377L128.03 79.77l30.722-29.378z" fill="#EA4335"/>
-      <path d="M206.038 105.31c-7.245-36.695-39.498-64.317-78.008-64.317-38.51 0-70.763 27.622-78.008 64.317H206.038z" fill="#4285F4"/>
-      <path d="M50.022 105.31H18.476C7.693 124.51 1.5 146.41 1.5 169.735c0 23.325 6.193 45.225 16.976 64.425H50.02A109.863 109.863 0 0140.042 189.735c0-15.874 3.355-30.963 9.358-44.542l.622-1.438V105.31z" fill="#34A853"/>
-      <path d="M205.978 105.31h31.546c10.783 19.2 16.976 41.1 16.976 64.425 0 23.325-6.193 45.225-16.976 64.425h-31.544a109.862 109.862 0 009.978-44.425 109.862 109.862 0 00-9.98-44.425v-40z" fill="#FBBC05"/>
-      <path d="M128.03 234.16c38.51 0 70.763-27.622 78.008-64.317H50.022c7.245 36.695 39.498 64.317 78.008 64.317z" fill="#EA4335"/>
-    </svg>
-  )
-}
-function GeminiSVG() {
-  return (
-    <svg viewBox="0 0 28 28" className="h-5 w-auto shrink-0" aria-label="Gemini AI">
-      <defs>
-        <linearGradient id="gG" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#1C69FF"/>
-          <stop offset="100%" stopColor="#9966FF"/>
-        </linearGradient>
-      </defs>
-      <path d="M14 2C7.373 2 2 7.373 2 14s5.373 12 12 12 12-5.373 12-12S20.627 2 14 2zm-1.5 19.97v-4.94a6.5 6.5 0 010-6.06V6.03a10.001 10.001 0 010 15.94zm3 0V18.97a6.5 6.5 0 000-9.94V6.03a10.001 10.001 0 010 15.94z" fill="url(#gG)"/>
-    </svg>
-  )
-}
-function RazorpaySVG() {
-  return (
-    <svg viewBox="0 0 80 24" className="h-4 w-auto shrink-0" aria-label="Razorpay">
-      <path d="M7.08 0L0 24h6.24l7.08-24H7.08z" fill="#3395FF"/>
-      <path d="M14.16 0L7.08 24h6.24L20.4 0h-6.24z" fill="#072654"/>
-      <text x="26" y="19" fontFamily="Arial,sans-serif" fontWeight="800" fontSize="16" fill="#072654">razorpay</text>
-    </svg>
-  )
-}
-function TwilioSVG() {
-  return (
-    <svg viewBox="0 0 64 64" className="h-5 w-auto shrink-0" aria-label="Twilio">
-      <circle cx="32" cy="32" r="30" fill="none" stroke="#F22F46" strokeWidth="4"/>
-      <circle cx="21" cy="21" r="6" fill="#F22F46"/>
-      <circle cx="43" cy="21" r="6" fill="#F22F46"/>
-      <circle cx="21" cy="43" r="6" fill="#F22F46"/>
-      <circle cx="43" cy="43" r="6" fill="#F22F46"/>
-    </svg>
-  )
-}
-
 const partners = [
-  { name: 'Firebase', Svg: FirebaseSVG },
-  { name: 'Google Cloud', Svg: GoogleCloudSVG },
-  { name: 'Gemini AI', Svg: GeminiSVG },
-  { name: 'Razorpay', Svg: RazorpaySVG },
-  { name: 'Twilio', Svg: TwilioSVG },
+  { name: 'Google Cloud', logo: googleCloudLogo },
+  { name: 'Gemini', logo: geminiLogo },
+  { name: 'Razorpay', logo: razorpayLogo },
+  { name: 'Firebase', logo: firebaseLogo },
+  { name: 'Twilio', logo: twilioLogo },
 ]
 
 function PartnersMarquee() {
@@ -200,10 +147,10 @@ function PartnersMarquee() {
         {doubled.map((p, i) => (
           <div
             key={`${p.name}-${i}`}
-            className="flex items-center gap-2.5 shrink-0 px-5 py-3 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
+            className="flex items-center justify-center gap-3 shrink-0 min-w-[160px] h-14 px-6 py-3 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
+            style={{ boxShadow: '0 2px 8px rgba(139,69,19,0.06)' }}
           >
-            <p.Svg />
-            <span className="text-sm font-semibold text-[#3D3128] whitespace-nowrap">{p.name}</span>
+            <img src={p.logo} alt={p.name} className="block h-7 w-auto object-contain" />
           </div>
         ))}
       </div>
@@ -211,10 +158,10 @@ function PartnersMarquee() {
   )
 }
 
-/* ─── How It Works step item (MessPass-style premium timeline) ─── */
+/* ─── How It Works step item (left vertical timeline, icon box + tag pills) ─── */
 function HowStep({ step, isLast }: { step: typeof howItWorks[0]; isLast: boolean }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: false, margin: '-10% 0px -10% 0px' })
+  const isInView = useInView(ref, { once: true, margin: '-15% 0px -15% 0px' })
   const Icon = step.icon
 
   return (
@@ -223,36 +170,34 @@ function HowStep({ step, isLast }: { step: typeof howItWorks[0]; isLast: boolean
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.3, y: 12 }}
       transition={{ duration: 0.55 }}
-      className="grid grid-cols-[64px_1fr] gap-6 lg:gap-8"
+      className="relative grid grid-cols-[64px_1fr] gap-6 lg:gap-8"
     >
-      {/* Left column — icon badge + connector line */}
-      <div className="flex flex-col items-center">
+      {/* Left column — icon box + connector dot */}
+      <div className="relative flex flex-col items-center">
         <motion.div
           animate={isInView
             ? { boxShadow: `0 0 22px ${step.glow}, 0 0 44px ${step.glow}` }
             : { boxShadow: '0 0 0px transparent' }}
           transition={{ duration: 0.55 }}
-          className="relative w-14 h-14 lg:w-[60px] lg:h-[60px] rounded-2xl flex items-center justify-center shrink-0"
-          style={{ background: step.bg, border: `1.5px solid ${step.color}28` }}
+          className="relative z-10 w-14 h-14 lg:w-[60px] lg:h-[60px] rounded-2xl flex items-center justify-center shrink-0 bg-white"
+          style={{ border: `1.5px solid ${step.color}30` }}
         >
-          <Icon className="h-6 w-6" style={{ color: step.color }} />
+          <div className="absolute inset-0 rounded-2xl" style={{ background: step.bg }} />
+          <Icon className="relative h-6 w-6" style={{ color: step.color }} />
           <span
-            className="absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black text-black leading-none"
+            className="absolute -top-2 -right-2 w-5 h-5 rounded-full flex items-center justify-center text-[8px] font-black text-white leading-none z-10"
             style={{ background: step.color }}
           >
             {step.step}
           </span>
         </motion.div>
         {!isLast && (
-          <div className="w-px flex-1 mt-3 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.05)', minHeight: '40px' }}>
-            <motion.div
-              className="w-full origin-top"
-              initial={{ scaleY: 0 }}
-              animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
-              transition={{ duration: 0.7, delay: 0.25 }}
-              style={{ height: '100%', background: `linear-gradient(to bottom, ${step.color}80, transparent)` }}
-            />
-          </div>
+          <motion.span
+            className="w-2 h-2 rounded-full mt-3 shrink-0"
+            animate={{ opacity: isInView ? 1 : 0.3, scale: isInView ? 1 : 0.6 }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            style={{ background: step.color }}
+          />
         )}
       </div>
 
@@ -295,8 +240,15 @@ function HowStep({ step, isLast }: { step: typeof howItWorks[0]; isLast: boolean
   )
 }
 
-/* ─── How It Works vertical timeline (MessPass-style) ─── */
+/* ─── How It Works — left vertical timeline with scroll-driven progress line ─── */
 function HowItWorksSection({ language }: { language: string }) {
+  const timelineRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 0.75', 'end 0.6'],
+  })
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
+
   return (
     <section className="py-20 lg:py-28 relative overflow-hidden border-t border-[#E8E0D4]" id="how-it-works">
       <div className="absolute inset-0 bg-[#F0E8DC]" />
@@ -323,67 +275,15 @@ function HowItWorksSection({ language }: { language: string }) {
           </p>
         </motion.div>
 
-        {/* Steps */}
-        <div className="max-w-3xl">
+        {/* Left vertical timeline with animated progress line */}
+        <div ref={timelineRef} className="relative max-w-3xl">
+          <div className="absolute left-[27px] lg:left-[29px] top-7 bottom-7 w-px bg-[#E8E0D4]" />
+          <motion.div
+            className="absolute left-[27px] lg:left-[29px] top-7 w-px origin-top bg-gradient-to-b from-[#8B4513] via-[#7C3D0F] to-[#166534]"
+            style={{ height: lineHeight }}
+          />
           {howItWorks.map((step) => (
             <HowStep key={step.step} step={step} isLast={step.step === howItWorks[howItWorks.length - 1].step} />
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ─── Security section (inline) ─── */
-function SecuritySection({ language }: { language: string }) {
-  const features = [
-    { icon: Lock, title: '256-bit AES Encryption', desc: 'All data encrypted at rest and in transit.', color: 'text-[#7C3D0F]' },
-    { icon: Server, title: 'Google Cloud Hosting', desc: 'Redundant infrastructure, 99.9% uptime target.', color: 'text-[#8B4513]' },
-    { icon: Shield, title: 'Role-Based Access', desc: 'Principals, teachers, parents — each gets exactly what they need.', color: 'text-[#7C3D0F]' },
-    { icon: Activity, title: '24/7 Monitoring', desc: 'Automated alerts and continuous security scanning.', color: 'text-green-700' },
-    { icon: CheckCircle2, title: 'GDPR Compliant', desc: 'Student data handled with full regulatory compliance.', color: 'text-[#8B4513]' },
-    { icon: Zap, title: '2-Hour Support SLA', desc: 'Critical issues resolved fast. Real humans, no bots.', color: 'text-[#7C3D0F]' },
-  ]
-
-  return (
-    <section id="security" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
-      <div className="absolute inset-0 section-glow-left pointer-events-none" />
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-14"
-        >
-          <SectionBadge label="Security" />
-          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">
-            {language === 'en' ? 'Built for Trust' : 'विश्वास के लिए निर्मित'}
-          </h2>
-          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">
-            {language === 'en'
-              ? 'Your students\' data is your responsibility. We treat it like ours.'
-              : 'आपके छात्रों का डेटा आपकी जिम्मेदारी है। हम इसे अपना मानते हैं।'}
-          </p>
-        </motion.div>
-
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f, i) => (
-            <motion.div
-              key={f.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.07 }}
-              className="glass-card animated-border rounded-2xl p-6 flex items-start gap-4 group hover:border-[#E8E0D4] transition-all"
-            >
-              <div className="w-11 h-11 rounded-xl bg-[#F0E8DC] border border-[#E8E0D4] flex items-center justify-center shrink-0 group-hover:bg-[#F0E8DC] transition-colors">
-                <f.icon className={`h-5 w-5 ${f.color}`} />
-              </div>
-              <div>
-                <h3 className="font-bold text-[#1A1410] mb-1 text-[15px]">{f.title}</h3>
-                <p className="text-sm text-[#6B5D52] leading-relaxed">{f.desc}</p>
-              </div>
-            </motion.div>
           ))}
         </div>
       </div>
@@ -957,6 +857,158 @@ function MeetFoundersSection() {
   )
 }
 
+/* ─── Features section ─── */
+function FeaturesSection({ t }: { t: (key: string) => string }) {
+  return (
+    <section id="features" className="py-20 lg:py-28 relative">
+      <div className="absolute inset-0 section-glow-left pointer-events-none" />
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+          <SectionBadge label="Features" />
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{t('features.title')}</h2>
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{t('features.subtitle')}</p>
+        </motion.div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature, i) => (
+            <motion.div
+              key={feature.slug}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07 }}
+            >
+              <Link href={`/features/${feature.slug}`}>
+                <TiltCard className="glass-card animated-border rounded-2xl p-6 h-full cursor-pointer group relative overflow-hidden">
+                  <div
+                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ background: `linear-gradient(135deg, rgba(139, 69, 19,0.06) 0%, transparent 100%)` }}
+                  />
+                  <div className="relative z-10">
+                    <div className={`inline-flex rounded-2xl p-3 mb-4 ${feature.bg}`}>
+                      <feature.icon className={`h-6 w-6 ${feature.color}`} />
+                    </div>
+                    <h3 className="text-base font-bold text-[#1A1410] mb-2">{feature.title}</h3>
+                    <p className="text-sm text-[#6B5D52] leading-relaxed mb-4">{feature.desc}</p>
+                  </div>
+                </TiltCard>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ─── Problem section (dramatic Before / With Revenex redesign) ─── */
+const problemBefore = [
+  { icon: FileBarChart, text: 'Attendance tracked on paper, fees collected in cash registers' },
+  { icon: Smartphone, text: "Parents left in the dark about their child's progress" },
+  { icon: CreditCard, text: 'Staff payroll and reports done manually every month' },
+  { icon: Cloud, text: 'Data scattered across spreadsheets and WhatsApp groups' },
+]
+const problemAfter = [
+  { icon: Zap, text: 'Attendance and fees automated, tracked in real time' },
+  { icon: Smartphone, text: 'Parents get live updates through their own dashboard' },
+  { icon: TrendingUp, text: 'Payroll and reports generated automatically, every time' },
+  { icon: Lock, text: 'All your data in one secure, searchable place' },
+]
+
+function ProblemSection() {
+  return (
+    <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4] overflow-hidden">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <span className="text-[9rem] sm:text-[13rem] lg:text-[17rem] font-black text-[#1A1410]/[0.03] leading-none whitespace-nowrap tracking-tighter">
+          PROBLEM
+        </span>
+      </div>
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+          <SectionBadge label="The Problem" />
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Running an institution shouldn't feel this hard</h2>
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Most schools and businesses juggle spreadsheets, paper registers, and disconnected apps. REVENEX brings it all together.</p>
+        </motion.div>
+
+        <div className="relative grid md:grid-cols-2 gap-8 md:gap-0 items-center max-w-5xl mx-auto">
+          {/* Before card — dark, dramatic */}
+          <motion.div
+            initial={{ opacity: 0, x: -30, rotate: 0 }}
+            whileInView={{ opacity: 1, x: 0, rotate: -1.5 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative z-0 rounded-3xl p-8 md:p-10 md:-mr-6 md:scale-[0.94]"
+            style={{ background: 'linear-gradient(155deg, #2A1210 0%, #1A0D0C 100%)', boxShadow: '0 25px 50px -12px rgba(80,10,10,0.35)' }}
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/15 text-red-400 text-xs font-bold uppercase tracking-widest mb-7 border border-red-500/25">
+              Before REVENEX
+            </div>
+            <ul className="space-y-5">
+              {problemBefore.map((item, i) => (
+                <li key={item.text} className="flex items-start gap-4">
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-[11px] font-black">
+                    {i + 1}
+                  </span>
+                  <div className="flex items-start gap-2.5 flex-1">
+                    <item.icon className="h-4 w-4 text-red-400/60 mt-0.5 shrink-0" />
+                    <p className="text-white/65 text-sm leading-relaxed">{item.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Center animated arrow divider */}
+          <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+            <motion.div
+              animate={{ x: [0, 8, 0] }}
+              transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+              className="w-14 h-14 rounded-full gradient-bg flex items-center justify-center shadow-xl border-4 border-[#F5F0E8]"
+            >
+              <ArrowRight className="h-6 w-6 text-white" />
+            </motion.div>
+          </div>
+          <div className="flex md:hidden justify-center -my-2 relative z-20">
+            <motion.div
+              animate={{ y: [0, 6, 0] }}
+              transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+              className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center shadow-xl border-4 border-[#F5F0E8] rotate-90"
+            >
+              <ArrowRight className="h-5 w-5 text-white" />
+            </motion.div>
+          </div>
+
+          {/* After card — elevated brown/beige, "With Revenex" */}
+          <motion.div
+            initial={{ opacity: 0, x: 30, rotate: 0 }}
+            whileInView={{ opacity: 1, x: 0, rotate: 1.5 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative z-10 rounded-3xl p-8 md:p-11 md:-ml-6"
+            style={{ background: 'linear-gradient(150deg, #F3EADA 0%, #E7D9BE 100%)', boxShadow: '0 35px 70px -15px rgba(124,61,15,0.28), 0 0 0 1px rgba(124,61,15,0.1)' }}
+          >
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7C3D0F] text-white text-xs font-bold uppercase tracking-widest mb-7 shadow-md">
+              With REVENEX
+            </div>
+            <ul className="space-y-5">
+              {problemAfter.map((item, i) => (
+                <li key={item.text} className="flex items-start gap-4">
+                  <span className="shrink-0 w-7 h-7 rounded-full bg-[#7C3D0F] flex items-center justify-center text-white text-[11px] font-black">
+                    {i + 1}
+                  </span>
+                  <div className="flex items-start gap-2.5 flex-1">
+                    <item.icon className="h-4 w-4 text-[#7C3D0F] mt-0.5 shrink-0" />
+                    <p className="text-[#1A1410] text-sm font-medium leading-relaxed">{item.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ─── Products section (School ERP vs Business CRM tabs) ─── */
 function ProductsSection() {
   const [tab, setTab] = useState<'school' | 'business'>('school')
@@ -967,9 +1019,21 @@ function ProductsSection() {
       icon: GraduationCap,
       blurb: 'Everything a K-12 or higher-ed institution needs to run smoothly — from admissions to alumni.',
       cards: [
-        { title: 'Principal Dashboard', desc: 'School-wide analytics, staff oversight, and approvals in one view.', icon: BarChart3 },
-        { title: 'Teacher Dashboard', desc: 'Attendance, grading, and lesson planning without the paperwork.', icon: BookOpen },
-        { title: 'Parent Dashboard', desc: 'Live updates on attendance, fees, and academic progress.', icon: Users },
+        {
+          title: 'Principal Dashboard', desc: 'School-wide analytics, staff oversight, and approvals in one view.', icon: LayoutDashboard, color: '#7C3D0F',
+          features: ['Real-time school analytics', 'Staff performance tracking', 'Fee collection overview', 'Multi-branch management', 'Approval workflows', 'Custom report exports'],
+          slug: 'ai-analytics',
+        },
+        {
+          title: 'Teacher Dashboard', desc: 'Attendance, grading, and lesson planning without the paperwork.', icon: BookOpen, color: '#8B4513',
+          features: ['One-tap attendance', 'Digital gradebook', 'Lesson plan library', 'Parent messaging', 'Homework tracking', 'Exam scheduling'],
+          slug: 'exam-results',
+        },
+        {
+          title: 'Parent Dashboard', desc: 'Live updates on attendance, fees, and academic progress.', icon: Users, color: '#166534',
+          features: ['Live attendance alerts', 'Online fee payments', 'Report card access', 'Direct teacher chat', 'Event calendar', 'Bus tracking'],
+          slug: 'parent-communication',
+        },
       ],
     },
     business: {
@@ -977,9 +1041,21 @@ function ProductsSection() {
       icon: Building2,
       blurb: 'A lightweight CRM for hospitality and retail businesses to manage operations and customers.',
       cards: [
-        { title: 'Hotel Management', desc: 'Bookings, housekeeping, and guest billing in a single system.', icon: Calendar },
-        { title: 'Restaurant Management', desc: 'Orders, table turnover, and inventory tracked in real time.', icon: CreditCard },
-        { title: 'Retail Management', desc: 'Inventory, billing, and customer loyalty made simple.', icon: TrendingUp },
+        {
+          title: 'Hotel Management', desc: 'Bookings, housekeeping, and guest billing in a single system.', icon: BedDouble, color: '#7C3D0F',
+          features: ['Room booking engine', 'Housekeeping schedules', 'Guest billing & invoices', 'Channel manager sync', 'Loyalty programs', 'Occupancy analytics'],
+          slug: 'fees',
+        },
+        {
+          title: 'Restaurant Management', desc: 'Orders, table turnover, and inventory tracked in real time.', icon: UtensilsCrossed, color: '#8B4513',
+          features: ['Table & order management', 'Live kitchen display', 'Inventory tracking', 'Staff shift scheduling', 'Menu & pricing control', 'Sales reporting'],
+          slug: 'attendance',
+        },
+        {
+          title: 'Retail Management', desc: 'Inventory, billing, and customer loyalty made simple.', icon: ShoppingBag, color: '#166534',
+          features: ['POS billing', 'Inventory & stock alerts', 'Customer loyalty points', 'Multi-store sync', 'Barcode scanning', 'Sales dashboards'],
+          slug: 'student-management',
+        },
       ],
     },
   } as const
@@ -995,34 +1071,72 @@ function ProductsSection() {
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Purpose-built software for education and for service businesses.</p>
         </motion.div>
 
-        <div className="flex justify-center gap-3 mb-12">
-          {(Object.keys(tabs) as Array<keyof typeof tabs>).map((key) => (
-            <button
-              key={key}
-              onClick={() => setTab(key)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-bold transition-all ${
-                tab === key ? 'gradient-bg text-white shadow-lg' : 'bg-white border border-[#E8E0D4] text-[#3D3128] hover:border-[#8B4513]/30'
-              }`}
-            >
-              {(() => { const Icon = tabs[key].icon; return <Icon className="h-4 w-4" /> })()}
-              {tabs[key].label}
-            </button>
-          ))}
+        <div className="flex justify-center mb-12">
+          <div className="inline-flex p-1.5 rounded-2xl bg-white border border-[#E8E0D4] shadow-sm gap-1">
+            {(Object.keys(tabs) as Array<keyof typeof tabs>).map((key) => (
+              <button
+                key={key}
+                onClick={() => setTab(key)}
+                className={`relative flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+                  tab === key ? 'text-white' : 'text-[#3D3128] hover:text-[#7C3D0F]'
+                }`}
+              >
+                {tab === key && (
+                  <motion.span
+                    layoutId="products-tab-pill"
+                    className="absolute inset-0 gradient-bg rounded-xl shadow-lg"
+                    transition={{ type: 'spring', duration: 0.5 }}
+                  />
+                )}
+                <span className="relative z-10 flex items-center gap-2">
+                  {(() => { const Icon = tabs[key].icon; return <Icon className="h-4 w-4" /> })()}
+                  {tabs[key].label}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
 
         <motion.p key={tab + '-blurb'} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-[#6B5D52] max-w-xl mx-auto mb-10">
           {active.blurb}
         </motion.p>
 
-        <motion.div key={tab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="grid gap-5 sm:grid-cols-3">
+        <motion.div key={tab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="grid gap-6 sm:grid-cols-3">
           {active.cards.map((card, i) => (
-            <motion.div key={card.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}>
-              <div className="glass-card animated-border rounded-2xl p-6 h-full">
-                <div className="inline-flex rounded-2xl p-3 mb-4 bg-[#F0E8DC]">
-                  <card.icon className="h-6 w-6 text-[#7C3D0F]" />
+            <motion.div
+              key={card.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              whileHover={{ y: -6 }}
+              className="group relative rounded-3xl p-7 h-full bg-white border border-[#E8E0D4] hover:border-transparent transition-all duration-300 hover:shadow-2xl overflow-hidden"
+            >
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{ background: `linear-gradient(160deg, ${card.color}0d 0%, transparent 60%)` }}
+              />
+              <div className="relative z-10">
+                <div className="inline-flex rounded-2xl p-3.5 mb-5" style={{ background: `${card.color}14` }}>
+                  <card.icon className="h-6 w-6" style={{ color: card.color }} />
                 </div>
-                <h3 className="text-base font-bold text-[#1A1410] mb-2">{card.title}</h3>
-                <p className="text-sm text-[#6B5D52] leading-relaxed">{card.desc}</p>
+                <h3 className="text-lg font-black text-[#1A1410] mb-2">{card.title}</h3>
+                <p className="text-sm text-[#6B5D52] leading-relaxed mb-5">{card.desc}</p>
+                <ul className="space-y-2.5 mb-6">
+                  {card.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-[13px] text-[#3D3128]">
+                      <CheckCircle2 className="h-3.5 w-3.5 shrink-0" style={{ color: card.color }} />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link href={`/features/${card.slug}`}>
+                  <span
+                    className="inline-flex items-center gap-1.5 text-sm font-bold opacity-70 group-hover:opacity-100 group-hover:gap-2.5 transition-all"
+                    style={{ color: card.color }}
+                  >
+                    Explore Features <ArrowRight className="h-3.5 w-3.5" />
+                  </span>
+                </Link>
               </div>
             </motion.div>
           ))}
@@ -1032,28 +1146,24 @@ function ProductsSection() {
   )
 }
 
-/* ─── Pricing section ─── */
+/* ─── Pricing section (luxury upgrade) ─── */
 function PricingSection() {
-  const plans = [
-    {
-      name: 'Starter',
-      price: '₹0',
-      period: '/forever',
-      desc: 'For schools and businesses just getting started with digital management.',
-      features: ['Up to 100 students/records', 'Attendance & basic reporting', 'Parent/customer dashboard', 'Email support'],
-      cta: 'Get Started Free',
-      highlighted: false,
-    },
-    {
-      name: 'Growth',
-      price: '₹20,000',
-      period: '/year',
-      desc: 'For institutions ready to scale with automation and priority support.',
-      features: ['Unlimited students/records', 'Fee collection & payroll automation', 'Advanced analytics & reports', 'Priority support', 'Custom onboarding'],
-      cta: 'Schedule a Demo',
-      highlighted: true,
-    },
-  ]
+  const starter = {
+    name: 'Starter',
+    price: '₹0',
+    period: '/forever',
+    desc: 'For schools and businesses just getting started with digital management.',
+    features: ['Up to 100 students/records', 'Attendance & basic reporting', 'Parent/customer dashboard', 'Email support'],
+    cta: 'Get Started Free',
+  }
+  const growth = {
+    name: 'Growth',
+    price: '₹20,000',
+    period: '/year',
+    desc: 'For institutions ready to scale with automation and priority support.',
+    features: ['Unlimited students/records', 'Fee collection & payroll automation', 'Advanced analytics & reports', 'Priority support', 'Custom onboarding'],
+    cta: 'Schedule a Demo',
+  }
 
   return (
     <section id="pricing" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
@@ -1064,48 +1174,79 @@ function PricingSection() {
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Start free. Upgrade when you're ready to grow.</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-          {plans.map((plan, i) => (
+        <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto items-center">
+          {/* Starter — flat, minimal white card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="rounded-3xl p-8 border border-[#E8E0D4] bg-white"
+          >
+            <h3 className="text-xl font-black text-[#1A1410] mb-1">{starter.name}</h3>
+            <p className="text-sm text-[#6B5D52] mb-5">{starter.desc}</p>
+            <div className="flex items-end gap-1 mb-6">
+              <span className="text-4xl font-black text-[#1A1410]">{starter.price}</span>
+              <span className="text-sm text-[#6B5D52] mb-1">{starter.period}</span>
+            </div>
+            <ul className="space-y-3 mb-8">
+              {starter.features.map((f) => (
+                <li key={f} className="flex items-start gap-2.5 text-sm text-[#3D3128]">
+                  <CheckCircle2 className="h-4 w-4 text-[#7C3D0F] shrink-0 mt-0.5" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <Link href="/book-demo">
+              <motion.span
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-sm font-bold cursor-pointer border border-[#1A1410] text-[#1A1410] hover:bg-[#F0E8DC] transition-all"
+              >
+                {starter.cta} <ArrowRight className="h-4 w-4" />
+              </motion.span>
+            </Link>
+          </motion.div>
+
+          {/* Growth — elevated dark gradient, most popular */}
+          <motion.div
+            initial={{ opacity: 0, y: 30, scale: 0.96 }}
+            whileInView={{ opacity: 1, y: -14, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative rounded-3xl p-8"
+            style={{ background: 'linear-gradient(155deg, #2A1A0F 0%, #1A1410 100%)', boxShadow: '0 30px 60px -15px rgba(26,20,16,0.5)' }}
+          >
             <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.12 }}
-              className={`rounded-3xl p-8 border ${plan.highlighted ? 'border-[#1A1410]' : 'border-[#E8E0D4]'} bg-white relative`}
+              animate={{ y: [0, -4, 0] }}
+              transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
+              className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full gradient-bg text-white text-xs font-bold uppercase tracking-widest shadow-lg whitespace-nowrap"
             >
-              {plan.highlighted && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full gradient-bg text-white text-xs font-bold uppercase tracking-widest">
-                  Most Popular
-                </div>
-              )}
-              <h3 className="text-xl font-black text-[#1A1410] mb-1">{plan.name}</h3>
-              <p className="text-sm text-[#6B5D52] mb-5">{plan.desc}</p>
-              <div className="flex items-end gap-1 mb-6">
-                <span className="text-4xl font-black text-[#1A1410]">{plan.price}</span>
-                <span className="text-sm text-[#6B5D52] mb-1">{plan.period}</span>
-              </div>
-              <ul className="space-y-3 mb-8">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-[#3D3128]">
-                    <CheckCircle2 className="h-4 w-4 text-[#7C3D0F] shrink-0 mt-0.5" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link href="/book-demo">
-                <motion.span
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-sm font-bold cursor-pointer transition-all ${
-                    plan.highlighted ? 'gradient-bg text-white shadow-lg' : 'border border-[#1A1410] text-[#1A1410] hover:bg-[#F0E8DC]'
-                  }`}
-                >
-                  {plan.cta} <ArrowRight className="h-4 w-4" />
-                </motion.span>
-              </Link>
+              Most Popular
             </motion.div>
-          ))}
+            <h3 className="text-xl font-black text-white mb-1">{growth.name}</h3>
+            <p className="text-sm text-white/60 mb-5">{growth.desc}</p>
+            <div className="flex items-end gap-1 mb-6">
+              <span className="text-4xl font-black text-white">{growth.price}</span>
+              <span className="text-sm text-white/50 mb-1">{growth.period}</span>
+            </div>
+            <ul className="space-y-3 mb-8">
+              {growth.features.map((f) => (
+                <li key={f} className="flex items-start gap-2.5 text-sm text-white/80">
+                  <CheckCircle2 className="h-4 w-4 text-[#D4A574] shrink-0 mt-0.5" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <Link href="/book-demo">
+              <motion.span
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl text-sm font-bold cursor-pointer gradient-bg text-white shadow-lg"
+              >
+                {growth.cta} <ArrowRight className="h-4 w-4" />
+              </motion.span>
+            </Link>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -1290,104 +1431,32 @@ export default function Home() {
         <PartnersMarquee />
       </section>
 
-      {/* ── FEATURES ── */}
-      <section id="features" className="py-20 lg:py-28 relative">
-        <div className="absolute inset-0 section-glow-left pointer-events-none" />
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-            <SectionBadge label="Features" />
-            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{t('features.title')}</h2>
-            <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{t('features.subtitle')}</p>
-          </motion.div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature, i) => (
-              <motion.div
-                key={feature.slug}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-              >
-                <Link href={`/features/${feature.slug}`}>
-                  <TiltCard className="glass-card animated-border rounded-2xl p-6 h-full cursor-pointer group relative overflow-hidden">
-                    <div
-                      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{ background: `linear-gradient(135deg, rgba(139, 69, 19,0.06) 0%, transparent 100%)` }}
-                    />
-                    <div className="relative z-10">
-                      <div className={`inline-flex rounded-2xl p-3 mb-4 ${feature.bg}`}>
-                        <feature.icon className={`h-6 w-6 ${feature.color}`} />
-                      </div>
-                      <h3 className="text-base font-bold text-[#1A1410] mb-2">{feature.title}</h3>
-                      <p className="text-sm text-[#6B5D52] leading-relaxed mb-4">{feature.desc}</p>
-                    </div>
-                  </TiltCard>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── PROBLEM (Before/After) ── */}
-      <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4]">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
-            <SectionBadge label="The Problem" />
-            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Running an institution shouldn't feel this hard</h2>
-            <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Most schools and businesses juggle spreadsheets, paper registers, and disconnected apps. REVENEX brings it all together.</p>
-          </motion.div>
-          <div className="grid md:grid-cols-2 gap-6">
-            <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-3xl p-8 border border-[#E8E0D4]" style={{ background: '#FFFFFF' }}>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 text-red-700 text-xs font-bold uppercase tracking-widest mb-5">Before REVENEX</div>
-              <ul className="space-y-4">
-                {[
-                  'Attendance tracked on paper, fees collected in cash registers',
-                  'Parents left in the dark about their child\'s progress',
-                  'Staff payroll and reports done manually every month',
-                  'Data scattered across spreadsheets and WhatsApp groups',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-[#3D3128]">
-                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-red-400 shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} className="rounded-3xl p-8 border border-[#E8E0D4] glass-card animated-border">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F0E8DC] text-[#7C3D0F] text-xs font-bold uppercase tracking-widest mb-5">With REVENEX</div>
-              <ul className="space-y-4">
-                {[
-                  'Attendance and fees automated, tracked in real time',
-                  'Parents get live updates through their own dashboard',
-                  'Payroll and reports generated automatically, every time',
-                  'All your data in one secure, searchable place',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-[#1A1410] font-medium">
-                    <CheckCircle2 className="mt-0.5 h-4 w-4 text-[#7C3D0F] shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      <ProblemSection />
 
-      {/* ── PRODUCTS ── */}
-      <ProductsSection />
-
-      {/* ── PRICING ── */}
-      <PricingSection />
+      {/* ── FEATURES ── */}
+      <FeaturesSection t={t} />
 
       {/* ── WHY REVENEX ── */}
       <WhyRevenexSection language={language} />
 
+      {/* ── PRODUCTS ── */}
+      <ProductsSection />
+
       {/* ── HOW IT WORKS (vertical animated timeline) ── */}
       <HowItWorksSection language={language} />
 
-      {/* ── SECURITY (inline section) ── */}
-      <SecuritySection language={language} />
+      {/* ── PRICING ── */}
+      <PricingSection />
+
+      {/* ── REVIEWS / TESTIMONIALS ── */}
+      <ReviewsSection />
+
+      {/* ── MEET THE TEAM / ABOUT ── */}
+      <MeetFoundersSection />
+
+      {/* ── LET'S TALK / CONTACT ── */}
+      <LetsTalkSection language={language} />
 
       {/* ── ENGINEERING SPECS ── */}
       <section className="py-12 border-y border-[#E8E0D4]">
@@ -1407,15 +1476,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ── MEET THE TEAM ── */}
-      <MeetFoundersSection />
-
-      {/* ── LET'S TALK ── */}
-      <LetsTalkSection language={language} />
-
-      {/* ── REVIEWS ── */}
-      <ReviewsSection />
 
       {/* ── CTA ── */}
       <section className="py-20 relative overflow-hidden border-t border-[#E8E0D4]">

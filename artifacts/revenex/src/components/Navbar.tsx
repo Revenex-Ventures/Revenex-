@@ -182,13 +182,6 @@ import { useState, useEffect, useRef } from 'react'
 
     useEffect(() => { setIsMobileMenuOpen(false) }, [location])
 
-    function handleSecurityClick(e: React.MouseEvent) {
-      e.preventDefault()
-      setIsMobileMenuOpen(false)
-      if (location === '/') scrollToSection('security')
-      else { navigate('/'); setTimeout(() => scrollToSection('security'), 400) }
-    }
-
     function handleFeaturesClick(e: React.MouseEvent) {
       e.preventDefault()
       setIsMobileMenuOpen(false)
@@ -208,7 +201,6 @@ import { useState, useEffect, useRef } from 'react'
       { label: 'Features', href: '#features', isAnchor: true, onClick: handleFeaturesClick },
       { label: 'Pricing', href: '#pricing', isAnchor: true, onClick: handlePricingClick },
       { label: t('nav.about'), href: '/about', isAnchor: false },
-      { label: t('nav.security'), href: '#security', isAnchor: true, onClick: handleSecurityClick },
       { label: t('nav.contact'), href: '/contact', isAnchor: false },
     ]
 

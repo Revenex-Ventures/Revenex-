@@ -12,7 +12,6 @@ const translations: Record<Language, Record<string, string>> = {
   en: {
     'nav.home': 'Home',
     'nav.about': 'About',
-    'nav.security': 'Security',
     'nav.ourStory': 'Our Story',
     'nav.contact': 'Contact',
     'nav.bookDemo': 'Book a Demo',
@@ -120,7 +119,6 @@ const translations: Record<Language, Record<string, string>> = {
   hi: {
     'nav.home': 'होम',
     'nav.about': 'हमारे बारे में',
-    'nav.security': 'सुरक्षा',
     'nav.ourStory': 'हमारी कहानी',
     'nav.contact': 'संपर्क',
     'nav.bookDemo': 'डेमो बुक करें',

@@ -5,7 +5,6 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
   import { CursorGlow } from "@/components/CursorGlow";
   import Home from "@/pages/Home";
   import About from "@/pages/About";
-  import Security from "@/pages/Security";
   import OurStory from "@/pages/OurStory";
   import Contact from "@/pages/Contact";
   import BookDemo from "@/pages/BookDemo";
@@ -26,7 +25,6 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
-        <Route path="/security" component={Security} />
         <Route path="/our-story" component={OurStory} />
         <Route path="/contact" component={Contact} />
         <Route path="/book-demo" component={BookDemo} />

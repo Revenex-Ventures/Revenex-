@@ -8,7 +8,6 @@ export function Footer() {
 
   const product = [
     { label: 'Features', href: '/#features' },
-    { label: 'Security', href: '/#security' },
     { label: 'Book a Demo', href: '/book-demo' },
     { label: 'Login', href: '/login' },
   ]
