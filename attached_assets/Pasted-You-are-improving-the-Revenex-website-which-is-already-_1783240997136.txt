@@ -1,0 +1,371 @@
+You are improving the Revenex website which is already converted to beige theme.
+The repo is imported from GitHub. After ALL changes run:
+pnpm --filter @workspace/revenex build
+Must build with zero errors. Only edit files inside artifacts/revenex/src/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+IMPORTANT DESIGN RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The background is already beige #F5F0E8. DO NOT change it.
+DO NOT use golden/yellow text colors — they look bad on beige.
+DO NOT use teal or cyan text colors on beige background.
+
+Use ONLY these text colors:
+  Headings:        #1A1410  (near-black warm brown)
+  Body text:       #3D3128  (readable warm dark brown)
+  Muted/labels:    #6B5D52  (medium warm brown — MUST be visible)
+  Accent/links:    #7C3D0F  (deep rust brown — rich, royal, readable)
+  Highlight word:  #8B4513  (saddlebrown — for colored headline words)
+  Card bg:         #FFFFFF  (pure white cards on beige background)
+  Card border:     #E8E0D4
+  Card shadow:     0 4px 24px rgba(139,69,19,0.10)
+  Primary button:  bg #1A1410, text #FFFFFF
+  Secondary btn:   border #1A1410, text #1A1410, bg transparent
+  Icon bg circles: #F0E8DC (warm beige circle behind icons)
+  
+Let Replit/AI decide the exact accent shades as long as they:
+  1. Are CLEARLY visible on #F5F0E8 beige background
+  2. Look professional, royal, classy — NOT colorful or playful
+  3. Have sufficient contrast for senior citizens to read easily
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. NAVBAR — ADD LINKS + FIX DROPDOWN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Add smooth scroll anchor links to navbar:
+  Home | Products (dropdown) | Features | About | Pricing | Contact | Sign In →
+
+"Features" → scrolls to #features section on page
+"Pricing" → scrolls to #pricing section on page
+
+Products dropdown — redesign with elegant styling:
+  Two columns with a subtle divider between them.
+  Each item has icon + title + one-line description.
+  Dropdown has white bg, rounded-2xl, shadow-xl, border #E8E0D4.
+  Hover on each item: bg #F5F0E8, left border #8B4513 appears, smooth transition.
+  
+  LEFT — 🎓 School ERP
+    - Principal Dashboard — Full school oversight & reports
+    - Teacher Dashboard — Attendance, results & classes  
+    - Parent Dashboard — Child progress & fee payments
+    - Student Dashboard — Timetable, marks & attendance
+    
+  RIGHT — 🏢 Business CRM  
+    - Hotel & Hospitality — Guest management & billing
+    - Restaurant Operations — Orders, tables & inventory
+    - Retail Management — Sales, stock & multi-branch
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. HERO SECTION — LEFT ALIGN + RIGHT CARD
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Change hero layout to TWO COLUMNS side by side:
+
+LEFT COLUMN (55% width):
+  - Small badge pill at top: "• SCHOOL ERP PLATFORM"
+    style: border #D4C4B0, bg #F0E8DC, text #6B5D52, text-xs uppercase tracking-widest
+  - Main headline (left aligned, NOT centered):
+    Line 1: "Modern school management" — text-5xl font-black text-[#1A1410]
+    Line 2: "Made for India" — text-5xl font-black text-[#8B4513] (accent color)
+    Line 3: "Simple with REVENEX" — text-5xl font-black text-[#1A1410]
+  - Subtext below: left aligned, text-[#3D3128], max-w-lg
+    "REVENEX is a secure cloud ERP that automates attendance, fees,
+    communications, and reporting — trusted by schools."
+  - Two CTA buttons side by side:
+    Button 1: "Schedule a Demo →" — bg #1A1410, text white, rounded-full, px-8 py-4
+    Button 2: "Sign In →" — text #1A1410, no bg, arrow icon, px-6 py-4
+  - Trust badges row below buttons:
+    🔒 Enterprise Security  ✓ 99.9% Uptime  🇮🇳 Indian EdTech
+    style: small icons, text-[#6B5D52] text-sm
+
+RIGHT COLUMN (45% width):
+  - The dashboard preview card/mockup (already exists — keep it)
+  - Add framer-motion: animate on load — slide in from right, fade in
+  - Add subtle floating animation: y: [0, -8, 0] repeat infinite duration 4s ease-in-out
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. PARTNERS STRIP — FIX BACKGROUND
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The partners/trusted-by strip currently has a DARK GREY background. Fix it:
+  bg: #EDE8DC (slightly deeper beige)
+  border-top and border-bottom: 1px solid #D4C4B0
+  Text label: "TRUSTED PARTNERS POWERING THE REVENEX PLATFORM"
+    color: #6B5D52, text-xs uppercase tracking-widest
+  All partner pill badges:
+    bg: #FFFFFF, border: #E0D8CC, text: #3D3128
+    logo icons: keep original colors (Google, Razorpay etc are fine)
+  Scrolling marquee animation: keep it, just fix the colors
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. PROBLEM SECTION — BEFORE vs AFTER REVENEX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+This section must look EXACTLY like the layout in the reference image (image 3)
+but adapted to beige color scheme. Two column layout:
+
+Section label at top center: "— THE PROBLEM —"
+  style: text-[#8B4513] text-xs uppercase tracking-[0.3em] font-medium
+
+Main heading center:
+  "Running a school is hard."
+  "Revenex makes it effortless."
+  First line: text-[#1A1410] font-black text-4xl
+  Second line: text-[#8B4513] font-black text-4xl italic
+
+Subtext center: text-[#6B5D52]
+  "Most Indian schools are stuck in the 1990s. We built the solution."
+
+TWO COLUMNS BELOW:
+
+LEFT — "BEFORE REVENEX" column:
+  Header badge: bg #FEF2F2, border #FECACA, text #991B1B
+  label: "⚠ BEFORE REVENEX"
+  bg: #FAFAF8, border: 1px solid #E8DDD4, rounded-2xl
+  Items (numbered, faded/muted style):
+    Each item: small circle number, title in #3D3128, description in #6B5D52
+    1. Paper Registers — Manual attendance in notebooks, error-prone and forged
+    2. Manual Billing — Monthly bills done by hand, calculation errors always
+    3. Long Queues — Students wait for physical passes every single week
+    4. No Visibility — Zero real-time data on attendance or fee collection
+    5. Late Payroll — Staff salaries delayed, manual calculations every month
+    6. Parent Disconnect — Parents have no idea what's happening at school
+
+RIGHT — "WITH REVENEX" column:
+  Header badge: bg #F0FDF4, border #BBF7D0, text #166534
+  label: "✓ WITH REVENEX"  
+  bg: #FFFFFF, border: 2px solid #D4C4B0, rounded-2xl, shadow-lg
+  Items (with glowing green checkmark icons):
+    Each item: icon in rounded square bg, title bold #1A1410, desc #3D3128
+    1. Digital Attendance in 1 min — Live dashboard, auto SMS to parents
+    2. Automated Fee Collection — Online payments, zero manual effort
+    3. AI-Generated Reports — Instant reports, no paperwork ever
+    4. Real-Time Revenue Tracking — Live fee and payroll dashboard
+    5. Parent Mobile Access — Attendance and marks on phone anytime
+    6. Go Live in 4 Weeks — From signup to fully operational school ERP
+
+Center arrow between columns (→) styled with #8B4513 color, animated pulse.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. FEATURES SECTION — FIX INVISIBLE TEXT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+id="features" on this section so navbar Features link scrolls here.
+
+The cards exist but text is invisible. Fix ALL text in feature cards:
+  Card bg: #FFFFFF
+  Card border: 1px solid #E8E0D4
+  Icon circle bg: #F0E8DC
+  Icon color: #8B4513 (or appropriate warm color)
+  Card title: font-semibold text-[#1A1410] text-lg — MUST BE VISIBLE
+  Card description: text-[#3D3128] text-sm leading-relaxed — MUST BE VISIBLE
+
+Add hover animation on each card:
+  - translateY(-6px) on hover
+  - box-shadow increases on hover
+  - icon bg changes to #8B4513, icon color to white
+  - transition: all 300ms ease
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. WHY REVENEX SECTION — FIX INVISIBLE TEXT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Same card fix as features:
+  All card titles: text-[#1A1410] font-semibold — MUST BE VISIBLE
+  All card descriptions: text-[#3D3128] — MUST BE VISIBLE
+  The "Learn More →" link: text-[#8B4513] font-medium
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. PRODUCTS SECTION — HIGH QUALITY ANIMATED CARDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+The current products section is too plain. Redesign with premium feel:
+
+Section heading: "Our Products"
+Sub-tabs to switch between School ERP | Business CRM
+  Tab style: pill buttons, active tab bg #1A1410 text white,
+  inactive: border #1A1410 text #1A1410
+
+SCHOOL ERP TAB — 3 cards in a row:
+
+Each card must have:
+  - White bg (#FFFFFF), rounded-3xl, border #E8E0D4
+  - Padding: p-8
+  - Top: large icon in a warm gradient circle (use framer-motion for icon entrance)
+  - Bold card title: text-2xl font-bold text-[#1A1410]
+  - Short description: text-[#6B5D52] mb-4
+  - Divider line: #E8E0D4
+  - Feature list: each item has small checkmark icon + text-[#3D3128]
+  - Bottom tag badge: bg #F0E8DC text #8B4513 rounded-full px-4 py-1 text-sm
+  - "Explore →" link at bottom: text-[#8B4513] font-semibold
+
+HOVER ANIMATION on each card (use framer-motion whileHover):
+  - Scale: 1.03
+  - Shadow: 0 20px 60px rgba(139,69,19,0.18)
+  - Top border: 3px solid #8B4513 appears
+  - Icon circle: subtle glow effect
+  - Transition: spring stiffness 300
+
+CARD 1 — Principal Dashboard
+  Icon: LayoutDashboard (lucide)
+  Tag: "Complete School Oversight"
+  Features:
+    ✓ Total Students & Attendance Overview
+    ✓ Fee Collection — ₹ live figures
+    ✓ Staff Active Count & Payroll
+    ✓ AI Activity Feed
+    ✓ Attendance Trend Charts
+
+CARD 2 — Teacher Dashboard
+  Icon: BookOpen (lucide)
+  Tag: "Empower Every Teacher"
+  Features:
+    ✓ One-click Class Attendance
+    ✓ Upload Student Results
+    ✓ Class Performance Tracking
+    ✓ Assignment & Homework Manager
+    ✓ Leave Application System
+
+CARD 3 — Parent Dashboard
+  Icon: Users (lucide)
+  Tag: "Stay Connected"
+  Features:
+    ✓ Real-time Child Attendance
+    ✓ Marks & Report Card Access
+    ✓ Online Fee Payment
+    ✓ School Notifications
+    ✓ Direct Teacher Connect
+
+BUSINESS CRM TAB — 3 cards same style:
+
+CARD 1 — Hotel & Hospitality
+  Icon: BedDouble, Tag: "Guest Experience First"
+  Features: Guest check-in/out, Room occupancy, Staff scheduling,
+            Billing & invoicing, Housekeeping management
+
+CARD 2 — Restaurant Operations
+  Icon: UtensilsCrossed, Tag: "Kitchen to Customer"
+  Features: Table & order management, Kitchen display,
+            Daily sales reports, Staff attendance, Menu & inventory
+
+CARD 3 — Retail Management
+  Icon: ShoppingBag, Tag: "Sell Smarter"
+  Features: Inventory tracking, Sales & billing, Customer records,
+            Daily/monthly reports, Multi-branch support
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. PRICING SECTION — PREMIUM CARD DESIGN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+id="pricing" on this section so navbar Pricing link scrolls here.
+
+Section heading: "Start Free. Scale When You Grow."
+  style: text-4xl font-black text-[#1A1410]
+Subtext: "Transparent pricing — no hidden fees, no surprises."
+  style: text-[#6B5D52]
+
+TWO CARDS side by side (styled like the reference pricing image but on beige):
+
+CARD 1 — Starter (Most Popular)
+  Badge: "★ MOST POPULAR" — bg #1A1410 text white, rounded-full, text-xs
+  Card: bg #FFFFFF, border 2px solid #1A1410, rounded-3xl, shadow-xl
+  Plan name: "Starter" — text-2xl font-bold text-[#1A1410]
+  Price: "₹0" — text-6xl font-black text-[#1A1410]
+  Per: "/month" — text-[#6B5D52]
+  Subtext: "Free forever for schools under 500 students"
+  Divider line
+  Features list (✓ each in #166534 green):
+    ✓ Up to 500 students
+    ✓ Principal, Teacher & Parent dashboards
+    ✓ Digital attendance management
+    ✓ Fee tracking & automated reminders
+    ✓ Student result upload & report cards
+    ✓ Basic analytics & reporting
+    ✓ WhatsApp & SMS notifications
+    ✓ Free onboarding & setup support
+    ✓ Online UPI & card fee payments
+  CTA: "Get Started Free →"
+    bg #1A1410, text white, rounded-full, w-full, py-4, font-semibold
+    hover: bg #3D3128, scale 1.02 framer-motion
+
+CARD 2 — Growth Plan
+  Badge: "ENTERPRISE" — border #D4C4B0 text #6B5D52, rounded-full, text-xs
+  Card: bg #F5F0E8, border 1px solid #D4C4B0, rounded-3xl
+  Plan name: "Growth Plan" — text-2xl font-bold text-[#1A1410]
+  Subtext above price: "For 500+ students"
+    style: text-[#8B4513] text-sm uppercase tracking-wider font-medium
+  Price: "₹20,000" — text-5xl font-black text-[#1A1410]
+  Per: "/year" — text-[#6B5D52]
+  Smaller: "₹1,667/month billed annually" — text-sm text-[#6B5D52]
+  Divider line
+  Features (✓ each):
+    ✓ Everything in Starter
+    ✓ Unlimited students
+    ✓ Advanced analytics & custom reports
+    ✓ AI-powered fee reminder engine
+    ✓ Multi-teacher & multi-class management
+    ✓ Staff payroll management
+    ✓ Parent mobile app access
+    ✓ Priority support & account manager
+    ✓ Data export & migration support
+    ✓ Custom branding & white-label option
+  CTA: "Contact Us →"
+    border 2px solid #1A1410, text #1A1410, bg transparent, rounded-full, w-full, py-4
+    hover: bg #1A1410 text white, transition 300ms
+
+Below both cards center:
+"No credit card required. Free forever for single-campus schools under 500 students."
+text-[#6B5D52] text-sm
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+9. ABOUT / TEAM SECTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Merge About + Leadership into one section.
+Remove any tech stack section (no React/Node/TypeScript mentions).
+
+Layout:
+  Top: 2-line mission statement, centered, text-[#3D3128]
+  Below: 3 team cards in a row
+
+Each team card:
+  bg #FFFFFF, rounded-3xl, border #E8E0D4, p-8, text-center
+  Avatar: large circle #F0E8DC with initials, text-[#8B4513] text-2xl font-bold
+  Name: text-xl font-bold text-[#1A1410]
+  Title: text-[#8B4513] font-medium
+  Bio: text-[#6B5D52] text-sm
+
+  Rounak — CEO
+  Rohan — Co-Founder
+  Prasanna — CTO
+
+Hover: translateY(-4px), shadow increases, avatar circle bg #8B4513, initials white
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+10. GENERAL ANIMATIONS (apply throughout)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Use framer-motion for all animations. Keep them subtle and professional:
+
+- Section headings: fade in + slide up (y: 20 → 0) on scroll into view
+- Cards: stagger fade-in on scroll (each card 0.1s delay after previous)
+- Buttons: scale 1.02 on hover, scale 0.98 on tap
+- All transitions: ease-out, 300-400ms max — NO bouncy or playful animations
+- NO flashing, NO rapid movement — senior citizens must feel comfortable
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+11. README DOCS FOLDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Create folder: artifacts/revenex/src/docs/
+Create these files with full editing instructions:
+  00_OVERVIEW.md, 01_NAVBAR.md, 02_HERO.md, 03_PROBLEM_SECTION.md,
+  04_FEATURES.md, 05_PRODUCTS.md, 06_PRICING.md, 07_ABOUT.md,
+  08_CONTACT.md, 09_COLORS_THEME.md
+
+Each file must contain:
+  1. What this section does
+  2. Exact file path to edit
+  3. Step by step instructions for common changes
+  4. All hardcoded values (text, prices, names) and where they are
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FINAL CHECKS BEFORE COMMITTING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+□ Every text element is visible on beige — no invisible/white-on-white text
+□ No golden/yellow text anywhere
+□ No dark grey or black backgrounds anywhere
+□ All navbar links work (smooth scroll for Features and Pricing)
+□ Products dropdown opens and closes properly
+□ Build passes: pnpm --filter @workspace/revenex build
+□ Commit message: "feat: premium UI redesign — beige theme, products, pricing"
+□ Push to GitHub so Vercel auto-deploys
