@@ -1,1 +1,0 @@
-- [Endpoint shape mismatches](endpoint-shape-mismatches.md) — when migrating/porting frontend code against an existing backend, verify each consumed endpoint's actual response shape with curl; don't assume consistency across similar endpoints (e.g. `/auth/me` vs `/auth/login`).

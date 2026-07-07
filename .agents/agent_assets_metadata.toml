@@ -1,8 +1,0 @@
-uploads = []
-outputs = []
-
-[[generated]]
-id = "KuKJ1AInGlNKoBAZFvGan"
-uri = "file://artifacts/revenex-mobile/assets/images/icon.png"
-type = "image"
-title = "Revenex mobile app icon"
