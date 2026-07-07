@@ -144,7 +144,8 @@
   }
 
   .gradient-bg {
-    background: #1A1410;
+  background: linear-gradient(135deg, #1A1410, #3D2810);
+  color: #ffffff;
   }
 
   .gradient-bg-reverse {
