@@ -454,9 +454,9 @@ function ReviewsSection() {
                   <p className="text-[#3D3128] text-sm leading-relaxed mb-4 italic line-clamp-3">"{review.content}"</p>
                   <div className="flex items-center gap-2.5">
                     <div className="w-7 h-7 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-black shrink-0">
-                      {review.name.charAt(0).toUpperCase()}
+                      {review.name ? review.name.charAt(0).toUpperCase() : '?'}
                     </div>
-                    <span className="text-sm font-semibold text-[#1A1410]">{review.name}</span>
+                    <span className="text-sm font-semibold text-[#1A1410]">{review.name || 'Anonymous'}</span>
                   </div>
                 </div>
               ))}
@@ -1784,42 +1784,13 @@ export default function Home() {
 
       <SectionDivider />
 
-      {/* ── PRICING ── */}
-      <PricingSection />
-
-      <SectionDivider />
-
-      {/* ── MEET THE TEAM / ABOUT ── */}
-      <MeetFoundersSection />
+      {/* ── REVIEWS / TESTIMONIALS ── */}
+      <ReviewsSection />
 
       <SectionDivider />
 
       {/* ── LET'S TALK / CONTACT ── */}
       <LetsTalkSection language={language} />
-
-      <SectionDivider />
-
-      {/* ── REVIEWS / TESTIMONIALS ── */}
-      <ReviewsSection />
-
-      {/* ── ENGINEERING SPECS ── */}
-      <section className="py-12 border-y border-[#E8E0D4]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
-            {[
-              { value: '99.9%', label: 'Uptime SLA Target', color: 'text-aqua' },
-              { value: '2hr', label: 'Support Response', color: 'text-[#8B4513]' },
-              { value: '256-bit', label: 'AES Encryption', color: 'text-green-700' },
-              { value: '24/7', label: 'Monitoring', color: 'text-amber-700' },
-            ].map((stat, i) => (
-              <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="text-center">
-                <div className={`text-3xl font-black lg:text-4xl mb-1 ${stat.color}`}>{stat.value}</div>
-                <div className="text-sm text-[#6B5D52]">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── CTA ── */}
       <section className="py-20 relative overflow-hidden border-t border-[#E8E0D4]">

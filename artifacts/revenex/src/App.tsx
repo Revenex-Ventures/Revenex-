@@ -47,7 +47,6 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
         <LanguageProvider>
           <AuthProvider>
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-              <CursorGlow />
               <Router />
             </WouterRouter>
           </AuthProvider>

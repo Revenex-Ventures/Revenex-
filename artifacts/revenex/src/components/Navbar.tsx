@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
   import { Link, useLocation } from 'wouter'
   import { motion, AnimatePresence } from 'framer-motion'
-  import { Menu, X, Globe, LogIn, LogOut, User, ChevronDown, Shield, GraduationCap, Building2 } from 'lucide-react'
+  import { Menu, X, Globe, LogIn, LogOut, User, ChevronDown, Shield, GraduationCap, Building2, Phone } from 'lucide-react'
   import { useLanguage } from '@/lib/language-context'
   import { useAuth } from '@/lib/auth-context'
 
@@ -173,6 +173,7 @@ import { useState, useEffect, useRef } from 'react'
     const { language, setLanguage, t } = useLanguage()
     const { user, logout } = useAuth()
     const [location, navigate] = useLocation()
+    const [isPhoneHovered, setIsPhoneHovered] = useState(false)
 
     useEffect(() => {
       const handleScroll = () => setIsScrolled(window.scrollY > 20)
@@ -189,18 +190,9 @@ import { useState, useEffect, useRef } from 'react'
       else { navigate('/'); setTimeout(() => scrollToSection('features'), 400) }
     }
 
-    function handlePricingClick(e: React.MouseEvent) {
-      e.preventDefault()
-      setIsMobileMenuOpen(false)
-      if (location === '/') scrollToSection('pricing')
-      else { navigate('/'); setTimeout(() => scrollToSection('pricing'), 400) }
-    }
-
     const navItems = [
       { label: t('nav.home'), href: '/', isAnchor: false },
       { label: 'Features', href: '#features', isAnchor: true, onClick: handleFeaturesClick },
-      { label: 'Pricing', href: '#pricing', isAnchor: true, onClick: handlePricingClick },
-      { label: t('nav.about'), href: '/about', isAnchor: false },
       { label: t('nav.contact'), href: '/contact', isAnchor: false },
     ]
 
@@ -273,6 +265,32 @@ import { useState, useEffect, useRef } from 'react'
                   </span>
                 </Link>
               </motion.div>
+
+              {/* Phone Hover/Reveal Button */}
+              <motion.a
+                href="tel:+919021744355"
+                onMouseEnter={() => setIsPhoneHovered(true)}
+                onMouseLeave={() => setIsPhoneHovered(false)}
+                className="hidden sm:flex items-center h-10 rounded-full border border-[#D4B896] bg-white text-[#1A1410] overflow-hidden cursor-pointer shadow-sm ml-3 hover:border-[#8B4513] hover:bg-[#1A1410] transition-colors duration-200 group"
+                animate={{ width: isPhoneHovered ? 165 : 40 }}
+                transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+              >
+                <div className="w-10 h-10 flex items-center justify-center shrink-0">
+                  <Phone className="h-4 w-4 text-[#8B4513] group-hover:text-white transition-colors duration-200" />
+                </div>
+                <AnimatePresence>
+                  {isPhoneHovered && (
+                    <motion.span
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      className="text-xs font-bold text-[#8B4513] group-hover:text-white transition-colors duration-200 whitespace-nowrap pr-4"
+                    >
+                      +91 90217 44355
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.a>
 
               <motion.button whileTap={{ scale: 0.9 }} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="rounded-xl p-2 text-[#6B5D52] hover:bg-[#F0E8DC] lg:hidden border border-[#E8E0D4]">
