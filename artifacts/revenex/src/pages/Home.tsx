@@ -146,7 +146,7 @@ const howItWorks = [
     iconColor: '#FFFFFF',
     dark: true,
     iconAnim: { rotate: [0, 360] },
-    iconAnimTransition: { repeat: Infinity, duration: 6, ease: 'linear' },
+    iconAnimTransition: { repeat: Infinity, duration: 6, ease: 'linear' as const },
   },
   {
     step: '03',
