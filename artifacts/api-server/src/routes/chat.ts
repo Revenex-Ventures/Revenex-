@@ -32,11 +32,10 @@ async function callOpenRouter(model: string, messages: Array<{ role: string; con
 }
 
 const FREE_MODELS = [
-  "meta-llama/llama-3.3-70b-instruct:free",
-  "nousresearch/hermes-3-llama-3.1-405b:free",
-  "openai/gpt-oss-120b:free",
+  "openrouter/free",
   "nvidia/nemotron-3-super-120b-a12b:free",
-  "qwen/qwen3-next-80b-a3b-instruct:free",
+  "google/gemma-4-31b-it:free",
+  "openai/gpt-oss-20b:free",
 ];
 
 router.post("/chat", async (req, res) => {
