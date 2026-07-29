@@ -44,9 +44,28 @@ export function Chatbot() {
       setMessages(p => [...p, { text: reply, isUser: false, id: idRef.current++, isError: false }])
       // attach model info as a tiny system message
       if (model) setMessages(p => [...p, { text: `Model: ${model}`, isUser: false, id: idRef.current++ }])
-    } catch {
-      setOffline(true)
-      setMessages(p => [...p, { text: language === 'en' ? 'The AI server is not running or returned an error. Try again or contact support.' : 'AI सर्वर चालू नहीं है या त्रुटि हुई। कृपया पुन: प्रयास करें।', isUser: false, id: idRef.current++, isError: true }])
+    } catch (e: any) {
+      const isServerResponse = e?.message && e.message.startsWith('server-');
+      if (isServerResponse) {
+        setMessages(p => [...p, { 
+          text: language === 'en' 
+            ? `AI service error: ${e.message.replace('server-', '')}. Please try again later.` 
+            : `AI सेवा त्रुटि: ${e.message.replace('server-', '')}। कृपया बाद में पुनः प्रयास करें।`, 
+          isUser: false, 
+          id: idRef.current++, 
+          isError: true 
+        }])
+      } else {
+        setOffline(true)
+        setMessages(p => [...p, { 
+          text: language === 'en' 
+            ? 'The API server is offline. Run start.bat to start the server.' 
+            : 'API सर्वर ऑफलाइन है। सर्वर शुरू करने के लिए start.bat चलाएं।', 
+          isUser: false, 
+          id: idRef.current++, 
+          isError: true 
+        }])
+      }
     } finally { setTyping(false) }
   }
 
@@ -115,7 +134,7 @@ export function Chatbot() {
             {offline && (
               <div className='px-4 py-2 bg-red-500/10 border-b border-red-500/20 flex items-center gap-2'>
                 <WifiOff className='h-3.5 w-3.5 text-red-500 flex-shrink-0' />
-                <p className='text-red-500 text-xs font-semibold'>API server is offline. Run START-API.bat to run chatbot.</p>
+                <p className='text-red-500 text-xs font-semibold'>API server is offline. Run start.bat to run chatbot.</p>
               </div>
             )}
 
