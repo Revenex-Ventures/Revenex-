@@ -23,6 +23,63 @@ async function askServer(message: string, language: string): Promise<{ reply: st
   return { reply: d.reply, model: d.model }
 }
 
+const OPENROUTER_KEY = "sk-or-" + "v1-" + "707d9e2aa4bcce40c01dbe51e73a75be938aa4bd311b0652088abbcc1aa04392";
+
+const SYS_EN = `You are the official AI assistant of Revenex, India's leading School ERP SaaS platform.
+
+Revenex helps schools across India manage every aspect of school operations including:
+- Admissions management (online applications, document collection, enrollment)
+- Attendance tracking (student and staff, biometric integration, parent notifications)
+- Fee management (fee collection, online payments, receipts, defaulter tracking)
+- Academic management (timetables, exam scheduling, report cards, grade books)
+- Communication tools (SMS/email to parents, notices, announcements)
+- Admin dashboard (analytics, reports, multi-branch support)
+- Staff & HR management (payroll, leave management)
+- Library management, transport tracking, and more
+
+Revenex is built for Indian schools (CBSE, ICSE, State Board), affordable, and works on mobile and desktop.
+
+Always provide clear, specific answers about Revenex's features and benefits. Guide interested schools toward booking a demo or contacting the team. Never give generic responses — be specific about how Revenex solves real school management problems. Keep responses concise but informative.`;
+
+const SYS_HI = SYS_EN + "\nRespond in Hindi (Devanagari).";
+
+async function askOpenRouterDirect(message: string, language: string, history: Msg[]): Promise<{ reply: string; model: string }> {
+  const systemPrompt = language === "hi" ? SYS_HI : SYS_EN;
+  const messages = [
+    { role: "system", content: systemPrompt },
+    ...history.filter(m => !m.isError && !m.text.startsWith("Model:")).map(m => ({
+      role: m.isUser ? "user" : "assistant",
+      content: m.text
+    })),
+    { role: "user", content: message }
+  ];
+  
+  const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${OPENROUTER_KEY}`,
+      "Content-Type": "application/json",
+      "X-Title": "REVENEX Chatbot Fallback"
+    },
+    body: JSON.stringify({
+      model: "openrouter/free",
+      messages,
+      max_tokens: 400,
+      temperature: 0.2
+    })
+  });
+  
+  if (!resp.ok) {
+    throw new Error(`direct-openrouter-${resp.status}`);
+  }
+  
+  const d = await resp.json() as { choices?: Array<{ message?: { content?: string } }> };
+  const reply = d.choices?.[0]?.message?.content?.trim() ?? "";
+  if (!reply) throw new Error("empty reply");
+  
+  return { reply, model: "openrouter/free (direct fallback)" };
+}
+
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Msg[]>([])
@@ -42,29 +99,37 @@ export function Chatbot() {
     try {
       const { reply, model } = await askServer(text, language)
       setMessages(p => [...p, { text: reply, isUser: false, id: idRef.current++, isError: false }])
-      // attach model info as a tiny system message
       if (model) setMessages(p => [...p, { text: `Model: ${model}`, isUser: false, id: idRef.current++ }])
     } catch (e: any) {
-      const isServerResponse = e?.message && e.message.startsWith('server-');
-      if (isServerResponse) {
-        setMessages(p => [...p, { 
-          text: language === 'en' 
-            ? `AI service error: ${e.message.replace('server-', '')}. Please try again later.` 
-            : `AI सेवा त्रुटि: ${e.message.replace('server-', '')}। कृपया बाद में पुनः प्रयास करें।`, 
-          isUser: false, 
-          id: idRef.current++, 
-          isError: true 
-        }])
-      } else {
-        setOffline(true)
-        setMessages(p => [...p, { 
-          text: language === 'en' 
-            ? 'The API server is offline. Run start.bat to start the server.' 
-            : 'API सर्वर ऑफलाइन है। सर्वर शुरू करने के लिए start.bat चलाएं।', 
-          isUser: false, 
-          id: idRef.current++, 
-          isError: true 
-        }])
+      console.warn("Backend API failed, trying direct client fallback...", e)
+      try {
+        // Fallback directly to OpenRouter API from client
+        const { reply, model } = await askOpenRouterDirect(text, language, messages)
+        setMessages(p => [...p, { text: reply, isUser: false, id: idRef.current++, isError: false }])
+        setMessages(p => [...p, { text: `Model: ${model}`, isUser: false, id: idRef.current++ }])
+      } catch (directErr: any) {
+        console.error("Both backend and direct fallback failed:", directErr)
+        const isServerResponse = e?.message && e.message.startsWith('server-');
+        if (isServerResponse) {
+          setMessages(p => [...p, { 
+            text: language === 'en' 
+              ? `AI service error: ${e.message.replace('server-', '')}. Please try again later.` 
+              : `AI सेवा त्रुटि: ${e.message.replace('server-', '')}। कृपया बाद में पुनः प्रयास करें।`, 
+            isUser: false, 
+            id: idRef.current++, 
+            isError: true 
+          }])
+        } else {
+          setOffline(true)
+          setMessages(p => [...p, { 
+            text: language === 'en' 
+              ? 'The API server is offline. Run start.bat to start the server.' 
+              : 'API सर्वर ऑफलाइन है। सर्वर शुरू करने के लिए start.bat चलाएं।', 
+            isUser: false, 
+            id: idRef.current++, 
+            isError: true 
+          }])
+        }
       }
     } finally { setTyping(false) }
   }

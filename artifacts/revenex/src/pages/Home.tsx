@@ -184,11 +184,11 @@ const howItWorks = [
 
 /* ─── Partner logos (white pill style) ─── */
 const partners = [
-  { name: 'Google Cloud', logo: googleCloudLogo },
-  { name: 'Gemini', logo: geminiLogo },
-  { name: 'Razorpay', logo: razorpayLogo },
-  { name: 'Firebase', logo: firebaseLogo },
-  { name: 'Twilio', logo: twilioLogo },
+  { name: 'Google Cloud', logo: googleCloudLogo, heightClass: 'h-9' },
+  { name: 'Gemini', logo: geminiLogo, heightClass: 'h-9' },
+  { name: 'Razorpay', logo: razorpayLogo, heightClass: 'h-10' },
+  { name: 'Firebase', logo: firebaseLogo, heightClass: 'h-7' },
+  { name: 'Twilio', logo: twilioLogo, heightClass: 'h-7' },
 ]
 
 function PartnersMarquee() {
@@ -199,10 +199,10 @@ function PartnersMarquee() {
         {doubled.map((p, i) => (
           <div
             key={`${p.name}-${i}`}
-            className="flex items-center justify-center gap-3 shrink-0 min-w-[160px] h-14 px-6 py-3 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
+            className="flex items-center justify-center gap-3 shrink-0 min-w-[160px] h-14 px-6 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
             style={{ boxShadow: '0 2px 8px rgba(139,69,19,0.06)' }}
           >
-            <img src={p.logo} alt={p.name} className="block h-7 w-auto object-contain" />
+            <img src={p.logo} alt={p.name} className={`block ${p.heightClass} w-auto object-contain`} />
           </div>
         ))}
       </div>
