@@ -6,15 +6,15 @@ Merged About + Leadership section on the homepage (`MeetFoundersSection`), showi
 statement and a 3-person team grid: Rounak (CEO), Rohan (Co-Founder), Prasanna (CTO). No tech
 stack / framework mentions here per design rules.
 
-There is also a separate standalone `/about` page (`pages/About.tsx`) and an `/our-team` page
-(`pages/OurTeam.tsx`) with more detail — edit those separately if needed.
+There is also a separate standalone `/about` page (`pages/About.tsx`) and a `/founders` page
+(`pages/Founders.tsx`) with more detail — edit those separately if needed.
 
 ## File to edit
 
 - Homepage team section: `artifacts/revenex/src/pages/Home.tsx` — search for
   `function MeetFoundersSection` (or `Meet the`/`Founders`).
 - Standalone About page: `artifacts/revenex/src/pages/About.tsx`
-- Standalone Our Team page: `artifacts/revenex/src/pages/OurTeam.tsx`
+- Standalone Founders page: `artifacts/revenex/src/pages/Founders.tsx`
 
 ## Common changes
 

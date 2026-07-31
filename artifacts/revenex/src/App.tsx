@@ -8,7 +8,7 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
   import OurStory from "@/pages/OurStory";
   import Contact from "@/pages/Contact";
   import BookDemo from "@/pages/BookDemo";
-  import OurTeam from "@/pages/OurTeam";
+  import Founders from "@/pages/Founders";
   import Login from "@/pages/Login";
   import Signup from "@/pages/Signup";
   import ResetPassword from "@/pages/ResetPassword";
@@ -28,7 +28,7 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
         <Route path="/our-story" component={OurStory} />
         <Route path="/contact" component={Contact} />
         <Route path="/book-demo" component={BookDemo} />
-        <Route path="/our-team" component={OurTeam} />
+        <Route path="/founders" component={Founders} />
         <Route path="/features/:slug" component={FeatureDetail} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
