@@ -1,4 +1,5 @@
 {
+  "outputDirectory": "artifacts/revenex/dist/public",
   "rewrites": [
     {
       "source": "/api/:path*",
