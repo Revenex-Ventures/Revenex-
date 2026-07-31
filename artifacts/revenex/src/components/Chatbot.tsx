@@ -38,8 +38,19 @@ CRITICAL INSTRUCTIONS FOR CONVERSATIONAL TONE:
 Core information about Revenex to use in your answers:
 - It is a cloud School ERP for K-12 and higher-ed (CBSE/ICSE/State boards).
 - Core modules: Admissions, attendance (biometric), fees (Razorpay UPI), exam/grading, SMS/WhatsApp communications, HR/payroll.
-- Hosted securely on Google Cloud.
-- Free for schools with under 500 students. Paid plan is ₹20,000/year.`;
+- Free for schools with under 500 students. Paid plan is ₹20,000/year.
+- Founders & Team:
+  * Rounak Vijay Sute: Founder & CEO. Leads product strategy & partnerships.
+  * Rohan Rajendra Raundal: Co-Founder. Leads engineering & platform architecture.
+  * Prasanna Mate: CTO. Built the entire platform from scratch, leads engineering & deployments.
+- Contact Details:
+  * Phone: +91 90217 44355
+  * Email: team@revenex.in (or prasannamate1754@gmail.com for the CTO)
+  * Location: Maharashtra, India.
+  * Support: Mon-Sat, 2-hour critical issue SLA.
+- Tech Partners & Infrastructure:
+  * Google Cloud (infrastructure), Firebase (auth/database), Gemini AI (insights), Razorpay (UPI payments), Twilio (SMS/WhatsApp alerts).
+- Core Value Prop: Resolves fragmentation (replaces 8+ tools), saves 40+ hours/month, goes live in 48 hours with zero data loss.`;
 
 const SYS_HI = SYS_EN + "\nRespond in Hindi (Devanagari). Keep responses short and conversational.";
 
