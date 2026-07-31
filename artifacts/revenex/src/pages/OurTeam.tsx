@@ -32,8 +32,8 @@ const team = [
   },
   {
     name: 'Prasanna Mate',
-    role: 'CTO',
-    roleHi: 'CTO और सॉफ्टवेयर डेवलपर',
+    role: 'Software Developer',
+    roleHi: 'सॉफ्टवेयर डेवलपर',
     linkedin: 'https://www.linkedin.com/in/prasanna-mate-a247b5328/',
     bioEn: 'Built the REVENEX platform from scratch. Oversees security audits, codebase integrity, and automated deployments.',
     bioHi: 'REVENEX प्लेटफॉर्म और वेबसाइट बनाईं। भरोसेमंद कोड, स्केलेबल सिस्टम और सुचारू तैनाती पर ध्यान।',
