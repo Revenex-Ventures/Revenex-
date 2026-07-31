@@ -42,6 +42,20 @@ The web application is built on modern, lightweight libraries:
 4.  **Animations (framer-motion)**:
     - Utilizes spring-based interactions for premium scroll timelines, hover expansions, and fade exits (`AnimatePresence`).
 
+## Documentation Index
+
+The following documentation guides are available in this directory:
+- [Overview / Project Structure](README.md) (this guide)
+- [Authentication Architecture](README-AUTH.md)
+- [Color Palette & Theme Reference](README-COLORS.md)
+- [Shared Component Frameworks](README-COMPONENTS.md)
+- [Chatbot Prompts & Flow Manual](README-CHATBOT.md)
+- [Contact Forms & Submissions](README-CONTACT.md)
+- [Build & Deployment Workflows](README-DEPLOYMENT.md)
+- [Homepage Marketing Sections](README-HOME.md)
+- [Pricing Model Configuration](README-PRICING.md)
+- [School ERP Products Details](README-PRODUCTS.md)
+
 ---
 
 ## General Rules for Developers

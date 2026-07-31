@@ -27,6 +27,24 @@ Execute all actions from the repository root:
     pnpm --filter @workspace/revenex build
     ```
     *Compiles all assets and deposits outputs inside `artifacts/revenex/dist/public`.*
+## Free Local Database (Docker Compose)
+
+You can spin up a local PostgreSQL instance for free (without a single rupee of cloud database fees) to test database queries locally.
+
+1.  Make sure you have Docker installed on your computer.
+2.  Run the following command from the repository root to boot up the container:
+    ```bash
+    docker compose up -d
+    ```
+3.  This runs a PostgreSQL service at `localhost:5432` with username `postgres`, password `postgres`, and database `revenex` using the config in [docker-compose.yml](file:///c:/VS%20Code/Revenex/docker-compose.yml).
+4.  Update the `DATABASE_URL` parameter in [artifacts/api-server/.env](file:///c:/VS%20Code/Revenex/artifacts/api-server/.env) to point to the local instance:
+    ```env
+    DATABASE_URL=postgresql://postgres:postgres@localhost:5432/revenex
+    ```
+5.  To shut down the database container:
+    ```bash
+    docker compose down
+    ```
 
 ---
 
