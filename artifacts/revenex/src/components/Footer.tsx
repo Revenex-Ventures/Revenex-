@@ -14,7 +14,7 @@ export function Footer() {
 
   const company = [
     { label: 'About', href: '/about' },
-    { label: 'Founders', href: '/founders' },
+    { label: 'Our Team', href: '/our-team' },
     { label: 'Contact', href: '/contact' },
   ]
 
