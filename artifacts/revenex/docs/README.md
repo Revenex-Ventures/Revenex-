@@ -1,22 +1,51 @@
-# Revenex Website Documentation
+# Revenex Frontend Website — Developer Documentation
 
-## Purpose
-This folder documents the current marketing website experience for future updates.
+Welcome to the developer documentation for the Revenex web application. This directory acts as the central reference manual for updating the marketing site, styling components, and managing deployment configurations.
 
-## Key Files
-- src/App.tsx — route registration and shell
-- src/components/Navbar.tsx — top navigation and mobile menu
-- src/components/Footer.tsx — footer links and contact details
-- src/pages/Home.tsx — homepage sections and marketing content
-- src/lib/language-context.tsx — shared labels and translations
-- src/index.css — global beige theme and utilities
+## Frontend Folder Structure
 
-## How to Edit
-1. Keep the existing routes and user flows intact.
-2. Prefer small modifications to the current components over creating new layouts.
-3. Update the corresponding documentation file when you change a section.
+The frontend application code lives under `artifacts/revenex/`:
 
-## Important Notes
-- The homepage is the central marketing experience.
-- The navbar now points to Products and Contact.
-- The theme uses a premium beige palette with restrained contrast.
+```
+artifacts/revenex/
+├── docs/                  # Markdown guides (this directory)
+├── public/                # Static assets (favicons, icons)
+├── src/
+│   ├── assets/            # Static assets and local images
+│   ├── components/        # Shared UI components (Navbar, Footer, Chatbot, Testimonials)
+│   ├── hooks/             # Custom React Hooks
+│   ├── lib/               # App contexts (auth, language translations, utils)
+│   ├── pages/             # Page views (Home.tsx, About.tsx, Contact.tsx, FeatureDetail.tsx)
+│   ├── App.tsx            # Main shell, React Query Setup, Wouter router
+│   ├── index.css          # Tailwind CSS global styles, variables, beige theme
+│   └── main.tsx           # React virtual DOM entry point
+├── package.json           # Frontend dependencies and npm script config
+├── vercel.json            # Deployment routing overrides for Vercel
+└── vite.config.ts         # Vite build configuration (outDir setup, proxies)
+```
+
+---
+
+## Architectural & Library Setup
+
+The web application is built on modern, lightweight libraries:
+
+1.  **Routing (Wouter)**: The app uses `wouter` for lightweight client-side routing.
+    - Router configurations are located in [App.tsx](file:///c:/VS%20Code/Revenex/artifacts/revenex/src/App.tsx).
+    - It uses the standard HTML5 history API, supported in production on Vercel via fallback rewrites to `index.html`.
+2.  **API Client & State (@tanstack/react-query)**:
+    - Shared API actions (fetching reviews, submitting feedback/contact forms) are managed through `@workspace/api-client-react`.
+    - `QueryClientProvider` is configured at the root in [App.tsx](file:///c:/VS%20Code/Revenex/artifacts/revenex/src/App.tsx).
+3.  **Bilingual Support**:
+    - Manage Hindi and English translations in [language-context.tsx](file:///c:/VS%20Code/Revenex/artifacts/revenex/src/lib/language-context.tsx).
+    - Keep translations structured using simple key-value lookups (`t('nav.home')`).
+4.  **Animations (framer-motion)**:
+    - Utilizes spring-based interactions for premium scroll timelines, hover expansions, and fade exits (`AnimatePresence`).
+
+---
+
+## General Rules for Developers
+
+1.  **Compile & Run Build**: Always run `pnpm --filter @workspace/revenex build` before committing. If bundling fails, Vercel deployment will break.
+2.  **Preserve Core Theme**: All styling modifications must adhere strictly to the warm-beige color system defined in [README-COLORS.md](file:///c:/VS%20Code/Revenex/artifacts/revenex/docs/README-COLORS.md). Never introduce default Tailwind colors like bright blues, greens, or pure blacks.
+3.  **Update Corresponding Docs**: When modifying a section (e.g. Products or Pricing), update its corresponding Markdown file in this directory.
