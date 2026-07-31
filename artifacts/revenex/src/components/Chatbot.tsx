@@ -91,6 +91,49 @@ async function askOpenRouterDirect(message: string, language: string, history: M
   return { reply, model: "openrouter/free (direct fallback)" };
 }
 
+function getLocalResponse(message: string, language: string): string | null {
+  const msg = message.toLowerCase().trim();
+  const isHi = language === 'hi';
+
+  if (msg.includes('founder') || msg.includes('ceo') || msg.includes('owner') || msg.includes('team') || msg.includes('member') || msg.includes('शुरू') || msg.includes('मालिक') || msg.includes('टीम')) {
+    return isHi 
+      ? 'REVENEX की स्थापना रौनक विजय सुते (संस्थापक और CEO) और रोहन राजेंद्र रौंदल (सह-संस्थापक) द्वारा की गई है। क्या आप उनके बारे में और जानना चाहते हैं?'
+      : 'REVENEX was founded by Rounak Vijay Sute (Founder & CEO) and Rohan Rajendra Raundal (Co-Founder). Would you like to know more about our leadership?';
+  }
+  if (msg.includes('cto') || msg.includes('developer') || msg.includes('built') || msg.includes('website') || msg.includes('बनाया') || msg.includes('सॉफ्टवेयर')) {
+    return isHi
+      ? 'प्रसन्ना माटे REVENEX के CTO हैं, जिन्होंने इस पूरे प्लेटफॉर्म को शुरू से बनाया है। क्या आप उनसे संपर्क करना चाहते हैं?'
+      : 'Prasanna Mate is the CTO of REVENEX. He built the entire platform from scratch. Would you like to contact him?';
+  }
+  if (msg.includes('pricing') || msg.includes('price') || msg.includes('cost') || msg.includes('free') || msg.includes('charge') || msg.includes('फीस') || msg.includes('मूल्य') || msg.includes('कीमत')) {
+    return isHi
+      ? 'हमारा Starter प्लान 500 से कम छात्रों वाले स्कूलों के लिए बिल्कुल मुफ्त है! असीमित रिकॉर्ड के लिए, Growth प्लान ₹20,000/वर्ष है। क्या मैं आपको एक डेमो बुक करने में मदद करूँ?'
+      : 'Our Starter plan is completely free for schools with under 500 students! For unlimited records, the Growth plan is ₹20,000/year. Shall I help you book a demo?';
+  }
+  if (msg.includes('contact') || msg.includes('phone') || msg.includes('mobile') || msg.includes('email') || msg.includes('call') || msg.includes('नंबर') || msg.includes('संपर्क') || msg.includes('फोन') || msg.includes('ईमेल')) {
+    return isHi
+      ? 'आप हमसे +91 90217 44355 पर संपर्क कर सकते हैं या team@revenex.in पर ईमेल भेज सकते हैं। हम सोमवार से शनिवार 2 घंटे के भीतर जवाब देते हैं।'
+      : 'You can call us at +91 90217 44355 or email team@revenex.in. Our team responds within 2 hours, Monday to Saturday.';
+  }
+  if (msg.includes('demo') || msg.includes('book') || msg.includes('schedule') || msg.includes('अपॉइंटमेंट') || msg.includes('दिखाएं')) {
+    return isHi
+      ? 'आप वेबसाइट पर "डेमो बुक करें" बटन पर क्लिक करके 15 मिनट का लाइव डेमो बुक कर सकते हैं। क्या मैं आपके लिए अपॉइंटमेंट शेड्यूल करने में मदद करूँ?'
+      : 'You can easily book a free 15-minute live walkthrough by clicking the "Book a Demo" button on the website. Shall I help you get started?';
+  }
+  if (msg.includes('what is') || msg.includes('revenex') || msg.includes('erp') || msg.includes('software') || msg.includes('क्या है') || msg.includes('सॉफ्टवेयर')) {
+    return isHi
+      ? 'REVENEX भारत का अग्रणी स्कूल ERP SaaS प्लेटफॉर्म है जो प्रवेश, बायोमेट्रिक उपस्थिति, फीस (Razorpay) और परीक्षा को स्वचालित करता है। क्या आप इसकी विशेषताएं देखना चाहेंगे?'
+      : 'REVENEX is India\'s leading cloud School ERP that automates admissions, biometric attendance, online fees (Razorpay), exams, and reports. Would you like to explore our modules?';
+  }
+  if (msg.includes('hi') || msg.includes('hello') || msg.includes('hey') || msg.includes('नमस्ते') || msg.includes('हेलो')) {
+    return isHi
+      ? 'नमस्ते! मैं आपकी किस प्रकार सहायता कर सकता हूँ? आप REVENEX के फीचर्स, कीमत, या टीम के बारे में पूछ सकते हैं।'
+      : 'Hello! How can I help you today? You can ask about REVENEX features, pricing, or the team.';
+  }
+
+  return null;
+}
+
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Msg[]>(() => {
@@ -127,26 +170,19 @@ export function Chatbot() {
         setMessages(p => [...p, { text: `Model: ${model}`, isUser: false, id: idRef.current++ }])
       } catch (directErr: any) {
         console.error("Both backend and direct fallback failed:", directErr)
-        const isServerResponse = e?.message && e.message.startsWith('server-');
-        if (isServerResponse) {
-          setMessages(p => [...p, { 
-            text: language === 'en' 
-              ? `AI service error: ${e.message.replace('server-', '')}. Please try again later.` 
-              : `AI सेवा त्रुटि: ${e.message.replace('server-', '')}। कृपया बाद में पुनः प्रयास करें।`, 
-            isUser: false, 
-            id: idRef.current++, 
-            isError: true 
-          }])
+        
+        // Attempt local keyword-matching fallback as the ultimate safeguard
+        const localReply = getLocalResponse(text, language)
+        if (localReply) {
+          setMessages(p => [...p, { text: localReply, isUser: false, id: idRef.current++, isError: false }])
+          setMessages(p => [...p, { text: "Model: Local Safeguard Match", isUser: false, id: idRef.current++ }])
         } else {
-          setOffline(true)
-          setMessages(p => [...p, { 
-            text: language === 'en' 
-              ? 'The API server is offline. Run start.bat to start the server.' 
-              : 'API सर्वर ऑफलाइन है। सर्वर शुरू करने के लिए start.bat चलाएं।', 
-            isUser: false, 
-            id: idRef.current++, 
-            isError: true 
-          }])
+          // General helpful offline responder instead of showing raw error status
+          const generalReply = language === 'en'
+            ? "I'm having trouble connecting to the AI server right now, but I can tell you that REVENEX is a premium School ERP starting free. You can call us at +91 90217 44355, email team@revenex.in, or click 'Book a Demo' to schedule a live walkthrough!"
+            : "मैं अभी AI सर्वर से कनेक्ट नहीं हो पा रहा हूँ, लेकिन मैं आपको बता सकता हूँ कि REVENEX एक प्रीमियम स्कूल ERP है जो मुफ्त से शुरू होता है। आप हमें +91 90217 44355 पर कॉल कर सकते हैं, team@revenex.in पर ईमेल कर सकते हैं, या लाइव डेमो के लिए 'डेमो बुक करें' पर क्लिक कर सकते हैं!";
+            
+          setMessages(p => [...p, { text: generalReply, isUser: false, id: idRef.current++, isError: false }])
         }
       }
     } finally { setTyping(false) }
