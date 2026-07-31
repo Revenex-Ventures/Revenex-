@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Team - Stacked Card Scroll Showcase</title>
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── CSS Variables & Theme Defaults ─── */
+    :root {
+      --bg-color: #F5F0E8;
+      --text-white: #1A1410;    /* Mapped to near-black headings */
+      --text-grey: #3D3128;     /* Mapped to dark warm-brown body text */
+      --text-muted: #6B5D52;    /* Mapped to slate/grey subtitles */
+      --cyan-glow: rgba(196, 114, 42, 0.06); /* Warm terracotta ambient glow */
+      --border-dark: #E8E0D4;   /* Mapped to light warm borders */
+      --pill-bg: #F0E8DC;       /* Mapped to light warm pill background */
+      --cyan-bright: #C4722A;   /* Mapped to terracotta orange accent */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-white);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Layout Structure ─── */
+    .showcase-container {
+      position: relative;
+      width: 100%;
+      min-height: 300vh; /* 3 sections of 100vh */
+      background-color: var(--bg-color);
+    }
+
+    /* ─── Sticky Section Stack ─── */
+    .team-section {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--bg-color);
+      overflow: hidden;
+      /* Top shadow to cast realistic depth on the card underneath (paper stack look) */
+      box-shadow: 0 -20px 80px rgba(61, 49, 40, 0.08);
+      border-top: 1px solid rgba(26, 20, 16, 0.04);
+    }
+
+    .grid-container {
+      max-width: 1300px;
+      width: 100%;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 4rem;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr; /* Optimized column balance */
+      align-items: center;
+      gap: 5rem;
+    }
+
+    /* ─── Left Column: Content ─── */
+    .content-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--cyan-bright);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .role-badge svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .headline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3.8rem;
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--text-white);
+      margin-bottom: 1.5rem;
+    }
+
+    .bio {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--text-grey);
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+    }
+
+    /* ─── Actions Row ─── */
+    .actions-row {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    /* Bordered Pill CTA */
+    .cta-pill-box {
+      border: 1px solid var(--border-dark);
+      background-color: var(--pill-bg);
+      border-radius: 9999px;
+      padding: 0.65rem 1.6rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cta-pill-box:hover {
+      border-color: var(--cyan-bright);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+      transform: scale(1.02);
+    }
+
+    .cta-label-col {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    .cta-subtext {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.1rem;
+    }
+
+    .cta-text {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .cta-arrow {
+      color: var(--cyan-bright);
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      transition: transform 0.3s;
+    }
+
+    .cta-pill-box:hover .cta-arrow {
+      transform: translate(2px, -2px);
+    }
+
+    /* Secondary Link */
+    .secondary-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-grey);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .secondary-link:hover {
+      color: var(--text-white);
+    }
+
+    .secondary-link svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      transition: transform 0.3s;
+    }
+
+    .secondary-link:hover svg {
+      transform: scale(1.1);
+    }
+
+    /* ─── Right Column: Portrait ─── */
+    .portrait-col {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portrait-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      height: 520px; /* Constrained visibility height - no top-to-bottom stretch */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portrait-img {
+      max-width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 50px rgba(0, 240, 255, 0.15));
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+    }
+
+    .portrait-wrapper:hover .portrait-img {
+      transform: scale(1.05);
+    }
+
+    /* Zoom utility for Rounak & Prasanna portrait size alignment */
+    .zoomed-portrait {
+      transform: scale(1.3);
+      transform-origin: center bottom;
+    }
+
+    .portrait-wrapper:hover .zoomed-portrait {
+      transform: scale(1.35) !important;
+    }
+
+    /* Ambient glow backing the silhouette */
+    .portrait-overlay {
+      position: absolute;
+      inset: -50px;
+      background: 
+        /* Soft fade to blend the bottom torso into the black background */
+        linear-gradient(to top, var(--bg-color) 0%, transparent 22%),
+        /* Radial cyan/teal background glow */
+        radial-gradient(circle at 50% 85%, var(--cyan-glow) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ─── Responsive Breakpoints ─── */
+    @media (max-width: 1024px) {
+      .grid-container {
+        padding: 0 2rem;
+        gap: 3rem;
+      }
+      .headline {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .showcase-container {
+        min-height: auto;
+      }
+      .team-section {
+        position: relative; /* Remove sticky stack on mobile to avoid viewport cropping */
+        height: auto;
+        padding: 6rem 0;
+        box-shadow: none;
+        border-bottom: 1px solid rgba(26, 20, 16, 0.05);
+      }
+      .grid-container {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+      }
+      .content-col {
+        order: 2; /* Text goes below the photo on mobile */
+      }
+      .portrait-col {
+        height: 60vh;
+        order: 1;
+      }
+      .portrait-wrapper {
+        height: 100%;
+        border-radius: 2rem;
+      }
+      .portrait-overlay {
+        background: 
+          linear-gradient(to top, var(--bg-color) 0%, transparent 12%),
+          radial-gradient(circle at 50% 95%, var(--cyan-glow) 0%, transparent 55%);
+      }
+      .headline {
+        font-size: 2.5rem;
+      }
+      .actions-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+      }
+      .cta-pill-box {
+        width: 100%;
+        max-width: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Stacking cards showcase -->
+  <div class="showcase-container">
+
+    <!-- Card 1: Rounak Vijay Sute -->
+    <section class="team-section">
+      <div class="grid-container">
+        
+        <!-- Left Content -->
+        <div class="content-col">
+          <div class="role-badge">
+            <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 4l7.5 13h-15L12 6z"/></svg>
+            Founder & CEO
+          </div>
+          <h2 class="headline">Rounak Vijay Sute</h2>
+          <p class="bio">Leads product strategy, business growth, and customer partnerships to modernize school administration across India.</p>
+          
+          <div class="actions-row">
+            <!-- LinkedIn Pill Link -->
+            <a href="https://www.linkedin.com/in/rounaksute/" target="_blank" rel="noopener noreferrer" class="cta-pill-box">
+              <div class="cta-label-col">
+                <span class="cta-subtext">Visit Profile</span>
+                <span class="cta-text">LinkedIn Profile</span>
+              </div>
+              <span class="cta-arrow">↗</span>
+            </a>
+            
+            <a href="mailto:team@revenex.in" class="secondary-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Contact Direct
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Portrait -->
+        <div class="portrait-col">
+          <div class="portrait-wrapper">
+            <img src="/Rounak.png?v=6" alt="Rounak Vijay Sute" class="portrait-img">
+            <div class="portrait-overlay"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Card 2: Rohan Rajendra Raundal -->
+    <section class="team-section">
+      <div class="grid-container">
+        
+        <!-- Left Content -->
+        <div class="content-col">
+          <div class="role-badge">
+            <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 4l7.5 13h-15L12 6z"/></svg>
+            Co-Founder
+          </div>
+          <h2 class="headline">Rohan Rajendra Raundal</h2>
+          <p class="bio">Leads engineering and platform architecture, focused on high-availability cloud infrastructure and AI systems.</p>
+          
+          <div class="actions-row">
+            <a href="https://www.linkedin.com/in/rohan-raundal/" target="_blank" rel="noopener noreferrer" class="cta-pill-box">
+              <div class="cta-label-col">
+                <span class="cta-subtext">Visit Profile</span>
+                <span class="cta-text">LinkedIn Profile</span>
+              </div>
+              <span class="cta-arrow">↗</span>
+            </a>
+            
+            <a href="mailto:team@revenex.in" class="secondary-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Contact Direct
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Portrait -->
+        <div class="portrait-col">
+          <div class="portrait-wrapper">
+            <img src="/Rohan.png?v=6" alt="Rohan Rajendra Raundal" class="portrait-img">
+            <div class="portrait-overlay"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Card 3: Prasanna Mate -->
+    <section class="team-section">
+      <div class="grid-container">
+        
+        <!-- Left Content -->
+        <div class="content-col">
+          <div class="role-badge">
+            <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 4l7.5 13h-15L12 6z"/></svg>
+            Chief Technology Officer
+          </div>
+          <h2 class="headline">Prasanna Mate</h2>
+          <p class="bio">Built the REVENEX platform from scratch. Oversees security audits, codebase integrity, and automated deployments.</p>
+          
+          <div class="actions-row">
+            <a href="https://www.linkedin.com/in/prasanna-mate-a247b5328/" target="_blank" rel="noopener noreferrer" class="cta-pill-box">
+              <div class="cta-label-col">
+                <span class="cta-subtext">Visit Profile</span>
+                <span class="cta-text">LinkedIn Profile</span>
+              </div>
+              <span class="cta-arrow">↗</span>
+            </a>
+            
+            <a href="mailto:prasannamate1754@gmail.com" class="secondary-link">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Contact Direct
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Portrait -->
+        <div class="portrait-col">
+          <div class="portrait-wrapper">
+            <img src="/Prasanna.png?v=6" alt="Prasanna Mate" class="portrait-img">
+            <div class="portrait-overlay"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+</body>
+</html>
