@@ -48,7 +48,7 @@ export default function OurTeam() {
   const { language } = useLanguage()
 
   return (
-    <main className="min-h-screen bg-[#F5F0E8] overflow-x-hidden">
+    <main className="min-h-screen bg-[#F5F0E8]">
       <Navbar />
 
       {/* 300vh scroll track */}
