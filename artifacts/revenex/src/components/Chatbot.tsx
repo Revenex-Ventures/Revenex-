@@ -158,16 +158,14 @@ export function Chatbot() {
     setMessages(p => [...p, { text, isUser: true, id: idRef.current++ }])
     setInput(''); setTyping(true); setOffline(false)
     try {
-      const { reply, model } = await askServer(text, language)
+      const { reply } = await askServer(text, language)
       setMessages(p => [...p, { text: reply, isUser: false, id: idRef.current++, isError: false }])
-      if (model) setMessages(p => [...p, { text: `Model: ${model}`, isUser: false, id: idRef.current++ }])
     } catch (e: any) {
       console.warn("Backend API failed, trying direct client fallback...", e)
       try {
         // Fallback directly to OpenRouter API from client
-        const { reply, model } = await askOpenRouterDirect(text, language, messages)
+        const { reply } = await askOpenRouterDirect(text, language, messages)
         setMessages(p => [...p, { text: reply, isUser: false, id: idRef.current++, isError: false }])
-        setMessages(p => [...p, { text: `Model: ${model}`, isUser: false, id: idRef.current++ }])
       } catch (directErr: any) {
         console.error("Both backend and direct fallback failed:", directErr)
         
@@ -175,7 +173,6 @@ export function Chatbot() {
         const localReply = getLocalResponse(text, language)
         if (localReply) {
           setMessages(p => [...p, { text: localReply, isUser: false, id: idRef.current++, isError: false }])
-          setMessages(p => [...p, { text: "Model: Local Safeguard Match", isUser: false, id: idRef.current++ }])
         } else {
           // General helpful offline responder instead of showing raw error status
           const generalReply = language === 'en'
