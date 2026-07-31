@@ -17,6 +17,7 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
   import Terms from "@/pages/Terms";
   import NotFound from "@/pages/not-found";
   import Admin from "@/pages/Admin";
+  import { ScrollToTop } from "@/components/ScrollToTop";
 
   const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
         <LanguageProvider>
           <AuthProvider>
             <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <ScrollToTop />
               <Router />
             </WouterRouter>
           </AuthProvider>
