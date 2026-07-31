@@ -8,7 +8,7 @@ import {
   GraduationCap, TrendingUp, Lock, Activity, Server,
   MessageSquare, Award, Star, Send, Globe2, Linkedin,
   Mail, Phone, MapPin, Building2, FileBarChart, Smartphone,
-  LayoutDashboard, BedDouble, UtensilsCrossed, ShoppingBag, Settings2,
+  LayoutDashboard, Settings2,
 } from 'lucide-react'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
@@ -184,9 +184,9 @@ const howItWorks = [
 
 /* ─── Partner logos (white pill style) ─── */
 const partners = [
-  { name: 'Google Cloud', logo: googleCloudLogo, heightClass: 'h-9' },
-  { name: 'Gemini', logo: geminiLogo, heightClass: 'h-9' },
-  { name: 'Razorpay', logo: razorpayLogo, heightClass: 'h-10' },
+  { name: 'Google Cloud', logo: googleCloudLogo, heightClass: 'h-11' },
+  { name: 'Gemini', logo: geminiLogo, heightClass: 'h-11' },
+  { name: 'Razorpay', logo: razorpayLogo, heightClass: 'h-12' },
   { name: 'Firebase', logo: firebaseLogo, heightClass: 'h-7' },
   { name: 'Twilio', logo: twilioLogo, heightClass: 'h-7' },
 ]
@@ -532,9 +532,8 @@ function ReviewsSection() {
                     className="transition-transform hover:scale-110"
                   >
                     <Star
-                      className={`h-7 w-7 transition-colors ${
-                        s <= (hoverRating || form.rating) ? 'text-[#8B4513] fill-[#8B4513]' : 'text-[#6B5D52]'
-                      }`}
+                      className={`h-7 w-7 transition-colors ${s <= (hoverRating || form.rating) ? 'text-[#8B4513] fill-[#8B4513]' : 'text-[#6B5D52]'
+                        }`}
                     />
                   </button>
                 ))}
@@ -983,8 +982,8 @@ function BentoCard({
   const cardBg = wide
     ? 'linear-gradient(135deg, #FDF8F3, #F0E8DC)'
     : index % 2 === 0
-    ? '#FDF8F3'
-    : '#F7F2EA'
+      ? '#FDF8F3'
+      : '#F7F2EA'
   return (
     <motion.div
       initial={{ opacity: 0, x: fromLeft ? -80 : 80 }}
@@ -992,9 +991,8 @@ function BentoCard({
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.1 }}
       whileHover={{ scale: 1.03, y: -6, borderColor: '#C4A882' }}
-      className={`group relative rounded-3xl border border-[#EDE8E3] p-8 overflow-hidden ${
-        wide ? 'sm:col-span-2 min-h-[180px] flex flex-col sm:flex-row items-center gap-8' : 'min-h-[220px]'
-      }`}
+      className={`group relative rounded-3xl border border-[#EDE8E3] p-8 overflow-hidden ${wide ? 'sm:col-span-2 min-h-[180px] flex flex-col sm:flex-row items-center gap-8' : 'min-h-[220px]'
+        }`}
       style={{ transition: 'box-shadow 0.2s', background: cardBg }}
     >
       <div
@@ -1126,7 +1124,7 @@ function ProblemSection() {
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
           <SectionBadge label="The Problem" />
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Running an institution shouldn't feel this hard</h2>
-          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Most schools and businesses juggle spreadsheets, paper registers, and disconnected apps. REVENEX brings it all together.</p>
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Most schools juggle spreadsheets, paper registers, and disconnected apps. REVENEX brings it all together.</p>
         </motion.div>
 
         <div className="relative grid md:grid-cols-2 gap-8 md:gap-0 items-center max-w-5xl mx-auto">
@@ -1209,105 +1207,50 @@ function ProblemSection() {
   )
 }
 
-/* ─── Products section (School ERP vs Business CRM tabs) ─── */
+/* ─── Products section (School ERP) ─── */
 function ProductsSection() {
-  const [tab, setTab] = useState<'school' | 'business'>('school')
-
-  const tabs = {
-    school: {
-      label: 'School ERP',
-      icon: GraduationCap,
-      blurb: 'Everything a K-12 or higher-ed institution needs to run smoothly — from admissions to alumni.',
-      cards: [
-        {
-          title: 'Principal Dashboard', desc: 'School-wide analytics, staff oversight, and approvals in one view.', icon: LayoutDashboard, color: '#7C3D0F',
-          features: ['Real-time school analytics', 'Staff performance tracking', 'Fee collection overview', 'Multi-branch management', 'Approval workflows', 'Custom report exports'],
-          slug: 'ai-analytics',
-        },
-        {
-          title: 'Teacher Dashboard', desc: 'Attendance, grading, and lesson planning without the paperwork.', icon: BookOpen, color: '#8B4513',
-          features: ['One-tap attendance', 'Digital gradebook', 'Lesson plan library', 'Parent messaging', 'Homework tracking', 'Exam scheduling'],
-          slug: 'exam-results',
-        },
-        {
-          title: 'Parent Dashboard', desc: 'Live updates on attendance, fees, and academic progress.', icon: Users, color: '#166534',
-          features: ['Live attendance alerts', 'Online fee payments', 'Report card access', 'Direct teacher chat', 'Event calendar', 'Bus tracking'],
-          slug: 'parent-communication',
-        },
-      ],
-    },
-    business: {
-      label: 'Business CRM',
-      icon: Building2,
-      blurb: 'A lightweight CRM for hospitality and retail businesses to manage operations and customers.',
-      cards: [
-        {
-          title: 'Hotel Management', desc: 'Bookings, housekeeping, and guest billing in a single system.', icon: BedDouble, color: '#7C3D0F',
-          features: ['Room booking engine', 'Housekeeping schedules', 'Guest billing & invoices', 'Channel manager sync', 'Loyalty programs', 'Occupancy analytics'],
-          slug: 'fees',
-        },
-        {
-          title: 'Restaurant Management', desc: 'Orders, table turnover, and inventory tracked in real time.', icon: UtensilsCrossed, color: '#8B4513',
-          features: ['Table & order management', 'Live kitchen display', 'Inventory tracking', 'Staff shift scheduling', 'Menu & pricing control', 'Sales reporting'],
-          slug: 'attendance',
-        },
-        {
-          title: 'Retail Management', desc: 'Inventory, billing, and customer loyalty made simple.', icon: ShoppingBag, color: '#166534',
-          features: ['POS billing', 'Inventory & stock alerts', 'Customer loyalty points', 'Multi-store sync', 'Barcode scanning', 'Sales dashboards'],
-          slug: 'student-management',
-        },
-      ],
-    },
+  const schoolProduct = {
+    label: 'School ERP',
+    blurb: 'Everything a K-12 or higher-ed institution needs to run smoothly — from admissions to alumni.',
+    cards: [
+      {
+        title: 'Principal Dashboard', desc: 'School-wide analytics, staff oversight, and approvals in one view.', icon: LayoutDashboard, color: '#7C3D0F',
+        features: ['Real-time school analytics', 'Staff performance tracking', 'Fee collection overview', 'Multi-branch management', 'Approval workflows', 'Custom report exports'],
+        slug: 'ai-analytics',
+      },
+      {
+        title: 'Teacher Dashboard', desc: 'Attendance, grading, and lesson planning without the paperwork.', icon: BookOpen, color: '#8B4513',
+        features: ['One-tap attendance', 'Digital gradebook', 'Lesson plan library', 'Parent messaging', 'Homework tracking', 'Exam scheduling'],
+        slug: 'exam-results',
+      },
+      {
+        title: 'Parent Dashboard', desc: 'Live updates on attendance, fees, and academic progress.', icon: Users, color: '#166534',
+        features: ['Live attendance alerts', 'Online fee payments', 'Report card access', 'Direct teacher chat', 'Event calendar', 'Bus tracking'],
+        slug: 'parent-communication',
+      },
+    ],
   } as const
-
-  const active = tabs[tab]
 
   return (
     <section id="products" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
           <SectionBadge label="Products" />
-          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">One platform, two products</h2>
-          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Purpose-built software for education and for service businesses.</p>
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Empower Your Institution</h2>
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Purpose-built software to digitize and automate all aspects of school operations.</p>
         </motion.div>
 
-        <div className="flex justify-center mb-12">
-          <div className="inline-flex p-1.5 rounded-2xl bg-white border border-[#E8E0D4] shadow-sm gap-1">
-            {(Object.keys(tabs) as Array<keyof typeof tabs>).map((key) => (
-              <button
-                key={key}
-                onClick={() => setTab(key)}
-                className={`relative flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold transition-colors ${
-                  tab === key ? 'text-white' : 'text-[#3D3128] hover:text-[#7C3D0F]'
-                }`}
-              >
-                {tab === key && (
-                  <motion.span
-                    layoutId="products-tab-pill"
-                    className="absolute inset-0 gradient-bg rounded-xl shadow-lg"
-                    transition={{ type: 'spring', duration: 0.5 }}
-                  />
-                )}
-                <span className="relative z-10 flex items-center gap-2">
-                  {(() => { const Icon = tabs[key].icon; return <Icon className="h-4 w-4" /> })()}
-                  {tabs[key].label}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
+        <p className="text-center text-[#6B5D52] max-w-xl mx-auto mb-12">
+          {schoolProduct.blurb}
+        </p>
 
-        <motion.p key={tab + '-blurb'} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center text-[#6B5D52] max-w-xl mx-auto mb-10">
-          {active.blurb}
-        </motion.p>
-
-        <motion.div key={tab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="grid gap-6 sm:grid-cols-3">
-          {active.cards.map((card, i) => {
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid gap-6 sm:grid-cols-3">
+          {schoolProduct.cards.map((card, i) => {
             const entrance = i === 0
               ? { initial: { opacity: 0, x: -100 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.65 } }
               : i === 1
-              ? { initial: { opacity: 0, y: 80 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: 0.15 } }
-              : { initial: { opacity: 0, x: 100 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.65, delay: 0.1 } }
+                ? { initial: { opacity: 0, y: 80 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5, delay: 0.15 } }
+                : { initial: { opacity: 0, x: 100 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.65, delay: 0.1 } }
             return (
               <motion.div
                 key={card.title}
@@ -1322,8 +1265,8 @@ function ProductsSection() {
                   background: i === 0
                     ? 'linear-gradient(160deg, #FDF8F3, #F5EDE0)'
                     : i === 1
-                    ? 'linear-gradient(160deg, #F7F2EA, #EDE4D6)'
-                    : 'linear-gradient(160deg, #FDF8F3, #F5EDE0)',
+                      ? 'linear-gradient(160deg, #F7F2EA, #EDE4D6)'
+                      : 'linear-gradient(160deg, #FDF8F3, #F5EDE0)',
                 }}
               >
                 <motion.div
@@ -1359,7 +1302,7 @@ function ProductsSection() {
                   </ul>
                   <div className="flex items-center justify-between">
                     <span className="bg-[#F0E8DC] text-[#8B4513] rounded-full px-4 py-2 text-xs font-bold uppercase">
-                      {tab === 'school' ? 'School ERP' : 'Business CRM'}
+                      School ERP
                     </span>
                     <Link href={`/features/${card.slug}`}>
                       <span className="text-[#8B4513] font-bold text-sm hover:translate-x-1.5 inline-block transition-transform">
@@ -1403,7 +1346,7 @@ function PricingSection() {
     name: 'Starter',
     price: '₹0',
     period: '/forever',
-    desc: 'For schools and businesses just getting started with digital management.',
+    desc: 'For schools just getting started with digital management.',
     features: [
       'Up to 500 students/records',
       'Principal, Teacher & Parent dashboards',
@@ -1602,76 +1545,76 @@ export default function Home() {
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="text-left">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#8B4513] animate-pulse" />
-                <span className="text-xs font-semibold text-[#7C3D0F] tracking-widest uppercase">{t('hero.badge')}</span>
-              </div>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.1 }}
-              className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl xl:text-[4.2rem] mb-6 leading-[1.05]"
-            >
-              <span className="text-[#1A1410]">{t('hero.title')}</span>
-              <br />
-              <span className="gradient-text">{t('hero.titleHighlight')}</span>
-              <br />
-              <span className="text-[#1A1410]">{t('hero.titleEnd')}</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.25 }}
-              className="max-w-xl text-lg text-[#3D3128] leading-relaxed mb-8"
-            >
-              {t('hero.subtitle')}
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
-              className="flex flex-col sm:flex-row gap-4 mb-8"
-            >
-              <Link href="/book-demo">
-                <motion.span
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center justify-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl text-base transition-all cursor-pointer shadow-lg"
-                >
-                  {t('hero.cta.demo')} <ArrowRight className="h-5 w-5" />
-                </motion.span>
-              </Link>
-              <Link href="/login">
-                <motion.span
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-4 rounded-2xl text-base transition-all hover:bg-[#F0E8DC] cursor-pointer"
-                >
-                  {language === 'en' ? 'Sign In' : 'साइन इन करें'} <ArrowRight className="h-5 w-5 opacity-60" />
-                </motion.span>
-              </Link>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.55 }}
-              className="flex items-center gap-3 flex-wrap"
-            >
-              {['Enterprise Security', '99.9% Uptime Target', 'Indian EdTech'].map((item) => (
-                <div key={item} className="flex items-center gap-1.5 text-xs text-[#6B5D52] px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-white">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-[#7C3D0F]" />
-                  {item}
+            <div className="text-left">
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#8B4513] animate-pulse" />
+                  <span className="text-xs font-semibold text-[#7C3D0F] tracking-widest uppercase">{t('hero.badge')}</span>
                 </div>
-              ))}
-            </motion.div>
-          </div>
+              </motion.div>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.1 }}
+                className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl xl:text-[4.2rem] mb-6 leading-[1.05]"
+              >
+                <span className="text-[#1A1410]">{t('hero.title')}</span>
+                <br />
+                <span className="gradient-text">{t('hero.titleHighlight')}</span>
+                <br />
+                <span className="text-[#1A1410]">{t('hero.titleEnd')}</span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.25 }}
+                className="max-w-xl text-lg text-[#3D3128] leading-relaxed mb-8"
+              >
+                {t('hero.subtitle')}
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                className="flex flex-col sm:flex-row gap-4 mb-8"
+              >
+                <Link href="/book-demo">
+                  <motion.span
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center justify-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl text-base transition-all cursor-pointer shadow-lg"
+                  >
+                    {t('hero.cta.demo')} <ArrowRight className="h-5 w-5" />
+                  </motion.span>
+                </Link>
+                <Link href="/login">
+                  <motion.span
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-4 rounded-2xl text-base transition-all hover:bg-[#F0E8DC] cursor-pointer"
+                  >
+                    {language === 'en' ? 'Sign In' : 'साइन इन करें'} <ArrowRight className="h-5 w-5 opacity-60" />
+                  </motion.span>
+                </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.55 }}
+                className="flex items-center gap-3 flex-wrap"
+              >
+                {['Enterprise Security', '99.9% Uptime Target', 'Indian EdTech'].map((item) => (
+                  <div key={item} className="flex items-center gap-1.5 text-xs text-[#6B5D52] px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-white">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-[#7C3D0F]" />
+                    {item}
+                  </div>
+                ))}
+              </motion.div>
+            </div>
 
             {/* Dashboard preview */}
             <motion.div

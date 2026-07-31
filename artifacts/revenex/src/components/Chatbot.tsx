@@ -39,6 +39,13 @@ Revenex helps schools across India manage every aspect of school operations incl
 
 Revenex is built for Indian schools (CBSE, ICSE, State Board), affordable, and works on mobile and desktop.
 
+Revenex's Official Technology Partners include:
+- Google Cloud: Provides robust core infrastructure & hosting.
+- Firebase: Powers secure user authentication & database storage.
+- Gemini AI: Drives advanced AI analytics & intelligent insights.
+- Razorpay: Enables safe, secure online fee payments & transaction processing.
+- Twilio: Powers the communication engine for SMS alerts, school notifications, & parent-teacher communications.
+
 Always provide clear, specific answers about Revenex's features and benefits. Guide interested schools toward booking a demo or contacting the team. Never give generic responses — be specific about how Revenex solves real school management problems. Keep responses concise but informative.`;
 
 const SYS_HI = SYS_EN + "\nRespond in Hindi (Devanagari).";
@@ -62,7 +69,7 @@ async function askOpenRouterDirect(message: string, language: string, history: M
       "X-Title": "REVENEX Chatbot Fallback"
     },
     body: JSON.stringify({
-      model: "openrouter/free",
+      model: "inclusionai/ling-3.0-flash:free",
       messages,
       max_tokens: 400,
       temperature: 0.2
@@ -77,7 +84,7 @@ async function askOpenRouterDirect(message: string, language: string, history: M
   const reply = d.choices?.[0]?.message?.content?.trim() ?? "";
   if (!reply) throw new Error("empty reply");
   
-  return { reply, model: "openrouter/free (direct fallback)" };
+  return { reply, model: "inclusionai/ling-3.0-flash:free (direct fallback)" };
 }
 
 export function Chatbot() {

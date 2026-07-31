@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
   import { Link, useLocation } from 'wouter'
   import { motion, AnimatePresence } from 'framer-motion'
-  import { Menu, X, Globe, LogIn, LogOut, User, ChevronDown, Shield, GraduationCap, Building2, Phone } from 'lucide-react'
+  import { Menu, X, Globe, LogIn, LogOut, User, ChevronDown, Shield, GraduationCap, Phone } from 'lucide-react'
   import { useLanguage } from '@/lib/language-context'
   import { useAuth } from '@/lib/auth-context'
 
@@ -13,15 +13,6 @@ import { useState, useEffect, useRef } from 'react'
         { label: 'Principal Dashboard', href: '/#products' },
         { label: 'Teacher Dashboard', href: '/#products' },
         { label: 'Parent Dashboard', href: '/#products' },
-      ],
-    },
-    {
-      title: 'Business CRM',
-      icon: Building2,
-      items: [
-        { label: 'Hotel Management', href: '/#products' },
-        { label: 'Restaurant Management', href: '/#products' },
-        { label: 'Retail Management', href: '/#products' },
       ],
     },
   ]
@@ -55,7 +46,7 @@ import { useState, useEffect, useRef } from 'react'
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.97 }}
               transition={{ duration: 0.18 }}
-              className="absolute left-1/2 -translate-x-1/2 mt-3 w-[420px] glass rounded-2xl border border-[#E8E0D4] shadow-2xl p-5 grid grid-cols-2 gap-5 z-50"
+              className="absolute left-1/2 -translate-x-1/2 mt-3 w-[240px] glass rounded-2xl border border-[#E8E0D4] shadow-2xl p-5 flex flex-col gap-4 z-50"
             >
               {productColumns.map((col) => (
                 <div key={col.title}>

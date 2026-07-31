@@ -2,8 +2,7 @@
 
 ## What it does
 
-Tabbed section (`id="products"`) letting visitors switch between "School ERP" and "Business CRM"
-product lines, each showing 3 animated cards with a tag, feature checklist, and "Explore →" link.
+A grid section (`id="products"`) showcasing "School ERP" dashboard cards (Principal, Teacher, and Parent), each showing an animated card with a feature checklist and "Explore →" link.
 
 ## File to edit
 
@@ -12,20 +11,12 @@ product lines, each showing 3 animated cards with a tag, feature checklist, and 
 ## Common changes
 
 ### Add/edit a product card
-Inside `ProductsSection`, find the data arrays for the School ERP tab (Principal / Teacher /
-Parent Dashboard cards) and the Business CRM tab (Hotel & Hospitality / Restaurant Operations /
-Retail Management cards). Each card object has: `icon`, `title`, `tag`, `desc`, `features`
-(string array).
-
-### Change tab labels
-The pill tab buttons near the top of `ProductsSection` — "School ERP" / "Business CRM".
+Inside `ProductsSection`, find the `schoolProduct` card list. Each card object has: `icon`, `title`, `desc`, `features` (string array), and `slug`.
 
 ### Change card hover animation
-Cards use `whileHover` from framer-motion (scale + shadow + top border color change) — adjust
-values directly on the `motion.div` for each card.
+Cards use `whileHover` from framer-motion (scale + shadow + top border color change) — adjust values directly on the `motion.div` for each card.
 
 ## Hardcoded values
 
-- Tab labels: "School ERP", "Business CRM"
-- Section heading: "Our Products"
-- All card titles, tags, and feature bullet text (see arrays inside `ProductsSection`)
+- Section heading: "Empower Your Institution"
+- All card titles and feature bullet text (see arrays inside `ProductsSection`)

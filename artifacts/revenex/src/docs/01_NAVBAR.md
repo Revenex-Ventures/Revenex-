@@ -9,8 +9,8 @@ Page route: use href="/page-name"
 
 ## Edit Products Dropdown
 Find dropdown JSX in Navbar.tsx.
-School ERP and Business CRM items are in separate arrays.
-Each item: { icon, title, description, href }
+School ERP items are inside the productColumns array.
+Each item: { label, href }
 
 ## Scroll Anchor IDs
 Features → #features
