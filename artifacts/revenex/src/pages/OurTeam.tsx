@@ -122,8 +122,15 @@ export default function OurTeam() {
                     href={member.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center justify-between gap-6 px-6 py-2.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-[#1A1410] hover:border-accent transition-all cursor-pointer"
-                    style={{ '--tw-border-opacity': '1', borderHoverColor: member.accentColor } as any}
+                    className="group inline-flex items-center justify-between gap-6 px-6 py-2.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-[#1A1410] transition-all cursor-pointer"
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = member.accentColor
+                      e.currentTarget.style.boxShadow = `0 0 20px ${member.accentColor}15`
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = '#E8E0D4'
+                      e.currentTarget.style.boxShadow = 'none'
+                    }}
                   >
                     <div className="flex flex-col text-left">
                       <span className="text-[10px] font-semibold text-[#6B5D52] uppercase tracking-wider leading-none mb-0.5">Visit Profile</span>
