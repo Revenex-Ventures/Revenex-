@@ -201,9 +201,9 @@ import { useState, useEffect, useRef } from 'react'
     ]
 
     return (
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'glass shadow-2xl' : 'bg-transparent'}`}>
-        <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between lg:h-20">
+      <header className="fixed top-3 md:top-5 inset-x-3 md:inset-x-6 z-50">
+        <nav className="mx-auto max-w-6xl">
+          <div className={`relative flex h-14 md:h-16 items-center justify-between pl-5 pr-2 sm:pl-6 rounded-full transition-all duration-500 ${isScrolled ? 'glass shadow-[0_14px_44px_-14px_rgba(139,69,19,0.28)]' : 'bg-white/45 backdrop-blur-xl border border-[#E8E0D4]/80 shadow-[0_10px_32px_-14px_rgba(139,69,19,0.14)]'}`}>
             <Link href="/" className="flex items-center gap-2">
               <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-1">
                 <span className="text-xl font-black lg:text-2xl tracking-tight">
@@ -316,8 +316,8 @@ import { useState, useEffect, useRef } from 'react'
 
         <AnimatePresence>
           {isMobileMenuOpen && (
-            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }}
-              className="glass lg:hidden border-t border-[#E8E0D4] overflow-hidden">
+            <motion.div initial={{ opacity: 0, y: 8, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.98 }} transition={{ duration: 0.25 }}
+              className="glass lg:hidden mt-2 rounded-3xl border border-[#E8E0D4] shadow-2xl overflow-hidden">
               <div className="space-y-1 px-4 pb-6 pt-3">
                 {navItems.map((item, i) => (
                   <motion.div key={item.label} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}>
