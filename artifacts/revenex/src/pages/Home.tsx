@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useLayoutEffect } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
-import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence } from 'framer-motion'
+import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence, type MotionValue } from 'framer-motion'
 import {
   ArrowRight, Users, BookOpen, CreditCard, Bell, Calendar,
   BarChart3, Shield, Cpu, CheckCircle2, Zap, Cloud, Sparkles,
@@ -104,14 +104,12 @@ function TiltCard({ children, className = '', style }: { children: React.ReactNo
 
 /* ─── Features ─── */
 const features = [
-  { icon: Users, title: 'Student Management', desc: 'Manage student records from admission to graduation.', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', slug: 'student-management' },
-  { icon: Calendar, title: 'Attendance Tracking', desc: 'Automate attendance and send SMS alerts to parents.', color: 'text-green-700', bg: 'bg-green-700/10', slug: 'attendance' },
-  { icon: CreditCard, title: 'Fee Management', desc: 'Collect fees online, issue receipts, and integrate with Razorpay.', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', slug: 'fees' },
-  { icon: Bell, title: 'Parent Communication', desc: 'Send SMS, WhatsApp, and app notifications to parents.', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', slug: 'parent-communication' },
-  { icon: BookOpen, title: 'Exam & Results', desc: 'Run exams, grade work, and share report cards.', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', slug: 'exam-results' },
-  { icon: BarChart3, title: 'AI Analytics', desc: 'Simple dashboards and insights for principals.', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', slug: 'ai-analytics' },
-  { icon: Users, title: 'Staff Management', desc: 'Manage payroll, leaves, and staff performance.', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', slug: 'staff-management' },
-  { icon: Shield, title: 'Security & Access', desc: 'Role-based access and strong data protection.', color: 'text-green-700', bg: 'bg-green-700/10', slug: 'security' },
+  { icon: Users, title: 'Student Management', desc: 'From admissions and enrollment to attendance records and report cards — manage every student\'s journey in one centralized dashboard.', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', slug: 'student-management', background: '/charachters/StudentManagementBack.png', character: '/charachters/StudentManagementChar.png' },
+  { icon: Calendar, title: 'Attendance Tracking', desc: 'Mark attendance in seconds with biometric, QR, or face-recognition support. Parents receive instant SMS and app alerts for daily check-ins.', color: 'text-green-700', bg: 'bg-green-700/10', slug: 'attendance', background: '/charachters/AttendanceTrackBack.png', character: '/charachters/AttendanceTrackChar.png' },
+  { icon: CreditCard, title: 'Fee Management', desc: 'Automate fee collection with Razorpay-powered online payments, generate digital receipts, and track pending dues with real-time financial dashboards.', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', slug: 'fees', background: '/charachters/feeBack.png', character: '/charachters/feeChar.png' },
+  { icon: Bell, title: 'Parent Communication', desc: 'Keep parents engaged with real-time SMS, WhatsApp, and in-app notifications for attendance, exams, events, and school announcements.', color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]', slug: 'parent-communication', background: '/charachters/ParentBack.png', character: '/charachters/ParentChar.png' },
+  { icon: BookOpen, title: 'Exam & Results', desc: 'Create and manage exams, auto-calculate grades, and publish digital report cards that parents and students can access instantly.', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', slug: 'exam-results', background: '/charachters/ResultBack.png', character: '/charachters/ResultChar.png' },
+  { icon: Users, title: 'Staff Management', desc: 'Handle payroll processing, leave management, performance reviews, and staff scheduling — all from a single administrative panel.', color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]', slug: 'staff-management', background: '/charachters/staffBack.png', character: '/charachters/StaffChar.png' },
 ]
 
 /* ─── How It Works steps ─── */
@@ -1021,61 +1019,416 @@ function BentoCard({
   )
 }
 
-/* ─── Features section ─── */
-function FeaturesSection({ t }: { t: (key: string) => string }) {
-  const wideSlugs = ['student-management', 'security']
-  const studentPills = ['2,847+ Students', 'Admission to Alumni', 'Bulk Import Ready']
-  const securityPills = ['256-bit Encryption', 'Role-Based Access', 'GDPR Compliant']
+function FeatureCard({ title, description, background, character, reverse, characterShiftX = 0, characterScale = 1, descriptionShiftX = 0, aspectRatio = '2 / 1' }: {
+  title: string;
+  description: string;
+  background: string;
+  character: string;
+  reverse: boolean;
+  characterShiftX?: number;
+  characterScale?: number;
+  descriptionShiftX?: number;
+  aspectRatio?: string;
+}) {
+  const aspect = aspectRatio || '17 / 9'
+  const smoothEase: [number, number, number, number] = [0.33, 0, 0.2, 1]
+  const dur = 0.7
 
   return (
-    <section id="features" className="py-20 lg:py-28 relative">
+    <div className="flex flex-col">
+      <motion.div
+        className="relative w-full rounded-2xl overflow-hidden cursor-pointer"
+        style={{
+          perspective: '2000px',
+          aspectRatio: aspect,
+        }}
+        initial="initial"
+        whileHover="hover"
+        variants={{
+          initial: { y: 0, boxShadow: '0 18px 50px -12px rgba(20, 14, 8, 0.35), 0 6px 18px -8px rgba(20, 14, 8, 0.18)' },
+          hover: { y: -14, boxShadow: '0 4px 16px -10px rgba(20, 14, 8, 0.08)' },
+        }}
+        transition={{ duration: 0.7, ease: [0.33, 0, 0.2, 1] }}
+      >
+        {/* Layer 1 — Background: full canvas, rotates backward, moves down, darkens. No glow, no shadow, no blur. */}
+        <motion.div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            transformOrigin: 'bottom center',
+            transformStyle: 'preserve-3d',
+            backfaceVisibility: 'hidden',
+          }}
+          variants={{
+            initial: {
+              rotateX: 0,
+              y: 0,
+            },
+            hover: {
+              rotateX: 72,
+              y: 14,
+            },
+          }}
+          transition={{ duration: dur, ease: smoothEase }}
+        >
+          {/* Full-size background illustration */}
+          <img
+            src={background}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+
+          {/* Dark overlay — darkens the tilted background on hover */}
+          <motion.div
+            className="absolute inset-0"
+            style={{ background: 'rgba(20, 14, 8, 0.65)' }}
+            variants={{
+              initial: { opacity: 0 },
+              hover: { opacity: 1 },
+            }}
+            transition={{ duration: dur, ease: smoothEase }}
+          />
+        </motion.div>
+
+        {/* Layer 2 — Character: same canvas as background, rendered exactly on top, never rotates or darkens */}
+        <motion.img
+          src={character}
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+          style={{ filter: 'drop-shadow(0 4px 12px rgba(20,14,8,0.25))' }}
+          variants={{
+            initial: { y: 16, scale: characterScale, x: characterShiftX + 24 },
+            hover: { y: 6, scale: characterScale * 1.02, x: characterShiftX + 24 },
+          }}
+          transition={{ duration: dur, ease: smoothEase }}
+        />
+
+        {/* Layer 3 — Description: only the description, fixed in front, fades in on hover, opposite the character */}
+        <motion.div
+          className={`absolute inset-y-0 flex flex-col justify-center z-20 pointer-events-none w-[45%] ${
+            reverse ? 'left-0 pl-5 md:pl-8 pr-3' : 'right-0 pr-5 md:pr-8 pl-3'
+          }`}
+          variants={{
+            initial: { opacity: 0, y: 42, x: descriptionShiftX },
+            hover: { opacity: 1, y: 0, x: descriptionShiftX },
+          }}
+          transition={{ duration: dur, ease: smoothEase }}
+        >
+          <p
+            className="text-[#2B2017] text-[15px] md:text-base leading-relaxed"
+            style={{ fontFamily: "'Playfair Display', Georgia, serif", textShadow: '0 2px 10px rgba(255,255,255,0.9)' }}
+          >
+            {description}
+          </p>
+        </motion.div>
+      </motion.div>
+
+      {/* Title — outside the card, centered below, does not animate with the card */}
+      <h3 className="text-center font-bold text-[20px] md:text-[22px] text-[#1A1410] mt-5 md:mt-6 leading-snug">
+        {title}
+      </h3>
+    </div>
+  )
+}
+
+/* ─── Connected ecosystem background for the Features section ─── */
+type EcoNode = { x: number; y: number }
+
+/* Neighbouring modules = connected. Indices match the features array order. */
+const featureEdges: Array<[number, number]> = [
+  [0, 1], [2, 3], [4, 5],
+  [0, 2], [1, 3], [2, 4], [3, 5],
+  [1, 2], [3, 4],
+]
+const edgeBows = [40, -38, 34, 28, -26, 30, -28, 46, -42]
+const edgeGrads = ['gold', 'bronze', 'silver', 'gold', 'bronze', 'silver', 'gold', 'bronze', 'silver']
+const edgeOpacity = [0.16, 0.13, 0.18, 0.12, 0.15, 0.11, 0.16, 0.14, 0.12]
+const edgeDashDur = [6.5, 8.5, 6, 10, 7.5, 9, 6.5, 8, 10.5]
+const edgePulseDur = [8.5, 11.5, 7.5, 13, 10, 9.5, 12, 11, 14]
+const edgePulseBegin = [0, 3.1, 1.6, 5.8, 2.4, 7.9, 4.2, 5.1, 6.7]
+
+function buildBezier(a: EcoNode, b: EcoNode, bow: number) {
+  const dx = b.x - a.x
+  const dy = b.y - a.y
+  const len = Math.hypot(dx, dy) || 1
+  const px = -dy / len
+  const py = dx / len
+  const c1 = { x: a.x + dx * 0.28 + px * bow, y: a.y + dy * 0.28 + py * bow }
+  const c2 = { x: b.x - dx * 0.28 + px * bow, y: b.y - dy * 0.28 + py * bow }
+  return `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} C ${c1.x.toFixed(1)} ${c1.y.toFixed(1)}, ${c2.x.toFixed(1)} ${c2.y.toFixed(1)}, ${b.x.toFixed(1)} ${b.y.toFixed(1)}`
+}
+
+/* Floating micro UI fragments — subtle, drifting, fading */
+const microElements = [
+  { Icon: Bell, left: '6%', top: '10%', dur: 9, delay: 0, color: '#8B4513' },
+  { Icon: MessageSquare, left: '91%', top: '16%', dur: 11, delay: 2.5, color: '#7C3D0F' },
+  { Icon: Calendar, left: '12%', top: '42%', dur: 10, delay: 1, color: '#8B4513' },
+  { Icon: BarChart3, left: '88%', top: '48%', dur: 12, delay: 4.2, color: '#7C3D0F' },
+  { Icon: Sparkles, left: '48%', top: '7%', dur: 8, delay: 3, color: '#C9A96A' },
+  { Icon: Cloud, left: '4%', top: '72%', dur: 10, delay: 5.4, color: '#8B4513' },
+  { Icon: FileBarChart, left: '94%', top: '76%', dur: 9, delay: 1.8, color: '#7C3D0F' },
+  { Icon: Shield, left: '46%', top: '93%', dur: 11, delay: 6.3, color: '#8B4513' },
+]
+
+function EcosystemBackground({
+  nodes,
+  size,
+  geometryY,
+  networkY,
+  microY,
+  hovered,
+}: {
+  nodes: EcoNode[]
+  size: { w: number; h: number }
+  geometryY: MotionValue<number>
+  networkY: MotionValue<number>
+  microY: MotionValue<number>
+  hovered: number | null
+}) {
+  const ready = size.w > 0 && nodes.length === 6
+  const hoveredEdgeIndices =
+    hovered === null
+      ? []
+      : featureEdges.map((e, i) => (e.includes(hovered) ? i : -1)).filter((i) => i >= 0)
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden>
+      {/* Ambient geometry — slowest parallax layer */}
+      <motion.div className="absolute -inset-32" style={{ y: geometryY }}>
+        <div className="absolute top-1/2 left-1/2 w-[62rem] h-[62rem]">
+          <motion.div
+            className="w-full h-full rounded-full border border-[#C9A96A]/[0.09]"
+            style={{ x: '-50%', y: '-50%' }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 120, repeat: Infinity, ease: 'linear' }}
+          />
+        </div>
+        <div className="absolute top-1/2 left-1/2 w-[42rem] h-[42rem]">
+          <motion.div
+            className="w-full h-full rounded-full border border-dashed border-[#8B4513]/[0.08]"
+            style={{ x: '-50%', y: '-50%' }}
+            animate={{ rotate: -360 }}
+            transition={{ duration: 96, repeat: Infinity, ease: 'linear' }}
+          />
+        </div>
+        <div className="absolute top-1/2 left-1/2 w-[30rem] h-[18rem]">
+          <motion.div
+            className="w-full h-full rounded-full"
+            style={{
+              x: '-50%',
+              y: '-50%',
+              background: 'radial-gradient(ellipse, rgba(139,69,19,0.10), transparent 65%)',
+              filter: 'blur(50px)',
+            }}
+            animate={{ rotate: 360, scale: [1, 1.2, 1] }}
+            transition={{ duration: 84, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </div>
+        <div className="absolute top-[22%] right-[8%] w-[26rem] h-[26rem]">
+          <motion.div
+            className="w-full h-full rounded-full border-t-2 border-[#B8B4AC]/[0.10]"
+            style={{ x: '-50%', y: '-50%' }}
+            animate={{ rotate: -360 }}
+            transition={{ duration: 110, repeat: Infinity, ease: 'linear' }}
+          />
+        </div>
+      </motion.div>
+
+      {/* Network layer — one continuous canvas across the whole section */}
+      <motion.div className="absolute inset-0" style={{ y: networkY }}>
+        {ready && (
+          <svg
+            className="absolute inset-0 w-full h-full"
+            viewBox={`0 0 ${size.w} ${size.h}`}
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="eco-gold" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#D4B896" />
+                <stop offset="50%" stopColor="#C9A96A" />
+                <stop offset="100%" stopColor="#D4B896" />
+              </linearGradient>
+              <linearGradient id="eco-bronze" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#8B4513" />
+                <stop offset="50%" stopColor="#7C3D0F" />
+                <stop offset="100%" stopColor="#8B4513" />
+              </linearGradient>
+              <linearGradient id="eco-silver" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#B8B4AC" />
+                <stop offset="50%" stopColor="#D8D4CC" />
+                <stop offset="100%" stopColor="#B8B4AC" />
+              </linearGradient>
+            </defs>
+
+            {featureEdges.map(([a, b], i) => {
+              const d = buildBezier(nodes[a], nodes[b], edgeBows[i])
+              return (
+                <g key={i} opacity={edgeOpacity[i]}>
+                  <path d={d} fill="none" stroke={`url(#eco-${edgeGrads[i]})`} strokeWidth={1} strokeLinecap="round" />
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke={`url(#eco-${edgeGrads[i]})`}
+                    strokeWidth={1.4}
+                    strokeDasharray="3 15"
+                    strokeLinecap="round"
+                  >
+                    <animate attributeName="stroke-dashoffset" from="0" to="-36" dur={`${edgeDashDur[i]}s`} repeatCount="indefinite" />
+                  </path>
+                  <circle r="2.2" fill="#C9A96A">
+                    <animateMotion dur={`${edgePulseDur[i]}s`} begin={`${edgePulseBegin[i]}s`} repeatCount="indefinite" path={d} />
+                  </circle>
+                  <circle r="1.5" fill="#7C3D0F">
+                    <animateMotion dur={`${edgePulseDur[i] * 1.45}s`} begin={`${edgePulseBegin[i] + 2.1}s`} repeatCount="indefinite" path={d} />
+                  </circle>
+                </g>
+              )
+            })}
+          </svg>
+        )}
+      </motion.div>
+
+      {/* Hover ripple — a soft pulse travels only the hovered card's connections */}
+      {ready && hovered !== null && (
+        <svg
+          key={hovered}
+          className="absolute inset-0 w-full h-full"
+          viewBox={`0 0 ${size.w} ${size.h}`}
+          preserveAspectRatio="none"
+        >
+          {hoveredEdgeIndices.map((idx, i) => {
+            const [a, b] = featureEdges[idx]
+            const start = a === hovered ? nodes[a] : nodes[b]
+            const end = a === hovered ? nodes[b] : nodes[a]
+            const d = buildBezier(start, end, edgeBows[idx])
+            return (
+              <g key={idx} opacity={0.55}>
+                <circle r="2.6" fill="#C9A96A">
+                  <animateMotion dur={`${1.6 + i * 0.25}s`} begin={`${i * 0.18}s`} repeatCount="1" path={d} />
+                </circle>
+                <circle r="4.5" fill="rgba(139,69,19,0.35)">
+                  <animateMotion dur={`${1.6 + i * 0.25}s`} begin={`${i * 0.18}s`} repeatCount="1" path={d} />
+                </circle>
+              </g>
+            )
+          })}
+        </svg>
+      )}
+
+      {/* Floating micro UI elements — gentle parallax drift */}
+      <motion.div className="absolute inset-0" style={{ y: microY }}>
+        {microElements.map((el, i) => (
+          <motion.div
+            key={i}
+            className="absolute"
+            style={{ left: el.left, top: el.top }}
+            animate={{ opacity: [0, 0.45, 0], y: [0, -16, 0], scale: [0.85, 1.05, 0.85] }}
+            transition={{ duration: el.dur, delay: el.delay, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <el.Icon className="w-4 h-4" style={{ color: el.color }} strokeWidth={1.5} />
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  )
+}
+
+/* ─── Features section ─── */
+function FeaturesSection({ t }: { t: (key: string) => string }) {
+  const sectionRef = useRef<HTMLElement | null>(null)
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [nodes, setNodes] = useState<EcoNode[]>([])
+  const [size, setSize] = useState({ w: 0, h: 0 })
+  const [hovered, setHovered] = useState<number | null>(null)
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] })
+  const geometryY = useTransform(scrollYProgress, [0, 1], [140, -140])
+  const networkY = useTransform(scrollYProgress, [0, 1], [60, -60])
+  const microY = useTransform(scrollYProgress, [0, 1], [28, -28])
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const section = sectionRef.current
+      if (!section) return
+      const rect = section.getBoundingClientRect()
+      setSize({ w: rect.width, h: rect.height })
+      setNodes(
+        cardRefs.current.map((el) => {
+          if (!el) return { x: 0, y: 0 }
+          const r = el.getBoundingClientRect()
+          return { x: r.left - rect.left + r.width / 2, y: r.top - rect.top + r.height / 2 }
+        })
+      )
+    }
+    measure()
+    const id = requestAnimationFrame(measure)
+    window.addEventListener('resize', measure)
+    return () => {
+      cancelAnimationFrame(id)
+      window.removeEventListener('resize', measure)
+    }
+  }, [])
+
+  return (
+    <section id="features" ref={sectionRef} className="py-20 lg:py-32 relative overflow-hidden">
+      <EcosystemBackground
+        nodes={nodes}
+        size={size}
+        geometryY={geometryY}
+        networkY={networkY}
+        microY={microY}
+        hovered={hovered}
+      />
       <div className="absolute inset-0 section-glow-left pointer-events-none" />
+      <div className="absolute inset-0 section-glow-right pointer-events-none" />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <span className="text-[9rem] sm:text-[13rem] lg:text-[17rem] font-black text-[#1A1410]/[0.03] leading-none whitespace-nowrap tracking-tighter">
+          FEATURES
+        </span>
+      </div>
+      <div className="absolute inset-0 noise-overlay pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-14">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
           <SectionBadge label="Features" />
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{t('features.title')}</h2>
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{t('features.subtitle')}</p>
         </motion.div>
-        <div className="grid gap-5 sm:grid-cols-3">
-          {[features[0], features[1], features[2], features[3], features[4], features[7]].map((feature, i) => {
-            const isWide = wideSlugs.includes(feature.slug)
-            return (
-              <BentoCard
-                key={feature.slug}
-                icon={feature.icon}
-                title={feature.title}
-                desc={feature.desc}
-                wide={isWide}
-                index={i}
-                pills={feature.slug === 'student-management' ? studentPills : feature.slug === 'security' ? securityPills : undefined}
-              />
-            )
-          })}
-        </div>
-        <div className="grid gap-5 sm:grid-cols-2 mt-5">
-          {[features[5], features[6]].map((feature, i) => (
-            <motion.div
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-x-14 md:gap-y-16 lg:gap-y-20">
+          {features.map((feature, i) => (
+            <div
               key={feature.slug}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.07 }}
+              ref={(el) => {
+                cardRefs.current[i] = el
+              }}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered((h) => (h === i ? null : h))}
             >
-              <Link href={`/features/${feature.slug}`}>
-                <TiltCard className="glass-card animated-border rounded-2xl p-6 h-full cursor-pointer group relative overflow-hidden">
-                  <div
-                    className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: `linear-gradient(135deg, rgba(139, 69, 19,0.06) 0%, transparent 100%)` }}
-                  />
-                  <div className="relative z-10">
-                    <div className={`inline-flex rounded-2xl p-3 mb-4 ${feature.bg}`}>
-                      <feature.icon className={`h-6 w-6 ${feature.color}`} />
-                    </div>
-                    <h3 className="text-base font-bold text-[#1A1410] mb-2">{feature.title}</h3>
-                    <p className="text-sm text-[#6B5D52] leading-relaxed mb-4">{feature.desc}</p>
-                  </div>
-                </TiltCard>
-              </Link>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 56, scale: 0.96 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.7, ease: 'easeOut', delay: i * 0.14 }}
+              >
+                <FeatureCard
+                  title={feature.title}
+                  description={feature.desc}
+                  background={feature.background}
+                  character={feature.character}
+                  reverse
+                  characterShiftX={
+                    feature.slug === 'exam-results' ? 72
+                    : feature.slug === 'attendance' ? 52
+                    : feature.slug === 'parent-communication' ? 40
+                    : feature.slug === 'student-management' ? 20
+                    : 0
+                  }
+                  characterScale={feature.slug === 'exam-results' ? 0.85 : 1}
+                  descriptionShiftX={feature.slug === 'exam-results' ? -14 : 0}
+                  aspectRatio="17 / 9"
+                />
+              </motion.div>
+            </div>
           ))}
         </div>
       </div>
