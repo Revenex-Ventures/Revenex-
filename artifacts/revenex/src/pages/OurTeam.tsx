@@ -67,13 +67,13 @@ export default function OurTeam() {
     <main className="min-h-screen bg-[#F5F0E8]">
       <Navbar />
 
-      {/* 400vh scroll track for 4 sticky cards */}
-      <div className="relative min-h-[400vh] bg-[#F5F0E8]">
+      {/* Responsive scroll track: sticky stacking on desktop, standard scroll flow on mobile */}
+      <div className="relative md:min-h-[400vh] bg-[#F5F0E8]">
         {team.map((member, i) => (
-          /* Sticky single viewport - slides over previous ones natively */
+          /* Sticky stack on desktop, natural page flow on mobile to prevent content cut-off */
           <section
             key={member.name}
-            className="sticky top-0 h-screen w-full flex items-center justify-center bg-[#F5F0E8] overflow-hidden shadow-[-20px_-20px_100px_rgba(61,49,40,0.08)] border-t border-[#1A1410]/5"
+            className="relative md:sticky top-0 min-h-screen md:h-screen w-full flex items-center justify-center bg-[#F5F0E8] overflow-y-auto md:overflow-hidden py-12 md:py-0 shadow-[-20px_-20px_100px_rgba(61,49,40,0.08)] border-t border-[#1A1410]/5"
             style={{ zIndex: i + 1 }}
           >
             {/* Background elements */}
