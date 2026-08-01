@@ -56,8 +56,7 @@ export default function Contact() {
             {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
               <h2 className="text-3xl font-black text-[#1A1410]">
@@ -76,8 +75,7 @@ export default function Contact() {
                   key={info.label}
                   href={info.href}
                   initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1 }}
                   className="flex items-center gap-4 glass-card rounded-2xl p-5 group"
                 >
@@ -104,8 +102,7 @@ export default function Contact() {
             {/* Contact Form */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, x: 0 }}
             >
               {submitted ? (
                 <motion.div

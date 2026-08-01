@@ -136,8 +136,7 @@ export default function Terms() {
               <motion.div
                 key={section.title}
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.04 }}
                 className="glass-card rounded-2xl p-7"
               >
@@ -156,8 +155,7 @@ export default function Terms() {
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             className="mt-8 glass-card rounded-2xl p-6 border border-aqua/10 text-center"
           >
             <p className="text-sm text-[#6B5D52]">

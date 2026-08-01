@@ -32,8 +32,7 @@ export default function Testimonials() {
             <motion.blockquote
               key={t.name}
               initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.12 }}
               className="glass-card p-6 rounded-2xl border border-[#E8E0D4]"
             >

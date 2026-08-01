@@ -162,8 +162,7 @@ export default function BookDemo() {
             {/* Info panel */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, x: 0 }}
               className="lg:col-span-2 space-y-6"
             >
               <div className="glass-card rounded-3xl p-8">
@@ -208,8 +207,7 @@ export default function BookDemo() {
             {/* Form */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, x: 0 }}
               className="lg:col-span-3"
             >
               <form onSubmit={handleSubmit} className="form-card glass-card animated-border rounded-3xl p-8 space-y-5">

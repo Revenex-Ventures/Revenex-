@@ -227,8 +227,7 @@ function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: n
     <motion.div
       ref={ref}
       initial={iconEntrance.initial}
-      whileInView={iconEntrance.animate}
-      viewport={{ once: true, margin: '-80px' }}
+      animate={iconEntrance.animate}
       transition={iconEntrance.transition}
       className="relative flex flex-col items-center shrink-0"
     >
@@ -241,8 +240,7 @@ function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: n
         </motion.div>
         <motion.span
           initial={{ scale: 0 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
+          animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 400 }}
           className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white leading-none z-10"
           style={{ background: '#8B4513' }}
@@ -254,8 +252,7 @@ function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: n
         <motion.span
           className="w-5 h-5 rounded-full mt-3 shrink-0"
           initial={{ scale: 0 }}
-          whileInView={{ scale: [0, 1.5, 1] }}
-          viewport={{ once: true }}
+          animate={{ scale: [0, 1.5, 1] }}
           transition={{ duration: 0.5, type: 'spring' }}
           style={{ background: '#8B4513', border: '3px solid #F5F0E8', boxShadow: '0 0 0 3px rgba(139,69,19,0.2)' }}
         />
@@ -266,8 +263,7 @@ function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: n
   const contentBlock = (
     <motion.div
       initial={contentEntrance.initial}
-      whileInView={contentEntrance.animate}
-      viewport={{ once: true, margin: '-80px' }}
+      animate={contentEntrance.animate}
       transition={contentEntrance.transition}
       className="rounded-3xl p-8 max-w-md"
       style={{
@@ -334,8 +330,7 @@ function HowItWorksSection({ language }: { language: string }) {
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           className="mb-16 text-center"
         >
           <SectionBadge label="How It Works" />
@@ -410,8 +405,7 @@ function ReviewsSection() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           className="text-center mb-14"
         >
           <SectionBadge label="Reviews" />
@@ -465,8 +459,7 @@ function ReviewsSection() {
         ) : (
           <motion.div
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1 }}
             className="text-center py-12 mb-12"
           >
             <Star className="h-10 w-10 text-[#8B4513]/30 mx-auto mb-3" />
@@ -477,8 +470,7 @@ function ReviewsSection() {
         {/* Leave a review form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           className="max-w-2xl mx-auto form-card glass-card animated-border rounded-3xl p-8"
         >
           <h3 className="text-xl font-black text-[#1A1410] mb-1">Leave a review</h3>
@@ -625,8 +617,7 @@ function LetsTalkSection({ language }: { language: string }) {
           {/* Contact info */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0 }}
             className="glass-card rounded-3xl p-8 space-y-6"
           >
             {[
@@ -655,8 +646,7 @@ function LetsTalkSection({ language }: { language: string }) {
           {/* Message form */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0 }}
             className="form-card glass-card animated-border rounded-3xl p-8"
           >
             <h3 className="text-lg font-black text-[#1A1410] mb-1">Send Message</h3>
@@ -788,8 +778,7 @@ function WhyRevenexSection({ language }: { language: string }) {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
         >
           <SectionBadge label="Why REVENEX" />
@@ -886,8 +875,7 @@ function MeetFoundersSection() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={{ opacity: 1, y: 0 }}
           className="text-center mb-14"
         >
           <SectionBadge label="Leadership" />
@@ -900,8 +888,7 @@ function MeetFoundersSection() {
             <motion.div
               key={f.name}
               initial={f.entrance.initial}
-              whileInView={f.entrance.animate}
-              viewport={{ once: true }}
+              animate={f.entrance.animate}
               transition={f.entrance.transition}
               whileHover={{ scale: 1.03, y: -8, borderColor: '#C4A882', boxShadow: '0 24px 60px rgba(139,69,19,0.16)' }}
               className="relative rounded-3xl overflow-hidden group text-center p-8 flex flex-col items-center"
@@ -987,8 +974,7 @@ function BentoCard({
   return (
     <motion.div
       initial={{ opacity: 0, x: fromLeft ? -80 : 80 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
+      animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.1 }}
       whileHover={{ scale: 1.03, y: -6, borderColor: '#C4A882' }}
       className={`group relative rounded-3xl border border-[#EDE8E3] p-8 overflow-hidden ${wide ? 'sm:col-span-2 min-h-[180px] flex flex-col sm:flex-row items-center gap-8' : 'min-h-[220px]'
@@ -1045,7 +1031,7 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
     <section id="features" className="py-20 lg:py-28 relative">
       <div className="absolute inset-0 section-glow-left pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-14">
           <SectionBadge label="Features" />
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{t('features.title')}</h2>
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{t('features.subtitle')}</p>
@@ -1071,8 +1057,7 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
             <motion.div
               key={feature.slug}
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.07 }}
             >
               <Link href={`/features/${feature.slug}`}>
@@ -1121,7 +1106,7 @@ function ProblemSection() {
         </span>
       </div>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-16">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
           <SectionBadge label="The Problem" />
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Running an institution shouldn't feel this hard</h2>
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Most schools juggle spreadsheets, paper registers, and disconnected apps. REVENEX brings it all together.</p>
@@ -1131,8 +1116,7 @@ function ProblemSection() {
           {/* Before card — dark, dramatic */}
           <motion.div
             initial={{ opacity: 0, x: -30, rotate: 0 }}
-            whileInView={{ opacity: 1, x: 0, rotate: -1.5 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0, rotate: -1.5 }}
             transition={{ duration: 0.6 }}
             className="relative z-0 rounded-3xl p-8 md:p-10 md:-mr-6 md:scale-[0.94]"
             style={{ background: 'linear-gradient(155deg, #2A1210 0%, #1A0D0C 100%)', boxShadow: '0 25px 50px -12px rgba(80,10,10,0.35)' }}
@@ -1178,8 +1162,7 @@ function ProblemSection() {
           {/* After card — elevated brown/beige, "With Revenex" */}
           <motion.div
             initial={{ opacity: 0, x: 30, rotate: 0 }}
-            whileInView={{ opacity: 1, x: 0, rotate: 1.5 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0, rotate: 1.5 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="relative z-10 rounded-3xl p-8 md:p-11 md:-ml-6"
             style={{ background: 'linear-gradient(150deg, #F3EADA 0%, #E7D9BE 100%)', boxShadow: '0 35px 70px -15px rgba(124,61,15,0.28), 0 0 0 1px rgba(124,61,15,0.1)' }}
@@ -1234,7 +1217,7 @@ function ProductsSection() {
   return (
     <section id="products" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
           <SectionBadge label="Products" />
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Empower Your Institution</h2>
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Purpose-built software to digitize and automate all aspects of school operations.</p>
@@ -1244,7 +1227,7 @@ function ProductsSection() {
           {schoolProduct.blurb}
         </p>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="grid gap-6 sm:grid-cols-3">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="grid gap-6 sm:grid-cols-3">
           {schoolProduct.cards.map((card, i) => {
             const entrance = i === 0
               ? { initial: { opacity: 0, x: -100 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.65 } }
@@ -1256,8 +1239,7 @@ function ProductsSection() {
                 key={card.title}
                 id={card.title.toLowerCase().replace(/\s+/g, '-')}
                 initial={entrance.initial}
-                whileInView={entrance.animate}
-                viewport={{ once: true }}
+                animate={entrance.animate}
                 transition={entrance.transition}
                 whileHover={{ y: -8 }}
                 className="group relative rounded-3xl overflow-hidden min-h-[520px]"
@@ -1386,7 +1368,7 @@ function PricingSection() {
   return (
     <section id="pricing" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-14">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-14">
           <SectionBadge label="Pricing" />
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Simple, transparent pricing</h2>
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Start free. Upgrade when you're ready to grow.</p>
@@ -1396,8 +1378,7 @@ function PricingSection() {
           {/* Starter — flat, minimal white luxury card */}
           <motion.div
             initial={{ opacity: 0, x: -60 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             className="rounded-3xl p-10 bg-white min-h-[680px] flex flex-col"
             style={{ border: '1.5px solid #E8E0D4', boxShadow: '0 8px 40px rgba(139,69,19,0.08)' }}
@@ -1418,8 +1399,7 @@ function PricingSection() {
                 <motion.li
                   key={f}
                   initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.05 }}
                   className="group flex items-center gap-3 py-1.5 transition-transform duration-200 hover:translate-x-1"
                 >
@@ -1445,8 +1425,7 @@ function PricingSection() {
           <motion.div
             ref={growthRef}
             initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: -20 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: -20 }}
             transition={{ duration: 0.6, delay: 0.18 }}
           >
             <motion.div

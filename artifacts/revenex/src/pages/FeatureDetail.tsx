@@ -388,7 +388,7 @@ export default function FeatureDetail() {
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
               {full.stats.map((stat, i) => (
-                <motion.div key={stat.label} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.07 }} className="text-center">
+                <motion.div key={stat.label} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }} className="text-center">
                   <div className="text-3xl font-black mb-1" style={{ color: full.color }}>{stat.value}</div>
                   <div className="text-sm text-[#6B5D52]">{stat.label}</div>
                 </motion.div>
@@ -405,8 +405,7 @@ export default function FeatureDetail() {
             <motion.div
               key={section.heading}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08 }}
               className="glass-card rounded-3xl p-8 lg:p-10"
               style={{ border: `1px solid ${full.color}18` }}
@@ -427,7 +426,7 @@ export default function FeatureDetail() {
           ))}
 
           {mod && (
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="glass-card rounded-3xl p-8 lg:p-10" style={{ border: `1px solid ${mod.color}18` }}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card rounded-3xl p-8 lg:p-10" style={{ border: `1px solid ${mod.color}18` }}>
               <h2 className="text-2xl font-black text-[#1A1410] mb-4">What's Included</h2>
               <p className="text-[#1A1410]/55 leading-relaxed mb-6">{mod.desc}</p>
               <div className="grid gap-3 sm:grid-cols-2">

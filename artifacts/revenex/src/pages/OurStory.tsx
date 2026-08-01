@@ -205,7 +205,7 @@ export default function OurStory() {
       {/* Why We Built */}
       <section className="py-12 lg:py-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <TiltCard className="glass-card animated-border rounded-3xl p-8 lg:p-10">
               <h2 className="text-2xl font-black text-[#1A1410] mb-5">
                 {language === 'en' ? 'Why We Built REVENEX' : 'हमने REVENEX क्यों बनाया'}
@@ -238,8 +238,7 @@ export default function OurStory() {
         <div className="relative mx-auto max-w-3xl lg:max-w-5xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-4">
@@ -279,8 +278,7 @@ export default function OurStory() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             className="text-center mb-10"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-4">
@@ -299,8 +297,7 @@ export default function OurStory() {
               <motion.div
                 key={value.titleEn}
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
               >
                 <TiltCard className="glass-card animated-border rounded-2xl p-7 text-center group hover:border-aqua/20 transition-all h-full">
@@ -319,7 +316,7 @@ export default function OurStory() {
       {/* Quote */}
       <section className="py-16 relative">
         <div className="mx-auto max-w-3xl px-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <TiltCard className="glass-card animated-border rounded-3xl p-10 text-center">
               <div className="text-5xl text-aqua mb-4 font-serif leading-none">"</div>
               <p className="text-lg text-[#1A1410]/65 leading-relaxed italic mb-8">
