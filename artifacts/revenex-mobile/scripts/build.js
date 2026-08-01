@@ -506,6 +506,11 @@ function updateManifests(manifests, timestamp, baseUrl, assetsByHash) {
 }
 
 async function main() {
+  if (process.env.VERCEL || process.env.CI) {
+    console.log("CI/Vercel environment detected. Skipping static Expo Go mobile deployment build.");
+    process.exit(0);
+  }
+
   console.log("Building static Expo Go deployment...");
 
   setupSignalHandlers();
