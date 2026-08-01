@@ -1,4 +1,4 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route } from "wouter";
   import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
   import { LanguageProvider } from "@/lib/language-context";
   import { AuthProvider } from "@/lib/auth-context";
@@ -47,10 +47,8 @@ import { Switch, Route, Router as WouterRouter } from "wouter";
       <QueryClientProvider client={queryClient}>
         <LanguageProvider>
           <AuthProvider>
-            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-              <ScrollToTop />
-              <Router />
-            </WouterRouter>
+            <ScrollToTop />
+            <Router />
           </AuthProvider>
         </LanguageProvider>
       </QueryClientProvider>
