@@ -16,10 +16,10 @@ The chatbot is instructed using a master system prompt (`SYS_EN` / `SYS_HI`). To
 -   **Founders & Executive Team**:
     -   `Rounak Vijay Sute`: Founder & CEO. Leads product strategy & corporate partnerships.
     -   `Rohan Rajendra Raundal`: Co-Founder. Leads full-stack engineering & platform architecture.
-    -   `Prasanna Mate`: CTO. Built the entire platform from scratch, leads platform engineering & smooth deployments.
+    -   `Prasanna Mate`: Software Developer. Built the entire platform from scratch, leads platform engineering & smooth deployments.
 -   **Contact & Support**:
     -   Phone: `+91 90217 44355`
-    -   Email: `team@revenex.in` (support) or `prasannamate1754@gmail.com` (CTO direct).
+    -   Email: `team@revenex.in` (support) or `prasannamate1754@gmail.com` (Software Developer direct).
     -   SLA: Mon-Sat support with 2-hour critical issue resolution.
 -   **Technology Stack & Partners**:
     -   Google Cloud (hosting infrastructure), Firebase (auth/database hooks), Gemini AI (dashboard insights), Razorpay (UPI payments), Twilio (SMS/WhatsApp parents alerts).

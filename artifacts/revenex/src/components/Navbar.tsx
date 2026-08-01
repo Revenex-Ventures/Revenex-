@@ -10,9 +10,9 @@ import { useState, useEffect, useRef } from 'react'
       title: 'School ERP',
       icon: GraduationCap,
       items: [
-        { label: 'Principal Dashboard', href: '/#products' },
-        { label: 'Teacher Dashboard', href: '/#products' },
-        { label: 'Parent Dashboard', href: '/#products' },
+        { label: 'Principal Dashboard', href: '/#principal-dashboard' },
+        { label: 'Teacher Dashboard', href: '/#teacher-dashboard' },
+        { label: 'Parent Dashboard', href: '/#parent-dashboard' },
       ],
     },
   ]
@@ -20,6 +20,7 @@ import { useState, useEffect, useRef } from 'react'
   function ProductsMenu({ closeMobile }: { closeMobile?: () => void }) {
     const [open, setOpen] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
+    const [location, navigate] = useLocation()
 
     useEffect(() => {
       function handler(e: MouseEvent) {
@@ -59,11 +60,23 @@ import { useState, useEffect, useRef } from 'react'
                   <ul className="space-y-1">
                     {col.items.map((it) => (
                       <li key={it.label}>
-                        <Link href={it.href}>
-                          <span onClick={() => { setOpen(false); closeMobile?.() }} className="block rounded-lg px-2 py-1.5 text-sm text-[#6B5D52] hover:text-[#1A1410] hover:bg-[#F0E8DC] transition-colors cursor-pointer">
-                            {it.label}
-                          </span>
-                        </Link>
+                        <span 
+                          onClick={(e) => {
+                            e.preventDefault()
+                            setOpen(false)
+                            closeMobile?.()
+                            const targetAnchor = it.label.toLowerCase().replace(/\s+/g, '-')
+                            if (location === '/') {
+                              scrollToSection(targetAnchor)
+                            } else {
+                              navigate('/')
+                              setTimeout(() => scrollToSection(targetAnchor), 400)
+                            }
+                          }}
+                          className="block rounded-lg px-2 py-1.5 text-sm text-[#6B5D52] hover:text-[#1A1410] hover:bg-[#F0E8DC] transition-colors cursor-pointer"
+                        >
+                          {it.label}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -322,11 +335,23 @@ import { useState, useEffect, useRef } from 'react'
                     {i === 0 && (
                       <div className="pl-4 mt-1 space-y-0.5">
                         {productColumns.flatMap(c => c.items).map((it) => (
-                          <Link key={it.label} href={it.href}>
-                            <span onClick={() => setIsMobileMenuOpen(false)} className="block rounded-lg px-4 py-2 text-sm text-[#6B5D52] hover:text-[#1A1410] hover:bg-[#F0E8DC] transition-colors cursor-pointer">
-                              {it.label}
-                            </span>
-                          </Link>
+                          <span 
+                            key={it.label}
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setIsMobileMenuOpen(false)
+                              const targetAnchor = it.label.toLowerCase().replace(/\s+/g, '-')
+                              if (location === '/') {
+                                scrollToSection(targetAnchor)
+                              } else {
+                                navigate('/')
+                                setTimeout(() => scrollToSection(targetAnchor), 400)
+                              }
+                            }}
+                            className="block rounded-lg px-4 py-2 text-sm text-[#6B5D52] hover:text-[#1A1410] hover:bg-[#F0E8DC] transition-colors cursor-pointer"
+                          >
+                            {it.label}
+                          </span>
                         ))}
                       </div>
                     )}

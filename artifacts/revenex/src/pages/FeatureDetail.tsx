@@ -443,25 +443,7 @@ export default function FeatureDetail() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 60% 40% at 50% 100%, ${data.bgGlow}, transparent)` }} />
-        <div className="relative mx-auto max-w-2xl px-4 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-3xl font-black text-[#1A1410] mb-4">Ready to see it in action?</h2>
-            <p className="text-[#3D3128] mb-8">Book a free demo and see how REVENEX transforms your school operations.</p>
-            <Link href="/book-demo">
-              <motion.span
-                whileHover={{ scale: 1.04, boxShadow: `0 0 30px ${data.glow}` }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl cursor-pointer"
-              >
-                Book Free Demo <ArrowRight className="h-4 w-4" />
-              </motion.span>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+
 
       <Footer />
       <Chatbot />

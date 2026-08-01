@@ -338,29 +338,7 @@ export default function OurStory() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 hero-glow opacity-30 pointer-events-none" />
-        <div className="relative mx-auto max-w-3xl px-4 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-3xl font-black text-[#1A1410] sm:text-4xl mb-4">
-              {language === 'en' ? 'Be Part of the Journey' : 'यात्रा का हिस्सा बनें'}
-            </h2>
-            <p className="text-[#3D3128] mb-8">
-              {language === 'en' ? 'We\'re onboarding pilot schools. Let\'s talk.' : 'हम पायलट स्कूलों को ऑनबोर्ड कर रहे हैं।'}
-            </p>
-            <Link href="/book-demo">
-              <motion.span
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl cursor-pointer shadow-[0_0_30px_rgba(124,61,15,0.3)]"
-              >
-                Book a Demo <ArrowRight className="h-4 w-4" />
-              </motion.span>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+
 
       <Footer />
       <Chatbot />

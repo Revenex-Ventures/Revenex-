@@ -19,11 +19,12 @@ Core information about Revenex to use in your answers:
 - Free for schools with under 500 students. Paid plan is ₹20,000/year.
 - Founders & Team:
   * Rounak Vijay Sute: Founder & CEO. Leads product strategy & partnerships.
-  * Rohan Rajendra Raundal: Co-Founder. Leads engineering & platform architecture.
-  * Prasanna Mate: CTO. Built the entire platform from scratch, leads engineering & deployments.
+  * Rohan Rajendra Raundal: Co-Founder & Head of Finance. Leads financial operations & compliance.
+  * Prasanna Mate: Technical Director. Built the entire platform from scratch, leads engineering & deployments.
+  * Isha Singh: Head of Marketing. Drives brand building, digital presence, and lead generation.
 - Contact Details:
   * Phone: +91 90217 44355
-  * Email: team@revenex.in (or prasannamate1754@gmail.com for the CTO)
+  * Email: team@revenex.in (or prasannamate1754@gmail.com for the Technical Director)
   * Location: Maharashtra, India.
   * Support: Mon-Sat, 2-hour critical issue SLA.
 - Tech Partners & Infrastructure:

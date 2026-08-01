@@ -8,39 +8,55 @@ import { useLanguage } from '@/lib/language-context'
 const team = [
   {
     name: 'Rounak Vijay Sute',
-    role: 'Founder & CEO',
-    roleHi: 'संस्थापक और CEO',
+    role: 'Chief Executive Officer (CEO)',
+    roleHi: 'मुख्य कार्यकारी अधिकारी (CEO)',
     linkedin: 'https://www.linkedin.com/in/rounaksute/',
-    bioEn: 'Leads product strategy, business growth, and customer partnerships to modernize school administration across India.',
-    bioHi: 'स्कूल प्रशासन को आधुनिक बनाने के लिए उत्पाद रणनीति, व्यावसायिक विकास और ग्राहक भागीदारी का नेतृत्व करते हैं।',
-    expertise: ['Product Strategy', 'EdTech Vision', 'Business Development', 'Partnerships'],
+    bioEn: 'Rounak sets the company\'s vision and strategic direction, overseeing resource allocation, building the founding team, and representing Revenex to investors and partners to drive sustainable growth.',
+    bioHi: 'रेवेनेक्स के विजन और रणनीतिक दिशा को तय करते हैं, टीम निर्माण, संसाधन आवंटन और निवेशकों के साथ साझेदारी का नेतृत्व करते हैं ताकि टिकाऊ विकास हो सके।',
+    expertise: ['Strategic Vision', 'Resource Allocation', 'Team Leadership', 'Investor Relations', 'Client Strategy'],
     photo: '/Rounak.png?v=6',
+    photoClass: 'scale-100',
     accentColor: '#C4722A',
     email: 'team@revenex.in'
   },
   {
     name: 'Rohan Rajendra Raundal',
-    role: 'Co-Founder',
-    roleHi: 'सह-संस्थापक',
+    role: 'Head of Finance',
+    roleHi: 'वित्त प्रमुख',
     linkedin: 'https://www.linkedin.com/in/rohan-raundal/',
-    bioEn: 'Leads engineering and platform architecture, focused on high-availability cloud infrastructure and AI systems.',
-    bioHi: 'सह-संस्थापक। इंजीनियरिंग और प्लेटफ़ॉर्म आर्किटेक्चर का नेतृत्व करते हैं, विश्वसनीयता और स्केलेबिलिटी पर केंद्रित।',
-    expertise: ['Cloud Architecture', 'Full-Stack Development', 'AI Systems', 'DevOps'],
+    bioEn: 'Rohan manages the financial operations of Revenex, including cash flow monitoring, financial planning, statutory compliance, payroll management, and delivering key insights for strategic decisions.',
+    bioHi: 'रेवेनेक्स के वित्तीय संचालन का प्रबंधन करते हैं, जिसमें नकदी प्रवाह, बजट निर्माण, वित्तीय योजना, कर अनुपालन और सामरिक निर्णयों के लिए वित्तीय जानकारी देना शामिल है।',
+    expertise: ['Financial Planning', 'Budgeting & Compliance', 'Cash Flow Monitoring', 'Payroll Operations', 'Fiscal Discipline'],
     photo: '/Rohan.png?v=6',
+    photoClass: 'scale-100',
     accentColor: '#8B4513',
     email: 'team@revenex.in'
   },
   {
     name: 'Prasanna Mate',
-    role: 'Software Developer',
-    roleHi: 'सॉफ्टवेयर डेवलपर',
+    role: 'Technical Director',
+    roleHi: 'तकनीकी निदेशक',
     linkedin: 'https://www.linkedin.com/in/prasanna-mate-a247b5328/',
-    bioEn: 'Built the REVENEX platform from scratch. Oversees security audits, codebase integrity, and automated deployments.',
-    bioHi: 'REVENEX प्लेटफॉर्म और वेबसाइट बनाईं। भरोसेमंद कोड, स्केलेबल सिस्टम और सुचारू तैनाती पर ध्यान।',
-    expertise: ['Software Architecture', 'Database Tuning', 'System Security', 'ERP Deployments'],
-    photo: '/Prasanna.png?v=6',
+    bioEn: 'Prasanna leads full-stack engineering, product design, and tool execution, focused on codebase integrity, scalable infrastructure deployment, and maintaining system reliability and quality.',
+    bioHi: 'फुल-स्टैक इंजीनियरिंग, उत्पाद डिजाइन और उपकरण कार्यान्वयन का नेतृत्व करते हैं, जो कोडबेस अखंडता, स्केलेबल बुनियादी ढांचे और सिस्टम विश्वसनीयता पर केंद्रित है।',
+    expertise: ['Product Engineering', 'System Architecture', 'Infrastructure Scaling', 'Quality Assurance', 'Troubleshooting'],
+    photo: '/Prasanna.png?v=7',
+    photoClass: 'scale-100',
     accentColor: '#166534',
     email: 'prasannamate1754@gmail.com'
+  },
+  {
+    name: 'Isha Singh',
+    role: 'Head of Marketing',
+    roleHi: 'विपणन प्रमुख',
+    linkedin: 'https://www.linkedin.com/company/revenex-ventures/',
+    bioEn: 'Isha drives the marketing and brand-building strategies at Revenex, executing digital campaigns, conducting competitor analysis, and generating leads to communicate our core value proposition.',
+    bioHi: 'रेवेनेक्स में विपणन और ब्रांड-निर्माण रणनीतियों का नेतृत्व करती हैं, जिसमें डिजिटल अभियान, प्रतिस्पर्धी विश्लेषण और मूल्य प्रस्ताव को संप्रेषित करने के लिए लीड उत्पन्न करना शामिल है।',
+    expertise: ['Marketing Strategy', 'Brand Development', 'Campaign Management', 'Lead Generation', 'Market Research'],
+    photo: '/Isha.png?v=7',
+    photoClass: 'scale-100',
+    accentColor: '#7C3AED',
+    email: 'team@revenex.in'
   }
 ]
 
@@ -51,8 +67,8 @@ export default function OurTeam() {
     <main className="min-h-screen bg-[#F5F0E8]">
       <Navbar />
 
-      {/* 300vh scroll track */}
-      <div className="relative min-h-[300vh] bg-[#F5F0E8]">
+      {/* 400vh scroll track for 4 sticky cards */}
+      <div className="relative min-h-[400vh] bg-[#F5F0E8]">
         {team.map((member, i) => (
           /* Sticky single viewport - slides over previous ones natively */
           <section
@@ -106,13 +122,14 @@ export default function OurTeam() {
                     href={member.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group inline-flex items-center justify-between gap-6 px-6 py-2.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-[#1A1410] hover:border-[#C4722A] hover:shadow-[0_0_20px_rgba(196,114,42,0.1)] transition-all cursor-pointer"
+                    className="group inline-flex items-center justify-between gap-6 px-6 py-2.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-[#1A1410] hover:border-accent transition-all cursor-pointer"
+                    style={{ '--tw-border-opacity': '1', borderHoverColor: member.accentColor } as any}
                   >
                     <div className="flex flex-col text-left">
                       <span className="text-[10px] font-semibold text-[#6B5D52] uppercase tracking-wider leading-none mb-0.5">Visit Profile</span>
                       <span className="text-xs font-extrabold text-[#1A1410]">LinkedIn Profile</span>
                     </div>
-                    <span className="text-sm font-bold text-[#C4722A] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+                    <span className="text-sm font-bold transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" style={{ color: member.accentColor }}>↗</span>
                   </a>
 
                   {member.email && (
@@ -135,7 +152,7 @@ export default function OurTeam() {
                   <div 
                     className="absolute inset-[-50px] rounded-[2rem] pointer-events-none z-10 transition-opacity duration-500"
                     style={{
-                      background: `linear-gradient(to top, #F5F0E8 0%, transparent 22%), radial-gradient(circle at 50% 85%, rgba(196, 114, 42, 0.06) 0%, transparent 65%)`
+                      background: `linear-gradient(to top, #F5F0E8 0%, transparent 22%), radial-gradient(circle at 50% 85%, ${member.accentColor}0a 0%, transparent 65%)`
                     }}
                   />
 
@@ -143,9 +160,9 @@ export default function OurTeam() {
                   <img
                     src={member.photo}
                     alt={member.name}
-                    className="max-w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105 z-20"
+                    className={`max-w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105 z-20 ${member.photoClass || 'scale-100'}`}
                     style={{
-                      filter: `drop-shadow(0 20px 40px rgba(139, 69, 19, 0.06))`
+                      filter: `drop-shadow(0 20px 40px ${member.accentColor}10)`
                     }}
                   />
                 </div>

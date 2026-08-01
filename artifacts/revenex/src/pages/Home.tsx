@@ -867,7 +867,7 @@ function MeetFoundersSection() {
     },
     {
       name: 'Prasanna Mate',
-      role: 'CTO',
+      role: 'Software Developer',
       img: prasannaImg,
       desc: 'Built REVENEX from scratch. Leads platform engineering to ensure reliability, performance, and smooth deployments.',
       linkedin: 'https://www.linkedin.com/in/prasanna-mate-a247b5328/',
@@ -1254,6 +1254,7 @@ function ProductsSection() {
             return (
               <motion.div
                 key={card.title}
+                id={card.title.toLowerCase().replace(/\s+/g, '-')}
                 initial={entrance.initial}
                 whileInView={entrance.animate}
                 viewport={{ once: true }}
@@ -1735,28 +1736,7 @@ export default function Home() {
       {/* ── LET'S TALK / CONTACT ── */}
       <LetsTalkSection language={language} />
 
-      {/* ── CTA ── */}
-      <section className="py-20 relative overflow-hidden border-t border-[#E8E0D4]">
-        <div className="absolute inset-0 hero-glow opacity-30 pointer-events-none" />
-        <div className="relative mx-auto max-w-4xl px-4 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-6">{t('cta.title')}</h2>
-            <p className="text-[#3D3128] mb-8 text-lg">{t('cta.subtitle')}</p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <Link href="/book-demo">
-                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl cursor-pointer">
-                  {t('cta.demo')} <ArrowRight className="h-4 w-4" />
-                </motion.span>
-              </Link>
-              <Link href="/contact">
-                <motion.span whileHover={{ scale: 1.03 }} className="inline-flex items-center gap-2 border border-[#E8E0D4] text-[#1A1410] font-semibold px-8 py-4 rounded-2xl hover:bg-[#F0E8DC] cursor-pointer">
-                  {t('cta.contact')}
-                </motion.span>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+
 
       <Footer />
       <Chatbot />
