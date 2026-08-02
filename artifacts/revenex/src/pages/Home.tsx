@@ -1887,13 +1887,13 @@ function OrbitalHero() {
     lineSide?: 'left' | 'right'
     lineWidth?: number
   }> = [
-    { label: 'Library', Icon: BookOpen, style: { top: '9%', right: '15%' }, yFloat: -8, dur: 3.8, delay: 0, lineSide: 'left', lineWidth: 28 },
-    { label: 'Admissions', Icon: UserPlus, style: { top: '35%', left: '6%' }, yFloat: -6, dur: 4.2, delay: 0.5, lineSide: 'right', lineWidth: 32 },
-    { label: 'Attendance', Icon: CalendarCheck, style: { top: '33%', right: '7%' }, yFloat: -10, dur: 3.5, delay: 1, lineSide: 'left', lineWidth: 35 },
-    { label: 'Fees', Icon: IndianRupee, style: { top: '55%', right: '6%' }, yFloat: -7, dur: 4.8, delay: 0.3, lineSide: 'left', lineWidth: 28 },
-    { label: 'Communication', Icon: MessageCircle, style: { top: '56%', left: '7%' }, yFloat: -8, dur: 3.2, delay: 0.8, lineSide: 'right', lineWidth: 42 },
-    { label: 'Homework', Icon: BookMarked, style: { bottom: '21%', left: '10%' }, yFloat: -6, dur: 4.5, delay: 1.2, lineSide: 'right', lineWidth: 35 },
-    { label: 'Transport', Icon: Bus, style: { bottom: '19%', right: '10%' }, yFloat: -9, dur: 3.9, delay: 0.6, lineSide: 'left', lineWidth: 38 },
+    { label: 'Library', Icon: BookOpen, style: { top: '8%', right: '-40px' }, yFloat: -8, dur: 3.8, delay: 0, lineSide: 'left', lineWidth: 85 },
+    { label: 'Admissions', Icon: UserPlus, style: { top: '32%', left: '-80px' }, yFloat: -6, dur: 4.2, delay: 0.5, lineSide: 'right', lineWidth: 90 },
+    { label: 'Attendance', Icon: CalendarCheck, style: { top: '32%', right: '-85px' }, yFloat: -10, dur: 3.5, delay: 1, lineSide: 'left', lineWidth: 95 },
+    { label: 'Fees', Icon: IndianRupee, style: { top: '56%', right: '-75px' }, yFloat: -7, dur: 4.8, delay: 0.3, lineSide: 'left', lineWidth: 70 },
+    { label: 'Communication', Icon: MessageCircle, style: { top: '54%', left: '-95px' }, yFloat: -8, dur: 3.2, delay: 0.8, lineSide: 'right', lineWidth: 65 },
+    { label: 'Homework', Icon: BookMarked, style: { bottom: '20%', left: '-75px' }, yFloat: -6, dur: 4.5, delay: 1.2, lineSide: 'right', lineWidth: 85 },
+    { label: 'Transport', Icon: Bus, style: { bottom: '20%', right: '-65px' }, yFloat: -9, dur: 3.9, delay: 0.6, lineSide: 'left', lineWidth: 80 },
   ]
 
   const particles = [
