@@ -38,11 +38,8 @@ export function Footer() {
           {/* Col 1 — Brand */}
           <div className="col-span-2 lg:col-span-1 space-y-5">
             <div>
-              <span className="text-xl font-black">
-                <span className="text-[#1A1410]">REVEN</span>
-                <span className="text-aqua">EX</span>
-              </span>
-              <p className="text-[11px] text-[#6B5D52] font-medium uppercase tracking-widest mt-0.5">
+              <img src="/logo.png" alt="REVENEX" className="h-8 sm:h-9 w-auto object-contain" />
+              <p className="text-[11px] text-[#6B5D52] font-medium uppercase tracking-widest mt-2">
                 Ventures Private Limited
               </p>
             </div>

@@ -1,11 +1,11 @@
-import { useRef, useState, useEffect, useCallback, useLayoutEffect, Suspense, type CSSProperties } from 'react'
+import { useRef, useState, useEffect, useCallback, useMemo, useLayoutEffect, Suspense, type CSSProperties } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence, type MotionValue } from 'framer-motion'
 import {
   ArrowRight, Users, BookOpen, CreditCard, Bell, Calendar,
   BarChart3, Shield, Cpu, CheckCircle2, Zap, Cloud, Sparkles,
-  GraduationCap, TrendingUp, Lock, Activity, Server,
+  GraduationCap, TrendingUp, Lock, Activity,
   MessageSquare, Star, Send, Globe2, Linkedin,
   Mail, Phone, MapPin, Building2, FileBarChart, Smartphone,
   LayoutDashboard, Settings2, UserPlus, CalendarCheck,
@@ -729,101 +729,532 @@ function LetsTalkSection({ language }: { language: string }) {
   )
 }
 
-/* ─── Why REVENEX section ─── */
-const whyReasons = [
-  {
-    icon: Lock,
-    title: 'Secure',
-    desc: '256-bit AES encryption, role-based access control, and GDPR-compliant data handling keep your school data safe.',
-    color: '#8B4513', bg: 'rgba(139, 69, 19,0.10)', border: 'rgba(139, 69, 19,0.22)',
-    slug: 'security',
-  },
-  {
-    icon: Server,
-    title: 'Scalable',
-    desc: 'Handles 100 to 10,000+ students with zero performance degradation. Grows with your institution seamlessly.',
-    color: '#7C3D0F', bg: 'rgba(124, 61, 15,0.10)', border: 'rgba(124, 61, 15,0.22)',
-    slug: 'student-management',
-  },
-  {
-    icon: Cloud,
-    title: 'Cloud Based',
-    desc: 'Hosted on Google Cloud with 99.9% uptime target. Access your ERP from any device, anywhere, anytime.',
-    color: '#166534', bg: 'rgba(22, 101, 52,0.10)', border: 'rgba(22, 101, 52,0.22)',
-    slug: 'cloud-based',
-  },
-  {
-    icon: Sparkles,
-    title: 'AI Powered',
-    desc: 'Gemini AI generates performance reports, predicts dropout risks, and automates routine administrative tasks.',
-    color: '#8B4513', bg: 'rgba(139, 69, 19,0.10)', border: 'rgba(139, 69, 19,0.22)',
-    slug: 'ai-analytics',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Affordable',
-    desc: 'Transparent pricing designed for Indian schools. No hidden costs, no per-module charges — one plan, all features.',
-    color: '#166534', bg: 'rgba(22, 101, 52,0.10)', border: 'rgba(22, 101, 52,0.22)',
-    slug: 'fees',
-  },
-  {
-    icon: GraduationCap,
-    title: 'Built For Indian Schools',
-    desc: 'Hindi + English bilingual, Razorpay UPI payments, CBSE/ICSE formats — built ground-up for India\'s classrooms.',
-    color: '#7C3D0F', bg: 'rgba(124, 61, 15,0.10)', border: 'rgba(124, 61, 15,0.22)',
-    slug: 'one-platform',
-  },
+/* ─── Why REVENEX · Radial Core ─── */
+
+type CoreStrength = {
+  key: string
+  title: string
+  icon: LucideIcon
+  angle: number
+  accent: string
+  soft: string
+  blurb: string
+  points: string[]
+  href: string
+}
+
+const coreStrengths: CoreStrength[] = [
+  { key: 'secure', title: 'Secure', icon: Lock, angle: -90, accent: '#C9A25A', soft: 'rgba(201,162,90,0.16)', blurb: 'Security is the foundation, not an add-on.', points: ['AES-256 Encryption', 'Role-based Access', 'Daily Backups'], href: '/features/security' },
+  { key: 'cloud', title: 'Cloud Based', icon: Cloud, angle: -30, accent: '#9B93C4', soft: 'rgba(155,147,196,0.16)', blurb: 'Born in the cloud. Available everywhere.', points: ['Google Cloud infrastructure', 'Any device, anywhere', 'Automatic backups & updates'], href: '/features/cloud-based' },
+  { key: 'ai', title: 'AI Powered', icon: Sparkles, angle: 30, accent: '#A78BC0', soft: 'rgba(167,139,192,0.16)', blurb: 'Intelligence woven into every workflow.', points: ['Gemini AI in every module', 'Predictive insight for principals', 'Natural-language answers'], href: '/features/ai-analytics' },
+  { key: 'scalable', title: 'Scalable', icon: TrendingUp, angle: 90, accent: '#9FAF8E', soft: 'rgba(159,175,142,0.18)', blurb: 'Grows without compromise.', points: ['From 100 to 10,000+ students', 'Zero performance loss', 'One platform, every campus'], href: '/features/one-platform' },
+  { key: 'affordable', title: 'Affordable', icon: IndianRupee, angle: 150, accent: '#D4A24C', soft: 'rgba(212,162,76,0.16)', blurb: 'Enterprise power within reach.', points: ['One flat plan', 'Priced for Indian schools', 'No hidden module fees'], href: '/features/fees' },
+  { key: 'reliable', title: 'Reliable', icon: Shield, angle: 210, accent: '#A97B45', soft: 'rgba(169,123,69,0.16)', blurb: 'Always on. Always exact.', points: ['99.9% uptime target', 'Works on low bandwidth', 'Support within hours'], href: '/features/india-first' },
 ]
 
-function WhyRevenexSection({ language }: { language: string }) {
+const stageMotes = Array.from({ length: 16 }, (_, i) => ({
+  left: (i * 37 + 11) % 94 + 3,
+  bottom: (i * 29 + 5) % 88 + 4,
+  size: 3 + ((i * 53) % 5),
+  duration: 14 + ((i * 31) % 12),
+  delay: (i * 0.9) % 8,
+  drift: (i % 2 === 0 ? 1 : -1) * (10 + ((i * 17) % 14)),
+  gold: i % 3 === 0,
+}))
+
+const stageTwinkles = Array.from({ length: 8 }, (_, i) => ({
+  left: (i * 41 + 7) % 90 + 5,
+  top: (i * 23 + 13) % 86 + 7,
+  size: 8 + ((i * 19) % 10),
+}))
+
+function StrengthIllustration({ kind, accent }: { kind: string; accent: string }) {
+  if (kind === 'secure') {
+    return (
+      <svg viewBox="0 0 120 120" className="w-full h-full">
+        <defs>
+          <linearGradient id="why-sec-body" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#F6E7C8" />
+            <stop offset="0.5" stopColor="#D9AE63" />
+            <stop offset="1" stopColor="#B07F35" />
+          </linearGradient>
+          <linearGradient id="why-sec-shade" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#FFF7E6" stopOpacity="0.65" />
+            <stop offset="1" stopColor="#9C6B26" stopOpacity="0.3" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="60" cy="96" rx="30" ry="5" fill="rgba(0,0,0,0.32)" />
+        <motion.path
+          d="M60 22 L88 33 V61 C88 79 76 90 60 97 C44 90 32 79 32 61 V33 Z"
+          fill="url(#why-sec-body)"
+          stroke="#B98A3E"
+          strokeWidth="1.5"
+          strokeLinejoin="round"
+          animate={{ scale: [1, 1.02, 1] }}
+          transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ transformBox: 'fill-box', transformOrigin: 'center bottom' }}
+        />
+        <path d="M60 22 L88 33 V41 C68 34.5 52 34.5 32 41 V33 Z" fill="url(#why-sec-shade)" opacity="0.65" />
+        <rect x="49" y="57" width="22" height="19" rx="4.5" fill="#6E4A1F" />
+        <path d="M51 57 v-7 a9 9 0 0 1 18 0 v7" fill="none" stroke="#6E4A1F" strokeWidth="3" strokeLinecap="round" />
+        <motion.circle cx="60" cy="66" r="2.4" fill="#F6E7C8" animate={{ opacity: [0.45, 1, 0.45] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }} />
+      </svg>
+    )
+  }
+  if (kind === 'cloud') {
+    return (
+      <svg viewBox="0 0 120 120" className="w-full h-full">
+        <defs>
+          <linearGradient id="why-cloud" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#F5F2FB" />
+            <stop offset="1" stopColor="#C9C2E3" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="60" cy="92" rx="30" ry="5" fill="rgba(0,0,0,0.30)" />
+        <motion.g animate={{ y: [0, -6, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}>
+          <ellipse cx="44" cy="60" rx="24" ry="15" fill="url(#why-cloud)" />
+          <ellipse cx="66" cy="52" rx="22" ry="17" fill="url(#why-cloud)" />
+          <ellipse cx="80" cy="61" rx="19" ry="13" fill="url(#why-cloud)" />
+          <rect x="38" y="60" width="42" height="14" rx="7" fill="url(#why-cloud)" />
+        </motion.g>
+        <motion.circle cx="26" cy="44" r="1.6" fill="#C9C2E3" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }} />
+        <motion.circle cx="92" cy="36" r="1.4" fill="#D9AE63" animate={{ opacity: [0.2, 0.9, 0.2] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 2 }} />
+      </svg>
+    )
+  }
+  if (kind === 'ai') {
+    return (
+      <svg viewBox="0 0 120 120" className="w-full h-full">
+        <defs>
+          <linearGradient id="why-ai-gem" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#EAE0F5" />
+            <stop offset="1" stopColor="#A78BC0" />
+          </linearGradient>
+          <linearGradient id="why-ai-facet" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#FFFFFF" stopOpacity="0.55" />
+            <stop offset="1" stopColor="#6B4E93" stopOpacity="0.25" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="60" cy="96" rx="28" ry="5" fill="rgba(0,0,0,0.30)" />
+        <motion.g
+          animate={{ y: [0, -4, 0], rotate: [0, -1.5, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <path d="M60 18 L90 40 L90 74 L60 98 L30 74 L30 40 Z" fill="url(#why-ai-gem)" stroke="#8E73B8" strokeWidth="1.5" strokeLinejoin="round" />
+          <path d="M60 18 L60 98 M60 18 L30 40 L60 58 L90 40 Z" fill="none" stroke="#8E73B8" strokeWidth="1" opacity="0.45" />
+          <path d="M60 40 L60 74 L38 82 M60 40 L82 48 L60 74" fill="none" stroke="#6B4E93" strokeWidth="0.9" opacity="0.55" />
+          <circle cx="60" cy="40" r="3" fill="#5C3E8A" />
+          <circle cx="38" cy="82" r="2.4" fill="#5C3E8A" />
+          <circle cx="82" cy="48" r="2.4" fill="#5C3E8A" />
+          <motion.circle cx="60" cy="58" r="3" fill="#FFF6E8" stroke="#7C5AA6" strokeWidth="1.4" animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }} />
+        </motion.g>
+      </svg>
+    )
+  }
+  if (kind === 'scalable') {
+    return (
+      <svg viewBox="0 0 120 120" className="w-full h-full">
+        <defs>
+          <linearGradient id="why-scal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stopColor="#E9EFE2" />
+            <stop offset="1" stopColor="#A9BA94" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="60" cy="92" rx="34" ry="6" fill="rgba(0,0,0,0.30)" />
+        <motion.g animate={{ y: [0, -3, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}>
+          <motion.rect x="28" y="62" width="16" height="24" rx="3" fill="url(#why-scal)" stroke="#8FA17B" strokeWidth="1" animate={{ scaleY: [1, 1.04, 1] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 0 }} style={{ transformBox: 'fill-box', transformOrigin: 'center bottom' }} />
+          <motion.rect x="50" y="50" width="16" height="36" rx="3" fill="url(#why-scal)" stroke="#8FA17B" strokeWidth="1" animate={{ scaleY: [1, 1.05, 1] }} transition={{ duration: 5.4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }} style={{ transformBox: 'fill-box', transformOrigin: 'center bottom' }} />
+          <motion.rect x="72" y="36" width="16" height="50" rx="3" fill="url(#why-scal)" stroke="#8FA17B" strokeWidth="1" animate={{ scaleY: [1, 1.06, 1] }} transition={{ duration: 5.8, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }} style={{ transformBox: 'fill-box', transformOrigin: 'center bottom' }} />
+          <rect x="26" y="86" width="64" height="4" rx="2" fill="#8FA17B" opacity="0.4" />
+        </motion.g>
+      </svg>
+    )
+  }
+  if (kind === 'reliable') {
+    return (
+      <svg viewBox="0 0 120 120" className="w-full h-full">
+        <defs>
+          <linearGradient id="why-rel-arc" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#EBD9BA" />
+            <stop offset="1" stopColor="#B08D5E" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="60" cy="96" rx="30" ry="5" fill="rgba(0,0,0,0.30)" />
+        <circle cx="60" cy="58" r="32" fill="#FAF5EC" stroke="#E0D4C0" strokeWidth="1.5" />
+        <circle cx="60" cy="58" r="32" fill="none" stroke="#EFE6D4" strokeWidth="6" strokeDasharray="3 5" opacity="0.7" />
+        <motion.g animate={{ rotate: [0, 360] }} transition={{ duration: 26, repeat: Infinity, ease: 'linear' }} style={{ transformBox: 'fill-box', transformOrigin: 'center' }}>
+          <circle cx="60" cy="58" r="32" fill="none" stroke="url(#why-rel-arc)" strokeWidth="6" strokeLinecap="round" strokeDasharray="132 69" transform="rotate(-90 60 58)" />
+          <motion.circle cx="92" cy="58" r="4.5" fill="#C9A25A" stroke="#FAF5EC" strokeWidth="2" animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }} />
+        </motion.g>
+        <text x="60" y="63" textAnchor="middle" fontSize="14" fontWeight="800" fill="#4A2C12" fontFamily="Inter, sans-serif">99.9%</text>
+      </svg>
+    )
+  }
   return (
-    <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4]">
+    <svg viewBox="0 0 120 120" className="w-full h-full">
+      <defs>
+        <linearGradient id="why-aff-rupee" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#FCE7BC" />
+          <stop offset="1" stopColor="#C98A2E" />
+        </linearGradient>
+      </defs>
+      <ellipse cx="60" cy="94" rx="32" ry="6" fill="rgba(0,0,0,0.30)" />
+      <motion.ellipse cx="60" cy="60" rx="26" ry="20" fill="#FCE7BC" opacity="0.35" animate={{ opacity: [0.25, 0.55, 0.25] }} transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }} />
+      <rect x="42" y="84" width="36" height="9" rx="3" fill="#C9A06A" opacity="0.55" />
+      <text x="60" y="76" textAnchor="middle" fontSize="46" fontWeight="900" fill="url(#why-aff-rupee)" fontFamily="Inter, sans-serif">₹</text>
+      <motion.circle cx="88" cy="34" r="1.6" fill="#D9AE63" animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }} />
+      <motion.circle cx="30" cy="30" r="1.4" fill="#C9A25A" animate={{ opacity: [0.2, 0.9, 0.2] }} transition={{ duration: 4.6, repeat: Infinity, ease: 'easeInOut', delay: 1.6 }} />
+    </svg>
+  )
+}
+
+function StrengthCard({
+  node, index, flip, glow, className, onHoverStart, onHoverEnd, onClick,
+}: {
+  node: CoreStrength
+  index: number
+  flip: boolean
+  glow: boolean
+  className: string
+  onHoverStart: () => void
+  onHoverEnd: () => void
+  onClick: () => void
+}) {
+  return (
+    <motion.div className={className} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} onClick={onClick} style={{ cursor: 'pointer', transformStyle: 'preserve-3d' }}>
+      <motion.div
+        className="relative w-full h-full"
+        animate={{ y: [0, -5, 0] }}
+        transition={{ duration: 5.5 + index * 0.8, repeat: Infinity, ease: 'easeInOut', delay: index * 0.55 }}
+        style={{ perspective: 1300 }}
+      >
+        <motion.div
+          className="relative w-full h-full"
+          animate={{ rotateY: flip ? 180 : 0, scale: flip ? 1.03 : 1, y: flip ? -6 : 0 }}
+          transition={{ duration: 0.95, ease: [0.32, 0.72, 0, 1] }}
+          style={{
+            transformStyle: 'preserve-3d',
+            boxShadow: glow
+              ? `0 26px 54px -20px rgba(139,69,19,0.42), 0 0 0 1px rgba(227,181,129,0.35), 0 0 34px -6px ${node.soft}`
+              : '0 34px 70px -26px rgba(139,69,19,0.46), 0 18px 36px -16px rgba(139,69,19,0.33), 0 8px 16px -6px rgba(139,69,19,0.26), 0 0 0 1px rgba(139,69,19,0.10)',
+            borderRadius: 22,
+          }}
+        >
+          <div
+            className="absolute inset-0 overflow-hidden flex"
+            style={{
+              border: '1px solid rgba(227,181,129,0.4)',
+              borderRadius: 22,
+              boxShadow: 'inset 0 1px 0 rgba(255,246,230,0.18), inset 0 0 0 1px rgba(255,246,230,0.03)',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+            }}
+          >
+            <div className="absolute top-0 left-0 right-0 h-[3px] z-10" style={{ background: `linear-gradient(90deg, transparent, ${node.accent}CC, transparent)`, filter: 'blur(0.5px)' }} />
+            <div className="relative w-[45%] flex items-center justify-center" style={{ background: 'linear-gradient(155deg, #FFFEFA, #F5EAD5)' }}>
+              <div className="absolute inset-0" style={{ background: `radial-gradient(85% 85% at 50% 42%, ${node.accent}26, transparent 72%)` }} />
+              <div className="relative w-[88%] pt-1">
+                <StrengthIllustration kind={node.key} accent={node.accent} />
+              </div>
+            </div>
+            <div
+              className="relative w-[55%] flex flex-col justify-center gap-2 pl-3.5 pr-3.5"
+              style={{ background: `radial-gradient(130% 100% at 85% -10%, ${node.accent}1F, transparent 55%), radial-gradient(120% 120% at 10% 110%, ${node.accent}1A, transparent 60%), linear-gradient(160deg, #5E3C1E, #3A2511)` }}
+            >
+              <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(115deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.04) 24%, transparent 46%)' }} />
+              <div className="pointer-events-none absolute -right-8 -top-8 w-24 h-24 rounded-full" style={{ background: `radial-gradient(circle, ${node.accent}33, transparent 70%)` }} />
+              <div className="pointer-events-none absolute top-1 bottom-1 -left-px w-px" style={{ background: `linear-gradient(180deg, transparent, ${node.accent}CC, transparent)` }} />
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `linear-gradient(145deg, ${node.accent}45, ${node.accent}14)`, border: `1px solid ${node.accent}50`, boxShadow: 'inset 0 1px 0 rgba(255,246,230,0.2)' }}>
+                <node.icon className="h-4 w-4" style={{ color: node.accent }} />
+              </div>
+              <h4 className="text-[14px] font-black text-[#FBF4E8] tracking-tight leading-tight">{node.title}</h4>
+              <p className="text-[11.5px] text-[#E8D6B8] leading-snug">{node.blurb}</p>
+            </div>
+          </div>
+
+          <div
+            className="absolute inset-0 overflow-hidden flex flex-col px-4 py-3.5 sm:px-5 sm:py-4"
+            style={{
+              background: 'radial-gradient(120% 90% at 50% -5%, rgba(227,181,129,0.28), transparent 58%), linear-gradient(170deg, #2E1C0C, #201105)',
+              border: '1px solid rgba(227,181,129,0.5)',
+              borderRadius: 22,
+              boxShadow: 'inset 0 1px 0 rgba(255,246,230,0.16), inset 0 0 0 1px rgba(255,246,230,0.03)',
+              backfaceVisibility: 'hidden',
+              WebkitBackfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)',
+            }}
+          >
+            <div className="pointer-events-none absolute inset-3 rounded-2xl" style={{ border: '1px solid rgba(227,181,129,0.16)' }} />
+            <div className="relative flex flex-col items-center text-center">
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shrink-0" style={{ background: `linear-gradient(145deg, ${node.accent}52, ${node.accent}1F)`, border: `1.5px solid ${node.accent}`, boxShadow: `0 0 22px -4px ${node.accent}66` }}>
+                <node.icon className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: node.accent }} />
+              </div>
+              <h4 className="mt-2 text-[15px] sm:text-[16px] font-black text-[#FBF4E8] tracking-tight">{node.title}</h4>
+              <div className="mt-1.5 w-8 h-px" style={{ background: `linear-gradient(90deg, transparent, ${node.accent}, transparent)` }} />
+            </div>
+            <ul className="relative flex-1 flex flex-col justify-center gap-2 py-2.5">
+              {node.points.map((pt) => (
+                <li key={pt} className="flex items-center gap-2.5 text-[11.5px] sm:text-[12px] text-[#EADFC9] leading-snug text-left">
+                  <span className="w-4 h-4 rounded-full flex items-center justify-center shrink-0" style={{ background: `${node.accent}2E`, border: `1px solid ${node.accent}70` }}>
+                    <CheckCircle2 className="h-2.5 w-2.5" style={{ color: node.accent }} />
+                  </span>
+                  {pt}
+                </li>
+              ))}
+            </ul>
+            <Link href={node.href} className="relative w-full rounded-full px-3 py-1.5 sm:py-2 flex items-center justify-center gap-1.5 text-[11.5px] sm:text-[12px] font-black text-[#2A1A0C] hover:brightness-110 transition" style={{ background: 'linear-gradient(140deg, #F0CF9E, #D9AE63)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.55), 0 8px 20px -10px rgba(0,0,0,0.6)' }}>
+              Learn More <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </motion.div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+function WhyCore({ pulseKey }: { pulseKey: string | null }) {
+  return (
+    <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
+      <motion.div
+        className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-40 md:h-40 lg:w-44 lg:h-44 rounded-full flex items-center justify-center"
+        animate={{ scale: [1, 1.035, 1] }}
+        transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          background: 'radial-gradient(120% 120% at 50% 30%, rgba(255,252,244,0.98), rgba(240,232,220,0.9) 55%, rgba(227,181,129,0.5))',
+          border: '1px solid rgba(196,168,130,0.65)',
+          boxShadow: '0 18px 42px -18px rgba(139,69,19,0.45), 0 0 80px -14px rgba(227,181,129,0.5)',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+        }}
+      >
+        <motion.div
+          className="absolute inset-0 rounded-full pointer-events-none"
+          style={{ background: 'conic-gradient(from 0deg, transparent 0deg, rgba(227,181,129,0.18) 45deg, transparent 95deg, transparent 200deg, rgba(227,181,129,0.12) 245deg, transparent 300deg)' }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
+        />
+        <div className="absolute inset-0 rounded-full pointer-events-none" style={{ background: 'radial-gradient(72% 72% at 50% 50%, rgba(227,181,129,0.3), transparent 70%)' }} />
+        <div className="absolute inset-2 rounded-full pointer-events-none" style={{ border: '1px solid rgba(227,181,129,0.22)' }} />
+        <div className="relative flex items-center justify-center px-3">
+          <img src="/logo.png" alt="REVENEX" className="w-full max-w-[72px] sm:max-w-[88px] md:max-w-[108px] lg:max-w-[128px] h-auto object-contain drop-shadow-[0_4px_14px_rgba(139,69,19,0.18)]" />
+        </div>
+        <AnimatePresence>
+          {pulseKey && (
+            <motion.div
+              key={pulseKey}
+              className="absolute inset-0 rounded-full pointer-events-none"
+              initial={{ scale: 0.72, opacity: 0.65 }}
+              animate={{ scale: 1.95, opacity: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.9, ease: 'easeOut' }}
+              style={{ border: '1.5px solid rgba(217,174,99,0.65)' }}
+            />
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      <motion.div
+        className="absolute left-1/2 top-1/2 pointer-events-none"
+        style={{ x: '-50%', y: '-50%', width: 'calc(100% + 52px)', height: 'calc(100% + 52px)' }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
+      >
+        <div className="absolute inset-0 rounded-full" style={{ border: '1px dashed rgba(201,162,90,0.32)' }} />
+        {[0, 1, 2].map((i) => (
+          <motion.span
+            key={i}
+            className="absolute left-1/2 top-0 rounded-full"
+            style={{ x: '-50%', y: '-50%', width: 6 + (i % 2) * 2, height: 6 + (i % 2) * 2, background: 'radial-gradient(circle, rgba(227,181,129,0.95), rgba(227,181,129,0) 70%)' }}
+            animate={{ opacity: [0.15, 1, 0.15], scale: [0.6, 1.25, 0.6] }}
+            transition={{ duration: 2.6 + i * 0.6, repeat: Infinity, ease: 'easeInOut', delay: i * 0.8 }}
+          />
+        ))}
+      </motion.div>
+
+      <p className="absolute left-1/2 -bottom-9 -translate-x-1/2 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8B4513]/60 whitespace-nowrap">The Core</p>
+    </div>
+  )
+}
+
+function WhyRevenexSection({ language }: { language: string }) {
+  const [hovered, setHovered] = useState<string | null>(null)
+  const [pinned, setPinned] = useState<string | null>(null)
+
+  const stageCards = coreStrengths.map((node, index) => {
+    const rad = (node.angle * Math.PI) / 180
+    const left = 50 + 34 * Math.cos(rad)
+    const top = 50 + 34 * Math.sin(rad)
+    const flip = hovered === node.key || pinned === node.key
+    return (
+      <motion.div
+        key={node.key}
+        className="absolute z-20"
+        style={{ left: `${left}%`, top: `${top}%`, x: '-50%', y: '-50%' }}
+        initial={{ opacity: 0, scale: 0.75 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.25 + index * 0.07, duration: 0.6, ease: 'easeOut' }}
+      >
+        <StrengthCard
+          node={node}
+          index={index}
+          flip={flip}
+          glow={hovered === node.key || pinned === node.key}
+          className="w-44 h-48 sm:w-44 sm:h-52 md:w-[232px] md:h-[260px] lg:w-[272px] lg:h-[304px]"
+          onHoverStart={() => { setPinned(null); setHovered(node.key) }}
+          onHoverEnd={() => setHovered((h) => (h === node.key ? null : h))}
+          onClick={() => setPinned((p) => (p === node.key ? null : node.key))}
+        />
+      </motion.div>
+    )
+  })
+
+  return (
+    <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4] overflow-hidden">
       <div className="absolute inset-0 section-glow-right pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-10 sm:mb-14"
         >
           <SectionBadge label="Why REVENEX" />
-          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl leading-[1.05] mb-4">
             {language === 'en' ? (
-              <>Why Schools Choose <span className="gradient-text">REVENEX</span></>
+              <>Built Different.<br className="hidden sm:block" /> <span className="gradient-text">Built for Schools.</span></>
             ) : (
-              <>स्कूल <span className="gradient-text">REVENEX</span> क्यों चुनते हैं</>
+              <>अलग तरह से बना।<br className="hidden sm:block" /> <span className="gradient-text">स्कूलों के लिए बना।</span></>
             )}
           </h2>
-          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">
+          <p className="text-[#6B5D52] text-base sm:text-lg max-w-2xl mx-auto">
             {language === 'en'
-              ? "We didn't just build a school app. We built a complete operations platform."
-              : 'हमने सिर्फ एक ऐप नहीं बनाया। हमने एक पूरा ऑपरेशन प्लेटफॉर्म बनाया।'}
+              ? 'Every strength of REVENEX flows from one unified platform — calm, precise, and built for the way schools actually work.'
+              : 'REVENEX की हर क्षमता एक एकीकृत प्लेटफ़ॉर्म से आती है — शांत, सटीक, और स्कूलों की ज़रूरतों के लिए बनी।'}
           </p>
         </motion.div>
-        <div className="grid gap-5 sm:grid-cols-3">
-          {[whyReasons[0], whyReasons[1], whyReasons[2]].map((reason, i) => (
-            <BentoCard
-              key={reason.slug}
-              icon={reason.icon}
-              title={reason.title}
-              desc={reason.desc}
-              wide={reason.slug === 'security'}
-              index={i}
+
+        <div className="relative w-full max-w-[1000px] mx-auto aspect-square hidden sm:block">
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(48% 48% at 50% 50%, rgba(227,181,129,0.14), transparent 70%)' }}
+            animate={{ opacity: [0.5, 0.85, 0.5] }}
+            transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <motion.div
+              className="absolute left-[8%] top-[16%] w-72 h-72 rounded-full"
+              style={{ background: 'radial-gradient(circle, rgba(227,181,129,0.16), transparent 70%)' }}
+              animate={{ x: [0, 46, 0], y: [0, -34, 0], scale: [1, 1.18, 1] }}
+              transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
+            />
+            <motion.div
+              className="absolute right-[6%] bottom-[12%] w-80 h-80 rounded-full"
+              style={{ background: 'radial-gradient(circle, rgba(217,174,99,0.14), transparent 70%)' }}
+              animate={{ x: [0, -40, 0], y: [0, 30, 0], scale: [1.12, 1, 1.12] }}
+              transition={{ duration: 19, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+            />
+            {stageMotes.map((m, i) => (
+              <motion.span
+                key={i}
+                className="absolute rounded-full"
+                style={{
+                  left: `${m.left}%`,
+                  bottom: `${m.bottom}%`,
+                  width: m.size,
+                  height: m.size,
+                  background: m.gold
+                    ? 'radial-gradient(circle, rgba(227,181,129,0.85), rgba(227,181,129,0) 70%)'
+                    : 'radial-gradient(circle, rgba(201,162,90,0.6), rgba(201,162,90,0) 70%)',
+                }}
+                animate={{ y: [0, -130, 0], x: [0, m.drift, 0], opacity: [0, 0.85, 0] }}
+                transition={{ duration: m.duration, delay: m.delay, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            ))}
+            {stageTwinkles.map((t, i) => (
+              <motion.span
+                key={i}
+                className="absolute pointer-events-none"
+                style={{ left: `${t.left}%`, top: `${t.top}%` }}
+                animate={{ opacity: [0, 1, 0], scale: [0.4, 1, 0.4] }}
+                transition={{ duration: 3 + (i % 4), repeat: Infinity, ease: 'easeInOut', delay: i * 0.6 }}
+              >
+                <svg width={t.size} height={t.size} viewBox="0 0 10 10">
+                  <path d="M5 0 L6.2 3.8 L10 5 L6.2 6.2 L5 10 L3.8 6.2 L0 5 L3.8 3.8 Z" fill="#D9AE63" opacity="0.9" />
+                </svg>
+              </motion.span>
+            ))}
+            <motion.div
+              className="absolute inset-0"
+              style={{ background: 'linear-gradient(105deg, transparent 40%, rgba(227,181,129,0.12) 50%, transparent 60%)' }}
+              initial={{ x: '-120%' }}
+              animate={{ x: '220%' }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'linear', delay: 1.5 }}
+            />
+          </div>
+          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <pattern id="why-dots" width="6" height="6" patternUnits="userSpaceOnUse">
+              <circle cx="1.2" cy="1.2" r="0.7" fill="rgba(139,69,19,0.10)" />
+            </pattern>
+            <rect x="4" y="4" width="28" height="28" rx="10" fill="url(#why-dots)" opacity="0.5" />
+            <rect x="68" y="68" width="28" height="28" rx="10" fill="url(#why-dots)" opacity="0.5" />
+            <path d="M8 76 C 32 64, 68 64, 92 76" fill="none" stroke="rgba(139,69,19,0.10)" strokeWidth="0.5" />
+            <path d="M12 84 C 34 73, 66 73, 88 84" fill="none" stroke="rgba(139,69,19,0.07)" strokeWidth="0.5" />
+            <path d="M18 18 C 38 26, 62 26, 82 18" fill="none" stroke="rgba(139,69,19,0.07)" strokeWidth="0.5" />
+          </svg>
+
+          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+            {coreStrengths.map((node) => {
+              const rad = (node.angle * Math.PI) / 180
+              const x = 50 + 34 * Math.cos(rad)
+              const y = 50 + 34 * Math.sin(rad)
+              const isHovered = hovered === node.key
+              return (
+                <motion.line
+                  key={node.key}
+                  x1="50"
+                  y1="50"
+                  x2={x}
+                  y2={y}
+                  stroke="#D9AE63"
+                  strokeWidth="0.4"
+                  strokeLinecap="round"
+                  initial={false}
+                  animate={{ pathLength: isHovered ? 1 : 0, opacity: isHovered ? [0, 1, 0.35] : 0 }}
+                  transition={{ pathLength: { duration: 0.5, ease: 'easeOut' }, opacity: { duration: 1.1, delay: 0.25 } }}
+                />
+              )
+            })}
+          </svg>
+
+          <WhyCore pulseKey={hovered} />
+          {stageCards}
+        </div>
+
+        <div className="sm:hidden mt-10 space-y-5">
+          {coreStrengths.map((node, index) => (
+            <StrengthCard
+              key={node.key}
+              node={node}
+              index={index}
+              flip={pinned === node.key}
+              glow={pinned === node.key}
+              className="w-full h-72"
+              onHoverStart={() => {}}
+              onHoverEnd={() => {}}
+              onClick={() => setPinned((p) => (p === node.key ? null : node.key))}
             />
           ))}
         </div>
-        <div className="grid gap-5 sm:grid-cols-3 mt-5">
-          {[whyReasons[3], whyReasons[4], whyReasons[5]].map((reason, i) => (
-            <BentoCard
-              key={reason.slug}
-              icon={reason.icon}
-              title={reason.title}
-              desc={reason.desc}
-              wide={reason.slug === 'one-platform'}
-              index={i + 3}
-              onLearnMore={reason.slug === 'one-platform' ? () => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }) : undefined}
-            />
-          ))}
-        </div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="mt-10 text-center text-[11px] font-black uppercase tracking-[0.35em] text-[#8B4513]/60"
+        >
+          {language === 'en' ? 'One Platform · One Core · Zero Compromise' : 'एक प्लेटफ़ॉर्म · एक कोर · शून्य समझौता'}
+        </motion.p>
       </div>
     </section>
   )
@@ -953,75 +1384,6 @@ function MeetFoundersSection() {
         </div>
       </div>
     </section>
-  )
-}
-
-/* ─── Bento feature card (shared by Features + Why Revenex) ─── */
-function BentoCard({
-  icon: Icon, title, desc, wide, index, pills, onLearnMore, learnMoreLabel,
-}: {
-  icon: React.ComponentType<{ className?: string }>
-  title: string
-  desc: string
-  wide?: boolean
-  index: number
-  pills?: string[]
-  onLearnMore?: () => void
-  learnMoreLabel?: string
-}) {
-  const fromLeft = index % 2 === 0
-  const cardBg = wide
-    ? 'linear-gradient(135deg, #FDF8F3, #F0E8DC)'
-    : index % 2 === 0
-      ? '#FDF8F3'
-      : '#F7F2EA'
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: fromLeft ? -80 : 80 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.1 }}
-      whileHover={{ scale: 1.03, y: -6, borderColor: '#C4A882' }}
-      className={`group relative rounded-3xl border border-[#EDE8E3] p-8 overflow-hidden ${wide ? 'sm:col-span-2 min-h-[180px] flex flex-col sm:flex-row items-center gap-8' : 'min-h-[220px]'
-        }`}
-      style={{ transition: 'box-shadow 0.2s', background: cardBg }}
-    >
-      <div
-        className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: 'linear-gradient(90deg, #8B4513, #C4722A, #8B4513)' }}
-      />
-      <div className={wide ? 'flex-1' : ''}>
-        <div
-          className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-colors duration-300"
-          style={{ background: 'linear-gradient(135deg, #F0E8DC, #E8DDD0)' }}
-        >
-          <Icon className="h-6 w-6 text-[#8B4513]" />
-        </div>
-        <h3 className="text-xl font-bold text-[#1A1410] mb-2">{title}</h3>
-        <p className="text-[#3D3128] text-sm leading-relaxed">{desc}</p>
-      </div>
-
-      {wide && pills && (
-        <div className="flex flex-wrap gap-2 sm:justify-end sm:shrink-0">
-          {pills.map((pill) => (
-            <span key={pill} className="bg-[#F0E8DC] text-[#8B4513] rounded-full px-4 py-2 text-sm font-medium">
-              {pill}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {wide && onLearnMore && (
-        <motion.button
-          onClick={onLearnMore}
-          whileHover={{ x: 4, backgroundColor: '#8B4513' }}
-          className="bg-[#1A1410] text-white rounded-full px-6 py-3 font-semibold text-sm shrink-0 whitespace-nowrap"
-        >
-          {learnMoreLabel || 'Learn More →'}
-        </motion.button>
-      )}
-
-      <Icon className="absolute bottom-3 right-3 h-20 w-20 text-[#F0E8DC] opacity-20 pointer-events-none" />
-    </motion.div>
   )
 }
 

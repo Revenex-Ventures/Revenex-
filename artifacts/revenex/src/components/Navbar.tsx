@@ -206,12 +206,10 @@ import { useState, useEffect, useRef } from 'react'
           <div className={`relative hidden lg:flex h-12 md:h-14 items-center justify-between pl-4 pr-2 sm:pl-5 rounded-full transition-all duration-500 border border-[#3D2810] ${isScrolled ? 'bg-[#241D15]/70 backdrop-blur-2xl shadow-[0_14px_44px_-14px_rgba(0,0,0,0.55)]' : 'bg-[#241D15] shadow-[0_10px_32px_-14px_rgba(0,0,0,0.35)]'}`}>
             <div className="absolute top-0 left-12 right-12 h-px bg-gradient-to-r from-transparent via-[#E3B581]/40 to-transparent" />
             <Link href="/" className="flex items-center shrink-0">
-              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-2.5">
-                <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#E3B581] to-[#8B4513] flex items-center justify-center shadow-[0_4px_14px_-4px_rgba(227,181,129,0.6)]">
-                  <GraduationCap className="h-5 w-5 text-white" />
-                </span>
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1">
+                <img src="/logo.png" alt="REVENEX" className="h-9 lg:h-10 w-auto object-contain drop-shadow-[0_4px_16px_rgba(227,181,129,0.35)]" />
                 <span className="text-xl font-black lg:text-2xl tracking-tight">
-                  <span className="text-white">REVEN</span><span className="text-[#E3B581]">EX</span>
+                  <span className="text-white">EVEN</span><span className="text-[#E3B581]">EX</span>
                 </span>
               </motion.div>
             </Link>
