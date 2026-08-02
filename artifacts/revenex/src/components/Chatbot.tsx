@@ -196,7 +196,7 @@ export function Chatbot() {
             exit={{ scale: 0, opacity: 0 }} 
             transition={{ delay: 1.5, type: 'spring', stiffness: 260, damping: 20 }} 
             onClick={() => setIsOpen(true)} 
-            className='fixed bottom-6 right-6 z-50' 
+            className='fixed bottom-24 right-6 z-[60] lg:bottom-6' 
             aria-label='Open chat'
           >
             <div className='relative w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300'>
@@ -214,7 +214,7 @@ export function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }} 
             exit={{ opacity: 0, y: 40, scale: 0.95 }} 
             transition={{ type: 'spring', stiffness: 300, damping: 30 }} 
-            className='fixed bottom-6 right-6 z-50 w-[360px] sm:w-[400px] max-h-[600px] flex flex-col rounded-3xl overflow-hidden border border-[#E0D4C0] shadow-2xl' 
+            className='fixed bottom-24 right-6 z-[60] w-[360px] sm:w-[400px] max-h-[600px] flex flex-col rounded-3xl overflow-hidden border border-[#E0D4C0] shadow-2xl lg:bottom-6' 
             style={{ background: 'linear-gradient(135deg, #FDFDFB 0%, #F5EDE0 100%)' }}
           >
             {/* Header */}

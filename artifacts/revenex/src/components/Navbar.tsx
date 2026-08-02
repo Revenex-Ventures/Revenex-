@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
   import { Link, useLocation } from 'wouter'
   import { motion, AnimatePresence } from 'framer-motion'
-  import { Menu, X, Globe, LogIn, LogOut, User, ChevronDown, Shield, GraduationCap, Phone } from 'lucide-react'
+  import { Menu, X, Globe, LogIn, LogOut, User, ChevronDown, Shield, GraduationCap, Phone, House, Sparkles, CalendarCheck, Mail, ArrowRight } from 'lucide-react'
   import { useLanguage } from '@/lib/language-context'
   import { useAuth } from '@/lib/auth-context'
 
@@ -35,10 +35,10 @@ import { useState, useEffect, useRef } from 'react'
         <motion.button
           whileHover={{ y: -1 }}
           onClick={() => setOpen(v => !v)}
-          className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer text-[#3D3128] hover:text-[#1A1410]"
+          className="flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 cursor-pointer text-[#D4C9BD] hover:text-white"
         >
           Products
-          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
+          <ChevronDown className={`h-3.5 w-3.5 text-[#D4C9BD] transition-transform ${open ? 'rotate-180' : ''}`} />
         </motion.button>
         <AnimatePresence>
           {open && (
@@ -201,24 +201,28 @@ import { useState, useEffect, useRef } from 'react'
     ]
 
     return (
-      <header className="fixed top-3 md:top-5 inset-x-3 md:inset-x-6 z-50">
-        <nav className="mx-auto max-w-6xl">
-          <div className={`relative flex h-14 md:h-16 items-center justify-between pl-5 pr-2 sm:pl-6 rounded-full transition-all duration-500 ${isScrolled ? 'glass shadow-[0_14px_44px_-14px_rgba(139,69,19,0.28)]' : 'bg-white/45 backdrop-blur-xl border border-[#E8E0D4]/80 shadow-[0_10px_32px_-14px_rgba(139,69,19,0.14)]'}`}>
-            <Link href="/" className="flex items-center gap-2">
-              <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-1">
+      <header className="fixed inset-x-0 bottom-3 z-50 flex flex-col items-center lg:top-5 lg:inset-x-3 lg:bottom-auto">
+        <nav className="w-full max-w-md lg:max-w-7xl">
+          <div className={`relative hidden lg:flex h-12 md:h-14 items-center justify-between pl-4 pr-2 sm:pl-5 rounded-full transition-all duration-500 border border-[#3D2810] ${isScrolled ? 'bg-[#241D15]/70 backdrop-blur-2xl shadow-[0_14px_44px_-14px_rgba(0,0,0,0.55)]' : 'bg-[#241D15] shadow-[0_10px_32px_-14px_rgba(0,0,0,0.35)]'}`}>
+            <div className="absolute top-0 left-12 right-12 h-px bg-gradient-to-r from-transparent via-[#E3B581]/40 to-transparent" />
+            <Link href="/" className="flex items-center shrink-0">
+              <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-2.5">
+                <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#E3B581] to-[#8B4513] flex items-center justify-center shadow-[0_4px_14px_-4px_rgba(227,181,129,0.6)]">
+                  <GraduationCap className="h-5 w-5 text-white" />
+                </span>
                 <span className="text-xl font-black lg:text-2xl tracking-tight">
-                  <span className="text-[#1A1410]">REVEN</span><span className="text-aqua">EX</span>
+                  <span className="text-white">REVEN</span><span className="text-[#E3B581]">EX</span>
                 </span>
               </motion.div>
             </Link>
 
-            <div className="hidden items-center gap-1 lg:flex">
+            <div className="hidden lg:flex items-center gap-1 rounded-full bg-white/[0.04] border border-white/[0.06] p-1">
               {navItems[0] && (
                 <Link href={navItems[0].href}>
                   <motion.span whileHover={{ y: -1 }}
-                    className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer inline-block ${location === navItems[0].href ? 'text-aqua' : 'text-[#3D3128] hover:text-[#1A1410]'}`}>
-                    {navItems[0].label}
-                    {location === navItems[0].href && <motion.div layoutId="nav-indicator" className="absolute bottom-0 left-0 right-0 h-0.5 bg-aqua rounded-full" />}
+                    className={`relative inline-block rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200 cursor-pointer ${location === navItems[0].href ? 'text-[#E3B581]' : 'text-[#D4C9BD] hover:text-white'}`}>
+                    {location === navItems[0].href && <motion.div layoutId="nav-indicator" className="absolute inset-0 rounded-full bg-[#E3B581]/15" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
+                    <span className="relative z-10">{navItems[0].label}</span>
                   </motion.span>
                 </Link>
               )}
@@ -226,26 +230,28 @@ import { useState, useEffect, useRef } from 'react'
               {navItems.slice(1).map((item) =>
                 item.isAnchor ? (
                   <motion.button key={item.label} whileHover={{ y: -1 }} onClick={item.onClick}
-                    className="relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer text-[#3D3128] hover:text-[#1A1410]">
+                    className="relative rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200 cursor-pointer text-[#D4C9BD] hover:text-white">
                     {item.label}
                   </motion.button>
                 ) : (
                   <Link key={item.href} href={item.href}>
                     <motion.span whileHover={{ y: -1 }}
-                      className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 cursor-pointer inline-block ${location === item.href ? 'text-aqua' : 'text-[#3D3128] hover:text-[#1A1410]'}`}>
-                      {item.label}
-                      {location === item.href && <motion.div layoutId="nav-indicator" className="absolute bottom-0 left-0 right-0 h-0.5 bg-aqua rounded-full" />}
+                      className={`relative inline-block rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200 cursor-pointer ${location === item.href ? 'text-[#E3B581]' : 'text-[#D4C9BD] hover:text-white'}`}>
+                      {location === item.href && <motion.div layoutId="nav-indicator" className="absolute inset-0 rounded-full bg-[#E3B581]/15" transition={{ type: 'spring', stiffness: 400, damping: 32 }} />}
+                      <span className="relative z-10">{item.label}</span>
                     </motion.span>
                   </Link>
                 )
               )}
             </div>
 
+            <div className="hidden lg:block h-6 w-px bg-gradient-to-b from-transparent via-[#E3B581]/30 to-transparent" />
+
             <div className="flex items-center gap-2">
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
                 onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
-                className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium text-[#3D3128] transition-all hover:bg-[#F0E8DC] hover:text-[#1A1410] border border-[#E8E0D4] hover:border-[#E8E0D4]">
-                <Globe className="h-4 w-4 text-aqua" />
+                className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-[#D4C9BD] transition-all hover:bg-white/5 hover:text-white border border-white/10">
+                <Globe className="h-4 w-4 text-[#E3B581]" />
                 <span className="hidden sm:inline font-semibold">{language === 'en' ? 'EN' : 'हिं'}</span>
               </motion.button>
 
@@ -254,8 +260,8 @@ import { useState, useEffect, useRef } from 'react'
               ) : (
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="hidden sm:block">
                   <Link href="/login">
-                    <span className="inline-flex items-center gap-1.5 border border-[#E8E0D4] text-[#6B5D52] font-semibold px-4 py-2.5 rounded-xl text-sm transition-all hover:bg-[#F0E8DC] hover:border-[#E8E0D4] cursor-pointer">
-                      <LogIn className="h-3.5 w-3.5" />
+                    <span className="inline-flex items-center gap-1.5 border border-white/10 text-[#D4C9BD] font-semibold px-4 py-2.5 rounded-full text-sm transition-all hover:bg-white/5 hover:text-white cursor-pointer">
+                      <LogIn className="h-3.5 w-3.5 text-[#E3B581]" />
                       Sign In
                     </span>
                   </Link>
@@ -264,8 +270,9 @@ import { useState, useEffect, useRef } from 'react'
 
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="hidden sm:block">
                 <Link href="/book-demo">
-                  <span className="inline-flex items-center gap-2 gradient-bg text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:opacity-90 glow-aqua cursor-pointer">
-                    Get Started →
+                  <span className="inline-flex items-center gap-2 bg-gradient-to-br from-[#E3B581] to-[#8B4513] text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:brightness-110 cursor-pointer shadow-[0_8px_20px_-8px_rgba(139,69,19,0.9)]">
+                    Get Started
+                    <ArrowRight className="h-4 w-4" />
                   </span>
                 </Link>
               </motion.div>
@@ -275,7 +282,7 @@ import { useState, useEffect, useRef } from 'react'
                 href="tel:+919021744355"
                 onMouseEnter={() => setIsPhoneHovered(true)}
                 onMouseLeave={() => setIsPhoneHovered(false)}
-                className="hidden sm:flex items-center h-10 rounded-full border border-[#D4B896] bg-white text-[#1A1410] overflow-hidden cursor-pointer shadow-sm ml-3 hover:border-[#8B4513] hover:bg-[#1A1410] transition-colors duration-200 group"
+                className="hidden sm:flex items-center h-10 rounded-full border border-[#3D2810] bg-white text-[#1A1410] overflow-hidden cursor-pointer shadow-sm ml-3 hover:border-[#D4A26A] hover:bg-[#F5F0E8] transition-colors duration-200 group"
                 animate={{ width: isPhoneHovered ? 165 : 40 }}
                 transition={{ type: 'spring', stiffness: 380, damping: 26 }}
               >
@@ -295,39 +302,61 @@ import { useState, useEffect, useRef } from 'react'
                   )}
                 </AnimatePresence>
               </motion.a>
-
-              <motion.button whileTap={{ scale: 0.9 }} onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="rounded-xl p-2 text-[#6B5D52] hover:bg-[#F0E8DC] lg:hidden border border-[#E8E0D4]">
-                <AnimatePresence mode="wait">
-                  {isMobileMenuOpen ? (
-                    <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                      <X className="h-5 w-5" />
-                    </motion.div>
-                  ) : (
-                    <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                      <Menu className="h-5 w-5" />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </motion.button>
             </div>
+          </div>
+
+          <div className="lg:hidden relative flex items-end justify-around rounded-full bg-[#241D15]/90 backdrop-blur-2xl border border-[#3D2810] px-3 pb-1 pt-1 shadow-[0_10px_32px_-10px_rgba(0,0,0,0.5)] w-full max-w-sm">
+            <Link href="/" className="flex flex-col items-center gap-0.5 cursor-pointer">
+              <span className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${location === '/' ? 'bg-[#E3B581]/15 text-[#E3B581]' : 'text-[#C9BBA9] hover:text-white'}`}>
+                <House className="h-3.5 w-3.5" />
+              </span>
+              <span className={`text-[8px] font-semibold ${location === '/' ? 'text-[#E3B581]' : 'text-[#C9BBA9]'}`}>Home</span>
+            </Link>
+
+            <button onClick={handleFeaturesClick} className="flex flex-col items-center gap-0.5 cursor-pointer">
+              <span className="w-8 h-8 rounded-full flex items-center justify-center text-[#C9BBA9] hover:text-white transition-all">
+                <Sparkles className="h-3.5 w-3.5" />
+              </span>
+              <span className="text-[8px] font-semibold text-[#C9BBA9]">Features</span>
+            </button>
+
+            <Link href="/book-demo" className="flex flex-col items-center gap-0.5 -mt-3 cursor-pointer">
+              <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#E3B581] to-[#8B4513] text-white flex items-center justify-center shadow-[0_6px_18px_-4px_rgba(227,181,129,0.55)]">
+                <CalendarCheck className="h-4 w-4" />
+              </span>
+              <span className="text-[8px] font-bold text-[#E3B581]">Demo</span>
+            </Link>
+
+            <Link href="/contact" className="flex flex-col items-center gap-0.5 cursor-pointer">
+              <span className="w-8 h-8 rounded-full flex items-center justify-center text-[#C9BBA9] hover:text-white transition-all">
+                <Mail className="h-3.5 w-3.5" />
+              </span>
+              <span className="text-[8px] font-semibold text-[#C9BBA9]">Contact</span>
+            </Link>
+
+            <button onClick={() => setIsMobileMenuOpen(v => !v)} className="flex flex-col items-center gap-0.5 cursor-pointer">
+              <span className="w-8 h-8 rounded-full flex items-center justify-center text-[#C9BBA9] hover:text-white transition-all">
+                {isMobileMenuOpen ? <X className="h-3.5 w-3.5" /> : <Menu className="h-3.5 w-3.5" />}
+              </span>
+              <span className="text-[8px] font-semibold text-[#C9BBA9]">Menu</span>
+            </button>
           </div>
         </nav>
 
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div initial={{ opacity: 0, y: 8, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 8, scale: 0.98 }} transition={{ duration: 0.25 }}
-              className="glass lg:hidden mt-2 rounded-3xl border border-[#E8E0D4] shadow-2xl overflow-hidden">
+              className="order-1 mb-2 bg-[#241D15] lg:hidden rounded-3xl border border-[#3D2810] shadow-2xl overflow-hidden w-full max-w-md">
               <div className="space-y-1 px-4 pb-6 pt-3">
                 {navItems.map((item, i) => (
                   <motion.div key={item.label} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}>
                     {item.isAnchor ? (
-                      <button onClick={item.onClick} className="block w-full text-left rounded-xl px-4 py-3 text-base font-medium text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410] transition-all">
+                      <button onClick={item.onClick} className="block w-full text-left rounded-xl px-4 py-3 text-base font-medium text-[#E8E0D4] hover:bg-[#2A2119] hover:text-white transition-all">
                         {item.label}
                       </button>
                     ) : (
                       <Link href={item.href}>
-                        <span className={`block rounded-xl px-4 py-3 text-base font-medium transition-all cursor-pointer ${location === item.href ? 'bg-[#F0E8DC] text-aqua border border-aqua/20' : 'text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410]'}`}>
+                        <span className={`block rounded-xl px-4 py-3 text-base font-medium transition-all cursor-pointer ${location === item.href ? 'bg-[#2A2119] text-[#E3B581] border border-[#3D2810]' : 'text-[#E8E0D4] hover:bg-[#2A2119] hover:text-white'}`}>
                           {item.label}
                         </span>
                       </Link>
@@ -348,7 +377,7 @@ import { useState, useEffect, useRef } from 'react'
                                 setTimeout(() => scrollToSection(targetAnchor), 400)
                               }
                             }}
-                            className="block rounded-lg px-4 py-2 text-sm text-[#6B5D52] hover:text-[#1A1410] hover:bg-[#F0E8DC] transition-colors cursor-pointer"
+                            className="block rounded-lg px-4 py-2 text-sm text-[#C9BBA9] hover:text-white hover:bg-[#2A2119] transition-colors cursor-pointer"
                           >
                             {it.label}
                           </span>
@@ -360,20 +389,20 @@ import { useState, useEffect, useRef } from 'react'
                 {user ? (
                   <>
                     <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: navItems.length * 0.05 }}>
-                      <div className="flex items-center gap-3 px-4 py-3 border border-[#E8E0D4] rounded-xl mb-1">
+                      <div className="flex items-center gap-3 px-4 py-3 border border-[#3D2810] rounded-xl mb-1">
                         <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-white text-xs font-black flex-shrink-0">
                           {user.name.split(' ').map((w: string) => w[0]).join('').slice(0, 2).toUpperCase()}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-semibold text-[#1A1410] truncate">{user.name}</p>
-                          <p className="text-xs text-[#6B5D52] truncate">{user.email}</p>
+                          <p className="text-sm font-semibold text-white truncate">{user.name}</p>
+                          <p className="text-xs text-[#C9BBA9] truncate">{user.email}</p>
                         </div>
                       </div>
                     </motion.div>
                     {user.role === 'admin' && (
                       <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (navItems.length + 1) * 0.05 }}>
                         <Link href="/admin">
-                          <span onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-aqua hover:bg-[#F0E8DC] transition-all cursor-pointer border border-aqua/20 mb-1">
+                          <span onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-[#E3B581] hover:bg-[#2A2119] transition-all cursor-pointer border border-[#3D2810] mb-1">
                             <Shield className="h-4 w-4" />
                             Admin Dashboard
                           </span>
@@ -382,7 +411,7 @@ import { useState, useEffect, useRef } from 'react'
                     )}
                     <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (navItems.length + 2) * 0.05 }}>
                       <button onClick={() => { setIsMobileMenuOpen(false); void logout().then(() => navigate('/')) }}
-                        className="flex items-center gap-2 w-full rounded-xl px-4 py-3 text-base font-medium text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410] transition-all">
+                        className="flex items-center gap-2 w-full rounded-xl px-4 py-3 text-base font-medium text-[#E8E0D4] hover:bg-[#2A2119] hover:text-white transition-all">
                         <LogOut className="h-4 w-4 text-red-400" />
                         Sign Out
                       </button>
@@ -391,8 +420,8 @@ import { useState, useEffect, useRef } from 'react'
                 ) : (
                   <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: navItems.length * 0.05 }}>
                     <Link href="/login">
-                      <span className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410] transition-all cursor-pointer border border-[#E8E0D4] mb-2">
-                        <LogIn className="h-4 w-4 text-aqua" />
+                      <span className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-[#E8E0D4] hover:bg-[#2A2119] hover:text-white transition-all cursor-pointer border border-[#3D2810] mb-2">
+                        <LogIn className="h-4 w-4 text-[#E3B581]" />
                         Sign In
                       </span>
                     </Link>
@@ -400,7 +429,7 @@ import { useState, useEffect, useRef } from 'react'
                 )}
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: (navItems.length + 3) * 0.05 }} className="pt-1">
                   <Link href="/book-demo">
-                    <span className="block gradient-bg text-white font-bold px-4 py-3 rounded-xl text-center cursor-pointer">Get Started →</span>
+                    <span className="block bg-[#F5F0E8] text-[#1A1410] font-bold px-4 py-3 rounded-xl text-center cursor-pointer">Get Started →</span>
                   </Link>
                 </motion.div>
               </div>
