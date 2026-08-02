@@ -2194,7 +2194,7 @@ export default function Home() {
         <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(139, 69, 19,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid lg:grid-cols-[42fr_58fr] gap-12 items-center">
+          <div className="grid lg:grid-cols-[58fr_42fr] gap-12 items-center">
             <div className="text-left">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
@@ -2207,11 +2207,11 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="text-4xl font-black tracking-tight sm:text-5xl lg:text-5xl xl:text-[3.4rem] mb-6 leading-[1.2]"
+                className="text-4xl font-black tracking-tight sm:text-5xl lg:text-5xl xl:text-[4.0rem] mb-6 leading-[1.1] lg:whitespace-nowrap"
               >
-                <span className="text-[#1A1410]">{t('hero.title')} {t('hero.title2')} </span>
-                <span className="gradient-text">{t('hero.titleHighlight')}</span>
+                <span className="text-[#1A1410]">{t('hero.title')} {t('hero.title2')}</span>
                 <br />
+                <span className="gradient-text">{t('hero.titleHighlight')} </span>
                 <span className="text-[#1A1410]">{t('hero.titleEnd')} </span>
                 <span className="gradient-text">{t('hero.titleBrand')}</span>
               </motion.h1>
@@ -2267,7 +2267,9 @@ export default function Home() {
             </div>
 
             {/* Orbital 3D hero visual */}
-            <OrbitalHero />
+            <div className="relative flex items-center justify-center lg:scale-[0.82] xl:scale-[0.92] origin-center w-full">
+              <OrbitalHero />
+            </div>
           </div>
         </div>
       </section>
