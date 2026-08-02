@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback, useLayoutEffect, type CSSProperties } from 'react'
+import { useRef, useState, useEffect, useCallback, useLayoutEffect, Suspense, type CSSProperties } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence, type MotionValue } from 'framer-motion'
@@ -23,6 +23,9 @@ import geminiLogo from '@assets/image_1783259044391.png'
 import razorpayLogo from '@assets/image_1783259072151.png'
 import firebaseLogo from '@assets/image_1783259104105.png'
 import twilioLogo from '@assets/image_1783259146914.png'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { useGLTF, ContactShadows } from '@react-three/drei'
+import * as THREE from 'three'
 const prasannaImg = '/Prasanna.jpg'
 const rounakNewImg = '/Rounak.jpg'
 const rohanNewImg = '/Rohan.jpg'
@@ -1859,6 +1862,52 @@ function PricingSection() {
   )
 }
 
+/* ─── 3D Student model ─── */
+function StudentModel() {
+  const { scene } = useGLTF('/student.glb')
+  const ref = useRef<THREE.Group>(null)
+
+  useFrame((_, delta) => {
+    if (ref.current) {
+      ref.current.rotation.y += delta * 0.5
+    }
+  })
+
+  return (
+    <primitive
+      ref={ref}
+      object={scene}
+      scale={1.8}
+      position={[0, -1.0, 0]}
+    />
+  )
+}
+
+function StudentCanvas() {
+  return (
+    <Canvas
+      camera={{ position: [0, 0.8, 3.5], fov: 50 }}
+      style={{ width: '100%', height: '100%' }}
+      gl={{ antialias: true, alpha: true }}
+    >
+      <ambientLight intensity={1.5} />
+      <directionalLight position={[5, 5, 5]} intensity={2} />
+      <directionalLight position={[-5, 3, -5]} intensity={1} color="#C4A32A" />
+      <pointLight position={[0, 4, 2]} intensity={0.8} color="#F5F0E8" />
+      <Suspense fallback={null}>
+        <StudentModel />
+        <ContactShadows
+          position={[0, -1.1, 0]}
+          opacity={0.12}
+          scale={3}
+          blur={2.5}
+          color="#8B4513"
+        />
+      </Suspense>
+    </Canvas>
+  )
+}
+
 /* ─── Orbital 3D hero visual ─── */
 function OrbitalHero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -2086,41 +2135,18 @@ function OrbitalHero() {
           />
         ))}
 
-        {/* STUDENT — planted on the platform, standing still, integrated with the scene */}
-        <div className="absolute z-20 left-1/2 pointer-events-none" style={{ bottom: '37px', transform: 'translateX(-50%)' }}>
-          {/* Warm golden rim light / halo behind the student */}
-          <div
-            className="absolute rounded-full"
-            style={{ top: '42%', left: '50%', width: '260px', height: '400px', transform: 'translate(-50%, -50%)', background: 'radial-gradient(ellipse, rgba(196,163,42,0.28) 0%, rgba(139,69,19,0.1) 45%, transparent 72%)', filter: 'blur(8px)' }}
-          />
-          {/* Glossy reflection of the student on the platform surface */}
-          <div
-            className="absolute left-1/2 overflow-hidden"
-            style={{
-              bottom: '-32px',
-              transform: 'translateX(-50%)',
-              width: '132px',
-              height: '32px',
-              clipPath: 'ellipse(72% 100% at 50% 0%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 78%, rgba(0,0,0,0) 100%)',
-              maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 78%, rgba(0,0,0,0) 100%)',
-            }}
-          >
-            <img
-              src="/student-boy-3d.png"
-              alt=""
-              className="h-[380px] w-auto object-contain"
-              style={{ transform: 'scaleY(-1)', transformOrigin: '50% 50%', opacity: 0.2, filter: 'blur(2px) saturate(0.85) brightness(1.15)' }}
-            />
-          </div>
-          <img
-            src="/student-boy-3d.png"
-            alt="Student"
-            className="h-[380px] w-auto object-contain pointer-events-auto"
-            style={{
-              filter: 'drop-shadow(0 30px 50px rgba(139,69,19,0.4)) drop-shadow(0 6px 16px rgba(0,0,0,0.28))',
-            }}
-          />
+        {/* STUDENT — 3D model on the platform */}
+        <div
+          className="absolute z-20"
+          style={{
+            width: '260px',
+            height: '400px',
+            bottom: '0%',
+            left: '50%',
+            transform: 'translateX(-50%)',
+          }}
+        >
+          <StudentCanvas />
         </div>
 
         {/* FLOATING FEATURE BADGES */}
@@ -2313,3 +2339,5 @@ export default function Home() {
     </main>
   )
 }
+
+useGLTF.preload('/student.glb')
