@@ -1877,8 +1877,8 @@ function StudentModel() {
     <primitive
       ref={ref}
       object={scene}
-      scale={2.8}
-      position={[0, -1.6, 0]}
+      scale={3.3}
+      position={[0, -2.0, 0]}
     />
   )
 }
@@ -1886,19 +1886,19 @@ function StudentModel() {
 function StudentCanvas() {
   return (
     <Canvas
-      camera={{ position: [0, 0.9, 4.8], fov: 45 }}
+      camera={{ position: [0, 1.0, 5.0], fov: 45 }}
       style={{ width: '100%', height: '100%' }}
       gl={{ antialias: true, alpha: true }}
     >
-      <ambientLight intensity={2.0} />
-      <directionalLight position={[3, 5, 3]} intensity={2.5} />
-      <directionalLight position={[-3, 2, -3]} intensity={1.2} color="#C4A32A" />
-      <pointLight position={[0, 3, 3]} intensity={1.0} color="#FFF8F0" />
-      <pointLight position={[2, 1, 2]} intensity={0.6} color="#C4A32A" />
+      <ambientLight intensity={2.5} />
+      <directionalLight position={[3, 5, 3]} intensity={3.0} />
+      <directionalLight position={[-3, 2, -3]} intensity={1.5} color="#C4A32A" />
+      <pointLight position={[0, 3, 3]} intensity={1.4} color="#FFF8F0" />
+      <pointLight position={[2, 1, 2]} intensity={0.8} color="#C4A32A" />
       <Suspense fallback={null}>
         <StudentModel />
         <ContactShadows
-          position={[0, -0.7, 0]}
+          position={[0, -1.0, 0]}
           opacity={0.12}
           scale={3}
           blur={2.5}
@@ -2212,4 +2212,5 @@ export default function Home() {
   )
 }
 
+useGLTF.setDecoderPath('/draco/')
 useGLTF.preload('/student.glb')
