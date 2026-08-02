@@ -287,7 +287,7 @@ import { useState, useEffect, useRef } from 'react'
                 transition={{ type: 'spring', stiffness: 380, damping: 26 }}
               >
                 <div className="w-10 h-10 flex items-center justify-center shrink-0">
-                  <Phone className="h-4 w-4 text-[#8B4513] group-hover:text-white transition-colors duration-200" />
+                  <Phone className="h-4 w-4 text-[#8B4513] group-hover:text-[#1A1410] transition-colors duration-200" />
                 </div>
                 <AnimatePresence>
                   {isPhoneHovered && (
@@ -295,7 +295,7 @@ import { useState, useEffect, useRef } from 'react'
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -10 }}
-                      className="text-xs font-bold text-[#8B4513] group-hover:text-white transition-colors duration-200 whitespace-nowrap pr-4"
+                      className="text-xs font-bold text-[#8B4513] group-hover:text-[#1A1410] transition-colors duration-200 whitespace-nowrap pr-4"
                     >
                       +91 90217 44355
                     </motion.span>
