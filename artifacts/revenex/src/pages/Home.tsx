@@ -368,7 +368,8 @@ function HowItWorksSection({ language }: { language: string }) {
 /* ─── Reviews section ─── */
 function ReviewsSection() {
   const queryClient = useQueryClient()
-  const { data: reviews = [], isLoading } = useListReviews()
+  const { data: reviewsData, isLoading } = useListReviews()
+  const reviews = Array.isArray(reviewsData) ? reviewsData : []
   const mutation = useSubmitReview()
 
   const [form, setForm] = useState({ name: '', role: '', school: '', rating: 0, content: '' })
