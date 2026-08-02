@@ -199,7 +199,7 @@ function PartnersMarquee() {
         {doubled.map((p, i) => (
           <div
             key={`${p.name}-${i}`}
-            className="flex items-center justify-center gap-3 shrink-0 min-w-[160px] h-14 px-6 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
+            className="flex items-center justify-center gap-3 shrink-0 w-48 h-14 px-6 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
             style={{ boxShadow: '0 2px 8px rgba(139,69,19,0.06)' }}
           >
             <img src={p.logo} alt={p.name} className={`block ${p.heightClass} w-auto object-contain`} />
