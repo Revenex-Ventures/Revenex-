@@ -26,7 +26,17 @@ app.use(
     },
   }),
 );
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://revenex.in",
+      "https://www.revenex.in",
+      "https://revenex.pages.dev",
+      "http://localhost:5173"
+    ],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
