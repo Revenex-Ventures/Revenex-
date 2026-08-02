@@ -1,0 +1,6 @@
+# Cloudflare Pages Redirect & Reverse Proxy configuration
+# Matches /api/* requests and forwards them directly to the Firebase Cloud Function API endpoint
+/api/* https://asia-south1-revenex-ventures.cloudfunctions.net/api/:splat 200
+
+# Fallback for Single Page Application (SPA) routing in React (wouter)
+/* /index.html 200

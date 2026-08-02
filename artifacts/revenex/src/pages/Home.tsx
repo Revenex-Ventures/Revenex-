@@ -1877,7 +1877,11 @@ function StudentModel() {
         const mat = mesh.material as THREE.MeshStandardMaterial
         mat.map = baseColor
         mat.metalness = 0.1
+        mat.roughness = 0.8
         mat.metalnessMap = null
+        mat.roughnessMap = null
+        mat.normalMap = null
+        mat.aoMap = null
         mat.needsUpdate = true
       }
     })
