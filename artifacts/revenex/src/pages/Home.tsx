@@ -23,7 +23,7 @@ import geminiLogo from '@assets/image_1783259044391.png'
 import razorpayLogo from '@assets/image_1783259072151.png'
 import firebaseLogo from '@assets/image_1783259104105.png'
 import twilioLogo from '@assets/image_1783259146914.png'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useLoader } from '@react-three/fiber'
 import { useGLTF, ContactShadows } from '@react-three/drei'
 import * as THREE from 'three'
 const prasannaImg = '/Prasanna.jpg'
@@ -1865,7 +1865,22 @@ function PricingSection() {
 /* ─── 3D Student model ─── */
 function StudentModel() {
   const { scene } = useGLTF('/student.glb')
+  const baseColor = useLoader(THREE.TextureLoader, '/student-basecolor.png')
   const ref = useRef<THREE.Group>(null)
+
+  useLayoutEffect(() => {
+    baseColor.colorSpace = THREE.SRGBColorSpace
+    baseColor.flipY = true
+    scene.traverse((obj) => {
+      if (obj.isMesh && obj.material) {
+        const mat = obj.material as THREE.MeshStandardMaterial
+        mat.map = baseColor
+        mat.metalness = 0.1
+        mat.metalnessMap = null
+        mat.needsUpdate = true
+      }
+    })
+  }, [scene, baseColor])
 
   useFrame((_, delta) => {
     if (ref.current) {
@@ -1877,8 +1892,8 @@ function StudentModel() {
     <primitive
       ref={ref}
       object={scene}
-      scale={3.3}
-      position={[0, -2.0, 0]}
+      scale={3.55}
+      position={[0, -2.1, 0]}
     />
   )
 }
@@ -1886,7 +1901,7 @@ function StudentModel() {
 function StudentCanvas() {
   return (
     <Canvas
-      camera={{ position: [0, 1.0, 5.0], fov: 45 }}
+      camera={{ position: [0, 1.0, 5.1], fov: 45 }}
       style={{ width: '100%', height: '100%' }}
       gl={{ antialias: true, alpha: true }}
     >
