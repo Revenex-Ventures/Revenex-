@@ -2214,27 +2214,37 @@ export default function Home() {
                 <span className="text-[#1A1410]">{t('hero.titleEnd')} </span>
                 <span className="gradient-text">{t('hero.titleBrand')}</span>
               </motion.h1>
+            </div>
 
+            {/* Right Column: Orbital 3D hero visual + Subtitle + Buttons */}
+            <div className="relative flex flex-col items-center justify-center w-full">
+              {/* 3D visual container with scaling */}
+              <div className="relative flex items-center justify-center lg:scale-[0.82] xl:scale-[0.92] origin-center w-full h-[520px]">
+                <OrbitalHero />
+              </div>
+
+              {/* Subtitle text below the image */}
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="max-w-xl text-lg text-[#3D3128] leading-relaxed mb-8"
+                className="max-w-md text-sm sm:text-base text-[#3D3128] leading-relaxed text-center mt-6 mb-6"
               >
                 {t('hero.subtitle')}
               </motion.p>
 
+              {/* Buttons below the subtitle */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.35 }}
-                className="flex flex-col sm:flex-row gap-4 mb-8"
+                className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full"
               >
                 <Link href="/book-demo">
                   <motion.span
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center justify-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl text-base transition-all cursor-pointer shadow-lg"
+                    className="inline-flex items-center justify-center gap-2 gradient-bg text-white font-bold px-8 py-3.5 rounded-2xl text-base transition-all cursor-pointer shadow-lg w-full sm:w-auto"
                   >
                     {t('hero.cta.demo')} <ArrowRight className="h-5 w-5" />
                   </motion.span>
@@ -2243,31 +2253,12 @@ export default function Home() {
                   <motion.span
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-4 rounded-2xl text-base transition-all hover:bg-[#F0E8DC] cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-3.5 rounded-2xl text-base transition-all hover:bg-[#F0E8DC] cursor-pointer w-full sm:w-auto"
                   >
                     {language === 'en' ? 'Sign In' : 'साइन इन करें'} <ArrowRight className="h-5 w-5 opacity-60" />
                   </motion.span>
                 </Link>
               </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.55 }}
-                className="flex items-center gap-3 flex-wrap"
-              >
-                {['Enterprise Security', '99.9% Uptime Target', 'Indian EdTech'].map((item) => (
-                  <div key={item} className="flex items-center gap-1.5 text-xs text-[#6B5D52] px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-white">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-[#7C3D0F]" />
-                    {item}
-                  </div>
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Orbital 3D hero visual */}
-            <div className="relative flex items-center justify-center lg:scale-[0.82] xl:scale-[0.92] origin-center w-full">
-              <OrbitalHero />
             </div>
           </div>
         </div>

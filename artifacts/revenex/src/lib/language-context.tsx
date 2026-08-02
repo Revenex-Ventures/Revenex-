@@ -22,7 +22,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.titleHighlight': '',
     'hero.titleEnd': 'Simple with',
     'hero.titleBrand': 'REVENEX',
-    'hero.subtitle': 'A secure, cloud-based ERP to automate admissions, fees, and communications.',
+    'hero.subtitle': 'REVENEX is a secure cloud ERP that automates attendance, fees, communications, and reporting — trusted by schools.',
     'hero.cta.demo': 'Schedule a Demo',
     'hero.cta.explore': 'Explore Features',
 
@@ -131,7 +131,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.titleHighlight': '',
     'hero.titleEnd': 'REVENEX के साथ',
     'hero.titleBrand': 'सरल और सशक्त',
-    'hero.subtitle': 'प्रवेश, शुल्क और स्कूल संचालन को स्वचालित करने के लिए एक सुरक्षित क्लाउड-आधारित ERP।',
+    'hero.subtitle': 'REVENEX एक सुरक्षित, क्लाउड-नेटिव ERP प्रदान करता है जो उपस्थिति, शुल्क, संचार और रिपोर्टिंग को स्वचालित करता है — भारतीय स्कूलों और शिक्षकों के लिए डिज़ाइन किया गया।',
     'hero.cta.demo': 'डेमो शेड्यूल करें',
     'hero.cta.explore': 'सुविधाएं देखें',
 
