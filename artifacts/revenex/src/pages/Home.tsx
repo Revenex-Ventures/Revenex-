@@ -2207,15 +2207,12 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl xl:text-[4.2rem] mb-6 leading-[1.05]"
+                className="text-4xl font-black tracking-tight sm:text-5xl lg:text-5xl xl:text-[3.4rem] mb-6 leading-[1.2]"
               >
-                <span className="text-[#1A1410]">{t('hero.title')}</span>
-                <br />
-                <span className="text-[#1A1410]">{t('hero.title2')}</span>
-                <br />
+                <span className="text-[#1A1410]">{t('hero.title')} {t('hero.title2')} </span>
                 <span className="gradient-text">{t('hero.titleHighlight')}</span>
                 <br />
-                <span className="text-[#1A1410]">{t('hero.titleEnd')}</span>{' '}
+                <span className="text-[#1A1410]">{t('hero.titleEnd')} </span>
                 <span className="gradient-text">{t('hero.titleBrand')}</span>
               </motion.h1>
 
