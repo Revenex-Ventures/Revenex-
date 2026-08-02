@@ -1388,7 +1388,7 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
       </div>
       <div className="absolute inset-0 noise-overlay pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center mb-20">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-20">
           <SectionBadge label="Features" />
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{t('features.title')}</h2>
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{t('features.subtitle')}</p>
@@ -1406,8 +1406,7 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
             >
               <motion.div
                 initial={{ opacity: 0, y: 56, scale: 0.96 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true, margin: '-40px' }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ duration: 0.7, ease: 'easeOut', delay: i * 0.14 }}
               >
                 <FeatureCard
