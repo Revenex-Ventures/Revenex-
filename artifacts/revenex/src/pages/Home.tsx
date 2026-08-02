@@ -775,6 +775,185 @@ const whyReasons = [
   },
 ]
 
+/* ─── Why Choose Card (3D Flip, 2-column equal layout) ─── */
+function WhyChooseCard({
+  icon: Icon,
+  title,
+  desc,
+  index,
+  slug,
+}: {
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  desc: string
+  index: number
+  slug: string
+}) {
+  const fromLeft = index % 2 === 0
+  
+  // Define custom SVGs for the back side of each card
+  const renderSVG = () => {
+    switch (slug) {
+      case 'security':
+        return (
+          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M50 15C60 15 80 20 80 35C80 60 50 85 50 85C50 85 20 60 20 35C20 20 40 15 50 15Z" className="opacity-30" />
+            <path d="M50 25C56 25 70 28 70 38C70 55 50 73 50 73C50 73 30 55 30 38C30 28 44 25 50 25Z" />
+            <rect x="42" y="47" width="16" height="12" rx="2" fill="currentColor" />
+            <path d="M46 47V42C46 39.8 47.8 38 50 38C52.2 38 54 39.8 54 42V47" strokeWidth="2" />
+          </svg>
+        )
+      case 'student-management':
+        return (
+          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="25" y1="75" x2="25" y2="55" />
+            <line x1="45" y1="75" x2="45" y2="40" />
+            <line x1="65" y1="75" x2="65" y2="25" />
+            <path d="M25 55L45 40L65 25" strokeWidth="3" />
+            <path d="M55 25H65V35" strokeWidth="3" />
+            <line x1="15" y1="75" x2="85" y2="75" className="opacity-40" />
+            <circle cx="25" cy="55" r="3" fill="currentColor" />
+            <circle cx="45" cy="40" r="3" fill="currentColor" />
+            <circle cx="65" cy="25" r="3" fill="currentColor" />
+          </svg>
+        )
+      case 'cloud-based':
+        return (
+          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M35 60C30 60 25 55 25 50C25 44.5 29.5 40 35 40C36.5 40 38 40.5 39.5 41C42 35 48 31 55 31C63.8 31 71 38.2 71 47C71 48 70.8 49 70.5 50C74.5 51 77 55 77 59.5C77 64.7 72.7 69 67.5 69H35" className="opacity-30" />
+            <rect x="35" y="55" width="30" height="10" rx="2" />
+            <line x1="40" y1="60" x2="42" y2="60" />
+            <line x1="46" y1="60" x2="52" y2="60" />
+            <circle cx="58" cy="60" r="1.5" fill="currentColor" />
+            <path d="M50 48V42" />
+            <path d="M45 45C45 45 47 43 50 43C53 43 55 45 55 45" />
+          </svg>
+        )
+      case 'ai-analytics':
+        return (
+          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="50" cy="50" r="4" fill="currentColor" />
+            <path d="M50 25V35" />
+            <path d="M50 65V75" />
+            <path d="M25 50H35" />
+            <path d="M65 50H75" />
+            <path d="M32.3 32.3L39.4 39.4" />
+            <path d="M60.6 60.6L67.7 67.7" />
+            <path d="M67.7 32.3L60.6 39.4" />
+            <path d="M39.4 60.6L32.3 67.7" />
+            <circle cx="50" cy="25" r="2.5" fill="currentColor" />
+            <circle cx="50" cy="75" r="2.5" fill="currentColor" />
+            <circle cx="25" cy="50" r="2.5" fill="currentColor" />
+            <circle cx="75" cy="50" r="2.5" fill="currentColor" />
+          </svg>
+        )
+      case 'fees':
+        return (
+          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="50" cy="50" r="25" />
+            <path d="M42 38H58" strokeWidth="3" />
+            <path d="M42 45H58" strokeWidth="3" />
+            <path d="M47 38V52C47 52 47 59 55 64" strokeWidth="3" />
+            <path d="M47 45C54 45 54 52 47 52" strokeWidth="3" />
+            <path d="M22 28L26 32" />
+            <path d="M78 28L74 32" />
+            <path d="M78 72L74 68" />
+            <path d="M22 72L26 68" />
+          </svg>
+        )
+      case 'one-platform':
+        return (
+          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 75H80" strokeWidth="3" />
+            <rect x="26" y="45" width="48" height="30" />
+            <polygon points="50,22 22,45 78,45" />
+            <line x1="36" y1="52" x2="36" y2="75" />
+            <line x1="45" y1="52" x2="45" y2="75" />
+            <line x1="55" y1="52" x2="55" y2="75" />
+            <line x1="64" y1="52" x2="64" y2="75" />
+            <polygon points="50,10 65,15 50,20 35,15" fill="currentColor" />
+            <path d="M40 17V23C40 23 45 25 50 25C55 25 60 23 60 23V17" />
+          </svg>
+        )
+      default:
+        return null
+    }
+  }
+
+  return (
+    <div
+      className="relative w-full h-[240px] md:h-[220px] rounded-3xl group cursor-pointer flip-card perspective-1000"
+    >
+      <motion.div
+        initial={{ opacity: 0, x: fromLeft ? -80 : 80 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.1 }}
+        className="w-full h-full duration-500 preserve-3d relative flip-card-inner"
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        {/* FRONT SIDE */}
+        <div
+          className="absolute inset-0 w-full h-full rounded-3xl border border-[#EDE8E3] p-8 flex flex-col items-center justify-center backface-hidden"
+          style={{
+            backfaceVisibility: 'hidden',
+            background: index % 2 === 0 ? '#FDF8F3' : '#F7F2EA',
+          }}
+        >
+          {/* Top Line accent */}
+          <div
+            className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-3xl"
+            style={{ background: 'linear-gradient(90deg, #8B4513, #C4722A, #8B4513)' }}
+          />
+
+          <div
+            className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-sm"
+            style={{ background: 'linear-gradient(135deg, #F0E8DC, #E8DDD0)' }}
+          >
+            <Icon className="h-8 w-8 text-[#8B4513]" />
+          </div>
+          <h3 className="text-2xl font-black text-[#1A1410] tracking-tight">{title}</h3>
+        </div>
+
+        {/* BACK SIDE */}
+        <div
+          className="absolute inset-0 w-full h-full rounded-3xl p-8 flex items-center backface-hidden rotate-y-180"
+          style={{
+            backfaceVisibility: 'hidden',
+            transform: 'rotateY(180deg)',
+            background: 'linear-gradient(135deg, #251B14, #150F0B)',
+          }}
+        >
+          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 items-center w-full h-full">
+            {/* Left Column: text description */}
+            <div className="flex flex-col justify-center text-left">
+              <h4 className="text-base font-black text-[#E5D2BA] tracking-wide uppercase mb-1">{title}</h4>
+              <p className="text-[#DFD6C8] text-xs leading-relaxed font-medium mb-3">{desc}</p>
+              {slug === 'one-platform' ? (
+                <span
+                  onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="text-[#C4A32A] hover:text-[#E8C23A] font-bold text-xs inline-flex items-center gap-1 transition-colors"
+                >
+                  Learn More &rarr;
+                </span>
+              ) : (
+                <span className="text-[#C4A32A]/60 font-bold text-[10px] tracking-widest uppercase">
+                  REVENEX Verified
+                </span>
+              )}
+            </div>
+
+            {/* Right Column: 2D Model SVG illustration */}
+            <div className="w-full h-[120px] flex items-center justify-center p-2 filter drop-shadow-[0_0_8px_rgba(196,163,42,0.3)]">
+              {renderSVG()}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  )
+}
+
 function WhyRevenexSection({ language }: { language: string }) {
   return (
     <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4]">
@@ -799,28 +978,17 @@ function WhyRevenexSection({ language }: { language: string }) {
               : 'हमने सिर्फ एक ऐप नहीं बनाया। हमने एक पूरा ऑपरेशन प्लेटफॉर्म बनाया।'}
           </p>
         </motion.div>
-        <div className="grid gap-5 sm:grid-cols-3">
-          {[whyReasons[0], whyReasons[1], whyReasons[2]].map((reason, i) => (
-            <BentoCard
+
+        {/* 2-Column Equal Size Grid Layout */}
+        <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
+          {whyReasons.map((reason, i) => (
+            <WhyChooseCard
               key={reason.slug}
               icon={reason.icon}
               title={reason.title}
               desc={reason.desc}
-              wide={reason.slug === 'security'}
+              slug={reason.slug}
               index={i}
-            />
-          ))}
-        </div>
-        <div className="grid gap-5 sm:grid-cols-3 mt-5">
-          {[whyReasons[3], whyReasons[4], whyReasons[5]].map((reason, i) => (
-            <BentoCard
-              key={reason.slug}
-              icon={reason.icon}
-              title={reason.title}
-              desc={reason.desc}
-              wide={reason.slug === 'one-platform'}
-              index={i + 3}
-              onLearnMore={reason.slug === 'one-platform' ? () => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }) : undefined}
             />
           ))}
         </div>
@@ -1872,8 +2040,9 @@ function StudentModel() {
     baseColor.colorSpace = THREE.SRGBColorSpace
     baseColor.flipY = true
     scene.traverse((obj) => {
-      if (obj.isMesh && obj.material) {
-        const mat = obj.material as THREE.MeshStandardMaterial
+      const mesh = obj as any;
+      if (mesh.isMesh && mesh.material) {
+        const mat = mesh.material as THREE.MeshStandardMaterial
         mat.map = baseColor
         mat.metalness = 0.1
         mat.metalnessMap = null

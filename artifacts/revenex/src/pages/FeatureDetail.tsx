@@ -328,7 +328,7 @@ export default function FeatureDetail() {
   const params = useParams<{ slug: string }>()
   const slug = params.slug ?? ''
 
-  const data = featureData[slug] ?? moduleData[slug]
+  const data = (featureData[slug] ?? moduleData[slug]) as any
 
   if (!data) {
     return (
