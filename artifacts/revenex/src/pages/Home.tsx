@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback, useLayoutEffect, Suspense, type CSSProperties } from 'react'
+import { useRef, useState, useEffect, useCallback, useLayoutEffect, type CSSProperties } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence, type MotionValue } from 'framer-motion'
@@ -23,9 +23,6 @@ import geminiLogo from '@assets/image_1783259044391.png'
 import razorpayLogo from '@assets/image_1783259072151.png'
 import firebaseLogo from '@assets/image_1783259104105.png'
 import twilioLogo from '@assets/image_1783259146914.png'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
-import { useGLTF, ContactShadows } from '@react-three/drei'
-import * as THREE from 'three'
 const prasannaImg = '/Prasanna.jpg'
 const rounakNewImg = '/Rounak.jpg'
 const rohanNewImg = '/Rohan.jpg'
@@ -202,7 +199,7 @@ function PartnersMarquee() {
         {doubled.map((p, i) => (
           <div
             key={`${p.name}-${i}`}
-            className="flex items-center justify-center gap-3 shrink-0 w-48 h-14 px-6 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
+            className="flex items-center justify-center gap-3 shrink-0 min-w-[160px] h-14 px-6 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
             style={{ boxShadow: '0 2px 8px rgba(139,69,19,0.06)' }}
           >
             <img src={p.logo} alt={p.name} className={`block ${p.heightClass} w-auto object-contain`} />
@@ -775,185 +772,6 @@ const whyReasons = [
   },
 ]
 
-/* ─── Why Choose Card (3D Flip, 2-column equal layout) ─── */
-function WhyChooseCard({
-  icon: Icon,
-  title,
-  desc,
-  index,
-  slug,
-}: {
-  icon: React.ComponentType<{ className?: string }>
-  title: string
-  desc: string
-  index: number
-  slug: string
-}) {
-  const fromLeft = index % 2 === 0
-  
-  // Define custom SVGs for the back side of each card
-  const renderSVG = () => {
-    switch (slug) {
-      case 'security':
-        return (
-          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M50 15C60 15 80 20 80 35C80 60 50 85 50 85C50 85 20 60 20 35C20 20 40 15 50 15Z" className="opacity-30" />
-            <path d="M50 25C56 25 70 28 70 38C70 55 50 73 50 73C50 73 30 55 30 38C30 28 44 25 50 25Z" />
-            <rect x="42" y="47" width="16" height="12" rx="2" fill="currentColor" />
-            <path d="M46 47V42C46 39.8 47.8 38 50 38C52.2 38 54 39.8 54 42V47" strokeWidth="2" />
-          </svg>
-        )
-      case 'student-management':
-        return (
-          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="25" y1="75" x2="25" y2="55" />
-            <line x1="45" y1="75" x2="45" y2="40" />
-            <line x1="65" y1="75" x2="65" y2="25" />
-            <path d="M25 55L45 40L65 25" strokeWidth="3" />
-            <path d="M55 25H65V35" strokeWidth="3" />
-            <line x1="15" y1="75" x2="85" y2="75" className="opacity-40" />
-            <circle cx="25" cy="55" r="3" fill="currentColor" />
-            <circle cx="45" cy="40" r="3" fill="currentColor" />
-            <circle cx="65" cy="25" r="3" fill="currentColor" />
-          </svg>
-        )
-      case 'cloud-based':
-        return (
-          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M35 60C30 60 25 55 25 50C25 44.5 29.5 40 35 40C36.5 40 38 40.5 39.5 41C42 35 48 31 55 31C63.8 31 71 38.2 71 47C71 48 70.8 49 70.5 50C74.5 51 77 55 77 59.5C77 64.7 72.7 69 67.5 69H35" className="opacity-30" />
-            <rect x="35" y="55" width="30" height="10" rx="2" />
-            <line x1="40" y1="60" x2="42" y2="60" />
-            <line x1="46" y1="60" x2="52" y2="60" />
-            <circle cx="58" cy="60" r="1.5" fill="currentColor" />
-            <path d="M50 48V42" />
-            <path d="M45 45C45 45 47 43 50 43C53 43 55 45 55 45" />
-          </svg>
-        )
-      case 'ai-analytics':
-        return (
-          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="50" cy="50" r="4" fill="currentColor" />
-            <path d="M50 25V35" />
-            <path d="M50 65V75" />
-            <path d="M25 50H35" />
-            <path d="M65 50H75" />
-            <path d="M32.3 32.3L39.4 39.4" />
-            <path d="M60.6 60.6L67.7 67.7" />
-            <path d="M67.7 32.3L60.6 39.4" />
-            <path d="M39.4 60.6L32.3 67.7" />
-            <circle cx="50" cy="25" r="2.5" fill="currentColor" />
-            <circle cx="50" cy="75" r="2.5" fill="currentColor" />
-            <circle cx="25" cy="50" r="2.5" fill="currentColor" />
-            <circle cx="75" cy="50" r="2.5" fill="currentColor" />
-          </svg>
-        )
-      case 'fees':
-        return (
-          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="50" cy="50" r="25" />
-            <path d="M42 38H58" strokeWidth="3" />
-            <path d="M42 45H58" strokeWidth="3" />
-            <path d="M47 38V52C47 52 47 59 55 64" strokeWidth="3" />
-            <path d="M47 45C54 45 54 52 47 52" strokeWidth="3" />
-            <path d="M22 28L26 32" />
-            <path d="M78 28L74 32" />
-            <path d="M78 72L74 68" />
-            <path d="M22 72L26 68" />
-          </svg>
-        )
-      case 'one-platform':
-        return (
-          <svg className="w-full h-full text-[#C4A32A]" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20 75H80" strokeWidth="3" />
-            <rect x="26" y="45" width="48" height="30" />
-            <polygon points="50,22 22,45 78,45" />
-            <line x1="36" y1="52" x2="36" y2="75" />
-            <line x1="45" y1="52" x2="45" y2="75" />
-            <line x1="55" y1="52" x2="55" y2="75" />
-            <line x1="64" y1="52" x2="64" y2="75" />
-            <polygon points="50,10 65,15 50,20 35,15" fill="currentColor" />
-            <path d="M40 17V23C40 23 45 25 50 25C55 25 60 23 60 23V17" />
-          </svg>
-        )
-      default:
-        return null
-    }
-  }
-
-  return (
-    <div
-      className="relative w-full h-[240px] md:h-[220px] rounded-3xl group cursor-pointer flip-card perspective-1000"
-    >
-      <motion.div
-        initial={{ opacity: 0, x: fromLeft ? -80 : 80 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.55, ease: 'easeOut', delay: index * 0.1 }}
-        className="w-full h-full duration-500 preserve-3d relative flip-card-inner"
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        {/* FRONT SIDE */}
-        <div
-          className="absolute inset-0 w-full h-full rounded-3xl border border-[#EDE8E3] p-8 flex flex-col items-center justify-center backface-hidden"
-          style={{
-            backfaceVisibility: 'hidden',
-            background: index % 2 === 0 ? '#FDF8F3' : '#F7F2EA',
-          }}
-        >
-          {/* Top Line accent */}
-          <div
-            className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-3xl"
-            style={{ background: 'linear-gradient(90deg, #8B4513, #C4722A, #8B4513)' }}
-          />
-
-          <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-sm"
-            style={{ background: 'linear-gradient(135deg, #F0E8DC, #E8DDD0)' }}
-          >
-            <Icon className="h-8 w-8 text-[#8B4513]" />
-          </div>
-          <h3 className="text-2xl font-black text-[#1A1410] tracking-tight">{title}</h3>
-        </div>
-
-        {/* BACK SIDE */}
-        <div
-          className="absolute inset-0 w-full h-full rounded-3xl p-8 flex items-center backface-hidden rotate-y-180"
-          style={{
-            backfaceVisibility: 'hidden',
-            transform: 'rotateY(180deg)',
-            background: 'linear-gradient(135deg, #251B14, #150F0B)',
-          }}
-        >
-          <div className="grid grid-cols-[1.2fr_0.8fr] gap-4 items-center w-full h-full">
-            {/* Left Column: text description */}
-            <div className="flex flex-col justify-center text-left">
-              <h4 className="text-base font-black text-[#E5D2BA] tracking-wide uppercase mb-1">{title}</h4>
-              <p className="text-[#DFD6C8] text-xs leading-relaxed font-medium mb-3">{desc}</p>
-              {slug === 'one-platform' ? (
-                <span
-                  onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="text-[#C4A32A] hover:text-[#E8C23A] font-bold text-xs inline-flex items-center gap-1 transition-colors"
-                >
-                  Learn More &rarr;
-                </span>
-              ) : (
-                <span className="text-[#C4A32A]/60 font-bold text-[10px] tracking-widest uppercase">
-                  REVENEX Verified
-                </span>
-              )}
-            </div>
-
-            {/* Right Column: 2D Model SVG illustration */}
-            <div className="w-full h-[120px] flex items-center justify-center p-2 filter drop-shadow-[0_0_8px_rgba(196,163,42,0.3)]">
-              {renderSVG()}
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </div>
-  )
-}
-
 function WhyRevenexSection({ language }: { language: string }) {
   return (
     <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4]">
@@ -978,17 +796,28 @@ function WhyRevenexSection({ language }: { language: string }) {
               : 'हमने सिर्फ एक ऐप नहीं बनाया। हमने एक पूरा ऑपरेशन प्लेटफॉर्म बनाया।'}
           </p>
         </motion.div>
-
-        {/* 2-Column Equal Size Grid Layout */}
-        <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
-          {whyReasons.map((reason, i) => (
-            <WhyChooseCard
+        <div className="grid gap-5 sm:grid-cols-3">
+          {[whyReasons[0], whyReasons[1], whyReasons[2]].map((reason, i) => (
+            <BentoCard
               key={reason.slug}
               icon={reason.icon}
               title={reason.title}
               desc={reason.desc}
-              slug={reason.slug}
+              wide={reason.slug === 'security'}
               index={i}
+            />
+          ))}
+        </div>
+        <div className="grid gap-5 sm:grid-cols-3 mt-5">
+          {[whyReasons[3], whyReasons[4], whyReasons[5]].map((reason, i) => (
+            <BentoCard
+              key={reason.slug}
+              icon={reason.icon}
+              title={reason.title}
+              desc={reason.desc}
+              wide={reason.slug === 'one-platform'}
+              index={i + 3}
+              onLearnMore={reason.slug === 'one-platform' ? () => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }) : undefined}
             />
           ))}
         </div>
@@ -2030,69 +1859,6 @@ function PricingSection() {
   )
 }
 
-/* ─── 3D Student model ─── */
-function StudentModel() {
-  const { scene } = useGLTF('/student.glb')
-  const baseColor = useLoader(THREE.TextureLoader, '/student-basecolor.png')
-  const ref = useRef<THREE.Group>(null)
-
-  useLayoutEffect(() => {
-    baseColor.colorSpace = THREE.SRGBColorSpace
-    baseColor.flipY = true
-    scene.traverse((obj) => {
-      const mesh = obj as any;
-      if (mesh.isMesh && mesh.material) {
-        const mat = mesh.material as THREE.MeshStandardMaterial
-        mat.map = baseColor
-        mat.metalness = 0.1
-        mat.metalnessMap = null
-        mat.needsUpdate = true
-      }
-    })
-  }, [scene, baseColor])
-
-  useFrame((_, delta) => {
-    if (ref.current) {
-      ref.current.rotation.y += delta * 0.3
-    }
-  })
-
-  return (
-    <primitive
-      ref={ref}
-      object={scene}
-      scale={3.55}
-      position={[0, -2.1, 0]}
-    />
-  )
-}
-
-function StudentCanvas() {
-  return (
-    <Canvas
-      camera={{ position: [0, 1.0, 5.1], fov: 45 }}
-      style={{ width: '100%', height: '100%' }}
-      gl={{ antialias: true, alpha: true }}
-    >
-      <ambientLight intensity={2.5} />
-      <directionalLight position={[3, 5, 3]} intensity={3.0} />
-      <directionalLight position={[-3, 2, -3]} intensity={1.5} color="#C4A32A" />
-      <pointLight position={[0, 3, 3]} intensity={1.4} color="#FFF8F0" />
-      <pointLight position={[2, 1, 2]} intensity={0.8} color="#C4A32A" />
-      <Suspense fallback={null}>
-        <StudentModel />
-        <ContactShadows
-          position={[0, -1.0, 0]}
-          opacity={0.12}
-          scale={3}
-          blur={2.5}
-          color="#8B4513"
-        />
-      </Suspense>
-    </Canvas>
-  )
-}
-
 /* ─── Orbital 3D hero visual ─── */
 function OrbitalHero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -2115,142 +1881,294 @@ function OrbitalHero() {
     label: string
     Icon: LucideIcon
     style: CSSProperties
+    yFloat: number
     dur: number
     delay: number
+    lineSide?: 'left' | 'right'
+    lineWidth?: number
   }> = [
-    { label: 'Library', Icon: BookOpen, style: { top: '-2%', right: '-8%' }, dur: 4, delay: 0 },
-    { label: 'Admissions', Icon: UserPlus, style: { top: '18%', left: '-15%' }, dur: 3.8, delay: 0.6 },
-    { label: 'Attendance', Icon: CalendarCheck, style: { top: '18%', right: '-15%' }, dur: 4.5, delay: 1.2 },
-    { label: 'Communication', Icon: MessageCircle, style: { top: '45%', left: '-18%' }, dur: 3.5, delay: 0.3 },
-    { label: 'Fees', Icon: IndianRupee, style: { top: '45%', right: '-15%' }, dur: 4.2, delay: 0.9 },
-    { label: 'Homework', Icon: BookMarked, style: { bottom: '5%', left: '-12%' }, dur: 3.9, delay: 1.5 },
-    { label: 'Transport', Icon: Bus, style: { bottom: '5%', right: '-12%' }, dur: 4.8, delay: 0.5 },
+    { label: 'Library', Icon: BookOpen, style: { top: '8%', right: '-40px' }, yFloat: -8, dur: 3.8, delay: 0, lineSide: 'left', lineWidth: 85 },
+    { label: 'Admissions', Icon: UserPlus, style: { top: '32%', left: '-80px' }, yFloat: -6, dur: 4.2, delay: 0.5, lineSide: 'right', lineWidth: 90 },
+    { label: 'Attendance', Icon: CalendarCheck, style: { top: '32%', right: '-85px' }, yFloat: -10, dur: 3.5, delay: 1, lineSide: 'left', lineWidth: 95 },
+    { label: 'Fees', Icon: IndianRupee, style: { top: '56%', right: '-75px' }, yFloat: -7, dur: 4.8, delay: 0.3, lineSide: 'left', lineWidth: 70 },
+    { label: 'Communication', Icon: MessageCircle, style: { top: '54%', left: '-95px' }, yFloat: -8, dur: 3.2, delay: 0.8, lineSide: 'right', lineWidth: 65 },
+    { label: 'Homework', Icon: BookMarked, style: { bottom: '20%', left: '-75px' }, yFloat: -6, dur: 4.5, delay: 1.2, lineSide: 'right', lineWidth: 85 },
+    { label: 'Transport', Icon: Bus, style: { bottom: '20%', right: '-65px' }, yFloat: -9, dur: 3.9, delay: 0.6, lineSide: 'left', lineWidth: 80 },
+  ]
+
+  const particles = [
+    { left: '8%', top: '30%', size: 5, color: '#C4A32A', dur: 2.4, delay: 0 },
+    { left: '90%', top: '22%', size: 4, color: '#8B4513', dur: 2.8, delay: 0.6 },
+    { left: '18%', top: '70%', size: 4, color: '#C4A32A', dur: 2.2, delay: 1.2 },
+    { left: '78%', top: '68%', size: 6, color: '#8B4513', dur: 3.0, delay: 0.3 },
+    { left: '12%', top: '45%', size: 4, color: '#C4A32A', dur: 2.6, delay: 1.8 },
+    { left: '85%', top: '48%', size: 5, color: '#8B4513', dur: 2.3, delay: 0.9 },
+    { left: '35%', top: '12%', size: 4, color: '#C4A32A', dur: 2.9, delay: 1.5 },
+    { left: '62%', top: '88%', size: 5, color: '#8B4513', dur: 2.5, delay: 0.2 },
   ]
 
   return (
     <div
       ref={containerRef}
-      style={{ perspective: '1000px' }}
-      className="relative w-full h-[680px] max-md:h-[420px] max-md:scale-[0.65] flex items-center justify-center"
+      style={{ perspective: '1200px', perspectiveOrigin: '50% 50%' }}
+      className="relative w-full h-[620px] max-md:h-[420px] max-md:scale-[0.65] flex items-center justify-center"
     >
       {/* Scene wrapper — subtle mouse parallax */}
       <motion.div
         animate={{ rotateY: mousePos.x * 0.3, rotateX: -mousePos.y * 0.2 }}
         transition={{ type: 'spring', stiffness: 100, damping: 30 }}
-        className="relative w-[560px] h-[560px] flex items-center justify-center"
+        className="relative w-[520px] h-[520px] flex items-center justify-center"
         style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
       >
         {/* BACKGROUND GLOW */}
         <motion.div
-          className="absolute rounded-full"
+          className="absolute inset-0 rounded-full"
           style={{
-            width: '480px',
-            height: '480px',
-            zIndex: 0,
-            background: 'radial-gradient(ellipse, rgba(196,163,42,0.08) 0%, rgba(139,69,19,0.04) 40%, transparent 70%)',
+            background: 'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(196,163,42,0.12) 0%, rgba(139,69,19,0.06) 40%, transparent 70%)',
           }}
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
 
-        {/* SVG gradient + glow definitions */}
-        <svg width="0" height="0" className="absolute" aria-hidden="true">
-          <defs>
-            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FFE066" />
-              <stop offset="50%" stopColor="#D9A92E" />
-              <stop offset="100%" stopColor="#9A6A15" />
-            </linearGradient>
-            <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FFFFFF" />
-              <stop offset="50%" stopColor="#C9C9D8" />
-              <stop offset="100%" stopColor="#8A8AA0" />
-            </linearGradient>
-            <linearGradient id="roseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#F5D6C6" />
-              <stop offset="50%" stopColor="#C9906F" />
-              <stop offset="100%" stopColor="#A06040" />
-            </linearGradient>
-            <filter id="ringGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-        </svg>
-
-        {/* RING 1 — Gold diagonal metallic ellipse */}
-        <div className="absolute pointer-events-none" style={{ width: 480, height: 180, left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-          <div className="absolute inset-0" style={{ transform: 'rotate(-35deg)' }}>
-            <svg width="480" height="180" viewBox="0 0 480 180" fill="none" style={{ overflow: 'visible' }}>
-              <ellipse cx="240" cy="90" rx="240" ry="90" stroke="url(#goldGrad)" strokeWidth="2.5" opacity="0.85" filter="url(#ringGlow)" />
-            </svg>
-            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}>
-              <div className="absolute rounded-full" style={{ top: '12%', left: '50%', transform: 'translateX(-50%)', width: 16, height: 16, background: 'radial-gradient(circle at 35% 35%, #FFE066 0%, #C4A32A 100%)', boxShadow: '0 0 16px 6px rgba(196,163,42,0.9)' }} />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* RING 2 — Silver diagonal metallic ellipse */}
-        <div className="absolute pointer-events-none" style={{ width: 400, height: 150, left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-          <div className="absolute inset-0" style={{ transform: 'rotate(35deg)' }}>
-            <svg width="400" height="150" viewBox="0 0 400 150" fill="none" style={{ overflow: 'visible' }}>
-              <ellipse cx="200" cy="75" rx="200" ry="75" stroke="url(#silverGrad)" strokeWidth="2" opacity="0.75" filter="url(#ringGlow)" />
-            </svg>
-            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [360, 0] }} transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}>
-              <div className="absolute rounded-full" style={{ top: '12%', left: '50%', transform: 'translateX(-50%)', width: 12, height: 12, background: 'radial-gradient(circle at 35% 35%, #E8E8F8 0%, #A0A0C0 100%)', boxShadow: '0 0 12px 4px rgba(160,160,192,0.8)' }} />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* RING 3 — Rose gold horizontal metallic ellipse */}
-        <div className="absolute pointer-events-none" style={{ width: 320, height: 110, left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-          <div className="absolute inset-0" style={{ transform: 'rotate(0deg)' }}>
-            <svg width="320" height="110" viewBox="0 0 320 110" fill="none" style={{ overflow: 'visible' }}>
-              <ellipse cx="160" cy="55" rx="160" ry="55" stroke="url(#roseGrad)" strokeWidth="1.5" opacity="0.7" filter="url(#ringGlow)" />
-            </svg>
-            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}>
-              <div className="absolute rounded-full" style={{ top: '12%', left: '50%', transform: 'translateX(-50%)', width: 10, height: 10, background: 'radial-gradient(circle at 35% 35%, #E8A060 0%, #8B4513 100%)', boxShadow: '0 0 10px 3px rgba(139,69,19,0.7)' }} />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* STUDENT — 3D model */}
+        {/* 3D Turntable Platform — the student stands ON this */}
         <div
-          className="absolute z-20"
+          className="absolute pointer-events-none"
           style={{
-            width: '320px',
-            height: '480px',
-            bottom: '5%',
+            bottom: '0',
             left: '50%',
             transform: 'translateX(-50%)',
+            width: '420px',
+            height: '130px',
+            transformStyle: 'preserve-3d',
+            zIndex: 15,
           }}
         >
-          <StudentCanvas />
+          {/* Base rim — thickest step */}
+          <div
+            className="absolute w-full h-[46px] rounded-full"
+            style={{
+              bottom: 0,
+              background: 'linear-gradient(to right, #8a7a63 0%, #d6c9b6 42%, #f0e6d8 55%, #8a7a63 100%)',
+              border: '2px solid #6e5a3e',
+              boxShadow: '0 18px 60px rgba(139,69,19,0.45), 0 0 40px rgba(196,163,42,0.22)',
+              transform: 'rotateX(58deg)',
+            }}
+          />
+          {/* Middle step — champagne gold */}
+          <div
+            className="absolute w-[92%] h-[42px] rounded-full"
+            style={{
+              left: '4%',
+              bottom: '9px',
+              background: 'linear-gradient(to right, #b49a72 0%, #eeddc4 50%, #b49a72 100%)',
+              border: '2px solid #a8875c',
+              boxShadow: '0 0 24px rgba(196,163,42,0.32)',
+              transform: 'rotateX(58deg)',
+            }}
+          />
+          {/* Top surface — ivory/cream disk */}
+          <div
+            className="absolute w-[84%] h-[38px] rounded-full"
+            style={{
+              left: '8%',
+              bottom: '18px',
+              background: 'radial-gradient(circle at 50% 25%, #fffdf9 0%, #f4e9da 55%, #d9c9b4 100%)',
+              border: '3px solid #c8a27c',
+              boxShadow: 'inset 0 2px 10px rgba(255,255,255,0.95), inset 0 -8px 18px rgba(139,69,19,0.2), 0 0 32px rgba(196,163,42,0.32)',
+              transform: 'rotateX(58deg)',
+            }}
+          >
+            {/* Independent rotating concentric rings */}
+            <motion.div className="absolute inset-3 rounded-full" style={{ border: '1px dashed rgba(196,163,42,0.6)' }} animate={{ rotate: [0, 360] }} transition={{ duration: 22, repeat: Infinity, ease: 'linear' }} />
+            <motion.div className="absolute inset-6 rounded-full" style={{ border: '1px solid rgba(200,162,124,0.75)' }} animate={{ rotate: [360, 0] }} transition={{ duration: 15, repeat: Infinity, ease: 'linear' }} />
+            <div className="absolute inset-10 rounded-full border border-stone-400/40" />
+            {/* Sweeping golden rim light on the surface */}
+            <motion.div className="absolute inset-0" animate={{ rotate: [0, 360] }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -6, left: '50%', transform: 'translateX(-50%)', width: '46px', height: '20px', background: 'radial-gradient(ellipse, rgba(196,163,42,0.6) 0%, transparent 70%)', filter: 'blur(3px)' }} />
+            </motion.div>
+            {/* Contact shadow directly under the shoes */}
+            <div className="absolute left-1/2 rounded-full" style={{ width: '76px', height: '28px', bottom: '14px', transform: 'translateX(-50%)', background: 'radial-gradient(ellipse, rgba(74,45,18,0.45) 0%, rgba(74,45,18,0.17) 55%, transparent 75%)', filter: 'blur(2px)' }} />
+            {/* Glowing halo beneath the feet */}
+            <motion.div className="absolute left-1/2 rounded-full" style={{ width: '90px', height: '44px', bottom: '11px', transform: 'translateX(-50%)', background: 'radial-gradient(ellipse, rgba(196,163,42,0.42) 0%, rgba(196,163,42,0.09) 60%, transparent 75%)', boxShadow: '0 0 32px rgba(196,163,42,0.5)' }} animate={{ opacity: [0.55, 1, 0.55] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }} />
+          </div>
+        </div>
+
+        {/* RING 1 — Gold (Outer Vertical Ellipse, 3D metallic tube) */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{ width: 360, height: 490, transform: 'translate(-50%, -50%) rotateY(-20deg) rotateX(10deg) rotateZ(-10deg)', transformStyle: 'preserve-3d' }}
+          >
+            {/* Tube body — metallic shading (light top, dark under-side) */}
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: '9px solid rgba(196,163,42,0.8)', boxShadow: '0 0 26px rgba(196,163,42,0.38), inset 0 3px 9px rgba(255,255,255,0.55), inset 0 -5px 12px rgba(120,72,20,0.65)', willChange: 'transform' }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            />
+            {/* Traveling hot spot — metallic glint sweeping the tube */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -16, left: '50%', transform: 'translateX(-50%)', width: 44, height: 28, background: 'radial-gradient(ellipse, rgba(255,255,255,0.6) 0%, transparent 70%)', filter: 'blur(4px)' }} />
+            </motion.div>
+            {/* Orbiting gold sphere */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -10, left: '50%', transform: 'translateX(-50%)', width: 20, height: 20, background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #C4A32A 45%, #8B4513 100%)', boxShadow: '0 0 18px rgba(196,163,42,0.95)' }} />
+            </motion.div>
+            {/* Fees Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#C4A32A]" style={{ top: '40%', right: -4, boxShadow: '0 0 8px 2px rgba(196,163,42,0.8)' }} />
+          </div>
+        </div>
+
+        {/* RING 2 — Silver (Inclined Vertical Ellipse, 3D metallic tube) */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{ width: 350, height: 480, transform: 'translate(-50%, -50%) rotateY(55deg) rotateX(15deg) rotateZ(20deg)', transformStyle: 'preserve-3d' }}
+          >
+            {/* Tube body — metallic shading */}
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: '8px solid rgba(160,160,185,0.72)', boxShadow: '0 0 22px rgba(160,160,185,0.34), inset 0 3px 8px rgba(255,255,255,0.6), inset 0 -5px 11px rgba(60,60,90,0.55)', willChange: 'transform' }}
+              animate={{ rotate: [360, 0] }}
+              transition={{ duration: 17, repeat: Infinity, ease: 'linear' }}
+            />
+            {/* Traveling hot spot */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [360, 0] }} transition={{ duration: 17, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -15, left: '50%', transform: 'translateX(-50%)', width: 42, height: 26, background: 'radial-gradient(ellipse, rgba(255,255,255,0.55) 0%, transparent 70%)', filter: 'blur(4px)' }} />
+            </motion.div>
+            {/* Orbiting silver sphere */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [360, 0] }} transition={{ duration: 17, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -9, left: '50%', transform: 'translateX(-50%)', width: 18, height: 18, background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #A0A0C0 50%, #5a5a6e 100%)', boxShadow: '0 0 16px rgba(160,160,185,0.9)' }} />
+            </motion.div>
+            {/* Admissions Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#A0A0C0]" style={{ top: '30%', left: -4, boxShadow: '0 0 8px 2px rgba(160,160,185,0.8)' }} />
+            {/* Homework Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#A0A0C0]" style={{ bottom: '25%', left: '8%', boxShadow: '0 0 8px 2px rgba(160,160,185,0.8)' }} />
+          </div>
+        </div>
+
+        {/* RING 3 — Copper (Opposite Inclined Vertical Ellipse, 3D metallic tube) */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{ width: 340, height: 470, transform: 'translate(-50%, -50%) rotateY(-55deg) rotateX(-15deg) rotateZ(-20deg)', transformStyle: 'preserve-3d' }}
+          >
+            {/* Tube body — metallic shading */}
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: '7px solid rgba(180,110,70,0.7)', boxShadow: '0 0 20px rgba(180,110,70,0.34), inset 0 3px 8px rgba(255,220,190,0.6), inset 0 -5px 11px rgba(90,40,10,0.6)', willChange: 'transform' }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
+            />
+            {/* Traveling hot spot */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -15, left: '50%', transform: 'translateX(-50%)', width: 40, height: 26, background: 'radial-gradient(ellipse, rgba(255,230,205,0.55) 0%, transparent 70%)', filter: 'blur(4px)' }} />
+            </motion.div>
+            {/* Orbiting copper sphere */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -9, left: '50%', transform: 'translateX(-50%)', width: 18, height: 18, background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #B46E46 50%, #6e3b1e 100%)', boxShadow: '0 0 16px rgba(180,110,70,0.9)' }} />
+            </motion.div>
+            {/* Attendance Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#B46E46]" style={{ top: '30%', right: -4, boxShadow: '0 0 8px 2px rgba(180,110,70,0.8)' }} />
+            {/* Transport Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#B46E46]" style={{ bottom: '25%', right: '8%', boxShadow: '0 0 8px 2px rgba(180,110,70,0.8)' }} />
+          </div>
+        </div>
+
+        {/* PARTICLE SPARKS */}
+        {particles.map((p, i) => (
+          <motion.div
+            key={`spark-${i}`}
+            className="absolute rounded-full pointer-events-none"
+            style={{ left: p.left, top: p.top, width: p.size, height: p.size, background: p.color, zIndex: 5 }}
+            animate={{ opacity: [0, 1, 0], scale: [0, 1.5, 0], y: [0, -20, -40] }}
+            transition={{ duration: p.dur, repeat: Infinity, delay: p.delay, ease: 'easeInOut' }}
+          />
+        ))}
+
+        {/* STUDENT — planted on the platform, standing still, integrated with the scene */}
+        <div className="absolute z-20 left-1/2 pointer-events-none" style={{ bottom: '37px', transform: 'translateX(-50%)' }}>
+          {/* Warm golden rim light / halo behind the student */}
+          <div
+            className="absolute rounded-full"
+            style={{ top: '42%', left: '50%', width: '260px', height: '400px', transform: 'translate(-50%, -50%)', background: 'radial-gradient(ellipse, rgba(196,163,42,0.28) 0%, rgba(139,69,19,0.1) 45%, transparent 72%)', filter: 'blur(8px)' }}
+          />
+          {/* Glossy reflection of the student on the platform surface */}
+          <div
+            className="absolute left-1/2 overflow-hidden"
+            style={{
+              bottom: '-32px',
+              transform: 'translateX(-50%)',
+              width: '132px',
+              height: '32px',
+              clipPath: 'ellipse(72% 100% at 50% 0%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 78%, rgba(0,0,0,0) 100%)',
+              maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 78%, rgba(0,0,0,0) 100%)',
+            }}
+          >
+            <img
+              src="/student-boy-3d.png"
+              alt=""
+              className="h-[380px] w-auto object-contain"
+              style={{ transform: 'scaleY(-1)', transformOrigin: '50% 50%', opacity: 0.2, filter: 'blur(2px) saturate(0.85) brightness(1.15)' }}
+            />
+          </div>
+          <img
+            src="/student-boy-3d.png"
+            alt="Student"
+            className="h-[380px] w-auto object-contain pointer-events-auto"
+            style={{
+              filter: 'drop-shadow(0 30px 50px rgba(139,69,19,0.4)) drop-shadow(0 6px 16px rgba(0,0,0,0.28))',
+            }}
+          />
         </div>
 
         {/* FLOATING FEATURE BADGES */}
         {badges.map((b) => (
           <motion.div
             key={b.label}
-            className="absolute z-30 flex items-center gap-2 px-5 py-2.5 rounded-full cursor-default"
+            className="absolute z-30 flex items-center gap-2 px-4 py-2.5 rounded-full cursor-default"
             style={{
               ...b.style,
-              background: '#FFFFFF',
-              border: '1px solid #EDE8E3',
-              boxShadow: '0 4px 20px rgba(139,69,19,0.10)',
+              background: 'rgba(255,255,255,0.9)',
+              backdropFilter: 'blur(14px) saturate(160%)',
+              border: '1px solid rgba(196,163,42,0.4)',
+              boxShadow: '0 4px 24px rgba(139,69,19,0.14), 0 1px 4px rgba(0,0,0,0.06), inset 0 0 12px rgba(255,255,255,0.6)',
               willChange: 'transform',
             }}
-            animate={{ y: [0, -8, 0] }}
+            animate={{ y: [0, b.yFloat, 0] }}
             transition={{ duration: b.dur, repeat: Infinity, ease: 'easeInOut', delay: b.delay }}
-            whileHover={{ scale: 1.06 }}
+            whileHover={{ scale: 1.08, boxShadow: '0 8px 32px rgba(139,69,19,0.2)' }}
           >
-            <div className="w-8 h-8 bg-[#F5EDE0] rounded-lg flex items-center justify-center">
-              <b.Icon size={16} color="#8B4513" />
+            {b.lineSide && b.lineWidth && (
+              <div 
+                className="absolute bg-stone-300/60 pointer-events-none"
+                style={{
+                  top: '50%',
+                  height: '1px',
+                  width: `${b.lineWidth}px`,
+                  [b.lineSide]: `-${b.lineWidth}px`,
+                  transform: 'translateY(-50%)',
+                }}
+              >
+                <div 
+                  className="absolute rounded-full"
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    background: 'rgba(139,69,19,0.7)',
+                    top: '50%',
+                    [b.lineSide === 'left' ? 'left' : 'right']: '0',
+                    transform: 'translate(-50%, -50%)',
+                    boxShadow: '0 0 8px rgba(139,69,19,0.5)',
+                  }}
+                />
+              </div>
+            )}
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(139,69,19,0.1)' }}>
+              <b.Icon size={14} color="#8B4513" />
             </div>
-            <span className="text-sm font-semibold text-[#1A1410] whitespace-nowrap">{b.label}</span>
+            <span className="text-xs font-semibold text-[#1A1410] whitespace-nowrap">{b.label}</span>
           </motion.div>
         ))}
       </motion.div>
@@ -2276,7 +2194,7 @@ export default function Home() {
         <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(139, 69, 19,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid lg:grid-cols-[42fr_58fr] gap-12 items-center">
+          <div className="grid lg:grid-cols-[58fr_42fr] gap-12 items-center">
             <div className="text-left">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
@@ -2289,15 +2207,11 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl xl:text-[4.2rem] mb-6 leading-[1.05]"
+                className="text-4xl font-black tracking-tight sm:text-5xl lg:text-5xl xl:text-[4.0rem] mb-6 leading-[1.1] lg:whitespace-nowrap"
               >
-                <span className="text-[#1A1410]">{t('hero.title')}</span>
+                <span className="text-[#1A1410]">{t('hero.title')} {t('hero.title2')}</span>
                 <br />
-                <span className="text-[#1A1410]">{t('hero.title2')}</span>
-                <br />
-                <span className="gradient-text">{t('hero.titleHighlight')}</span>
-                <br />
-                <span className="text-[#1A1410]">{t('hero.titleEnd')}</span>{' '}
+                <span className="text-[#1A1410]">{t('hero.titleEnd')} </span>
                 <span className="gradient-text">{t('hero.titleBrand')}</span>
               </motion.h1>
 
@@ -2334,6 +2248,20 @@ export default function Home() {
                     {language === 'en' ? 'Sign In' : 'साइन इन करें'} <ArrowRight className="h-5 w-5 opacity-60" />
                   </motion.span>
                 </Link>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.55 }}
+                className="flex items-center gap-3 flex-wrap"
+              >
+                {['Enterprise Security', '99.9% Uptime Target', 'Indian EdTech'].map((item) => (
+                  <div key={item} className="flex items-center gap-1.5 text-xs text-[#6B5D52] px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-white">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-[#7C3D0F]" />
+                    {item}
+                  </div>
+                ))}
               </motion.div>
             </div>
 
@@ -2395,6 +2323,3 @@ export default function Home() {
     </main>
   )
 }
-
-useGLTF.setDecoderPath('/draco/')
-useGLTF.preload('/student.glb')
