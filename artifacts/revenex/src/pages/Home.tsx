@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useLayoutEffect } from 'react'
+import { useRef, useState, useEffect, useCallback, useLayoutEffect, type CSSProperties } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence, type MotionValue } from 'framer-motion'
@@ -6,10 +6,12 @@ import {
   ArrowRight, Users, BookOpen, CreditCard, Bell, Calendar,
   BarChart3, Shield, Cpu, CheckCircle2, Zap, Cloud, Sparkles,
   GraduationCap, TrendingUp, Lock, Activity, Server,
-  MessageSquare, Award, Star, Send, Globe2, Linkedin,
+  MessageSquare, Star, Send, Globe2, Linkedin,
   Mail, Phone, MapPin, Building2, FileBarChart, Smartphone,
-  LayoutDashboard, Settings2,
+  LayoutDashboard, Settings2, UserPlus, CalendarCheck,
+  IndianRupee, MessageCircle, BookMarked, Bus,
 } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { Chatbot } from '@/components/Chatbot'
@@ -1857,9 +1859,209 @@ function PricingSection() {
   )
 }
 
-/* ─── Main Home component ─── */
-const barHeights = [40, 55, 48, 72, 88, 82, 94, 91, 96, 93, 95, 94]
+/* ─── Orbital 3D hero visual ─── */
+function OrbitalHero() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const containerRef = useRef<HTMLDivElement>(null)
 
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (!rect) return
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20
+    setMousePos({ x, y })
+  }, [])
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [handleMouseMove])
+
+  const badges: Array<{
+    label: string
+    Icon: LucideIcon
+    style: CSSProperties
+    yFloat: number
+    dur: number
+    delay: number
+  }> = [
+    { label: 'Library', Icon: BookOpen, style: { top: '2%', left: '58%' }, yFloat: -8, dur: 3.8, delay: 0 },
+    { label: 'Admissions', Icon: UserPlus, style: { top: '20%', left: '-2%' }, yFloat: -6, dur: 4.2, delay: 0.5 },
+    { label: 'Attendance', Icon: CalendarCheck, style: { top: '20%', right: '-2%' }, yFloat: -10, dur: 3.5, delay: 1 },
+    { label: 'Fees', Icon: IndianRupee, style: { top: '48%', left: '-5%' }, yFloat: -7, dur: 4.8, delay: 0.3 },
+    { label: 'Communication', Icon: MessageCircle, style: { top: '48%', right: '-5%' }, yFloat: -8, dur: 3.2, delay: 0.8 },
+    { label: 'Homework', Icon: BookMarked, style: { bottom: '18%', left: '2%' }, yFloat: -6, dur: 4.5, delay: 1.2 },
+    { label: 'Transport', Icon: Bus, style: { bottom: '18%', right: '2%' }, yFloat: -9, dur: 3.9, delay: 0.6 },
+  ]
+
+  const particles = [
+    { left: '8%', top: '30%', size: 5, color: '#C4A32A', dur: 2.4, delay: 0 },
+    { left: '90%', top: '22%', size: 4, color: '#8B4513', dur: 2.8, delay: 0.6 },
+    { left: '18%', top: '70%', size: 4, color: '#C4A32A', dur: 2.2, delay: 1.2 },
+    { left: '78%', top: '68%', size: 6, color: '#8B4513', dur: 3.0, delay: 0.3 },
+    { left: '12%', top: '45%', size: 4, color: '#C4A32A', dur: 2.6, delay: 1.8 },
+    { left: '85%', top: '48%', size: 5, color: '#8B4513', dur: 2.3, delay: 0.9 },
+    { left: '35%', top: '12%', size: 4, color: '#C4A32A', dur: 2.9, delay: 1.5 },
+    { left: '62%', top: '88%', size: 5, color: '#8B4513', dur: 2.5, delay: 0.2 },
+  ]
+
+  return (
+    <div
+      ref={containerRef}
+      style={{ perspective: '1200px', perspectiveOrigin: '50% 50%' }}
+      className="relative w-full h-[620px] max-md:h-[420px] max-md:scale-[0.65] flex items-center justify-center"
+    >
+      {/* Scene wrapper — subtle mouse parallax */}
+      <motion.div
+        animate={{ rotateY: mousePos.x * 0.3, rotateX: -mousePos.y * 0.2 }}
+        transition={{ type: 'spring', stiffness: 100, damping: 30 }}
+        className="relative w-[520px] h-[520px] flex items-center justify-center"
+        style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
+      >
+        {/* BACKGROUND GLOW */}
+        <motion.div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: 'radial-gradient(ellipse 60% 60% at 50% 50%, rgba(196,163,42,0.12) 0%, rgba(139,69,19,0.06) 40%, transparent 70%)',
+          }}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        />
+
+        {/* RING 1 — Outer gold */}
+        <div className="absolute inset-0 pointer-events-none" style={{ transformStyle: 'preserve-3d' }}>
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{ width: 480, height: 480, transform: 'translate(-50%, -50%) rotateX(72deg)', transformStyle: 'preserve-3d' }}
+          >
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: '2px solid rgba(196,163,42,0.55)', boxShadow: '0 0 30px rgba(196,163,42,0.15), inset 0 0 30px rgba(196,163,42,0.05)', willChange: 'transform' }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.div className="absolute inset-0" animate={{ rotate: [0, 360] }} transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute w-2.5 h-2.5 rounded-full" style={{ top: -5, left: '50%', transform: 'translateX(-50%)', background: '#C4A32A', boxShadow: '0 0 12px 4px rgba(196,163,42,0.8), 0 0 24px rgba(196,163,42,0.4)' }} />
+            </motion.div>
+            {/* RING 1 SHINE */}
+            <motion.div
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{ background: 'conic-gradient(from 0deg, transparent 0%, rgba(196,163,42,0.4) 15%, transparent 30%, transparent 100%)' }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
+            />
+          </div>
+        </div>
+
+        {/* RING 2 — Middle silver */}
+        <div className="absolute inset-0 pointer-events-none" style={{ transformStyle: 'preserve-3d' }}>
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{ width: 380, height: 380, transform: 'translate(-50%, -50%) rotateX(72deg) rotateZ(55deg)', transformStyle: 'preserve-3d' }}
+          >
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: '1.5px solid rgba(160,160,185,0.45)', boxShadow: '0 0 20px rgba(160,160,185,0.1)', willChange: 'transform' }}
+              animate={{ rotate: [360, 0] }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.div className="absolute inset-0" animate={{ rotate: [360, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute w-2.5 h-2.5 rounded-full" style={{ top: -5, left: '50%', transform: 'translateX(-50%)', background: '#A0A0C0', boxShadow: '0 0 12px 4px rgba(160,160,185,0.8), 0 0 24px rgba(160,160,185,0.4)' }} />
+            </motion.div>
+          </div>
+        </div>
+
+        {/* RING 3 — Inner warm gold */}
+        <div className="absolute inset-0 pointer-events-none" style={{ transformStyle: 'preserve-3d' }}>
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{ width: 280, height: 280, transform: 'translate(-50%, -50%) rotateX(72deg) rotateZ(110deg)', transformStyle: 'preserve-3d' }}
+          >
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: '1px solid rgba(139,69,19,0.4)', boxShadow: '0 0 15px rgba(139,69,19,0.1)', willChange: 'transform' }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+            />
+            <motion.div className="absolute inset-0" animate={{ rotate: [0, 360] }} transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute w-2.5 h-2.5 rounded-full" style={{ top: -5, left: '50%', transform: 'translateX(-50%)', background: '#8B4513', boxShadow: '0 0 12px 4px rgba(139,69,19,0.8), 0 0 24px rgba(139,69,19,0.4)' }} />
+            </motion.div>
+          </div>
+        </div>
+
+        {/* PARTICLE SPARKS */}
+        {particles.map((p, i) => (
+          <motion.div
+            key={`spark-${i}`}
+            className="absolute rounded-full pointer-events-none"
+            style={{ left: p.left, top: p.top, width: p.size, height: p.size, background: p.color, zIndex: 5 }}
+            animate={{ opacity: [0, 1, 0], scale: [0, 1.5, 0], y: [0, -20, -40] }}
+            transition={{ duration: p.dur, repeat: Infinity, delay: p.delay, ease: 'easeInOut' }}
+          />
+        ))}
+
+        {/* STUDENT IMAGE — center */}
+        <motion.div
+          animate={{ y: [0, -12, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <motion.div
+            className="absolute z-20 flex items-center justify-center"
+            style={{
+              bottom: '5%',
+              left: '50%',
+              transform: 'translateX(-50%)',
+            }}
+          >
+            <motion.img
+              src="/student-3d.png"
+              alt="Student"
+              className="w-[240px] h-auto object-contain"
+              style={{
+                filter: 'drop-shadow(0 24px 48px rgba(139,69,19,0.25))',
+              }}
+              animate={{
+                rotateY: [0, 30, 60, 90, 120, 150, 180, 150, 120, 90, 60, 30, 0, -30, -60, -90, -120, -150, -180, -150, -120, -90, -60, -30, 0],
+              }}
+              transition={{
+                duration: 12,
+                repeat: Infinity,
+                ease: 'linear',
+                times: [0, 0.04, 0.08, 0.12, 0.16, 0.2, 0.25, 0.29, 0.33, 0.37, 0.41, 0.45, 0.5, 0.54, 0.58, 0.62, 0.66, 0.7, 0.75, 0.79, 0.83, 0.87, 0.91, 0.95, 1],
+              }}
+            />
+          </motion.div>
+        </motion.div>
+
+        {/* FLOATING FEATURE BADGES */}
+        {badges.map((b) => (
+          <motion.div
+            key={b.label}
+            className="absolute z-30 flex items-center gap-2 px-4 py-2.5 rounded-full cursor-default"
+            style={{
+              ...b.style,
+              background: 'rgba(255,255,255,0.95)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(232,224,212,0.8)',
+              boxShadow: '0 4px 24px rgba(139,69,19,0.12), 0 1px 4px rgba(0,0,0,0.06)',
+              willChange: 'transform',
+            }}
+            animate={{ y: [0, b.yFloat, 0] }}
+            transition={{ duration: b.dur, repeat: Infinity, ease: 'easeInOut', delay: b.delay }}
+            whileHover={{ scale: 1.08, boxShadow: '0 8px 32px rgba(139,69,19,0.2)' }}
+          >
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(139,69,19,0.1)' }}>
+              <b.Icon size={14} color="#8B4513" />
+            </div>
+            <span className="text-xs font-semibold text-[#1A1410] whitespace-nowrap">{b.label}</span>
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  )
+}
+
+/* ─── Main Home component ─── */
 export default function Home() {
   const { language, t } = useLanguage()
 
@@ -1949,78 +2151,8 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Dashboard preview */}
-            <motion.div
-              initial={{ opacity: 0, y: 50, x: 30 }}
-              animate={{ opacity: 1, y: 0, x: 0 }}
-              transition={{ duration: 0.9, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="relative"
-            >
-              <div className="glass-card rounded-3xl overflow-hidden border border-[#E8E0D4]" style={{ boxShadow: '0 0 0 1px rgba(255,255,255,0.04), 0 40px 80px rgba(0,0,0,0.6), 0 0 100px rgba(139, 69, 19,0.04)' }}>
-                <div className="flex items-center gap-2 px-5 py-4 border-b border-[#E8E0D4] bg-[#F0E8DC]">
-                  <div className="w-3 h-3 rounded-full bg-red-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/60" />
-                  <div className="ml-4 flex-1 flex items-center justify-center">
-                    <div className="flex items-center gap-2 bg-[#F0E8DC] rounded-lg px-4 py-1.5 max-w-xs w-full">
-                      <Lock className="h-3 w-3 text-[#8B4513]" />
-                      <span className="text-xs text-[#6B5D52]">app.revenex.in/dashboard</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#8B4513] animate-pulse" />
-                    <span className="text-xs text-[#8B4513] font-medium">Preview</span>
-                  </div>
-                </div>
-                <div className="p-5">
-                  <div className="grid grid-cols-2 gap-3 mb-4">
-                    {[
-                      { label: 'Total Students', value: '2,847', icon: Users, color: 'text-[#7C3D0F]', bg: 'bg-[#F0E8DC]' },
-                      { label: 'Attendance Today', value: '94.2%', icon: CheckCircle2, color: 'text-green-700', bg: 'bg-green-700/10' },
-                      { label: 'Fees Collected', value: '₹12.4L', icon: CreditCard, color: 'text-amber-700', bg: 'bg-amber-700/10' },
-                      { label: 'Staff Active', value: '142', icon: Award, color: 'text-[#8B4513]', bg: 'bg-[#F0E8DC]' },
-                    ].map((kpi, i) => (
-                      <motion.div key={kpi.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 + i * 0.08 }} className={`${kpi.bg} rounded-xl p-3 border border-[#E8E0D4]`}>
-                        <kpi.icon className={`h-4 w-4 ${kpi.color} mb-2`} />
-                        <div className={`text-xl font-black ${kpi.color} mb-0.5`}>{kpi.value}</div>
-                        <div className="text-xs text-[#6B5D52]">{kpi.label}</div>
-                      </motion.div>
-                    ))}
-                  </div>
-                  <div className="bg-[#F0E8DC] rounded-xl p-4 border border-[#E8E0D4] mb-3">
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="text-xs font-semibold text-[#3D3128]">Attendance Trend</div>
-                      <div className="flex items-center gap-1.5">
-                        <Activity className="h-3.5 w-3.5 text-[#7C3D0F]" />
-                        <span className="text-xs text-[#7C3D0F] font-semibold">94.2%</span>
-                      </div>
-                    </div>
-                    <div className="flex items-end gap-1.5 h-16">
-                      {barHeights.map((h, i) => (
-                        <motion.div key={`bar-${i}`} className="flex-1 rounded-t-sm" initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ delay: 1.0 + i * 0.04, ease: 'easeOut' }} style={{ background: i >= 9 ? 'linear-gradient(to top, #7C3D0F, #8B4513)' : 'rgba(139,69,19,0.12)' }} />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="bg-[#F0E8DC] rounded-xl p-3 border border-[#E8E0D4]">
-                    <div className="text-xs font-semibold text-[#3D3128] mb-3 flex items-center gap-1.5">
-                      <Sparkles className="h-3.5 w-3.5 text-[#7C3D0F]" /> AI Activity
-                    </div>
-                    <div className="space-y-2.5">
-                      {[
-                        { text: 'Fee reminder sent', color: 'bg-amber-600' },
-                        { text: 'Report generated', color: 'bg-[#7C3D0F]' },
-                        { text: 'Payroll processed', color: 'bg-green-700' },
-                      ].map((item) => (
-                        <div key={item.text} className="flex items-center gap-2">
-                          <div className={`w-1.5 h-1.5 rounded-full ${item.color} shrink-0`} />
-                          <p className="text-[10px] text-[#6B5D52]">{item.text}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+            {/* Orbital 3D hero visual */}
+            <OrbitalHero />
           </div>
         </div>
       </section>
