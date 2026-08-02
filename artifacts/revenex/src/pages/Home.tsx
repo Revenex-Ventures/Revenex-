@@ -1884,14 +1884,16 @@ function OrbitalHero() {
     yFloat: number
     dur: number
     delay: number
+    lineSide?: 'left' | 'right'
+    lineWidth?: number
   }> = [
-    { label: 'Library', Icon: BookOpen, style: { top: '2%', left: '58%' }, yFloat: -8, dur: 3.8, delay: 0 },
-    { label: 'Admissions', Icon: UserPlus, style: { top: '20%', left: '-2%' }, yFloat: -6, dur: 4.2, delay: 0.5 },
-    { label: 'Attendance', Icon: CalendarCheck, style: { top: '20%', right: '-2%' }, yFloat: -10, dur: 3.5, delay: 1 },
-    { label: 'Fees', Icon: IndianRupee, style: { top: '48%', left: '-5%' }, yFloat: -7, dur: 4.8, delay: 0.3 },
-    { label: 'Communication', Icon: MessageCircle, style: { top: '48%', right: '-5%' }, yFloat: -8, dur: 3.2, delay: 0.8 },
-    { label: 'Homework', Icon: BookMarked, style: { bottom: '18%', left: '2%' }, yFloat: -6, dur: 4.5, delay: 1.2 },
-    { label: 'Transport', Icon: Bus, style: { bottom: '18%', right: '2%' }, yFloat: -9, dur: 3.9, delay: 0.6 },
+    { label: 'Library', Icon: BookOpen, style: { top: '9%', right: '15%' }, yFloat: -8, dur: 3.8, delay: 0, lineSide: 'left', lineWidth: 28 },
+    { label: 'Admissions', Icon: UserPlus, style: { top: '35%', left: '6%' }, yFloat: -6, dur: 4.2, delay: 0.5, lineSide: 'right', lineWidth: 32 },
+    { label: 'Attendance', Icon: CalendarCheck, style: { top: '33%', right: '7%' }, yFloat: -10, dur: 3.5, delay: 1, lineSide: 'left', lineWidth: 35 },
+    { label: 'Fees', Icon: IndianRupee, style: { top: '55%', right: '6%' }, yFloat: -7, dur: 4.8, delay: 0.3, lineSide: 'left', lineWidth: 28 },
+    { label: 'Communication', Icon: MessageCircle, style: { top: '56%', left: '7%' }, yFloat: -8, dur: 3.2, delay: 0.8, lineSide: 'right', lineWidth: 42 },
+    { label: 'Homework', Icon: BookMarked, style: { bottom: '21%', left: '10%' }, yFloat: -6, dur: 4.5, delay: 1.2, lineSide: 'right', lineWidth: 35 },
+    { label: 'Transport', Icon: Bus, style: { bottom: '19%', right: '10%' }, yFloat: -9, dur: 3.9, delay: 0.6, lineSide: 'left', lineWidth: 38 },
   ]
 
   const particles = [
@@ -1928,64 +1930,148 @@ function OrbitalHero() {
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
 
-        {/* RING 1 — Outer gold */}
-        <div className="absolute inset-0 pointer-events-none" style={{ transformStyle: 'preserve-3d' }}>
+        {/* 3D Turntable Platform — the student stands ON this */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            bottom: '0',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '420px',
+            height: '130px',
+            transformStyle: 'preserve-3d',
+            zIndex: 15,
+          }}
+        >
+          {/* Base rim — thickest step */}
           <div
-            className="absolute left-1/2 top-1/2"
-            style={{ width: 480, height: 480, transform: 'translate(-50%, -50%) rotateX(72deg)', transformStyle: 'preserve-3d' }}
+            className="absolute w-full h-[46px] rounded-full"
+            style={{
+              bottom: 0,
+              background: 'linear-gradient(to right, #8a7a63 0%, #d6c9b6 42%, #f0e6d8 55%, #8a7a63 100%)',
+              border: '2px solid #6e5a3e',
+              boxShadow: '0 18px 60px rgba(139,69,19,0.45), 0 0 40px rgba(196,163,42,0.22)',
+              transform: 'rotateX(58deg)',
+            }}
+          />
+          {/* Middle step — champagne gold */}
+          <div
+            className="absolute w-[92%] h-[42px] rounded-full"
+            style={{
+              left: '4%',
+              bottom: '9px',
+              background: 'linear-gradient(to right, #b49a72 0%, #eeddc4 50%, #b49a72 100%)',
+              border: '2px solid #a8875c',
+              boxShadow: '0 0 24px rgba(196,163,42,0.32)',
+              transform: 'rotateX(58deg)',
+            }}
+          />
+          {/* Top surface — ivory/cream disk */}
+          <div
+            className="absolute w-[84%] h-[38px] rounded-full"
+            style={{
+              left: '8%',
+              bottom: '18px',
+              background: 'radial-gradient(circle at 50% 25%, #fffdf9 0%, #f4e9da 55%, #d9c9b4 100%)',
+              border: '3px solid #c8a27c',
+              boxShadow: 'inset 0 2px 10px rgba(255,255,255,0.95), inset 0 -8px 18px rgba(139,69,19,0.2), 0 0 32px rgba(196,163,42,0.32)',
+              transform: 'rotateX(58deg)',
+            }}
           >
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              style={{ border: '2px solid rgba(196,163,42,0.55)', boxShadow: '0 0 30px rgba(196,163,42,0.15), inset 0 0 30px rgba(196,163,42,0.05)', willChange: 'transform' }}
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
-            />
-            <motion.div className="absolute inset-0" animate={{ rotate: [0, 360] }} transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}>
-              <div className="absolute w-2.5 h-2.5 rounded-full" style={{ top: -5, left: '50%', transform: 'translateX(-50%)', background: '#C4A32A', boxShadow: '0 0 12px 4px rgba(196,163,42,0.8), 0 0 24px rgba(196,163,42,0.4)' }} />
+            {/* Independent rotating concentric rings */}
+            <motion.div className="absolute inset-3 rounded-full" style={{ border: '1px dashed rgba(196,163,42,0.6)' }} animate={{ rotate: [0, 360] }} transition={{ duration: 22, repeat: Infinity, ease: 'linear' }} />
+            <motion.div className="absolute inset-6 rounded-full" style={{ border: '1px solid rgba(200,162,124,0.75)' }} animate={{ rotate: [360, 0] }} transition={{ duration: 15, repeat: Infinity, ease: 'linear' }} />
+            <div className="absolute inset-10 rounded-full border border-stone-400/40" />
+            {/* Sweeping golden rim light on the surface */}
+            <motion.div className="absolute inset-0" animate={{ rotate: [0, 360] }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -6, left: '50%', transform: 'translateX(-50%)', width: '46px', height: '20px', background: 'radial-gradient(ellipse, rgba(196,163,42,0.6) 0%, transparent 70%)', filter: 'blur(3px)' }} />
             </motion.div>
-            {/* RING 1 SHINE */}
-            <motion.div
-              className="absolute inset-0 rounded-full pointer-events-none"
-              style={{ background: 'conic-gradient(from 0deg, transparent 0%, rgba(196,163,42,0.4) 15%, transparent 30%, transparent 100%)' }}
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
-            />
+            {/* Contact shadow directly under the shoes */}
+            <div className="absolute left-1/2 rounded-full" style={{ width: '76px', height: '28px', bottom: '14px', transform: 'translateX(-50%)', background: 'radial-gradient(ellipse, rgba(74,45,18,0.45) 0%, rgba(74,45,18,0.17) 55%, transparent 75%)', filter: 'blur(2px)' }} />
+            {/* Glowing halo beneath the feet */}
+            <motion.div className="absolute left-1/2 rounded-full" style={{ width: '90px', height: '44px', bottom: '11px', transform: 'translateX(-50%)', background: 'radial-gradient(ellipse, rgba(196,163,42,0.42) 0%, rgba(196,163,42,0.09) 60%, transparent 75%)', boxShadow: '0 0 32px rgba(196,163,42,0.5)' }} animate={{ opacity: [0.55, 1, 0.55] }} transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }} />
           </div>
         </div>
 
-        {/* RING 2 — Middle silver */}
-        <div className="absolute inset-0 pointer-events-none" style={{ transformStyle: 'preserve-3d' }}>
+        {/* RING 1 — Gold (Outer Vertical Ellipse, 3D metallic tube) */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
           <div
             className="absolute left-1/2 top-1/2"
-            style={{ width: 380, height: 380, transform: 'translate(-50%, -50%) rotateX(72deg) rotateZ(55deg)', transformStyle: 'preserve-3d' }}
+            style={{ width: 360, height: 490, transform: 'translate(-50%, -50%) rotateY(-20deg) rotateX(10deg) rotateZ(-10deg)', transformStyle: 'preserve-3d' }}
           >
+            {/* Tube body — metallic shading (light top, dark under-side) */}
             <motion.div
               className="absolute inset-0 rounded-full"
-              style={{ border: '1.5px solid rgba(160,160,185,0.45)', boxShadow: '0 0 20px rgba(160,160,185,0.1)', willChange: 'transform' }}
+              style={{ border: '9px solid rgba(196,163,42,0.8)', boxShadow: '0 0 26px rgba(196,163,42,0.38), inset 0 3px 9px rgba(255,255,255,0.55), inset 0 -5px 12px rgba(120,72,20,0.65)', willChange: 'transform' }}
+              animate={{ rotate: [0, 360] }}
+              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            />
+            {/* Traveling hot spot — metallic glint sweeping the tube */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -16, left: '50%', transform: 'translateX(-50%)', width: 44, height: 28, background: 'radial-gradient(ellipse, rgba(255,255,255,0.6) 0%, transparent 70%)', filter: 'blur(4px)' }} />
+            </motion.div>
+            {/* Orbiting gold sphere */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -10, left: '50%', transform: 'translateX(-50%)', width: 20, height: 20, background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #C4A32A 45%, #8B4513 100%)', boxShadow: '0 0 18px rgba(196,163,42,0.95)' }} />
+            </motion.div>
+            {/* Fees Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#C4A32A]" style={{ top: '40%', right: -4, boxShadow: '0 0 8px 2px rgba(196,163,42,0.8)' }} />
+          </div>
+        </div>
+
+        {/* RING 2 — Silver (Inclined Vertical Ellipse, 3D metallic tube) */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
+          <div
+            className="absolute left-1/2 top-1/2"
+            style={{ width: 350, height: 480, transform: 'translate(-50%, -50%) rotateY(55deg) rotateX(15deg) rotateZ(20deg)', transformStyle: 'preserve-3d' }}
+          >
+            {/* Tube body — metallic shading */}
+            <motion.div
+              className="absolute inset-0 rounded-full"
+              style={{ border: '8px solid rgba(160,160,185,0.72)', boxShadow: '0 0 22px rgba(160,160,185,0.34), inset 0 3px 8px rgba(255,255,255,0.6), inset 0 -5px 11px rgba(60,60,90,0.55)', willChange: 'transform' }}
               animate={{ rotate: [360, 0] }}
-              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: 17, repeat: Infinity, ease: 'linear' }}
             />
-            <motion.div className="absolute inset-0" animate={{ rotate: [360, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}>
-              <div className="absolute w-2.5 h-2.5 rounded-full" style={{ top: -5, left: '50%', transform: 'translateX(-50%)', background: '#A0A0C0', boxShadow: '0 0 12px 4px rgba(160,160,185,0.8), 0 0 24px rgba(160,160,185,0.4)' }} />
+            {/* Traveling hot spot */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [360, 0] }} transition={{ duration: 17, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -15, left: '50%', transform: 'translateX(-50%)', width: 42, height: 26, background: 'radial-gradient(ellipse, rgba(255,255,255,0.55) 0%, transparent 70%)', filter: 'blur(4px)' }} />
             </motion.div>
+            {/* Orbiting silver sphere */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [360, 0] }} transition={{ duration: 17, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -9, left: '50%', transform: 'translateX(-50%)', width: 18, height: 18, background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #A0A0C0 50%, #5a5a6e 100%)', boxShadow: '0 0 16px rgba(160,160,185,0.9)' }} />
+            </motion.div>
+            {/* Admissions Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#A0A0C0]" style={{ top: '30%', left: -4, boxShadow: '0 0 8px 2px rgba(160,160,185,0.8)' }} />
+            {/* Homework Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#A0A0C0]" style={{ bottom: '25%', left: '8%', boxShadow: '0 0 8px 2px rgba(160,160,185,0.8)' }} />
           </div>
         </div>
 
-        {/* RING 3 — Inner warm gold */}
-        <div className="absolute inset-0 pointer-events-none" style={{ transformStyle: 'preserve-3d' }}>
+        {/* RING 3 — Copper (Opposite Inclined Vertical Ellipse, 3D metallic tube) */}
+        <div className="absolute inset-0 pointer-events-none flex items-center justify-center" style={{ transformStyle: 'preserve-3d' }}>
           <div
             className="absolute left-1/2 top-1/2"
-            style={{ width: 280, height: 280, transform: 'translate(-50%, -50%) rotateX(72deg) rotateZ(110deg)', transformStyle: 'preserve-3d' }}
+            style={{ width: 340, height: 470, transform: 'translate(-50%, -50%) rotateY(-55deg) rotateX(-15deg) rotateZ(-20deg)', transformStyle: 'preserve-3d' }}
           >
+            {/* Tube body — metallic shading */}
             <motion.div
               className="absolute inset-0 rounded-full"
-              style={{ border: '1px solid rgba(139,69,19,0.4)', boxShadow: '0 0 15px rgba(139,69,19,0.1)', willChange: 'transform' }}
+              style={{ border: '7px solid rgba(180,110,70,0.7)', boxShadow: '0 0 20px rgba(180,110,70,0.34), inset 0 3px 8px rgba(255,220,190,0.6), inset 0 -5px 11px rgba(90,40,10,0.6)', willChange: 'transform' }}
               animate={{ rotate: [0, 360] }}
-              transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+              transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}
             />
-            <motion.div className="absolute inset-0" animate={{ rotate: [0, 360] }} transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}>
-              <div className="absolute w-2.5 h-2.5 rounded-full" style={{ top: -5, left: '50%', transform: 'translateX(-50%)', background: '#8B4513', boxShadow: '0 0 12px 4px rgba(139,69,19,0.8), 0 0 24px rgba(139,69,19,0.4)' }} />
+            {/* Traveling hot spot */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -15, left: '50%', transform: 'translateX(-50%)', width: 40, height: 26, background: 'radial-gradient(ellipse, rgba(255,230,205,0.55) 0%, transparent 70%)', filter: 'blur(4px)' }} />
             </motion.div>
+            {/* Orbiting copper sphere */}
+            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}>
+              <div className="absolute rounded-full" style={{ top: -9, left: '50%', transform: 'translateX(-50%)', width: 18, height: 18, background: 'radial-gradient(circle at 35% 35%, #ffffff 0%, #B46E46 50%, #6e3b1e 100%)', boxShadow: '0 0 16px rgba(180,110,70,0.9)' }} />
+            </motion.div>
+            {/* Attendance Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#B46E46]" style={{ top: '30%', right: -4, boxShadow: '0 0 8px 2px rgba(180,110,70,0.8)' }} />
+            {/* Transport Connector Dot */}
+            <div className="absolute w-2 h-2 rounded-full bg-[#B46E46]" style={{ bottom: '25%', right: '8%', boxShadow: '0 0 8px 2px rgba(180,110,70,0.8)' }} />
           </div>
         </div>
 
@@ -2000,38 +2086,42 @@ function OrbitalHero() {
           />
         ))}
 
-        {/* STUDENT IMAGE — center */}
-        <motion.div
-          animate={{ y: [0, -12, 0] }}
-          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-        >
-          <motion.div
-            className="absolute z-20 flex items-center justify-center"
+        {/* STUDENT — planted on the platform, standing still, integrated with the scene */}
+        <div className="absolute z-20 left-1/2 pointer-events-none" style={{ bottom: '37px', transform: 'translateX(-50%)' }}>
+          {/* Warm golden rim light / halo behind the student */}
+          <div
+            className="absolute rounded-full"
+            style={{ top: '42%', left: '50%', width: '260px', height: '400px', transform: 'translate(-50%, -50%)', background: 'radial-gradient(ellipse, rgba(196,163,42,0.28) 0%, rgba(139,69,19,0.1) 45%, transparent 72%)', filter: 'blur(8px)' }}
+          />
+          {/* Glossy reflection of the student on the platform surface */}
+          <div
+            className="absolute left-1/2 overflow-hidden"
             style={{
-              bottom: '5%',
-              left: '50%',
+              bottom: '-32px',
               transform: 'translateX(-50%)',
+              width: '132px',
+              height: '32px',
+              clipPath: 'ellipse(72% 100% at 50% 0%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 78%, rgba(0,0,0,0) 100%)',
+              maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 78%, rgba(0,0,0,0) 100%)',
             }}
           >
-            <motion.img
-              src="/student-3d.png"
-              alt="Student"
-              className="w-[240px] h-auto object-contain"
-              style={{
-                filter: 'drop-shadow(0 24px 48px rgba(139,69,19,0.25))',
-              }}
-              animate={{
-                rotateY: [0, 30, 60, 90, 120, 150, 180, 150, 120, 90, 60, 30, 0, -30, -60, -90, -120, -150, -180, -150, -120, -90, -60, -30, 0],
-              }}
-              transition={{
-                duration: 12,
-                repeat: Infinity,
-                ease: 'linear',
-                times: [0, 0.04, 0.08, 0.12, 0.16, 0.2, 0.25, 0.29, 0.33, 0.37, 0.41, 0.45, 0.5, 0.54, 0.58, 0.62, 0.66, 0.7, 0.75, 0.79, 0.83, 0.87, 0.91, 0.95, 1],
-              }}
+            <img
+              src="/student-boy-3d.png"
+              alt=""
+              className="h-[380px] w-auto object-contain"
+              style={{ transform: 'scaleY(-1)', transformOrigin: '50% 50%', opacity: 0.2, filter: 'blur(2px) saturate(0.85) brightness(1.15)' }}
             />
-          </motion.div>
-        </motion.div>
+          </div>
+          <img
+            src="/student-boy-3d.png"
+            alt="Student"
+            className="h-[380px] w-auto object-contain pointer-events-auto"
+            style={{
+              filter: 'drop-shadow(0 30px 50px rgba(139,69,19,0.4)) drop-shadow(0 6px 16px rgba(0,0,0,0.28))',
+            }}
+          />
+        </div>
 
         {/* FLOATING FEATURE BADGES */}
         {badges.map((b) => (
@@ -2040,16 +2130,41 @@ function OrbitalHero() {
             className="absolute z-30 flex items-center gap-2 px-4 py-2.5 rounded-full cursor-default"
             style={{
               ...b.style,
-              background: 'rgba(255,255,255,0.95)',
-              backdropFilter: 'blur(12px)',
-              border: '1px solid rgba(232,224,212,0.8)',
-              boxShadow: '0 4px 24px rgba(139,69,19,0.12), 0 1px 4px rgba(0,0,0,0.06)',
+              background: 'rgba(255,255,255,0.9)',
+              backdropFilter: 'blur(14px) saturate(160%)',
+              border: '1px solid rgba(196,163,42,0.4)',
+              boxShadow: '0 4px 24px rgba(139,69,19,0.14), 0 1px 4px rgba(0,0,0,0.06), inset 0 0 12px rgba(255,255,255,0.6)',
               willChange: 'transform',
             }}
             animate={{ y: [0, b.yFloat, 0] }}
             transition={{ duration: b.dur, repeat: Infinity, ease: 'easeInOut', delay: b.delay }}
             whileHover={{ scale: 1.08, boxShadow: '0 8px 32px rgba(139,69,19,0.2)' }}
           >
+            {b.lineSide && b.lineWidth && (
+              <div 
+                className="absolute bg-stone-300/60 pointer-events-none"
+                style={{
+                  top: '50%',
+                  height: '1px',
+                  width: `${b.lineWidth}px`,
+                  [b.lineSide]: `-${b.lineWidth}px`,
+                  transform: 'translateY(-50%)',
+                }}
+              >
+                <div 
+                  className="absolute rounded-full"
+                  style={{
+                    width: '6px',
+                    height: '6px',
+                    background: 'rgba(139,69,19,0.7)',
+                    top: '50%',
+                    [b.lineSide === 'left' ? 'left' : 'right']: '0',
+                    transform: 'translate(-50%, -50%)',
+                    boxShadow: '0 0 8px rgba(139,69,19,0.5)',
+                  }}
+                />
+              </div>
+            )}
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'rgba(139,69,19,0.1)' }}>
               <b.Icon size={14} color="#8B4513" />
             </div>
@@ -2079,7 +2194,7 @@ export default function Home() {
         <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(139, 69, 19,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-[42fr_58fr] gap-12 items-center">
             <div className="text-left">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
@@ -2096,9 +2211,12 @@ export default function Home() {
               >
                 <span className="text-[#1A1410]">{t('hero.title')}</span>
                 <br />
+                <span className="text-[#1A1410]">{t('hero.title2')}</span>
+                <br />
                 <span className="gradient-text">{t('hero.titleHighlight')}</span>
                 <br />
-                <span className="text-[#1A1410]">{t('hero.titleEnd')}</span>
+                <span className="text-[#1A1410]">{t('hero.titleEnd')}</span>{' '}
+                <span className="gradient-text">{t('hero.titleBrand')}</span>
               </motion.h1>
 
               <motion.p
