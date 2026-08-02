@@ -1878,7 +1878,7 @@ function StudentModel() {
       ref={ref}
       object={scene}
       scale={2.8}
-      position={[0, -1.0, 0]}
+      position={[0, -1.6, 0]}
     />
   )
 }
@@ -1886,7 +1886,7 @@ function StudentModel() {
 function StudentCanvas() {
   return (
     <Canvas
-      camera={{ position: [0, 0.5, 3.2], fov: 45 }}
+      camera={{ position: [0, 0.9, 4.8], fov: 45 }}
       style={{ width: '100%', height: '100%' }}
       gl={{ antialias: true, alpha: true }}
     >
@@ -1898,7 +1898,7 @@ function StudentCanvas() {
       <Suspense fallback={null}>
         <StudentModel />
         <ContactShadows
-          position={[0, -1.1, 0]}
+          position={[0, -0.7, 0]}
           opacity={0.12}
           scale={3}
           blur={2.5}
