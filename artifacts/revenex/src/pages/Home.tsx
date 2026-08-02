@@ -2211,7 +2211,6 @@ export default function Home() {
               >
                 <span className="text-[#1A1410]">{t('hero.title')} {t('hero.title2')}</span>
                 <br />
-                <span className="gradient-text">{t('hero.titleHighlight')} </span>
                 <span className="text-[#1A1410]">{t('hero.titleEnd')} </span>
                 <span className="gradient-text">{t('hero.titleBrand')}</span>
               </motion.h1>
