@@ -9,6 +9,10 @@ import { Switch, Route } from "wouter";
   import Contact from "@/pages/Contact";
   import BookDemo from "@/pages/BookDemo";
   import OurTeam from "@/pages/OurTeam";
+  import Homework from "@/pages/Homework";
+  import StudentPortal from "@/pages/StudentPortal";
+  import Transport from "@/pages/Transport";
+  import Careers from "@/pages/Careers";
   import Login from "@/pages/Login";
   import Signup from "@/pages/Signup";
   import ResetPassword from "@/pages/ResetPassword";
@@ -30,6 +34,10 @@ import { Switch, Route } from "wouter";
         <Route path="/contact" component={Contact} />
         <Route path="/book-demo" component={BookDemo} />
         <Route path="/our-team" component={OurTeam} />
+        <Route path="/homework" component={Homework} />
+        <Route path="/student-portal" component={StudentPortal} />
+        <Route path="/transport" component={Transport} />
+        <Route path="/careers" component={Careers} />
         <Route path="/features/:slug" component={FeatureDetail} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />

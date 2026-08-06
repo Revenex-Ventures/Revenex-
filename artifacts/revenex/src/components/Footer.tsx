@@ -14,21 +14,21 @@ export function Footer() {
   const product = [
     { label: 'Attendance', href: '/features/attendance' },
     { label: 'Admissions', href: '/features/student-management' },
-    { label: 'Homework', href: '#' },
+    { label: 'Homework', href: '/homework' },
     { label: 'Report Cards', href: '/features/exam-results' },
   ]
 
   const solutions = [
     { label: 'Fee Management', href: '/features/fees' },
-    { label: 'Student Portal', href: '#' },
-    { label: 'Transport', href: '#' },
+    { label: 'Student Portal', href: '/student-portal' },
+    { label: 'Transport', href: '/transport' },
     { label: 'Communication', href: '/features/parent-communication' },
   ]
 
   const company = [
     { label: 'About Us', href: '/about' },
     { label: 'Our Team', href: '/our-team' },
-    { label: 'Careers', href: '#' },
+    { label: 'Careers', href: '/careers' },
     { label: 'Contact', href: '/contact' },
   ]
 
@@ -39,7 +39,7 @@ export function Footer() {
 
   const socials = [
     { icon: Linkedin, href: 'https://www.linkedin.com/company/revenex-ventures', label: 'LinkedIn' },
-    { icon: Github, href: '#', label: 'GitHub' },
+    { icon: Github, href: 'https://github.com/Revenex-Ventures/Revenex-', label: 'GitHub' },
     { icon: Instagram, href: '#', label: 'Instagram' },
     { icon: Mail, href: 'mailto:team@revenex.in', label: 'Email' },
   ]
