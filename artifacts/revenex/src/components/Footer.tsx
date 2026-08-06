@@ -239,7 +239,7 @@ export function Footer() {
               </div>
               <span className="hidden sm:inline h-3.5 w-px bg-white/10" />
               <span className="text-xs text-white/40">
-                Built by <span className="text-white/70 font-semibold">Prasanna Mate</span>
+                Built by <span className="text-white/70 font-semibold">Revenex Team</span>
               </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/25">
