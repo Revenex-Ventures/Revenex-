@@ -217,18 +217,20 @@ function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: n
   const Icon = step.icon
   const iconOnLeft = index % 2 === 0
 
+  const viewport = { once: false, margin: '0px 0px -15% 0px' } as const
   const iconEntrance = iconOnLeft
-    ? { initial: { opacity: 0, x: -60 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.55 } }
-    : { initial: { opacity: 0, x: 60 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.55, delay: 0.1 } }
+    ? { initial: { opacity: 0, x: -80 }, whileInView: { opacity: 1, x: 0 }, transition: { duration: 0.6, ease: 'easeOut' as const } }
+    : { initial: { opacity: 0, x: 80 }, whileInView: { opacity: 1, x: 0 }, transition: { duration: 0.6, ease: 'easeOut' as const } }
   const contentEntrance = iconOnLeft
-    ? { initial: { opacity: 0, x: 60 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.55, delay: 0.1 } }
-    : { initial: { opacity: 0, x: -60 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.55 } }
+    ? { initial: { opacity: 0, x: 80 }, whileInView: { opacity: 1, x: 0 }, transition: { duration: 0.6, delay: 0.1, ease: 'easeOut' as const } }
+    : { initial: { opacity: 0, x: -80 }, whileInView: { opacity: 1, x: 0 }, transition: { duration: 0.6, delay: 0.1, ease: 'easeOut' as const } }
 
   const iconBlock = (
     <motion.div
       ref={ref}
       initial={iconEntrance.initial}
-      animate={iconEntrance.animate}
+      whileInView={iconEntrance.whileInView}
+      viewport={viewport}
       transition={iconEntrance.transition}
       className="relative flex flex-col items-center shrink-0"
     >
@@ -241,7 +243,8 @@ function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: n
         </motion.div>
         <motion.span
           initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
+          whileInView={{ scale: 1 }}
+          viewport={viewport}
           transition={{ type: 'spring', stiffness: 400 }}
           className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white leading-none z-10"
           style={{ background: '#8B4513' }}
@@ -253,7 +256,8 @@ function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: n
         <motion.span
           className="w-5 h-5 rounded-full mt-3 shrink-0"
           initial={{ scale: 0 }}
-          animate={{ scale: [0, 1.5, 1] }}
+          whileInView={{ scale: [0, 1.5, 1] }}
+          viewport={viewport}
           transition={{ duration: 0.5, type: 'spring' }}
           style={{ background: '#8B4513', border: '3px solid #F5F0E8', boxShadow: '0 0 0 3px rgba(139,69,19,0.2)' }}
         />
@@ -264,7 +268,8 @@ function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: n
   const contentBlock = (
     <motion.div
       initial={contentEntrance.initial}
-      animate={contentEntrance.animate}
+      whileInView={contentEntrance.whileInView}
+      viewport={viewport}
       transition={contentEntrance.transition}
       className="rounded-3xl p-8 max-w-md"
       style={{
@@ -306,7 +311,7 @@ function HowStep({ step, index, isLast }: { step: typeof howItWorks[0]; index: n
   )
 
   return (
-    <div className={`relative flex items-center gap-8 lg:gap-12 ${isLast ? 'pb-0' : 'pb-14 lg:pb-20'} ${iconOnLeft ? 'flex-row' : 'flex-row-reverse'}`}>
+    <div className={`relative flex items-center gap-8 lg:gap-12 ${isLast ? 'pb-16 lg:pb-24' : 'pb-14 lg:pb-20'} ${iconOnLeft ? 'flex-row' : 'flex-row-reverse'}`}>
       {iconBlock}
       {contentBlock}
     </div>
@@ -318,9 +323,10 @@ function HowItWorksSection({ language }: { language: string }) {
   const timelineRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ['start 0.75', 'end 0.6'],
+    offset: ['start 0.85', 'end 0.5'],
   })
   const lineScale = useTransform(scrollYProgress, [0, 1], [0, 1])
+  const tipTop = useTransform(scrollYProgress, [0, 1], ['2.5rem', 'calc(100% - 2.5rem)'])
 
   return (
     <section className="py-20 lg:py-28 relative overflow-hidden border-t border-[#E8E0D4]" id="how-it-works">
@@ -349,14 +355,31 @@ function HowItWorksSection({ language }: { language: string }) {
 
         {/* Center vertical timeline with scroll-driven progress line, alternating steps */}
         <div ref={timelineRef} className="relative max-w-3xl mx-auto">
-          <div
-            className="absolute left-1/2 -translate-x-1/2 top-10 bottom-10 w-[2px]"
-            style={{ background: 'linear-gradient(180deg, #1A1410 0%, #8B4513 25%, #C4722A 50%, #8B4513 75%, #E8E0D4 100%)' }}
-          />
+          {/* Base track line */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-10 bottom-10 w-[3px] rounded-full bg-[#E0D4C0]/80" />
+          {/* Scroll-driven progress line */}
           <motion.div
-            className="absolute left-1/2 -translate-x-1/2 top-10 w-[2px] origin-top"
-            style={{ height: 'calc(100% - 5rem)', background: 'linear-gradient(180deg, #8B4513, #C4722A)', scaleY: lineScale }}
+            className="absolute left-1/2 -translate-x-1/2 top-10 w-[3px] origin-top rounded-full"
+            style={{
+              height: 'calc(100% - 5rem)',
+              background: 'linear-gradient(180deg, #8B4513 0%, #C4722A 50%, #D49A58 100%)',
+              scaleY: lineScale,
+              boxShadow: '0 0 8px rgba(196,114,42,0.45), 0 0 18px rgba(196,114,42,0.25)',
+            }}
           />
+          {/* Moving tip dot on the progress line */}
+          <motion.div
+            className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"
+            style={{ top: tipTop }}
+          >
+            <motion.div
+              className="w-3.5 h-3.5 rounded-full border-[3px] border-[#F5F0E8]"
+              style={{
+                background: '#C4722A',
+                boxShadow: '0 0 0 4px rgba(196,114,42,0.15), 0 0 14px rgba(196,114,42,0.6)',
+              }}
+            />
+          </motion.div>
           <div className="relative flex flex-col">
             {howItWorks.map((step, i) => (
               <HowStep key={step.step} step={step} index={i} isLast={i === howItWorks.length - 1} />
@@ -1262,7 +1285,7 @@ function WhyRevenexSection({ language }: { language: string }) {
 function MeetFoundersSection() {
   const homeFounders = [
     {
-      name: 'Rounak Vijay Sute',
+      name: 'Rounak Sute',
       role: 'Founder & CEO',
       img: rounakNewImg,
       desc: 'Leads business growth, client relationships, and strategic decision-making to deliver impactful digital solutions.',
@@ -1275,7 +1298,7 @@ function MeetFoundersSection() {
       entrance: { initial: { opacity: 0, x: -80, rotate: -3 }, animate: { opacity: 1, x: 0, rotate: 0 }, transition: { duration: 0.6 } },
     },
     {
-      name: 'Rohan Rajendra Raundal',
+      name: 'Rohan Raundal',
       role: 'Co-Founder',
       img: rohanNewImg,
       desc: 'Leads technology, product development, and innovation to build reliable and scalable digital products.',
@@ -1816,6 +1839,8 @@ const problemAfter = [
 ]
 
 function ProblemSection() {
+  const [afterFlipped, setAfterFlipped] = useState(false)
+
   return (
     <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4] overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
@@ -1830,7 +1855,7 @@ function ProblemSection() {
           <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Most schools juggle spreadsheets, paper registers, and disconnected apps. REVENEX brings it all together.</p>
         </motion.div>
 
-        <div className="relative grid md:grid-cols-2 gap-8 md:gap-0 items-center max-w-5xl mx-auto">
+        <div className="relative grid md:grid-cols-2 gap-8 md:gap-0 items-stretch max-w-5xl mx-auto">
           {/* Before card — dark, dramatic */}
           <motion.div
             initial={{ opacity: 0, x: -30, rotate: 0 }}
@@ -1857,50 +1882,104 @@ function ProblemSection() {
             </ul>
           </motion.div>
 
-          {/* Center animated arrow divider */}
+          {/* Center animated arrow divider — click to flip the card */}
           <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
-            <motion.div
+            <motion.button
+              onClick={() => setAfterFlipped((f) => !f)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.92 }}
               animate={{ x: [0, 8, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-              className="w-14 h-14 rounded-full gradient-bg flex items-center justify-center shadow-xl border-4 border-[#F5F0E8]"
+              className="w-14 h-14 rounded-full gradient-bg flex items-center justify-center shadow-xl border-4 border-[#F5F0E8] cursor-pointer"
+              aria-label="Flip After card"
             >
               <ArrowRight className="h-6 w-6 text-white" />
-            </motion.div>
+            </motion.button>
           </div>
           <div className="flex md:hidden justify-center -my-2 relative z-20">
-            <motion.div
+            <motion.button
+              onClick={() => setAfterFlipped((f) => !f)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.92 }}
               animate={{ y: [0, 6, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-              className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center shadow-xl border-4 border-[#F5F0E8] rotate-90"
+              className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center shadow-xl border-4 border-[#F5F0E8] rotate-90 cursor-pointer"
+              aria-label="Flip After card"
             >
               <ArrowRight className="h-5 w-5 text-white" />
-            </motion.div>
+            </motion.button>
           </div>
 
-          {/* After card — elevated brown/beige, "With Revenex" */}
+          {/* After card — flip card: blank front, content on back */}
           <motion.div
             initial={{ opacity: 0, x: 30, rotate: 0 }}
             animate={{ opacity: 1, x: 0, rotate: 1.5 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="relative z-10 rounded-3xl p-8 md:p-11 md:-ml-6"
-            style={{ background: 'linear-gradient(150deg, #F3EADA 0%, #E7D9BE 100%)', boxShadow: '0 35px 70px -15px rgba(124,61,15,0.28), 0 0 0 1px rgba(124,61,15,0.1)' }}
+            className="relative z-10 h-full"
+            style={{ perspective: 1400 }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7C3D0F] text-white text-xs font-bold uppercase tracking-widest mb-7 shadow-md">
-              With REVENEX
-            </div>
-            <ul className="space-y-5">
-              {problemAfter.map((item, i) => (
-                <li key={item.text} className="flex items-start gap-4">
-                  <span className="shrink-0 w-7 h-7 rounded-full bg-[#7C3D0F] flex items-center justify-center text-white text-[11px] font-black">
-                    {i + 1}
-                  </span>
-                  <div className="flex items-start gap-2.5 flex-1">
-                    <item.icon className="h-4 w-4 text-[#7C3D0F] mt-0.5 shrink-0" />
-                    <p className="text-[#1A1410] text-sm font-medium leading-relaxed">{item.text}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <motion.div
+              className="relative h-full"
+              animate={{ rotateY: afterFlipped ? 180 : 0 }}
+              transition={{ duration: 0.9, ease: [0.32, 0.72, 0, 1] }}
+              style={{ transformStyle: 'preserve-3d' }}
+            >
+              {/* Front — blank card */}
+              <div
+                className="rounded-3xl p-8 md:p-11 md:-ml-6 h-full"
+                style={{
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  background: 'linear-gradient(150deg, #F3EADA 0%, #E7D9BE 100%)',
+                  boxShadow: '0 35px 70px -15px rgba(124,61,15,0.28), 0 0 0 1px rgba(124,61,15,0.1)',
+                }}
+              >
+                <div className="flex flex-col items-center justify-center h-full text-center">
+                  <motion.div
+                    animate={{ opacity: [1, 0.25, 1], scale: [1, 1.12, 1] }}
+                    transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center bg-[#7C3D0F]/5 border border-[#7C3D0F]/15 mb-6"
+                  >
+                    <span className="text-2xl font-black text-[#7C3D0F]/40">?</span>
+                  </motion.div>
+                  <p className="text-[#7C3D0F] text-sm font-bold uppercase tracking-widest mb-3">
+                    With REVENEX
+                  </p>
+                  <p className="px-3 py-1.5 rounded-full bg-[#7C3D0F]/10 border border-[#7C3D0F]/25 text-[#7C3D0F]/90 text-xs font-semibold">
+                    Click the arrow to reveal
+                  </p>
+                </div>
+              </div>
+
+              {/* Back — With REVENEX content */}
+              <div
+                className="absolute inset-0 rounded-3xl p-8 md:p-11 md:-ml-6"
+                style={{
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                  transform: 'rotateY(180deg)',
+                  background: 'linear-gradient(150deg, #F3EADA 0%, #E7D9BE 100%)',
+                  boxShadow: '0 35px 70px -15px rgba(124,61,15,0.28), 0 0 0 1px rgba(124,61,15,0.1)',
+                }}
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7C3D0F] text-white text-xs font-bold uppercase tracking-widest mb-7 shadow-md">
+                  With REVENEX
+                </div>
+                <ul className="space-y-5">
+                  {problemAfter.map((item, i) => (
+                    <li key={item.text} className="flex items-start gap-4">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-[#7C3D0F] flex items-center justify-center text-white text-[11px] font-black">
+                        {i + 1}
+                      </span>
+                      <div className="flex items-start gap-2.5 flex-1">
+                        <item.icon className="h-4 w-4 text-[#7C3D0F] mt-0.5 shrink-0" />
+                        <p className="text-[#1A1410] text-sm font-medium leading-relaxed">{item.text}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

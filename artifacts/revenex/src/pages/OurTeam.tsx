@@ -7,7 +7,7 @@ import { useLanguage } from '@/lib/language-context'
 
 const team = [
   {
-    name: 'Rounak Vijay Sute',
+    name: 'Rounak Sute',
     role: 'Chief Executive Officer (CEO)',
     roleHi: 'मुख्य कार्यकारी अधिकारी (CEO)',
     linkedin: 'https://www.linkedin.com/in/rounaksute/',
@@ -20,7 +20,7 @@ const team = [
     email: 'team@revenex.in'
   },
   {
-    name: 'Rohan Rajendra Raundal',
+    name: 'Rohan Raundal',
     role: 'Head of Finance',
     roleHi: 'वित्त प्रमुख',
     linkedin: 'https://www.linkedin.com/in/rohan-raundal/',
