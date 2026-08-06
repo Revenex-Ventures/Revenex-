@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback, useMemo, useLayoutEffect, Suspense, type CSSProperties } from 'react'
+import { lazy, useRef, useState, useEffect, useCallback, useMemo, useLayoutEffect, Suspense, type CSSProperties } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence, type MotionValue } from 'framer-motion'
@@ -23,9 +23,7 @@ import geminiLogo from '@assets/image_1783259044391.png'
 import razorpayLogo from '@assets/image_1783259072151.png'
 import firebaseLogo from '@assets/image_1783259104105.png'
 import twilioLogo from '@assets/image_1783259146914.png'
-import { Canvas, useFrame, useLoader } from '@react-three/fiber'
-import { useGLTF, ContactShadows } from '@react-three/drei'
-import * as THREE from 'three'
+const Hero3D = lazy(() => import('@/components/Hero3D'))
 const prasannaImg = '/Prasanna.jpg'
 const rounakNewImg = '/Rounak.jpg'
 const rohanNewImg = '/Rohan.jpg'
@@ -2224,238 +2222,6 @@ function PricingSection() {
   )
 }
 
-/* ─── 3D Student model ─── */
-function StudentModel() {
-  const { scene } = useGLTF('/student.glb')
-  const baseColor = useLoader(THREE.TextureLoader, '/student-basecolor.png')
-  const ref = useRef<THREE.Group>(null)
-
-  useLayoutEffect(() => {
-    baseColor.colorSpace = THREE.SRGBColorSpace
-    baseColor.flipY = true
-    scene.traverse((obj) => {
-      const mesh = obj as any
-      if (mesh.isMesh && mesh.material) {
-        const mat = mesh.material as THREE.MeshStandardMaterial
-        mat.map = baseColor
-        mat.metalness = 0.1
-        mat.roughness = 0.8
-        mat.metalnessMap = null
-        mat.roughnessMap = null
-        mat.normalMap = null
-        mat.aoMap = null
-        mat.needsUpdate = true
-      }
-    })
-  }, [scene, baseColor])
-
-  useFrame((_, delta) => {
-    if (ref.current) {
-      ref.current.rotation.y += delta * 0.3
-    }
-  })
-
-  return (
-    <primitive
-      ref={ref}
-      object={scene}
-      scale={3.55}
-      position={[0, -2.1, 0]}
-    />
-  )
-}
-
-function StudentCanvas() {
-  return (
-    <Canvas
-      camera={{ position: [0, 1.0, 5.1], fov: 45 }}
-      style={{ width: '100%', height: '100%' }}
-      gl={{ antialias: true, alpha: true }}
-    >
-      <ambientLight intensity={2.5} />
-      <directionalLight position={[3, 5, 3]} intensity={3.0} />
-      <directionalLight position={[-3, 2, -3]} intensity={1.5} color="#C4A32A" />
-      <pointLight position={[0, 3, 3]} intensity={1.4} color="#FFF8F0" />
-      <pointLight position={[2, 1, 2]} intensity={0.8} color="#C4A32A" />
-      <Suspense fallback={null}>
-        <StudentModel />
-        <ContactShadows
-          position={[0, -1.0, 0]}
-          opacity={0.12}
-          scale={3}
-          blur={2.5}
-          color="#8B4513"
-        />
-      </Suspense>
-    </Canvas>
-  )
-}
-
-/* ─── Orbital 3D hero visual ─── */
-function OrbitalHero() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    const rect = containerRef.current?.getBoundingClientRect()
-    if (!rect) return
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 20
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 20
-    setMousePos({ x, y })
-  }, [])
-
-  useEffect(() => {
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [handleMouseMove])
-
-  const badges: Array<{
-    label: string
-    Icon: LucideIcon
-    style: CSSProperties
-    dur: number
-    delay: number
-  }> = [
-    { label: 'Library', Icon: BookOpen, style: { top: '-2%', right: '-8%' }, dur: 4, delay: 0 },
-    { label: 'Admissions', Icon: UserPlus, style: { top: '18%', left: '-15%' }, dur: 3.8, delay: 0.6 },
-    { label: 'Attendance', Icon: CalendarCheck, style: { top: '18%', right: '-15%' }, dur: 4.5, delay: 1.2 },
-    { label: 'Communication', Icon: MessageCircle, style: { top: '45%', left: '-18%' }, dur: 3.5, delay: 0.3 },
-    { label: 'Fees', Icon: IndianRupee, style: { top: '45%', right: '-15%' }, dur: 4.2, delay: 0.9 },
-    { label: 'Homework', Icon: BookMarked, style: { bottom: '5%', left: '-12%' }, dur: 3.9, delay: 1.5 },
-    { label: 'Transport', Icon: Bus, style: { bottom: '5%', right: '-12%' }, dur: 4.8, delay: 0.5 },
-  ]
-
-  return (
-    <div
-      ref={containerRef}
-      style={{ perspective: '1000px' }}
-      className="relative w-full h-[680px] max-md:h-[420px] max-md:scale-[0.65] flex items-center justify-center"
-    >
-      {/* Scene wrapper — subtle mouse parallax */}
-      <motion.div
-        animate={{ rotateY: mousePos.x * 0.3, rotateX: -mousePos.y * 0.2 }}
-        transition={{ type: 'spring', stiffness: 100, damping: 30 }}
-        className="relative w-[560px] h-[560px] flex items-center justify-center"
-        style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
-      >
-        {/* BACKGROUND GLOW */}
-        <motion.div
-          className="absolute rounded-full"
-          style={{
-            width: '480px',
-            height: '480px',
-            zIndex: 0,
-            background: 'radial-gradient(ellipse, rgba(196,163,42,0.08) 0%, rgba(139,69,19,0.04) 40%, transparent 70%)',
-          }}
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        />
-
-        {/* SVG gradient + glow definitions */}
-        <svg width="0" height="0" className="absolute" aria-hidden="true">
-          <defs>
-            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FFE066" />
-              <stop offset="50%" stopColor="#D9A92E" />
-              <stop offset="100%" stopColor="#9A6A15" />
-            </linearGradient>
-            <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FFFFFF" />
-              <stop offset="50%" stopColor="#C9C9D8" />
-              <stop offset="100%" stopColor="#8A8AA0" />
-            </linearGradient>
-            <linearGradient id="roseGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#F5D6C6" />
-              <stop offset="50%" stopColor="#C9906F" />
-              <stop offset="100%" stopColor="#A06040" />
-            </linearGradient>
-            <filter id="ringGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-        </svg>
-
-        {/* RING 1 — Gold diagonal metallic ellipse */}
-        <div className="absolute pointer-events-none" style={{ width: 480, height: 180, left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-          <div className="absolute inset-0" style={{ transform: 'rotate(-35deg)' }}>
-            <svg width="480" height="180" viewBox="0 0 480 180" fill="none" style={{ overflow: 'visible' }}>
-              <ellipse cx="240" cy="90" rx="240" ry="90" stroke="url(#goldGrad)" strokeWidth="2.5" opacity="0.85" filter="url(#ringGlow)" />
-            </svg>
-            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}>
-              <div className="absolute rounded-full" style={{ top: '12%', left: '50%', transform: 'translateX(-50%)', width: 16, height: 16, background: 'radial-gradient(circle at 35% 35%, #FFE066 0%, #C4A32A 100%)', boxShadow: '0 0 16px 6px rgba(196,163,42,0.9)' }} />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* RING 2 — Silver diagonal metallic ellipse */}
-        <div className="absolute pointer-events-none" style={{ width: 400, height: 150, left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-          <div className="absolute inset-0" style={{ transform: 'rotate(35deg)' }}>
-            <svg width="400" height="150" viewBox="0 0 400 150" fill="none" style={{ overflow: 'visible' }}>
-              <ellipse cx="200" cy="75" rx="200" ry="75" stroke="url(#silverGrad)" strokeWidth="2" opacity="0.75" filter="url(#ringGlow)" />
-            </svg>
-            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [360, 0] }} transition={{ duration: 14, repeat: Infinity, ease: 'linear' }}>
-              <div className="absolute rounded-full" style={{ top: '12%', left: '50%', transform: 'translateX(-50%)', width: 12, height: 12, background: 'radial-gradient(circle at 35% 35%, #E8E8F8 0%, #A0A0C0 100%)', boxShadow: '0 0 12px 4px rgba(160,160,192,0.8)' }} />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* RING 3 — Rose gold horizontal metallic ellipse */}
-        <div className="absolute pointer-events-none" style={{ width: 320, height: 110, left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 10 }}>
-          <div className="absolute inset-0" style={{ transform: 'rotate(0deg)' }}>
-            <svg width="320" height="110" viewBox="0 0 320 110" fill="none" style={{ overflow: 'visible' }}>
-              <ellipse cx="160" cy="55" rx="160" ry="55" stroke="url(#roseGrad)" strokeWidth="1.5" opacity="0.7" filter="url(#ringGlow)" />
-            </svg>
-            <motion.div className="absolute inset-0" style={{ willChange: 'transform' }} animate={{ rotate: [0, 360] }} transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}>
-              <div className="absolute rounded-full" style={{ top: '12%', left: '50%', transform: 'translateX(-50%)', width: 10, height: 10, background: 'radial-gradient(circle at 35% 35%, #E8A060 0%, #8B4513 100%)', boxShadow: '0 0 10px 3px rgba(139,69,19,0.7)' }} />
-            </motion.div>
-          </div>
-        </div>
-
-        {/* STUDENT — 3D model */}
-        <div
-          className="absolute z-20"
-          style={{
-            width: '320px',
-            height: '480px',
-            bottom: '5%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-          }}
-        >
-          <StudentCanvas />
-        </div>
-
-        {/* FLOATING FEATURE BADGES */}
-        {badges.map((b) => (
-          <motion.div
-            key={b.label}
-            className="absolute z-30 flex items-center gap-2 px-5 py-2.5 rounded-full cursor-default"
-            style={{
-              ...b.style,
-              background: '#FFFFFF',
-              border: '1px solid #EDE8E3',
-              boxShadow: '0 4px 20px rgba(139,69,19,0.10)',
-              willChange: 'transform',
-            }}
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: b.dur, repeat: Infinity, ease: 'easeInOut', delay: b.delay }}
-            whileHover={{ scale: 1.06 }}
-          >
-            <div className="w-8 h-8 bg-[#F5EDE0] rounded-lg flex items-center justify-center">
-              <b.Icon size={16} color="#8B4513" />
-            </div>
-            <span className="text-sm font-semibold text-[#1A1410] whitespace-nowrap">{b.label}</span>
-          </motion.div>
-        ))}
-      </motion.div>
-    </div>
-  )
-}
-
 /* ─── Main Home component ─── */
 export default function Home() {
   const { language, t } = useLanguage()
@@ -2465,21 +2231,20 @@ export default function Home() {
       <Navbar />
 
       {/* ── HERO ── */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        <div className="absolute inset-0 hero-glow pointer-events-none" />
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 bg-[#F9F6F0]">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#7C3D0F]/6 rounded-full blur-[140px]" />
-          <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#8B4513]/6 rounded-full blur-[120px]" />
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#D49A58]/4 rounded-full blur-[140px]" />
+          <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-[#221910]/3 rounded-full blur-[120px]" />
         </div>
-        <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(139, 69, 19,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+        <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(212, 154, 88, 0.4) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid lg:grid-cols-[42fr_58fr] gap-12 items-center">
+          <div className="grid lg:grid-cols-[45fr_55fr] gap-12 items-center">
             <div className="text-left">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#8B4513] animate-pulse" />
-                  <span className="text-xs font-semibold text-[#7C3D0F] tracking-widest uppercase">{t('hero.badge')}</span>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#D49A58]/25 bg-[#D49A58]/5 backdrop-blur-sm">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#D49A58] animate-pulse" />
+                  <span className="text-xs font-semibold text-[#D49A58] tracking-widest uppercase">{t('hero.badge')}</span>
                 </div>
               </motion.div>
 
@@ -2487,23 +2252,33 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl xl:text-[4.2rem] mb-6 leading-[1.05]"
+                className="text-4xl tracking-tight sm:text-5xl lg:text-5xl xl:text-6xl mb-6 leading-[1.12] text-[#221910] font-medium font-serif"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
               >
-                <span className="text-[#1A1410]">{t('hero.title')}</span>
-                <br />
-                <span className="text-[#1A1410]">{t('hero.title2')}</span>
-                <br />
-                <span className="gradient-text">{t('hero.titleHighlight')}</span>
-                <br />
-                <span className="text-[#1A1410]">{t('hero.titleEnd')}</span>{' '}
-                <span className="gradient-text">{t('hero.titleBrand')}</span>
+                {language === 'en' ? (
+                  <>
+                    Streamline School
+                    <br />
+                    Management
+                    <br />
+                    with <span className="text-[#A34E17]">REVENEX.</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-[#A34E17]">REVENEX</span> के साथ
+                    <br />
+                    स्कूल प्रबंधन को
+                    <br />
+                    आसान बनाएं।
+                  </>
+                )}
               </motion.h1>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="max-w-xl text-lg text-[#3D3128] leading-relaxed mb-8"
+                className="max-w-xl text-lg text-[#221910]/75 leading-relaxed mb-8"
               >
                 {t('hero.subtitle')}
               </motion.p>
@@ -2516,28 +2291,36 @@ export default function Home() {
               >
                 <Link href="/book-demo">
                   <motion.span
-                    whileHover={{ scale: 1.03 }}
+                    whileHover={{ scale: 1.03, backgroundColor: '#36281a' }}
                     whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center justify-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl text-base transition-all cursor-pointer shadow-lg"
+                    className="inline-flex items-center justify-center gap-2 bg-[#221910] text-[#F9F6F0] font-semibold px-8 py-4 rounded-xl text-base transition-all cursor-pointer shadow-[0_4px_12px_rgba(34,25,16,0.15)]"
                   >
                     {t('hero.cta.demo')} <ArrowRight className="h-5 w-5" />
                   </motion.span>
                 </Link>
                 <Link href="/login">
                   <motion.span
-                    whileHover={{ scale: 1.03 }}
+                    whileHover={{ scale: 1.03, backgroundColor: 'rgba(34,25,16,0.04)' }}
                     whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-4 rounded-2xl text-base transition-all hover:bg-[#F0E8DC] cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 border border-[#221910]/20 text-[#221910] font-semibold px-8 py-4 rounded-xl text-base transition-all cursor-pointer"
                   >
-                    {language === 'en' ? 'Sign In' : 'साइन इन करें'} <ArrowRight className="h-5 w-5 opacity-60" />
+                    {t('hero.cta.explore')} <ArrowRight className="h-5 w-5 opacity-70" />
                   </motion.span>
                 </Link>
               </motion.div>
             </div>
 
             {/* Orbital 3D hero visual */}
-            <div className="relative flex items-center justify-center lg:scale-[0.82] xl:scale-[0.92] origin-center w-full">
-              <OrbitalHero />
+            <div className="relative flex items-center justify-center lg:scale-[0.85] xl:scale-[0.95] origin-center w-full">
+              <Suspense
+                fallback={
+                  <div className="w-full h-[680px] max-md:h-[420px] flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full border-2 border-[#D49A58]/15 border-t-[#D49A58] animate-spin" />
+                  </div>
+                }
+              >
+                <Hero3D />
+              </Suspense>
             </div>
           </div>
         </div>
@@ -2593,6 +2376,3 @@ export default function Home() {
     </main>
   )
 }
-
-useGLTF.setDecoderPath('/draco/')
-useGLTF.preload('/student.glb')

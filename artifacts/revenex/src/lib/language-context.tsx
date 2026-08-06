@@ -16,15 +16,15 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.contact': 'Contact',
     'nav.bookDemo': 'Book a Demo',
 
-    'hero.badge': 'School ERP Platform',
-    'hero.title': 'Modern school',
-    'hero.title2': 'management',
-    'hero.titleHighlight': 'Made for India',
-    'hero.titleEnd': 'Simple with',
-    'hero.titleBrand': 'REVENEX',
-    'hero.subtitle': 'REVENEX is a secure cloud ERP that automates attendance, fees, communications, and reporting — trusted by schools.',
+    'hero.badge': 'SCHOOL ERP PLATFORM',
+    'hero.title': 'Streamline School',
+    'hero.title2': 'Management',
+    'hero.titleHighlight': 'with REVENEX.',
+    'hero.titleEnd': '',
+    'hero.titleBrand': '',
+    'hero.subtitle': 'REVENEX is a secure cloud ERP automating attendance, fees, communications, and reporting — trusted by schools.',
     'hero.cta.demo': 'Schedule a Demo',
-    'hero.cta.explore': 'Explore Features',
+    'hero.cta.explore': 'Sign In',
 
     'features.title': 'Everything Your School Needs',
     'features.subtitle': 'Tools that make school administration simple and reliable',
@@ -126,14 +126,14 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.bookDemo': 'डेमो बुक करें',
 
     'hero.badge': 'स्कूल ERP प्लेटफॉर्म',
-    'hero.title': 'आधुनिक स्कूल',
-    'hero.title2': 'प्रबंधन',
-    'hero.titleHighlight': 'भारत के लिए बनाया गया',
-    'hero.titleEnd': 'REVENEX के साथ',
-    'hero.titleBrand': 'सरल और सशक्त',
-    'hero.subtitle': 'REVENEX एक सुरक्षित, क्लाउड-नेटिव ERP प्रदान करता है जो उपस्थिति, शुल्क, संचार और रिपोर्टिंग को स्वचालित करता है — भारतीय स्कूलों और शिक्षकों के लिए डिज़ाइन किया गया।',
+    'hero.title': 'REVENEX के साथ',
+    'hero.title2': 'स्कूल प्रबंधन को',
+    'hero.titleHighlight': 'आसान बनाएं।',
+    'hero.titleEnd': '',
+    'hero.titleBrand': '',
+    'hero.subtitle': 'REVENEX एक सुरक्षित क्लाउड ERP है जो उपस्थिति, शुल्क, संचार और रिपोर्टिंग को स्वचालित करता है — स्कूलों द्वारा विश्वसनीय।',
     'hero.cta.demo': 'डेमो शेड्यूल करें',
-    'hero.cta.explore': 'सुविधाएं देखें',
+    'hero.cta.explore': 'साइन इन करें',
 
     'features.title': 'आपके स्कूल के लिए सब कुछ',
     'features.subtitle': 'स्कूल प्रशासन के हर पहलू को सरल बनाने के लिए डिज़ाइन किए गए उपकरणों का पूरा सेट',
@@ -247,7 +247,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }
 
   const t = (key: string): string => {
-    return translations[language][key] || key
+    const val = translations[language][key]
+    return val !== undefined ? val : key
   }
 
   return (
