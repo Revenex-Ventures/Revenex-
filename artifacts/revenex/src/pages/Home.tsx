@@ -2520,7 +2520,7 @@ function OrbitalHero() {
               boxShadow: '0 4px 20px rgba(139,69,19,0.10)',
               willChange: 'transform',
             }}
-            animate={{ y: [0, -8, 0] }}
+            animate={{ y: [0, -8, 0], opacity: [1, 0.4, 1], scale: [1, 1.08, 1] }}
             transition={{ duration: b.dur, repeat: Infinity, ease: 'easeInOut', delay: b.delay }}
             whileHover={{ scale: 1.06 }}
           >
