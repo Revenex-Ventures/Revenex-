@@ -1,8 +1,44 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'wouter'
 import { Linkedin, Github, Instagram, Mail, ArrowRight, ArrowUpRight, Phone, Sparkles, Check } from 'lucide-react'
-import { motion } from 'framer-motion'
+import { motion, cubicBezier } from 'framer-motion'
 import { useLanguage } from '@/lib/language-context'
+
+const EASE = cubicBezier(0.22, 1, 0.36, 1)
+
+function MagneticLink({ href, children }: { href: string; children: string }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <li key={children}>
+      <Link href={href}>
+        <motion.span
+          onHoverStart={() => setHovered(true)}
+          onHoverEnd={() => setHovered(false)}
+          onFocus={() => setHovered(true)}
+          onBlur={() => setHovered(false)}
+          className="relative -mx-2.5 flex w-fit cursor-pointer items-center gap-2 rounded-xl px-2.5 py-1.5 text-sm text-white/50 transition-colors hover:text-[#F9F6F0]"
+        >
+          {hovered && (
+            <motion.span
+              layoutId="footerLinkGlow"
+              className="absolute inset-0 rounded-xl bg-[#D49A58]/15 shadow-[0_0_18px_rgba(212,154,88,0.18)]"
+              transition={{ type: 'spring', stiffness: 380, damping: 34 }}
+            />
+          )}
+          <span className="relative">{children}</span>
+          <motion.span
+            className="relative text-[#D49A58]"
+            initial={false}
+            animate={{ opacity: hovered ? 1 : 0, x: hovered ? 0 : -6 }}
+            transition={{ duration: 0.25, ease: EASE }}
+          >
+            <ArrowRight className="h-3.5 w-3.5" />
+          </motion.span>
+        </motion.span>
+      </Link>
+    </li>
+  )
+}
 
 export function Footer() {
   const { language } = useLanguage()
@@ -12,17 +48,17 @@ export function Footer() {
   const [joined, setJoined] = useState(false)
 
   const product = [
-    { label: 'Attendance', href: '/features/attendance' },
-    { label: 'Admissions', href: '/features/student-management' },
-    { label: 'Homework', href: '/homework' },
-    { label: 'Report Cards', href: '/features/exam-results' },
+    { label: 'Attendance', href: '/product/attendance' },
+    { label: 'Admissions', href: '/product/admissions' },
+    { label: 'Homework', href: '/product/homework' },
+    { label: 'Report Cards', href: '/product/report-cards' },
   ]
 
   const solutions = [
-    { label: 'Fee Management', href: '/features/fees' },
-    { label: 'Student Portal', href: '/student-portal' },
-    { label: 'Transport', href: '/transport' },
-    { label: 'Communication', href: '/features/parent-communication' },
+    { label: 'Fee Management', href: '/solutions/fee-management' },
+    { label: 'Student Portal', href: '/solutions/student-portal' },
+    { label: 'Transport', href: '/solutions/transport' },
+    { label: 'Communication', href: '/solutions/communication' },
   ]
 
   const company = [
@@ -131,13 +167,9 @@ export function Footer() {
           {/* Col 2 — Product */}
           <div>
             <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">Product</h4>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               {product.map(({ label, href }) => (
-                <li key={label}>
-                  <Link href={href}>
-                    <span className="text-sm text-white/50 hover:text-[#F9F6F0] transition-colors cursor-pointer">{label}</span>
-                  </Link>
-                </li>
+                <MagneticLink key={label} href={href}>{label}</MagneticLink>
               ))}
             </ul>
           </div>
@@ -145,13 +177,9 @@ export function Footer() {
           {/* Col 3 — Solutions */}
           <div>
             <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">Solutions</h4>
-            <ul className="space-y-3">
+            <ul className="space-y-1">
               {solutions.map(({ label, href }) => (
-                <li key={label}>
-                  <Link href={href}>
-                    <span className="text-sm text-white/50 hover:text-[#F9F6F0] transition-colors cursor-pointer">{label}</span>
-                  </Link>
-                </li>
+                <MagneticLink key={label} href={href}>{label}</MagneticLink>
               ))}
             </ul>
           </div>

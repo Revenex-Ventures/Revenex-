@@ -44,6 +44,7 @@
     "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/vite": "catalog:",
     "@tanstack/react-query": "catalog:",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -79,6 +80,7 @@
     "@react-oauth/google": "^0.13.5",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.7.0",
+    "canvas-confetti": "^1.9.4",
     "three": "^0.185.1"
   }
 }
