@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'wouter'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { Chatbot } from '@/components/Chatbot'
@@ -112,13 +112,6 @@ export default function About() {
   const tCopy = content[language] || content.en
   const [activeTab, setActiveTab] = useState(0)
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setActiveTab((prev) => (prev + 1) % 4)
-    }, 5000)
-    return () => clearTimeout(timer)
-  }, [activeTab])
-
   const timelineItems = [
     {
       time: "07:30 AM",
@@ -126,6 +119,22 @@ export default function About() {
       desc: language === 'en' ? "Biometric scanners track student arrival. Instant, secure notifications dispatch to parents' phones." : "बायोमेट्रिक स्कैनर छात्रों के प्रवेश को ट्रैक करते हैं। अभिभावकों को तुरंत सूचना भेजी जाती है।",
       badge: language === 'en' ? "Attendance Active" : "उपस्थिति सक्रिय",
       icon: Users,
+      explanation: {
+        badge: language === 'en' ? "Gate Control" : "गेट नियंत्रण",
+        title: language === 'en' ? "Bilingual Entry Scanner" : "द्विभाषी प्रवेश स्कैनर",
+        bullets: language === 'en' ? [
+          "Tracks student check-ins instantly via RFID or biometric devices.",
+          "Updates class registers in real-time without teacher intervention.",
+          "Dispatches direct WhatsApp arrival alerts to parents."
+        ] : [
+          "आरएफआईडी या बायोमेट्रिक उपकरणों के माध्यम से छात्रों के प्रवेश को ट्रैक करता है।",
+          "शिक्षकों के बिना वास्तविक समय में कक्षा रजिस्टर अपडेट करता है।",
+          "अभिभावकों को सीधे व्हाट्सएप आगमन अलर्ट भेजता है।"
+        ],
+        insight: language === 'en' 
+          ? "Eliminates gate queues entirely, reducing delays by up to 42%." 
+          : "गेट की लाइनों को पूरी तरह से समाप्त करता है, देरी को 42% तक कम करता है।"
+      },
       preview: (
         <div className="space-y-6">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
@@ -194,6 +203,22 @@ export default function About() {
       desc: language === 'en' ? "New admissions are processed automatically. Upload a stack of PDFs and watch Gemini classify and extract student data." : "नए दाखिले अपने आप प्रोसेस होते हैं। पीडीएफ अपलोड करें और जेमिनी डेटा एक्सट्रैक्ट कर देगा।",
       badge: language === 'en' ? "AI Engine Running" : "एआई इंजन सक्रिय",
       icon: Sparkles,
+      explanation: {
+        badge: language === 'en' ? "AI Admissions" : "एआई प्रवेश",
+        title: language === 'en' ? "Gemini Document OCR" : "जेमिनी दस्तावेज़ ओसीआर",
+        bullets: language === 'en' ? [
+          "Parses multi-format document uploads like PDF birth certificates.",
+          "Extracts fields (names, DOB, addresses) with 99%+ accuracy.",
+          "Populates student profiles automatically for review."
+        ] : [
+          "पीडीएफ जन्म प्रमाण पत्र जैसे विभिन्न दस्तावेजों को स्वचालित रूप से पार्स करता है।",
+          "99%+ सटीकता के साथ नाम, जन्म तिथि, और पते जैसे विवरण निकालता है।",
+          "समीक्षा के लिए छात्र प्रोफाइल को स्वचालित रूप से भरता है।"
+        ],
+        insight: language === 'en' 
+          ? "Reduces average administrative processing time from 15 minutes to 45 seconds per profile." 
+          : "औसत प्रशासनिक प्रसंस्करण समय को प्रति प्रोफाइल 15 मिनट से घटाकर 45 सेकंड कर देता है।"
+      },
       preview: (
         <div className="space-y-6">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
@@ -258,6 +283,22 @@ export default function About() {
       desc: language === 'en' ? "Razorpay API automatically records fee collections. No manual receipts or cash counting errors." : "रेज़रपे एपीआई स्वचालित रूप से शुल्क रिकॉर्ड करता है। कोई मैन्युअल रसीद या नकदी गणना की गलती नहीं।",
       badge: language === 'en' ? "Ledger Verified" : "बहीखाता सत्यापित",
       icon: CreditCard,
+      explanation: {
+        badge: language === 'en' ? "Payments Hub" : "भुगतान हब",
+        title: language === 'en' ? "Automated Reconciliation" : "स्वचालित समाधान",
+        bullets: language === 'en' ? [
+          "Razorpay gateway handles fees, bus passes, and activities.",
+          "Generates secure payment links sent via SMS/WhatsApp.",
+          "Settles collections directly into the ledger in real-time."
+        ] : [
+          "रेज़रपे गेटवे फीस, बस पास और अन्य गतिविधियों का भुगतान संभालता है।",
+          "एसएमएस/व्हाट्सएप के जरिए सुरक्षित भुगतान लिंक जनरेट करता है।",
+          "संग्रह को सीधे वास्तविक समय में बहीखाते में जमा करता है।"
+        ],
+        insight: language === 'en' 
+          ? "Zero billing mismatches or counting errors, streamlining auditors' reviews." 
+          : "बिलिंग विसंगतियों या गिनती की त्रुटियों को पूरी तरह समाप्त कर ऑडिटर्स के काम को आसान बनाता है।"
+      },
       preview: (
         <div className="space-y-6">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
@@ -318,6 +359,22 @@ export default function About() {
       desc: language === 'en' ? "At departure, Gemini compiles a complete visual operational report, delivered straight to the principal's dashboard." : "स्कूल बंद होने पर, जेमिनी एक संपूर्ण परिचालन रिपोर्ट तैयार करता है, जो सीधे प्रिंसिपल के डैशबोर्ड पर जाती है।",
       badge: language === 'en' ? "Summary Dispatched" : "सारांश भेजा गया",
       icon: BarChart3,
+      explanation: {
+        badge: language === 'en' ? "Exec Summary" : "कार्यकारी सारांश",
+        title: language === 'en' ? "Gemini Daily Briefings" : "जेमिनी दैनिक रिपोर्ट",
+        bullets: language === 'en' ? [
+          "Compiles attendance records, fee settlements, and active tickets at day close.",
+          "Generates conversational natural language summaries for administrators.",
+          "Offers instant PDF downloads and team broadcast links."
+        ] : [
+          "दिन के अंत में उपस्थिति रिकॉर्ड, शुल्क भुगतान और सक्रिय टिकटों को संकलित करता है।",
+          "प्रशासकों के लिए सरल भाषा में बातचीत जैसी रिपोर्ट तैयार करता है।",
+          "त्वरित पीडीएफ डाउनलोड और टीम प्रसारण लिंक प्रदान करता है।"
+        ],
+        insight: language === 'en' 
+          ? "Gives school principals 100% operations visibility in 30 seconds before school close." 
+          : "स्कूल बंद होने से पहले 30 सेकंड में प्रिंसिपलों को संपूर्ण संचालन की दृश्यता देता है।"
+      },
       preview: (
         <div className="space-y-6">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
@@ -600,9 +657,9 @@ export default function About() {
         </div>
 
         {/* Interactive Dashboard Selector Grid */}
-        <div className="grid lg:grid-cols-12 gap-12 items-stretch mt-12">
+        <div className="grid lg:grid-cols-12 gap-6 items-stretch mt-12">
           {/* Left Column: Vertical Interactive Timeline Cards */}
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-4 space-y-4">
             {timelineItems.map((item, index) => {
               const Icon = item.icon
               const isActive = activeTab === index
@@ -646,9 +703,9 @@ export default function About() {
             })}
           </div>
 
-          {/* Right Column: Simulated Live Console Screen */}
-          <div className="lg:col-span-7 flex">
-            <div className="w-full bg-[#120E0A] text-white rounded-[2.5rem] p-8 lg:p-10 border border-[#8B4513]/25 shadow-2xl flex flex-col justify-between relative overflow-hidden min-h-[440px]">
+          {/* Middle Column: Simulated Live Console Screen */}
+          <div className="lg:col-span-5 flex">
+            <div className="w-full bg-[#120E0A] text-white rounded-[2.5rem] p-6 lg:p-8 border border-[#8B4513]/25 shadow-2xl flex flex-col justify-between relative overflow-hidden min-h-[440px]">
               <div className="absolute inset-0 bg-radial-gradient from-[#8B4513]/10 to-transparent opacity-60 pointer-events-none" />
               <div className="absolute -right-20 -bottom-20 w-[300px] h-[300px] bg-[#7C3D0F]/10 rounded-full blur-[80px] pointer-events-none" />
 
@@ -680,6 +737,64 @@ export default function About() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* Right Column: Animated Explanation Panel */}
+          <div className="lg:col-span-3 flex text-left">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className="w-full bg-[#FDFBF7] border border-[#E8E0D4] rounded-[2.5rem] p-6 shadow-xl flex flex-col justify-between relative overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-b from-[#F5EDE0]/30 to-transparent pointer-events-none" />
+                <div className="relative z-10 flex flex-col h-full justify-between">
+                  <div>
+                    {/* Badge */}
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#FF453A]/10 bg-[#FF453A]/5 text-[#FF453A] w-fit mb-4">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span className="text-[9px] font-black uppercase tracking-wider">
+                        {timelineItems[activeTab].explanation.badge}
+                      </span>
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-lg font-black text-[#1A1410] leading-snug mb-4">
+                      {timelineItems[activeTab].explanation.title}
+                    </h3>
+
+                    {/* Bullets */}
+                    <ul className="space-y-3">
+                      {timelineItems[activeTab].explanation.bullets.map((bullet, idx) => (
+                        <motion.li
+                          key={idx}
+                          initial={{ opacity: 0, x: 10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.1 + idx * 0.08 }}
+                          className="flex gap-2.5 items-start text-xs text-[#6B5D52] leading-relaxed"
+                        >
+                          <span className="text-[#FF453A] font-bold mt-0.5">•</span>
+                          <span>{bullet}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* AI Insight Box */}
+                  <div className="bg-white border border-[#E8E0D4] p-4 rounded-2xl shadow-xs mt-6">
+                    <div className="text-[9px] font-black text-[#7C3D0F] uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                      <span>✨ Gemini Operational Tip</span>
+                    </div>
+                    <p className="text-[11px] text-[#3D3128] font-medium leading-relaxed italic">
+                      "{timelineItems[activeTab].explanation.insight}"
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </section>
