@@ -210,290 +210,184 @@ function PartnersMarquee() {
   )
 }
 
-/* ─── How It Works — interactive dashboard selector showcase ─── */
-function HowItWorksSection({ language }: { language: string }) {
-  const [activeTab, setActiveTab] = useState(0)
+/* ─── How It Works step item (redesigned alternating layout with visual widgets) ─── */
+function HowStep({ step, index, isLast, language }: { step: typeof howItWorks[0]; index: number; isLast: boolean; language: string }) {
+  const ref = useRef(null)
+  const Icon = step.icon
+  const iconOnLeft = index % 2 === 0
 
-  const timelineItems = [
-    {
-      time: "STEP 01",
-      title: language === 'en' ? "Contact & Discovery" : "संपर्क और खोज",
-      desc: language === 'en' ? "Tell us about your institution and needs." : "हमें अपने संस्थान और आवश्यकताओं के बारे में बताएं।",
-      badge: language === 'en' ? "Discovery Call" : "डेमो कॉल",
-      icon: MessageSquare,
-      explanation: {
-        badge: language === 'en' ? "Phase 01: Connect" : "चरण 01: संपर्क",
-        title: language === 'en' ? "Initial Onboarding Consultation" : "प्रारंभिक ऑनबोर्डिंग परामर्श",
-        bullets: language === 'en' ? [
-          "Provide your school size, grading guidelines, and database requirements.",
-          "Arrange a customized, free live session tailored for your staff needs.",
-          "Draft initial module selection maps and billing forecasts."
-        ] : [
-          "अपने स्कूल का आकार, बोर्ड संबद्धता और डेटाबेस आवश्यकताएं प्रदान करें।",
-          "अपने कर्मचारियों की आवश्यकताओं के लिए अनुकूलित निःशुल्क लाइव सत्र आयोजित करें।",
-          "प्रारंभिक मॉड्यूल चयन मानचित्र और बिलिंग अनुमान तैयार करें।"
-        ],
-        insight: language === 'en' 
-          ? "No payment details or commitments required to configure your sandbox." 
-          : "आपके परीक्षण सैंडबॉक्स को कॉन्फ़िगर करने के लिए किसी भुगतान विवरण की आवश्यकता नहीं है।"
-      },
-      preview: (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-[10px] font-black tracking-widest text-[#E3B581] uppercase">DISCOVERY ENGINE: INCOMING REQUEST</span>
-            <div className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[9px] text-green-400 font-bold">ONLINE</span>
+  const viewport = { once: true, margin: '0px 0px -15% 0px' } as const
+  const cardEntrance = iconOnLeft
+    ? { initial: { opacity: 0, x: -60 }, whileInView: { opacity: 1, x: 0 }, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }
+    : { initial: { opacity: 0, x: 60 }, whileInView: { opacity: 1, x: 0 }, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }
+
+  const previewWidget = useMemo(() => {
+    switch (step.step) {
+      case '01':
+        return (
+          <div className="mt-4 bg-[#FDFBF7] border border-[#E8E0D4] rounded-2xl p-4 shadow-sm space-y-2 text-left relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[#8B4513]/5 rounded-full blur-xl pointer-events-none" />
+            <div className="flex justify-between items-center pb-2 border-b border-[#E8E0D4]/60">
+              <span className="text-[9px] font-black text-[#8B4513] uppercase tracking-wider">Discovery Sync</span>
+              <span className="text-[8px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-bold">Free Consultation</span>
             </div>
-          </div>
-          <div className="grid md:grid-cols-12 gap-6 items-stretch">
-            <div className="md:col-span-7 bg-[#1C1612] border border-white/5 rounded-2xl p-4 space-y-3">
-              <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block mb-1">Discovery details received</span>
-              <div className="bg-black/30 p-3 rounded-lg border border-white/5 text-[10px] space-y-2 text-left">
-                <div>
-                  <span className="text-white/40 text-[7px] uppercase font-bold">Institution Name</span>
-                  <div className="font-bold text-white">DPS International School</div>
-                </div>
-                <div>
-                  <span className="text-white/40 text-[7px] uppercase font-bold">Requested Modules</span>
-                  <div className="font-bold text-emerald-400">Attendance, Auto-Fee Billing, WhatsApp Alerts</div>
-                </div>
-                <div>
-                  <span className="text-white/40 text-[7px] uppercase font-bold">Contact Email</span>
-                  <div className="font-bold text-white">admin@dpsintl.edu.in</div>
-                </div>
-              </div>
-            </div>
-            <div className="md:col-span-5 flex flex-col justify-between bg-[#1C1612] border border-white/5 rounded-2xl p-4 text-left">
-              <div>
-                <span className="text-[8px] text-[#E3B581] font-black tracking-widest uppercase">DISCOVERY MEETING</span>
-                <span className="text-[10px] text-white font-extrabold block mt-1">Calendar Invite</span>
-              </div>
-              <div className="bg-black/30 p-2.5 rounded-lg border border-white/5 text-[9px] space-y-1 my-3">
-                <div className="text-white font-bold">Today @ 03:30 PM</div>
-                <div className="text-white/40 text-[7px]">Duration: 15 minutes</div>
-              </div>
-              <p className="text-[8px] text-white/40 italic">
-                * Calendar meeting invite successfully dispatched.
-              </p>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      time: "STEP 02",
-      title: language === 'en' ? "Custom ERP Setup" : "कस्टम ईआरपी सेटअप",
-      desc: language === 'en' ? "We set up the platform to match your processes and rules." : "हम आपके नियमों और प्रक्रियाओं के अनुसार प्लेटफॉर्म सेट करते हैं।",
-      badge: language === 'en' ? "Custom Branding" : "ब्रांडिंग सेट",
-      icon: Settings2,
-      explanation: {
-        badge: language === 'en' ? "Phase 02: Deployment" : "चरण 02: परिनियोजन",
-        title: language === 'en' ? "Custom Branding & Data Migration" : "कस्टम ब्रांडिंग और डेटा माइग्रेशन",
-        bullets: language === 'en' ? [
-          "Import all current spreadsheet lists and legacy files with zero data loss.",
-          "Apply your institution's logo, receipts branding, and theme colors.",
-          "Map CBSE, ICSE, or State Board grading models to classrooms."
-        ] : [
-          "शून्य डेटा हानि के साथ सभी वर्तमान स्प्रेडशीट सूचियों और पुरानी फ़ाइलों को आयात करें।",
-          "अपने संस्थान का लोगो, रसीद ब्रांडिंग और थीम रंग लागू करें।",
-          "कक्षाओं के लिए सीबीएसई, आईसीएसई या स्टेट बोर्ड ग्रेडिंग मॉडल मैप करें।"
-        ],
-        insight: language === 'en' 
-          ? "Database migrations and domain setups are completed within 48 hours." 
-          : "डेटाबेस माइग्रेशन और डोमेन सेटअप 48 घंटों के भीतर पूरे हो जाते हैं।"
-      },
-      preview: (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-[10px] font-black tracking-widest text-[#E3B581] uppercase">DATABASE MIGRATION & SYSTEM COMPILE</span>
-            <span className="text-emerald-400 text-xs font-bold">✨ SYNCING ACTIVE</span>
-          </div>
-          <div className="grid md:grid-cols-12 gap-6 items-stretch">
-            <div className="md:col-span-5 bg-[#1C1612] border border-white/5 rounded-2xl p-4 flex flex-col justify-between text-left">
-              <div>
-                <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block mb-2">Legacy Records Imported</span>
-                <div className="bg-black/50 border border-white/10 p-3 rounded-xl flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-green-950/40 border border-green-900/30 flex items-center justify-center text-green-500 font-bold text-xs">
-                    XLS
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-[10px] font-bold text-white truncate">Student_Admissions_2026.xlsx</div>
-                    <div className="text-[8px] text-white/40">1,240 records mapped</div>
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-[8px] text-white/40">Migration Integrity:</div>
-                <div className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  100% Data Cleansed & Synced
-                </div>
-              </div>
-            </div>
-            <div className="md:col-span-7 bg-[#1C1612] border border-white/5 rounded-2xl p-4 space-y-4 text-left">
-              <span className="text-[9px] font-black text-[#E3B581] uppercase tracking-widest block">Applying custom branding tokens</span>
-              <div className="space-y-2 bg-black/40 p-3 rounded-xl border border-white/5">
-                {[
-                  { setting: "Domain Mapping", value: "dps.revenex.in", status: "Active" },
-                  { setting: "Primary Hex", value: "#0B2545", status: "Applied" },
-                  { setting: "Institution Logo", value: "logo_dps_intl.png", status: "Linked" },
-                ].map((row, i) => (
-                  <div key={i} className="flex justify-between items-center text-[10px] py-1 border-b border-white/5 last:border-b-0">
-                    <div>
-                      <div className="text-white/40 text-[8px] font-bold uppercase">{row.setting}</div>
-                      <div className="text-white font-semibold">{row.value}</div>
-                    </div>
-                    <div className="text-emerald-400 text-[8px] font-bold bg-emerald-950 px-1.5 py-0.5 rounded-full border border-emerald-900/30">{row.status}</div>
-                  </div>
-                ))}
+            <div className="space-y-1">
+              <div className="text-[11px] font-bold text-[#1A1410]">DPS International School</div>
+              <div className="text-[9px] text-[#6B5D52] flex items-center gap-1.5 font-medium">
+                <Calendar className="w-3.5 h-3.5 text-[#8B4513]" /> Today, 3:30 PM (15m Call)
               </div>
             </div>
           </div>
-        </div>
-      )
-    },
-    {
-      time: "STEP 03",
-      title: language === 'en' ? "Staff Onboarding & Training" : "कर्मचारी प्रशिक्षण",
-      desc: language === 'en' ? "We train your staff and provide clear guides." : "हम आपके कर्मचारियों को प्रशिक्षित करते हैं और स्पष्ट गाइड प्रदान करते हैं।",
-      badge: language === 'en' ? "Guides Ready" : "गाइड तैयार",
-      icon: GraduationCap,
-      explanation: {
-        badge: language === 'en' ? "Phase 03: Enablement" : "चरण 03: सक्षमता",
-        title: language === 'en' ? "Staff Onboarding & Video Materials" : "स्टाफ ऑनबोर्डिंग और वीडियो सामग्री",
-        bullets: language === 'en' ? [
-          "Host webinar training sessions for teachers and portal administrators.",
-          "Distribute pre-recorded setup instructions and user guides.",
-          "Configure unique dashboard permissions based on roles (teachers/admins)."
-        ] : [
-          "शिक्षकों और पोर्टल प्रशासकों के लिए वेबिनार प्रशिक्षण सत्र आयोजित करें।",
-          "पूर्व-रिकॉर्ड किए गए सेटअप निर्देश और उपयोगकर्ता गाइड वितरित करें।",
-          "भूमिकाओं (शिक्षकों/प्रशासकों) के आधार पर अद्वितीय डैशबोर्ड अनुमतियाँ कॉन्फ़िगर करें।"
-        ],
-        insight: language === 'en' 
-          ? "Most teachers pick up classroom marks and roll calls entry in under 2 hours." 
-          : "अधिकांश शिक्षक 2 घंटे से कम समय में क्लासरूम मार्क्स और रोल कॉल एंट्री सीख जाते हैं।"
-      },
-      preview: (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-[10px] font-black tracking-widest text-[#E3B581] uppercase">STAFF TRAINING PORTAL & ROLE CONFIGURATOR</span>
-            <div className="text-xs text-[#E3B581] font-bold bg-[#E3B581]/15 border border-[#E3B581]/20 px-2 py-0.5 rounded-full">
-              Classes Allocated: 24/24
+        )
+      case '02':
+        return (
+          <div className="mt-4 bg-[#FDFBF7] border border-[#E8E0D4] rounded-2xl p-4 shadow-sm space-y-3 text-left relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[#7C3D0F]/5 rounded-full blur-xl pointer-events-none" />
+            <div className="flex justify-between items-center pb-2 border-b border-[#E8E0D4]/60">
+              <span className="text-[9px] font-black text-[#7C3D0F] uppercase tracking-wider">Data Migration</span>
+              <span className="text-[8px] text-[#C4722A] bg-amber-50 px-1.5 py-0.5 rounded-full font-bold">Migrating</span>
             </div>
-          </div>
-          <div className="grid md:grid-cols-12 gap-6 items-stretch">
-            <div className="md:col-span-5 bg-[#1C1612] border border-white/5 rounded-2xl p-4 flex flex-col justify-between text-left">
-              <div>
-                <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block mb-1">Staff Accounts Created</span>
-                <h3 className="text-2xl font-black text-[#F5F0E8] leading-none mb-1">32</h3>
-                <p className="text-[9px] text-[#E3B581] font-bold">100% of Teachers Registered</p>
+            <div className="space-y-1.5">
+              <div className="flex justify-between text-[10px] font-bold text-[#1A1410]">
+                <span>Student Admissions Database</span>
+                <span>92%</span>
               </div>
-              <div className="space-y-1.5 pt-3 border-t border-white/5">
-                <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-                  <div className="bg-[#E3B581] h-full" style={{ width: '100%' }} />
-                </div>
-                <div className="flex justify-between text-[8px] text-white/40 font-bold">
-                  <span>Security level: Locked</span>
-                  <span>Role-Based Access On</span>
-                </div>
-              </div>
-            </div>
-            <div className="md:col-span-7 bg-[#1C1612] border border-white/5 rounded-2xl p-4 space-y-3 text-left">
-              <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block">Available Video Tutorials</span>
-              <div className="space-y-2">
-                {[
-                  { id: "vid_01", title: "Teacher Portal: Attendance", dur: "3m 40s", status: "Published" },
-                  { id: "vid_02", title: "Admin Portal: Fee Receipting", dur: "5m 12s", status: "Published" },
-                  { id: "vid_03", title: "Parent Portal: Grade Reports", dur: "2m 15s", status: "Published" }
-                ].map((t, i) => (
-                  <div key={i} className="flex justify-between items-center bg-black/30 p-2.5 border border-white/5 rounded-lg text-[9px]">
-                    <div>
-                      <div className="font-bold text-white">{t.title}</div>
-                      <div className="text-[7px] text-white/30 font-mono">{t.id}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-black text-[#E3B581]">{t.dur}</div>
-                      <div className="text-[7px] text-white/40">{t.status}</div>
-                    </div>
-                  </div>
-                ))}
+              <div className="w-full bg-[#E8E0D4]/65 h-1.5 rounded-full overflow-hidden">
+                <div className="bg-gradient-to-r from-[#8B4513] to-[#C4722A] h-full" style={{ width: '92%' }} />
               </div>
             </div>
           </div>
-        </div>
-      )
-    },
-    {
-      time: "STEP 04",
-      title: language === 'en' ? "Go Live & Ongoing Support" : "लाइव जाएं और सहायता",
-      desc: language === 'en' ? "We launch the system and provide ongoing support." : "हम सिस्टम लॉन्च करते हैं और निरंतर सहायता प्रदान करते हैं।",
-      badge: language === 'en' ? "Support Active" : "सहायता सक्रिय",
-      icon: Activity,
-      explanation: {
-        badge: language === 'en' ? "Phase 04: Production" : "चरण 04: उत्पादन",
-        title: language === 'en' ? "Production Launch & Support SLA" : "उत्पादन लॉन्च और सहायता एसएलए",
-        bullets: language === 'en' ? [
-          "Deploy custom subdomains live securely with full SSL encryption.",
-          "Access direct hotline and WhatsApp chat assistance channels.",
-          "Get automatic monthly code upgrades and feature templates."
-        ] : [
-          "पूर्ण एसएसएल एन्क्रिप्शन के साथ कस्टम सबडोमेन सुरक्षित रूप से लाइव तैनात करें।",
-          "सीधी हॉटलाइन और व्हाट्सएप चैट सहायता चैनलों तक पहुंचें।",
-          "स्वचालित मासिक कोड अपग्रेड और नए फीचर टेम्पलेट प्राप्त करें।"
-        ],
-        insight: language === 'en' 
-          ? "Dedicated support managers maintain 99.9% uptime compliance." 
-          : "समर्पित सहायता प्रबंधक 99.9% अपटाइम अनुपालन बनाए रखते हैं।"
-      },
-      preview: (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-[10px] font-black tracking-widest text-[#E3B581] uppercase">LAUNCH PANEL & ACTIVE RUNTIME MONITOR</span>
-            <span className="text-emerald-400 text-xs font-bold">✨ PRODUCTION ONLINE</span>
-          </div>
-          <div className="grid md:grid-cols-12 gap-6 items-stretch">
-            <div className="md:col-span-5 grid grid-cols-2 gap-3">
+        )
+      case '03':
+        return (
+          <div className="mt-4 bg-[#FDFBF7] border border-[#E8E0D4] rounded-2xl p-4 shadow-sm space-y-2 text-left relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-[#166534]/5 rounded-full blur-xl pointer-events-none" />
+            <div className="flex justify-between items-center pb-2 border-b border-[#E8E0D4]/60">
+              <span className="text-[9px] font-black text-[#166534] uppercase tracking-wider">Training Modules</span>
+              <span className="text-[8px] text-[#166534] bg-green-50 px-1.5 py-0.5 rounded-full font-bold">2/3 Completed</span>
+            </div>
+            <div className="space-y-1.5">
               {[
-                { label: "Deployment", value: "Go-Live Done", change: "Subdomain online", color: "text-emerald-400" },
-                { label: "Uptime SLA", value: "99.99%", change: "Real-time monitor", color: "text-emerald-400" },
-                { label: "Support Ticket SLA", value: "<2 Hours", change: "Dedicated channel", color: "text-white" },
-                { label: "Updates Engine", value: "Automatic", change: "Free patches", color: "text-[#E3B581]" }
-              ].map((stat, i) => (
-                <div key={i} className="bg-[#1C1612] border border-white/5 p-3 rounded-xl text-left space-y-1">
-                  <div className="text-white/40 text-[8px] font-bold uppercase">{stat.label}</div>
-                  <div className={`text-xs font-black ${stat.color}`}>{stat.value}</div>
-                  <div className="text-[7px] text-white/50">{stat.change}</div>
+                { label: "Teacher App Walkthrough", done: true },
+                { label: "Fee Collection Guide", done: true },
+                { label: "Parent WhatsApp Alerts Setup", done: false },
+              ].map((task, idx) => (
+                <div key={idx} className="flex items-center gap-2 text-[9px] font-medium text-[#3D3128]">
+                  <CheckCircle2 className={`w-3.5 h-3.5 ${task.done ? 'text-green-600' : 'text-gray-300'}`} />
+                  <span className={task.done ? 'line-through text-gray-400' : ''}>{task.label}</span>
                 </div>
               ))}
             </div>
-            <div className="md:col-span-7 bg-[#1C1612] border border-white/5 rounded-2xl p-4 flex flex-col justify-between text-left space-y-4">
-              <div className="space-y-1.5 flex-1">
-                <div className="text-[9px] font-black text-purple-400 uppercase tracking-widest flex items-center gap-1.5">
-                  <span>✨ Live System Logs</span>
-                </div>
-                <p className="text-[11px] text-white/80 leading-relaxed font-sans bg-black/40 p-3 rounded-xl border border-purple-900/30">
-                  "Your production dashboard is successfully launched. DNS mapping dps.revenex.in is active. Auto-billing notifications have been sent to 948 parents. The WhatsApp gateway is fully operational with 0 queued alerts."
-                </p>
+          </div>
+        )
+      case '04':
+        return (
+          <div className="mt-4 bg-[#120E0A] border border-[#8B4513]/25 rounded-2xl p-4 shadow-xl space-y-2.5 text-left text-white relative overflow-hidden">
+            <div className="absolute -right-10 -bottom-10 w-24 h-24 bg-[#8B4513]/20 rounded-full blur-xl pointer-events-none" />
+            <div className="flex justify-between items-center pb-2 border-b border-white/5">
+              <span className="text-[9px] font-black text-[#FF453A] uppercase tracking-wider">Live System Logs</span>
+              <span className="flex items-center gap-1 text-[8px] text-green-400 font-bold">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Operational
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="text-[12px] font-black text-[#F5F0E8]">Subdomain Active</div>
+                <div className="text-[9px] text-white/50">dps.revenex.in</div>
               </div>
-              <div className="flex gap-2">
-                <a href="tel:+919021744355" className="flex-1 text-center py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-[9px] font-bold border border-white/10 transition-all flex items-center justify-center gap-1">
-                  <Phone className="h-3 w-3 text-[#E3B581]" /> Call Support
-                </a>
-                <button className="flex-1 py-2 bg-[#FF453A] hover:bg-[#FF453A]/90 text-white rounded-xl text-[9px] font-bold transition-all">
-                  Open Chat Assistance
-                </button>
+              <div className="text-right">
+                <div className="text-[12px] font-black text-green-400">99.9% Uptime</div>
+                <div className="text-[8px] text-white/30">Hotline Secure</div>
               </div>
             </div>
           </div>
-        </div>
-      )
+        )
+      default:
+        return null
     }
-  ]
+  }, [step.step])
 
   return (
-    <section className="py-20 lg:py-28 relative overflow-hidden border-t border-[#E8E0D4] bg-[#F5F0E8]" id="how-it-works">
+    <div className={`relative flex items-center justify-between gap-8 lg:gap-16 w-full ${isLast ? 'pb-8 lg:pb-12' : 'pb-14 lg:pb-20'} ${iconOnLeft ? 'flex-row' : 'flex-row-reverse'}`}>
+      
+      {/* Step Card */}
+      <motion.div
+        ref={ref}
+        initial={cardEntrance.initial}
+        whileInView={cardEntrance.whileInView}
+        viewport={viewport}
+        transition={cardEntrance.transition}
+        whileHover={{ y: -4, borderColor: '#8B4513' }}
+        className="relative rounded-[2.2rem] p-6 sm:p-8 w-full md:w-[46%] bg-white/70 border border-[#E8E0D4] shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
+      >
+        {/* Large faint background step number */}
+        <span className="text-8xl font-black text-[#8B4513]/5 absolute right-6 top-4 select-none pointer-events-none">
+          {step.step}
+        </span>
+
+        {/* Step Badge */}
+        <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider mb-4"
+          style={{ background: '#1A1410', color: '#FFFFFF' }}
+        >
+          STEP {step.step}
+        </div>
+
+        <h3 className="text-xl sm:text-2xl font-black text-[#1A1410] mb-2">{language === 'en' ? step.titleEn : step.titleEn}</h3>
+        <p className="text-[#3D3128] font-semibold text-xs sm:text-sm leading-relaxed">{language === 'en' ? step.descEn : step.descEn}</p>
+        <p className="text-[#6B5D52] text-xs mt-1 mb-4 leading-relaxed">{language === 'en' ? step.detailEn : step.detailEn}</p>
+
+        {/* Custom Visual Preview component */}
+        {previewWidget}
+
+        {/* Tag pills */}
+        <div className="flex flex-wrap gap-1.5 mt-5">
+          {step.tags.map((tag) => (
+            <span
+              key={tag}
+              className="px-3 py-1.5 rounded-full text-[10px] font-bold bg-white border border-[#D4C4B0] text-[#3D3128] hover:border-[#8B4513] hover:text-[#8B4513] transition-all shadow-xs"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Floating Center Icon Node */}
+      <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center z-20">
+        <motion.div
+          initial={{ scale: 0.6, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          viewport={viewport}
+          transition={{ type: 'spring', damping: 15, delay: 0.1 }}
+          whileHover={{ scale: 1.1, rotate: 10 }}
+          className="w-16 h-16 rounded-2xl flex items-center justify-center border shadow-lg cursor-default"
+          style={{ 
+            background: step.iconBg, 
+            borderColor: step.dark ? '#8B4513' : '#E8E0D4',
+            boxShadow: '0 8px 30px rgba(139,69,19,0.12)' 
+          }}
+        >
+          <Icon className="h-6 w-6" style={{ color: step.iconColor }} />
+        </motion.div>
+      </div>
+
+      {/* Empty block to balance the flex items on desktop */}
+      <div className="hidden md:block w-[46%]" />
+    </div>
+  )
+}
+
+/* ─── How It Works Section ─── */
+function HowItWorksSection({ language }: { language: string }) {
+  const timelineRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 0.85', 'end 0.55'],
+  })
+  const lineScale = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1]), { stiffness: 50, damping: 20 })
+
+  return (
+    <section className="py-24 lg:py-32 relative overflow-hidden border-t border-[#E8E0D4] bg-[#F5F0E8]" id="how-it-works">
       <div className="absolute inset-0 bg-[#F0E8DC]" />
       <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#7C3D0F]/4 rounded-full blur-[160px] pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -502,7 +396,7 @@ function HowItWorksSection({ language }: { language: string }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-16 text-center"
+          className="mb-20 text-center"
         >
           <SectionBadge label="How It Works" />
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl lg:text-[3.2rem] leading-[1.05] mb-4">
@@ -510,152 +404,32 @@ function HowItWorksSection({ language }: { language: string }) {
               ? <>From signup to live —<br /><span className="gradient-text">in 4 simple steps.</span></>
               : <>4 आसान चरणों में<br /><span className="gradient-text">शुरू करें।</span></>}
           </h2>
-          <p className="text-[#6B5D52] text-[15px] leading-relaxed max-w-xl mx-auto">
+          <p className="text-[#6B5D52] text-[15px] leading-relaxed max-w-xl mx-auto font-medium">
             {language === 'en'
               ? 'No long contracts. No complicated setup. No IT team needed. Just contact us and we handle everything — from configuration to training to go-live.'
               : 'कोई लंबे अनुबंध नहीं। कोई जटिल सेटअप नहीं। बस हमसे संपर्क करें।'}
           </p>
         </motion.div>
 
-        {/* Interactive Dashboard Selector Grid */}
-        <div className="grid lg:grid-cols-12 gap-6 items-stretch mt-12 relative z-10">
-          {/* Left Column: Vertical Interactive Timeline Cards */}
-          <div className="lg:col-span-4 space-y-4">
-            {timelineItems.map((item, index) => {
-              const Icon = item.icon
-              const isActive = activeTab === index
-              return (
-                <button
-                  key={index}
-                  onClick={() => setActiveTab(index)}
-                  className={`w-full text-left p-6 rounded-2xl border transition-all duration-300 flex items-start gap-4 cursor-pointer outline-none focus:ring-2 focus:ring-[#8B4513]/20 ${
-                    isActive 
-                      ? 'bg-white border-[#8B4513] shadow-xl translate-x-2' 
-                      : 'bg-white/40 border-[#E8E0D4] hover:bg-white/70'
-                  }`}
-                >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 border transition-colors ${
-                    isActive 
-                      ? 'bg-[#8B4513]/10 border-[#8B4513]/20 text-[#8B4513]' 
-                      : 'bg-[#3D3128]/5 border-[#3D3128]/10 text-[#3D3128]/60'
-                  }`}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <div className="space-y-1 min-w-0">
-                    <div className="flex items-center gap-2.5">
-                      <span className={`text-[10px] font-black tracking-wider px-2 py-0.5 rounded-full ${
-                        isActive ? 'bg-[#8B4513]/10 text-[#8B4513]' : 'bg-[#3D3128]/5 text-[#3D3128]/60'
-                      }`}>
-                        {item.time}
-                      </span>
-                      <span className="text-[8px] font-black tracking-widest text-[#7C3D0F] uppercase">
-                        {item.badge}
-                      </span>
-                    </div>
-                    <h3 className="font-extrabold text-sm sm:text-base text-[#1A1410]">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs text-[#6B5D52] leading-relaxed line-clamp-2">
-                      {item.desc}
-                    </p>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
+        {/* Timeline Grid Container */}
+        <div ref={timelineRef} className="relative w-full max-w-5xl mx-auto mt-16">
+          {/* Base track line */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-8 bottom-8 w-[3px] rounded-full bg-[#E0D4C0]/85" />
+          {/* Animated progress line with spring smoothing */}
+          <motion.div
+            className="absolute left-1/2 -translate-x-1/2 top-8 w-[3px] origin-top rounded-full"
+            style={{
+              height: 'calc(100% - 4rem)',
+              background: 'linear-gradient(180deg, #8B4513 0%, #C4722A 50%, #D49A58 100%)',
+              scaleY: lineScale,
+              boxShadow: '0 0 10px rgba(139,69,19,0.3)',
+            }}
+          />
 
-          {/* Middle Column: Simulated Live Console Screen */}
-          <div className="lg:col-span-5 flex">
-            <div className="w-full bg-[#120E0A] text-white rounded-[2.5rem] p-6 lg:p-8 border border-[#8B4513]/25 shadow-2xl flex flex-col justify-between relative overflow-hidden min-h-[440px]">
-              <div className="absolute inset-0 bg-radial-gradient from-[#8B4513]/10 to-transparent opacity-60 pointer-events-none" />
-              <div className="absolute -right-20 -bottom-20 w-[300px] h-[300px] bg-[#7C3D0F]/10 rounded-full blur-[80px] pointer-events-none" />
-
-              <div className="relative z-10 flex-1 flex flex-col justify-between">
-                {/* Simulated Screen header */}
-                <div className="flex justify-between items-center text-[10px] text-white/40 uppercase tracking-widest border-b border-white/5 pb-4 mb-6">
-                  <span>Revenex Operations Control</span>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>SYSTEM ONLINE</span>
-                  </div>
-                </div>
-
-                {/* Animated Display Content */}
-                <motion.div 
-                  key={activeTab}
-                  initial={{ opacity: 0, scale: 0.98, y: 5 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="flex-1 flex flex-col justify-center"
-                >
-                  {timelineItems[activeTab].preview}
-                </motion.div>
-
-                {/* Screen footer */}
-                <div className="border-t border-white/5 pt-4 mt-6 flex justify-between items-center text-[8px] text-white/30 uppercase tracking-widest">
-                  <span>Node: AP-SOUTH-1</span>
-                  <span>SSL SECURED</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Animated Explanation Panel */}
-          <div className="lg:col-span-3 flex text-left">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                className="w-full bg-[#FDFBF7] border border-[#E8E0D4] rounded-[2.5rem] p-6 shadow-xl flex flex-col justify-between relative overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-b from-[#F5EDE0]/30 to-transparent pointer-events-none" />
-                <div className="relative z-10 flex flex-col h-full justify-between">
-                  <div>
-                    {/* Badge */}
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#8B4513]/10 bg-[#8B4513]/5 text-[#8B4513] w-fit mb-4">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span className="text-[9px] font-black uppercase tracking-wider">
-                        {timelineItems[activeTab].explanation.badge}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-lg font-black text-[#1A1410] leading-snug mb-4">
-                      {timelineItems[activeTab].explanation.title}
-                    </h3>
-
-                    {/* Bullets */}
-                    <ul className="space-y-3">
-                      {timelineItems[activeTab].explanation.bullets.map((bullet, idx) => (
-                        <motion.li
-                          key={idx}
-                          initial={{ opacity: 0, x: 10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: 0.1 + idx * 0.08 }}
-                          className="flex gap-2.5 items-start text-xs text-[#6B5D52] leading-relaxed"
-                        >
-                          <span className="text-[#8B4513] font-bold mt-0.5">•</span>
-                          <span>{bullet}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* AI Insight Box */}
-                  <div className="bg-white border border-[#E8E0D4] p-4 rounded-2xl shadow-xs mt-6">
-                    <div className="text-[9px] font-black text-[#7C3D0F] uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                      <span>✨ Gemini Setup Tip</span>
-                    </div>
-                    <p className="text-[11px] text-[#3D3128] font-medium leading-relaxed italic">
-                      "{timelineItems[activeTab].explanation.insight}"
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
+          <div className="relative flex flex-col w-full">
+            {howItWorks.map((step, i) => (
+              <HowStep key={step.step} step={step} index={i} isLast={i === howItWorks.length - 1} language={language} />
+            ))}
           </div>
         </div>
       </div>
