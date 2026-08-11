@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback, useMemo, useLayoutEffect, Suspense, type CSSProperties } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
-import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence, type MotionValue } from 'framer-motion'
+import { motion, useScroll, useSpring, useInView, useTransform, AnimatePresence, useReducedMotion, useMotionValueEvent, type MotionValue, type Variants } from 'framer-motion'
 import {
   ArrowRight, Users, BookOpen, CreditCard, Bell, Calendar,
   BarChart3, Shield, Cpu, CheckCircle2, Zap, Cloud, Sparkles,
@@ -9,7 +9,7 @@ import {
   MessageSquare, Star, Send, Globe2, Linkedin,
   Mail, Phone, MapPin, Building2, FileBarChart, Smartphone,
   LayoutDashboard, Settings2, UserPlus, CalendarCheck,
-  IndianRupee, MessageCircle, BookMarked, Bus,
+  IndianRupee, MessageCircle, BookMarked, Bus, Check, Radio,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Navbar } from '@/components/Navbar'
@@ -210,226 +210,747 @@ function PartnersMarquee() {
   )
 }
 
-/* ─── How It Works step item (enhanced vertical scrolling timeline) ─── */
-function HowStep({ step, index, isLast, language }: { step: typeof howItWorks[0]; index: number; isLast: boolean; language: string }) {
-  const ref = useRef(null)
+/* ─── How It Works — premium implementation journey ─── */
+
+const HiwCss = `
+  .hiw-step { --hiw-c: #8B4513; }
+  .hiw-plate {
+    transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .hiw-plate--up { background: #FDFBF7; border-color: #D4C4B0; color: #6B5D52; }
+  .hiw-plate--act { background: var(--hiw-c); border-color: var(--hiw-c); color: #FFFFFF; }
+  .hiw-plate--done { background: #FFFFFF; border-color: var(--hiw-c); color: var(--hiw-c); }
+  .hiw-connector { background: #E4D9C6; transition: background-color 0.45s ease, box-shadow 0.45s ease; }
+  .hiw-connector--lit { background: var(--hiw-c); }
+  .hiw-step:hover .hiw-connector { background: var(--hiw-c); }
+  .hiw-dash-flow { animation: hiwDashFlow 0.7s linear infinite; }
+  .hiw-step:hover .hiw-dash-flow { animation-duration: 0.3s; }
+  @keyframes hiwDashFlow { from { transform: translateX(0); } to { transform: translateX(-12px); } }
+  .hiw-rail-ticks { background-image: repeating-linear-gradient(180deg, rgba(139,69,19,0.08) 0 1px, transparent 1px 16px); }
+  .hiw-sheen { animation: hiwSheen 2.8s linear infinite; }
+  @keyframes hiwSheen { from { background-position: 0% 0%; } to { background-position: 0% 240%; } }
+  .hiw-circuit-grid {
+    background-image:
+      repeating-linear-gradient(0deg, rgba(124,61,15,0.10) 0 1px, transparent 1px 48px),
+      repeating-linear-gradient(90deg, rgba(139,69,19,0.10) 0 1px, transparent 1px 48px);
+    animation: hiwGridDrift 26s linear infinite;
+  }
+  @keyframes hiwGridDrift { from { background-position: 0 0; } to { background-position: 48px 48px; } }
+  @media (prefers-reduced-motion: reduce) {
+    .hiw-dash-flow, .hiw-sheen, .hiw-circuit-grid { animation: none; }
+  }
+`
+
+/* Voice waveform used inside the discovery preview */
+function WaveBars({ active, reduce }: { active: boolean; reduce: boolean }) {
+  const bars = [7, 12, 9, 15, 10, 13, 8, 11, 7]
+  return (
+    <div className="flex h-7 items-end gap-[3px]" aria-hidden="true">
+      {bars.map((h, i) => (
+        <motion.span
+          key={i}
+          className="w-[3px] rounded-full bg-[#8B4513]"
+          animate={active && !reduce ? { height: [h, h + 9, h], opacity: [0.55, 1, 0.55] } : { height: h, opacity: 0.35 }}
+          transition={active && !reduce ? { repeat: Infinity, duration: 1.05, delay: i * 0.08, ease: 'easeInOut' } : { duration: 0.4 }}
+        />
+      ))}
+    </div>
+  )
+}
+
+/* Central milestone plate — the numbered marker riding the journey spine */
+function JourneyPlate({ step, state, reduce }: { step: typeof howItWorks[0]; state: 'done' | 'active' | 'upcoming'; reduce: boolean }) {
+  const isDone = state === 'done'
+  const isActive = state === 'active'
+  const plateClass = isActive ? 'hiw-plate--act' : isDone ? 'hiw-plate--done' : 'hiw-plate--up'
+
+  return (
+    <div className="relative flex items-center justify-center">
+      {isActive && !reduce && (
+        <motion.span
+          className="absolute inset-0 rounded-xl border md:rounded-2xl"
+          style={{ borderColor: step.color }}
+          animate={{ scale: [1, 1.55], opacity: [0.5, 0] }}
+          transition={{ repeat: Infinity, duration: 1.8, ease: 'easeOut' }}
+        />
+      )}
+      <motion.div
+        initial={reduce ? { scale: 1, opacity: 1 } : { scale: 0.5, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        viewport={{ once: true, margin: '0px 0px -10% 0px' }}
+        transition={{ type: 'spring', damping: 14, stiffness: 260, delay: 0.08 }}
+        className={`hiw-plate ${plateClass} relative flex h-10 w-10 items-center justify-center rounded-xl border-2 md:h-12 md:w-12 md:rounded-2xl`}
+        style={{ boxShadow: isActive ? `0 12px 30px ${step.glow}` : isDone ? '0 4px 14px rgba(26,20,16,0.08)' : 'none' }}
+      >
+        <span className="font-mono text-sm font-black leading-none md:text-lg">{step.step}</span>
+        {isDone && (
+          <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full border border-white bg-[#166534] shadow-sm">
+            <Check className="h-2.5 w-2.5 text-white" />
+          </span>
+        )}
+      </motion.div>
+    </div>
+  )
+}
+
+/* ─── How It Works step item (editorial milestone card) ─── */
+function HowStep({
+  step,
+  index,
+  isLast,
+  language,
+  active,
+  reduce,
+}: {
+  step: typeof howItWorks[0]
+  index: number
+  isLast: boolean
+  language: string
+  active: number
+  reduce: boolean
+}) {
   const Icon = step.icon
-  const iconOnLeft = index % 2 === 0
+  const cardOnLeft = index % 2 === 0
+  const cardDark = step.step === '04'
+  const state: 'done' | 'active' | 'upcoming' = active === index ? 'active' : active > index ? 'done' : 'upcoming'
+  const isActive = state === 'active'
+  const isDone = state === 'done'
+  const isUpcoming = state === 'upcoming'
+  const t = language === 'hi' ? 'hi' : 'en'
+  const T = (en: string, hi: string) => (t === 'hi' ? hi : en)
 
-  const viewport = { once: true, margin: '0px 0px -10% 0px' } as const
-  const cardEntrance = iconOnLeft
-    ? { initial: { opacity: 0, x: -60 }, whileInView: { opacity: 1, x: 0 }, transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }
-    : { initial: { opacity: 0, x: 60 }, whileInView: { opacity: 1, x: 0 }, transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }
+  // Bilingual UI content local mappings (preserved)
+  const stepTitles: Record<string, string[]> = {
+    en: [
+      "Contact & Discovery",
+      "Custom ERP Setup",
+      "Staff Onboarding & Training",
+      "Go Live & Ongoing Support"
+    ],
+    hi: [
+      "संपर्क और खोज",
+      "कस्टम ईआरपी सेटअप",
+      "कर्मचारी प्रशिक्षण और ऑनबोर्डिंग",
+      "लाइव जाएं और सतत सहायता"
+    ]
+  }
 
-  const previewWidget = useMemo(() => {
+  const stepDescs: Record<string, string[]> = {
+    en: [
+      "Tell us about your institution and needs.",
+      "We set up the platform to match your processes and rules.",
+      "We train your staff and provide clear guides.",
+      "We launch the system and provide ongoing support."
+    ],
+    hi: [
+      "हमें अपने संस्थान और आवश्यकताओं के बारे में बताएं।",
+      "हम आपके नियमों और प्रक्रियाओं के अनुसार प्लेटफॉर्म सेट करते हैं।",
+      "हम आपके कर्मचारियों को प्रशिक्षित करते हैं और स्पष्ट मार्गदर्शिकाएँ प्रदान करते हैं।",
+      "हम सिस्टम लॉन्च करते हैं और निरंतर सहायता प्रदान करते हैं।"
+    ]
+  }
+
+  const stepDetails: Record<string, string[]> = {
+    en: [
+      "We schedule a short requirements call to understand your institution's specific modules, grading rules, and administrative workflows.",
+      "We migrate your legacy student records, spreadsheets, and files. Then we brand the interface, domain, and fee ledgers to match your guidelines.",
+      "We conduct live interactive video training for your teachers, fee collectors, and admin staff to ensure they are fully ready to manage portals.",
+      "Deploy to production subdomains under custom SSL security. Benefit from our dedicated customer support manager and SLA updates."
+    ],
+    hi: [
+      "हम आपके संस्थान की विशिष्ट मॉड्यूल, ग्रेडिंग नियमों और प्रशासनिक वर्कफ़्लो को समझने के लिए एक लघु आवश्यकता डेमो कॉल निर्धारित करते हैं।",
+      "हम आपके पुराने छात्र रिकॉर्ड, स्प्रेडशीट और फाइलों को माइग्रेट करते हैं। फिर हम आपके दिशानिर्देशों के अनुसार इंटरफ़ेस, डोमेन और शुल्क बही को ब्रांड करते हैं।",
+      "हम आपके शिक्षकों, शुल्क संग्रहकर्ताओं और व्यवस्थापक कर्मचारियों के लिए लाइव इंटरैक्टिव वीडियो प्रशिक्षण आयोजित करते हैं ताकि वे तैयार हो सकें।",
+      "कस्टम एसएसएल सुरक्षा के तहत प्रोडक्शन सबडोमेन पर तैनात करें। हमारे समर्पित ग्राहक सहायता प्रबंधक और एसएलए अपडेट से लाभ उठाएं।"
+    ]
+  }
+
+  const stepLabels: Record<string, string[]> = {
+    en: [
+      "Phase 01 · Connect",
+      "Phase 02 · Setup",
+      "Phase 03 · Onboard",
+      "Phase 04 · Launch"
+    ],
+    hi: [
+      "चरण 01 · संपर्क",
+      "चरण 02 · सेटअप",
+      "चरण 03 · प्रशिक्षण",
+      "चरण 04 · लॉन्च"
+    ]
+  }
+
+  const displayTitle = stepTitles[t]?.[index] || step.titleEn
+  const displayDesc = stepDescs[t]?.[index] || step.descEn
+  const displayDetail = stepDetails[t]?.[index] || step.detailEn
+  const displayLabel = stepLabels[t]?.[index] || `STEP ${step.step}`
+
+  const [iconHover, setIconHover] = useState(false)
+  const [burst, setBurst] = useState(0)
+
+  const particles = [
+    { x: -14, y: -14 },
+    { x: 0, y: -20 },
+    { x: 14, y: -14 },
+    { x: 20, y: 0 },
+  ]
+
+  const tagContainer: Variants = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } },
+  }
+  const tagItem: Variants = {
+    hidden: { opacity: 0, y: 8, filter: 'blur(6px)' },
+    show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.4, ease: 'easeOut' } },
+  }
+
+
+  const entrance = {
+    initial: reduce ? false : { opacity: 0, x: cardOnLeft ? -48 : 48, y: 16 },
+    whileInView: { opacity: 1, x: 0, y: 0 },
+    viewport: { once: true, margin: '0px 0px -12% 0px' },
+    transition: { duration: 0.75, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+  }
+
+  /* Slim, visual evidence strip for each phase — keeps the informative detail, drops the heavy mockup chrome */
+  function renderEvidence() {
+    const panel = `mt-5 overflow-hidden rounded-2xl border p-3.5 transition-opacity duration-500 ${isUpcoming ? 'opacity-60' : 'opacity-100'} ${cardDark ? 'border-white/10 bg-white/[0.04]' : 'border-[#E8E0D4] bg-[#FDFBF7]'}`
     switch (step.step) {
       case '01':
         return (
-          <div className="mt-4 bg-[#FDFBF7] border border-[#E8E0D4] rounded-2xl p-4 shadow-sm space-y-2 text-left relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#8B4513]/5 rounded-full blur-xl pointer-events-none" />
-            <div className="flex justify-between items-center pb-2 border-b border-[#E8E0D4]/60">
-              <span className="text-[9px] font-black text-[#8B4513] uppercase tracking-wider">Discovery Sync</span>
-              <span className="text-[8px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-bold">Free Sync</span>
-            </div>
-            <div className="space-y-1">
-              <div className="text-[11px] font-bold text-[#1A1410]">DPS International School</div>
-              <div className="text-[9px] text-[#6B5D52] flex items-center gap-1.5 font-medium">
-                <Calendar className="w-3.5 h-3.5 text-[#8B4513]" /> Today, 3:30 PM (15m Call)
+          <div className={panel}>
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex min-w-0 items-center gap-2.5">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#8B4513] to-[#C4722A] shadow-sm">
+                  <Radio className="h-3.5 w-3.5 text-white" />
+                </div>
+                <div className="min-w-0">
+                  <div className="truncate text-[10px] font-black text-[#1A1410]">{T('Discovery Call', 'डिस्कवरी कॉल')}</div>
+                  <div className="text-[9px] font-medium text-[#6B5D52]">{T('Requirements call · 15 min', 'आवश्यकता कॉल · 15 मिनट')}</div>
+                </div>
+              </div>
+              <div className="flex shrink-0 items-center gap-2.5">
+                <WaveBars active={isActive} reduce={reduce} />
+                <span className="flex items-center gap-1 rounded-full bg-green-50 px-1.5 py-0.5 text-[8px] font-bold text-[#166534]">
+                  <span className={`h-1.5 w-1.5 rounded-full bg-[#166534] ${isActive && !reduce ? 'animate-pulse' : ''}`} />
+                  {T('Live', 'लाइव')}
+                </span>
               </div>
             </div>
           </div>
         )
       case '02':
         return (
-          <div className="mt-4 bg-[#FDFBF7] border border-[#E8E0D4] rounded-2xl p-4 shadow-sm space-y-3 text-left relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#7C3D0F]/5 rounded-full blur-xl pointer-events-none" />
-            <div className="flex justify-between items-center pb-2 border-b border-[#E8E0D4]/60">
-              <span className="text-[9px] font-black text-[#7C3D0F] uppercase tracking-wider">Data Migration</span>
-              <span className="text-[8px] text-[#C4722A] bg-amber-50 px-1.5 py-0.5 rounded-full font-bold">Syncing</span>
+          <div className={panel}>
+            <div className="mb-2 flex items-center justify-between text-[9px] font-bold">
+              <span className={cardDark ? 'text-white/60' : 'text-[#6B5D52]'}>{T('Data migration', 'डेटा माइग्रेशन')}</span>
+              <span style={{ color: isUpcoming ? '#C4722A' : '#7C3D0F' }}>
+                {isUpcoming ? T('Queued', 'कतार में') : T('86%', '86%')}
+              </span>
             </div>
-            <div className="space-y-1.5">
-              <div className="flex justify-between text-[10px] font-bold text-[#1A1410]">
-                <span>Student Admissions Database</span>
-                <span>92%</span>
-              </div>
-              <div className="w-full bg-[#E8E0D4]/65 h-1.5 rounded-full overflow-hidden">
-                <div className="bg-gradient-to-r from-[#8B4513] to-[#C4722A] h-full" style={{ width: '92%' }} />
-              </div>
+            <div className={`h-1.5 overflow-hidden rounded-full ${cardDark ? 'bg-white/10' : 'bg-[#E8E0D4]/70'}`}>
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg, #8B4513, #C4722A)' }}
+                animate={{ width: isUpcoming ? '14%' : '86%' }}
+                transition={{ duration: 1.4, ease: 'easeOut', delay: isActive && !reduce ? 0.35 : 0 }}
+              />
+            </div>
+            <div className="mt-2.5 flex items-center gap-2">
+              {['#8B4513', '#7C3D0F', '#C4722A'].map((c) => (
+                <span key={c} className="h-3 w-3 rounded-full border border-black/10" style={{ background: c }} />
+              ))}
+              <span className={cardDark ? 'text-[9px] font-bold text-white/50' : 'text-[9px] font-bold text-[#6B5D52]'}>{T('Branding applied', 'ब्रांडिंग लागू')}</span>
             </div>
           </div>
         )
-      case '03':
+      case '03': {
+        const tasks = [
+          { label: T('Teacher App Walkthrough', 'शिक्षक ऐप वॉकथ्रू'), done: true },
+          { label: T('Fee Collection Guide', 'शुल्क संग्रह गाइड'), done: true },
+          { label: T('WhatsApp Alerts Setup', 'व्हाट्सएप अलर्ट सेटअप'), done: false },
+        ]
+        const doneCount = tasks.filter((x) => x.done).length
         return (
-          <div className="mt-4 bg-[#FDFBF7] border border-[#E8E0D4] rounded-2xl p-4 shadow-sm space-y-2 text-left relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-[#166534]/5 rounded-full blur-xl pointer-events-none" />
-            <div className="flex justify-between items-center pb-2 border-b border-[#E8E0D4]/60">
-              <span className="text-[9px] font-black text-[#166534] uppercase tracking-wider">Training Modules</span>
-              <span className="text-[8px] text-[#166534] bg-green-50 px-1.5 py-0.5 rounded-full font-bold">2/3 Done</span>
+          <div className={panel}>
+            <div className="mb-2 flex items-center justify-between">
+              <span className={`text-[9px] font-bold ${cardDark ? 'text-white/60' : 'text-[#6B5D52]'}`}>{T('Training modules', 'प्रशिक्षण मॉड्यूल')}</span>
+              <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-bold ${cardDark ? 'bg-white/10 text-white/70' : 'bg-green-50 text-[#166534]'}`}>{doneCount}/3</span>
             </div>
             <div className="space-y-1.5">
-              {[
-                { label: "Teacher App Walkthrough", done: true },
-                { label: "Fee Collection Guide", done: true },
-                { label: "WhatsApp Alerts Setup", done: false },
-              ].map((task, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-[9px] font-medium text-[#3D3128]">
-                  <CheckCircle2 className={`w-3.5 h-3.5 ${task.done ? 'text-green-600' : 'text-gray-300'}`} />
-                  <span className={task.done ? 'line-through text-gray-400' : ''}>{task.label}</span>
-                </div>
+              {tasks.map((task, i) => (
+                <motion.div
+                  key={task.label}
+                  className="flex items-center gap-2 text-[9px] font-semibold"
+                  initial={reduce ? false : { opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: isActive && !reduce ? 0.2 + i * 0.12 : 0, duration: 0.4 }}
+                >
+                  <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${task.done ? 'text-[#166534]' : cardDark ? 'text-white/25' : 'text-[#D4C4B0]'}`} />
+                  <span className={task.done ? (cardDark ? 'text-white/80' : 'text-[#3D3128]') : cardDark ? 'text-white/45' : 'text-[#6B5D52]'}>{task.label}</span>
+                </motion.div>
               ))}
             </div>
           </div>
         )
+      }
       case '04':
         return (
-          <div className="mt-4 bg-[#120E0A] border border-[#8B4513]/25 rounded-2xl p-4 shadow-xl space-y-2.5 text-left text-white relative overflow-hidden">
-            <div className="absolute -right-10 -bottom-10 w-24 h-24 bg-[#8B4513]/20 rounded-full blur-xl pointer-events-none" />
-            <div className="flex justify-between items-center pb-2 border-b border-white/5">
-              <span className="text-[9px] font-black text-[#FF453A] uppercase tracking-wider">Live System Logs</span>
-              <span className="flex items-center gap-1 text-[8px] text-green-400 font-bold">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Operational
+          <div className={panel}>
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-[10px] font-black text-[#F5F0E8]">
+                <Activity className="h-3 w-3 text-green-400" /> {T('Live system', 'लाइव सिस्टम')}
+              </span>
+              <span className="flex items-center gap-1 rounded-full bg-white/5 px-1.5 py-0.5 text-[8px] font-bold text-green-400">
+                <span className={`h-1.5 w-1.5 rounded-full bg-green-400 ${isActive && !reduce ? 'animate-pulse' : ''}`} />
+                {T('Operational', 'परिचालन')}
               </span>
             </div>
-            <div className="flex justify-between items-center">
-              <div>
-                <div className="text-[12px] font-black text-[#F5F0E8]">Subdomain Online</div>
-                <div className="text-[9px] text-white/50">dps.revenex.in</div>
-              </div>
-              <div className="text-right">
-                <div className="text-[12px] font-black text-green-400">99.9% Uptime</div>
-              </div>
+            <svg viewBox="0 0 160 28" className="mt-2 h-6 w-full" aria-hidden="true">
+              <motion.path
+                d="M0 25 L14 22 L26 24 L38 16 L50 19 L62 11 L74 15 L86 8 L98 12 L110 5 L122 9 L134 3 L146 6 L160 1"
+                fill="none"
+                stroke="#4ADE80"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                initial={reduce ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: isUpcoming ? 0.25 : 0.85 }}
+                transition={{ duration: 1.6, ease: 'easeInOut' }}
+              />
+            </svg>
+            <div className="mt-2 flex items-center justify-between text-[9px] font-medium text-white/55">
+              <span>{T('Uptime', 'अपटाइम')} <b className="text-green-400">99.9%</b></span>
+              <span>{T('SLA', 'SLA')} <b className="text-green-400">2hr</b></span>
+              <span className="font-mono text-white/35">dps.revenex.in</span>
             </div>
           </div>
         )
       default:
         return null
     }
-  }, [step.step])
+  }
 
   return (
-    <div className={`relative flex items-center justify-between gap-8 lg:gap-16 w-full ${isLast ? 'pb-8 lg:pb-12' : 'pb-14 lg:pb-20'} ${iconOnLeft ? 'flex-row' : 'flex-row-reverse'}`}>
-      
-      {/* Step Card */}
+    <div className="hiw-step group relative mb-14 w-full last:mb-0 md:mb-20" style={{ '--hiw-c': step.color } as CSSProperties}>
+      {/* ── Editorial milestone card (glass + rotating signal border) ── */}
       <motion.div
-        ref={ref}
-        initial={cardEntrance.initial}
-        whileInView={cardEntrance.whileInView}
-        viewport={viewport}
-        transition={cardEntrance.transition}
-        whileHover={{ y: -6, borderColor: '#8B4513' }}
-        className="relative rounded-[2.5rem] p-6 sm:p-8 w-full md:w-[45%] bg-white/75 backdrop-blur-md border border-[#E8E0D4] shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
+        {...entrance}
+        whileHover={reduce ? {} : { y: -4 }}
+        className={`relative w-full overflow-hidden rounded-[1.75rem] p-px transition-shadow duration-500 md:w-[40%] ${cardOnLeft ? '' : 'md:ml-auto'}`}
+        animate={{
+          opacity: isActive ? 1 : isDone ? 0.92 : 0.68,
+          scale: isActive && !reduce ? 1.008 : 1,
+        }}
+        transition={{ duration: reduce ? 0 : 0.5, ease: 'easeOut' }}
+        style={{
+          boxShadow: isActive
+            ? cardDark ? `0 30px 80px rgba(139,69,19,0.30)` : `0 24px 60px ${step.glow}`
+            : cardDark ? '0 18px 48px rgba(26,20,16,0.28)' : '0 8px 28px rgba(139,69,19,0.06)',
+        }}
       >
-        {/* Large faint background step number */}
-        <span className="text-8xl font-black text-[#8B4513]/5 absolute right-6 top-4 select-none pointer-events-none font-mono">
-          {step.step}
-        </span>
+        {/* rotating conic signal ring */}
+        <motion.div
+          className="pointer-events-none absolute inset-[-45%]"
+          style={{
+            background: `conic-gradient(from 90deg, transparent 0deg, ${step.color} 55deg, transparent 120deg, transparent 360deg)`,
+            opacity: 0.4,
+            willChange: 'transform',
+          }}
+          animate={reduce ? undefined : { rotate: 360 }}
+          transition={reduce ? undefined : { repeat: Infinity, duration: 7, ease: 'linear' }}
+        />
+        {/* glass content */}
+        <div className={`relative overflow-hidden rounded-[1.75rem] p-6 pl-16 sm:p-7 md:pl-7 ${cardDark ? 'bg-[#1A1410]/55 backdrop-blur-xl' : 'bg-[#FDFBF7]/55 backdrop-blur-xl'}`}>
+          {/* top hairline accent */}
+          <span
+            className="pointer-events-none absolute inset-x-7 top-0 h-[3px] rounded-b-full transition-colors duration-500"
+            style={{ background: isActive || isDone ? (cardDark ? 'linear-gradient(90deg, #C4722A, transparent)' : `linear-gradient(90deg, ${step.color}, transparent)`) : 'transparent' }}
+          />
 
-        {/* Step Badge */}
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider mb-4 bg-[#1A1410] text-[#FFFFFF]">
-          STEP {step.step}
-        </div>
+          <div className="relative">
+            {/* header: icon tile + title + phase chip */}
+            <div className="mb-5 flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3">
+                {/* icon badge — pulsing halo + hover particles */}
+                <div
+                  className="relative shrink-0"
+                  onMouseEnter={() => { setIconHover(true); setBurst((b) => b + 1) }}
+                  onMouseLeave={() => setIconHover(false)}
+                >
+                  {!reduce && (
+                    <motion.div
+                      className="pointer-events-none absolute -inset-2 rounded-full"
+                      style={{
+                        background: `radial-gradient(circle, ${step.glow} 0%, transparent 70%)`,
+                        boxShadow: `0 0 26px 8px ${step.glow}`,
+                        willChange: 'transform',
+                      }}
+                      animate={{ scale: [1, 1.18, 1], opacity: [0.5, 0.2, 0.5] }}
+                      transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
+                    />
+                  )}
+                  {iconHover && !reduce && (
+                    <span key={burst} className="pointer-events-none absolute inset-0" aria-hidden="true">
+                      {particles.map((p, i) => (
+                        <motion.span
+                          key={i}
+                          className="absolute left-1/2 top-1/2 h-1.5 w-1.5 rounded-full"
+                          style={{ background: step.color, boxShadow: `0 0 8px 1px ${step.glow}` }}
+                          initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+                          animate={{ x: p.x, y: p.y, opacity: 0, scale: 0.4 }}
+                          transition={{ duration: 0.6, ease: 'easeOut', delay: i * 0.06 }}
+                        />
+                      ))}
+                    </span>
+                  )}
+                  <div
+                    className="relative flex h-11 w-11 items-center justify-center rounded-2xl border shadow-sm transition-transform duration-500 group-hover:scale-[1.05]"
+                    style={{
+                      background: cardDark ? 'linear-gradient(135deg, #8B4513, #C4722A)' : step.iconBg,
+                      borderColor: cardDark ? 'rgba(255,255,255,0.14)' : '#E8E0D4',
+                    }}
+                  >
+                    <Icon className="h-5 w-5" style={{ color: cardDark ? '#FFFFFF' : step.iconColor }} />
+                  </div>
+                </div>
+                <h3 className={`text-xl font-black leading-tight sm:text-[1.35rem] ${cardDark ? 'text-white' : 'text-[#1A1410]'}`}>
+                  {displayTitle}
+                </h3>
+              </div>
+              <span
+                className="relative hidden shrink-0 overflow-hidden rounded-full px-3 py-1 text-[9px] font-black uppercase tracking-wider sm:inline-flex"
+                style={{ background: cardDark ? 'rgba(255,255,255,0.08)' : isActive ? step.color : '#1A1410', color: '#FFFFFF' }}
+              >
+                {displayLabel}
+                {!reduce && (
+                  <motion.span
+                    className="pointer-events-none absolute inset-y-[-40%] left-[-50%] w-1/2 rotate-[24deg]"
+                    style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.85), transparent)' }}
+                    initial={{ x: '-60%', opacity: 0 }}
+                    whileInView={{ x: '260%', opacity: [0, 1, 1, 0] }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8, delay: 0.3, ease: 'easeInOut' }}
+                    aria-hidden="true"
+                  />
+                )}
+              </span>
+            </div>
 
-        <h3 className="text-xl sm:text-2xl font-black text-[#1A1410] mb-2">{language === 'en' ? step.titleEn : step.titleEn}</h3>
-        <p className="text-[#3D3128] font-bold text-xs sm:text-sm leading-relaxed">{language === 'en' ? step.descEn : step.descEn}</p>
-        <p className="text-[#6B5D52] text-xs mt-1 mb-4 leading-relaxed">{language === 'en' ? step.detailEn : step.detailEn}</p>
+            <p className={`text-sm font-bold leading-relaxed ${cardDark ? 'text-[#F0E8DC]' : 'text-[#3D3128]'}`}>{displayDesc}</p>
+            <p className={`mt-1.5 text-xs font-medium leading-relaxed ${cardDark ? 'text-white/55' : 'text-[#6B5D52]'}`}>{displayDetail}</p>
 
-        {/* Custom Visual Preview component */}
-        {previewWidget}
+            {renderEvidence()}
 
-        {/* Tag pills */}
-        <div className="flex flex-wrap gap-1.5 mt-5">
-          {step.tags.map((tag) => (
-            <span
-              key={tag}
-              className="px-2.5 py-1.5 rounded-full text-[10px] font-bold bg-white border border-[#D4C4B0] text-[#3D3128] hover:border-[#8B4513] hover:text-[#8B4513] transition-all shadow-xs"
-            >
-              {tag}
-            </span>
-          ))}
+            {/* tags — staggered blur-to-focus entrance */}
+            {reduce ? (
+              <div className="mt-5 flex flex-wrap gap-1.5">
+                {step.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className={`cursor-default rounded-full px-2.5 py-1 text-[10px] font-bold transition-colors ${
+                      cardDark
+                        ? 'border border-white/10 bg-white/5 text-[#E8E0D4] hover:border-[#D49A58] hover:text-[#D49A58]'
+                        : 'border border-[#D4C4B0] bg-white text-[#3D3128] hover:border-[#8B4513] hover:text-[#8B4513]'
+                    }`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <motion.div
+                className="mt-5 flex flex-wrap gap-1.5"
+                variants={tagContainer}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+              >
+                {step.tags.map((tag) => (
+                  <motion.span
+                    key={tag}
+                    variants={tagItem}
+                    className={`cursor-default rounded-full px-2.5 py-1 text-[10px] font-bold transition-colors ${
+                      cardDark
+                        ? 'border border-white/10 bg-white/5 text-[#E8E0D4] hover:border-[#D49A58] hover:text-[#D49A58]'
+                        : 'border border-[#D4C4B0] bg-white text-[#3D3128] hover:border-[#8B4513] hover:text-[#8B4513]'
+                    }`}
+                  >
+                    {tag}
+                  </motion.span>
+                ))}
+              </motion.div>
+            )}
+
+            {/* meta footer */}
+            <div className={`mt-5 flex items-center justify-between border-t pt-4 ${cardDark ? 'border-white/10' : 'border-[#E8E0D4]/70'}`}>
+              <span className={`text-[10px] font-black uppercase tracking-widest ${cardDark ? 'text-white/40' : 'text-[#6B5D52]'}`}>
+                {T(`Step ${index + 1} of 4`, `चरण ${index + 1} / 4`)}
+              </span>
+              <span className="flex items-center gap-1.5 text-[10px] font-bold" style={{ color: cardDark ? '#F0E8DC' : isUpcoming ? '#6B5D52' : step.color }}>
+                {isDone ? (
+                  <>
+                    <Check size={12} /> {T('Complete', 'पूर्ण')}
+                  </>
+                ) : isActive ? (
+                  <>
+                    <span className={`h-1.5 w-1.5 rounded-full ${isActive && !reduce ? 'animate-pulse' : ''}`} style={{ background: cardDark ? '#F0E8DC' : step.color }} />
+                    {T('In progress', 'जारी')}
+                  </>
+                ) : (
+                  T('Upcoming', 'आगामी')
+                )}
+              </span>
+            </div>
+          </div>
         </div>
       </motion.div>
 
-      {/* Floating Center Icon Node */}
-      <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center z-20">
-        <motion.div
-          initial={{ scale: 0.6, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={viewport}
-          transition={{ type: 'spring', damping: 15, delay: 0.1 }}
-          whileHover={{ scale: 1.15, rotate: 10 }}
-          className="w-16 h-16 rounded-2xl flex items-center justify-center border shadow-lg cursor-default"
-          style={{ 
-            background: step.iconBg, 
-            borderColor: step.dark ? '#8B4513' : '#E8E0D4',
-            boxShadow: '0 8px 30px rgba(139,69,19,0.12)' 
-          }}
-        >
-          <Icon className="h-6 w-6" style={{ color: step.iconColor }} />
-        </motion.div>
+
+      {/* ── Milestone plate on the journey spine (signal-handoff burst) ── */}
+      <div className="absolute left-6 top-6 z-20 -translate-x-1/2 md:left-1/2 md:top-1/2 md:-translate-y-1/2">
+        <div className="relative">
+          {!reduce && (
+            <motion.div
+              className="pointer-events-none absolute -inset-2 rounded-2xl"
+              style={{ border: `1px solid ${step.color}` }}
+              initial={{ scale: 1, boxShadow: `0 0 0 0px ${step.glow}` }}
+              whileInView={{ scale: [1, 1.9, 1], boxShadow: [`0 0 0 0px ${step.glow}`, `0 0 24px 7px ${step.glow}`, `0 0 0 0px ${step.glow}`] }}
+              viewport={{ once: true, margin: '0px 0px -10% 0px' }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+            />
+          )}
+          <JourneyPlate step={step} state={state} reduce={reduce} />
+        </div>
       </div>
 
-      {/* Empty block to balance the flex items on desktop */}
-      <div className="hidden md:block w-[45%]" />
+      {/* ── Connector from plate to card (desktop) ── */}
+      <div
+        className="absolute top-1/2 hidden h-[2px] -translate-y-1/2 md:block"
+        style={cardOnLeft ? { left: '40%', right: 'calc(50% + 1.5rem)' } : { left: 'calc(50% + 1.5rem)', right: '40%' }}
+      >
+        <motion.div
+          className={`hiw-connector h-full w-full rounded-full ${isActive || isDone ? 'hiw-connector--lit' : ''}`}
+          initial={reduce ? false : { scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          viewport={{ once: true, margin: '0px 0px -10% 0px' }}
+          transition={{ duration: 0.7, ease: 'easeOut' }}
+        />
+        {isActive && !reduce && (
+          <div className="hiw-dash-flow absolute inset-0 overflow-hidden rounded-full">
+            <div
+              className="absolute inset-y-0 left-0 w-[200%]"
+              style={{ backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.9) 0 5px, transparent 5px 12px)' }}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* ── Mobile connector stub (rail to card) ── */}
+      <div
+        className="absolute left-[2.75rem] top-[2.75rem] h-px w-5 -translate-y-1/2 md:hidden"
+        style={{ background: isActive || isDone ? step.color : '#E4D9C6' }}
+      />
     </div>
   )
 }
 
-/* ─── How It Works — alternating left/right timeline with scroll-driven progress line ─── */
+/* ─── How It Works — premium implementation journey section ─── */
 function HowItWorksSection({ language }: { language: string }) {
-  const timelineRef = useRef(null)
+  const journeyRef = useRef<HTMLDivElement>(null)
+  const [active, setActive] = useState(0)
+  const [spineH, setSpineH] = useState(0)
+  const reduce = useReducedMotion()
+  const t = language === 'hi' ? 'hi' : 'en'
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = journeyRef.current
+      if (el) setSpineH(Math.max(0, el.offsetHeight - 96))
+    }
+    measure()
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [])
+
   const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ['start 0.85', 'end 0.55'],
+    target: journeyRef,
+    offset: ['start 0.68', 'end 0.42'],
   })
-  
-  // Spring-smoothed vertical progress
-  const lineScale = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1]), { stiffness: 50, damping: 20 })
+
+  const lineScale = useSpring(useTransform(scrollYProgress, [0, 1], [0, 1]), { stiffness: 60, damping: 22 })
+  const orbTop = useTransform(lineScale, [0, 1], ['0%', '100%'])
+
+  useMotionValueEvent(scrollYProgress, 'change', (v: number) => {
+    const idx = Math.min(howItWorks.length - 1, Math.max(0, Math.floor(v * howItWorks.length)))
+    setActive(idx)
+  })
+
+  const compactLabels: Record<string, string[]> = {
+    en: ['Connect', 'Setup', 'Onboard', 'Launch'],
+    hi: ['संपर्क', 'सेटअप', 'प्रशिक्षण', 'लॉन्च'],
+  }
 
   return (
-    <section className="py-24 lg:py-32 relative overflow-hidden border-t border-[#E8E0D4] bg-[#FAF8F5]" id="how-it-works">
-      <div className="absolute inset-0 bg-[#F0E8DC]/80 pointer-events-none" />
-      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#7C3D0F]/4 rounded-full blur-[160px] pointer-events-none" />
-      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+    <section className="relative overflow-hidden border-t border-[#E8E0D4] bg-[#FAF8F5] py-24 lg:py-32" id="how-it-works">
+      <style>{HiwCss}</style>
 
-        {/* Header */}
+      {/* Background layers — drifting gradient orbs + faint circuit grid */}
+      <div className="pointer-events-none absolute inset-0 bg-[#F0E8DC]/80" />
+      <div className="hiw-circuit-grid pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
+      <motion.div
+        className="pointer-events-none absolute -top-40 left-[10%] h-[440px] w-[440px] rounded-full bg-[#7C3D0F]/[0.05] blur-[120px]"
+        animate={reduce ? undefined : { x: [0, 60, -45, 0], y: [0, 45, -30, 0], scale: [1, 1.12, 0.96, 1] }}
+        transition={reduce ? undefined : { repeat: Infinity, repeatType: 'reverse', duration: 18, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="pointer-events-none absolute -bottom-40 right-[10%] h-[420px] w-[420px] rounded-full bg-[#8B4513]/[0.06] blur-[120px]"
+        animate={reduce ? undefined : { x: [0, -55, 40, 0], y: [0, -40, 25, 0], scale: [1, 1.08, 0.94, 1] }}
+        transition={reduce ? undefined : { repeat: Infinity, repeatType: 'reverse', duration: 20, ease: 'easeInOut' }}
+      />
+      <motion.div
+        className="pointer-events-none absolute left-[30%] top-[6%] h-[400px] w-[400px] rounded-full bg-[#166534]/[0.05] blur-[120px]"
+        animate={reduce ? undefined : { x: [0, 40, -30, 0], y: [0, -35, 20, 0], scale: [1, 1.06, 0.97, 1] }}
+        transition={reduce ? undefined : { repeat: Infinity, repeatType: 'reverse', duration: 16, ease: 'easeInOut' }}
+      />
+      <div
+        className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[380px] -translate-x-1/2 md:block"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(139,69,19,0.07), transparent 70%)' }}
+      />
+      {/* editorial side label */}
+      <div className="pointer-events-none absolute left-4 top-1/2 hidden -translate-y-1/2 rotate-180 lg:block" style={{ writingMode: 'vertical-rl' }}>
+        <span className="text-[10px] font-black uppercase tracking-[0.35em] text-[#8B4513]/25">Implementation Journey · 01 — 04</span>
+      </div>
+
+      <div className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        {/* Section Heading */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-20 text-center"
+          viewport={{ once: true, margin: '-10% 0px' }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+          className="mb-12 text-center"
         >
           <SectionBadge label="How It Works" />
-          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl lg:text-[3.2rem] leading-[1.05] mb-4">
+          <h2 className="mb-4 text-4xl font-black leading-[1.05] text-[#1A1410] sm:text-5xl lg:text-[3.2rem]">
             {language === 'en'
               ? <>From signup to live —<br /><span className="gradient-text">in 4 simple steps.</span></>
               : <>4 आसान चरणों में<br /><span className="gradient-text">शुरू करें।</span></>}
           </h2>
-          <p className="text-[#6B5D52] text-[15px] leading-relaxed max-w-xl mx-auto font-medium">
+          <p className="mx-auto max-w-xl text-[15px] font-medium leading-relaxed text-[#6B5D52]">
             {language === 'en'
               ? 'No long contracts. No complicated setup. No IT team needed. Just contact us and we handle everything — from configuration to training to go-live.'
               : 'कोई लंबे अनुबंध नहीं। कोई जटिल सेटअप नहीं। बस हमसे संपर्क करें।'}
           </p>
         </motion.div>
 
-        {/* Alternating Steps Container */}
-        <div ref={timelineRef} className="relative w-full max-w-3xl mx-auto mt-16">
-          {/* Base track line */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-8 bottom-8 w-[3px] rounded-full bg-[#E0D4C0]/85" />
-          
-          {/* Glowing dynamic progress line */}
-          <motion.div
-            className="absolute left-1/2 -translate-x-1/2 top-8 w-[3px] origin-top rounded-full"
-            style={{
-              height: 'calc(100% - 4rem)',
-              background: 'linear-gradient(180deg, #8B4513 0%, #C4722A 50%, #D49A58 100%)',
-              scaleY: lineScale,
-              boxShadow: '0 0 10px rgba(139,69,19,0.3)',
-            }}
-          />
+        {/* Progress strip — where am I in the journey */}
+        <motion.div
+          initial={reduce ? { opacity: 1 } : { opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.15, duration: 0.6 }}
+          className="mx-auto mb-16 mt-14 max-w-xl px-2"
+        >
+          <div className="flex items-center gap-2">
+            {howItWorks.map((s, i) => {
+              const st: 'done' | 'active' | 'upcoming' = active === i ? 'active' : active > i ? 'done' : 'upcoming'
+              return (
+                <div key={s.step} className="flex flex-1 flex-col items-center gap-2">
+                  <div className="h-1 w-full overflow-hidden rounded-full bg-[#E8E0D4]" role="progressbar" aria-valuemin={0} aria-valuemax={4} aria-valuenow={i + 1}>
+                    <motion.div
+                      className="h-full rounded-full"
+                      style={{ background: st === 'upcoming' ? 'transparent' : `linear-gradient(90deg, ${s.color}, #C4722A)` }}
+                      animate={{ width: st === 'done' ? '100%' : st === 'active' ? '50%' : '0%' }}
+                      transition={{ duration: reduce ? 0 : 0.6, ease: 'easeOut' }}
+                    />
+                  </div>
+                  <span className={`whitespace-nowrap text-[8px] font-black uppercase tracking-widest transition-colors duration-300 sm:text-[9px] ${st === 'upcoming' ? 'text-[#6B5D52]/45' : 'text-[#3D3128]'}`}>
+                    {String(i + 1).padStart(2, '0')} · {compactLabels[t][i]}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        </motion.div>
 
-          <div className="relative flex flex-col w-full">
+        {/* Journey */}
+        <div ref={journeyRef} className="relative mx-auto w-full max-w-5xl">
+          {/* Spine track + graduated ticks + fill + traveling signal */}
+          <div className="pointer-events-none absolute left-6 top-12 bottom-12 w-[3px] -translate-x-1/2 md:left-1/2">
+            <div className="hiw-rail-ticks absolute inset-0" />
+            <div
+              className="absolute inset-0 rounded-full"
+              style={{ background: 'linear-gradient(180deg, transparent, #E0D4C0 20%, #E0D4C0 80%, transparent)' }}
+            />
+            <motion.div
+              className="absolute inset-0 origin-top rounded-full"
+              style={{
+                background: 'linear-gradient(180deg, #8B4513 0%, #C4722A 55%, #D49A58 100%)',
+                scaleY: reduce ? 1 : lineScale,
+                boxShadow: '0 0 12px rgba(139,69,19,0.35)',
+              }}
+            />
+            {/* soft blurred glow behind the signal line */}
+            <motion.div
+              className="absolute -left-0.5 -right-0.5 top-0 bottom-0 origin-top rounded-full blur-md"
+              style={{
+                background: 'linear-gradient(180deg, #8B4513 0%, #C4722A 55%, #D49A58 100%)',
+                scaleY: reduce ? 1 : lineScale,
+                opacity: 0.5,
+              }}
+            />
+            {!reduce && (
+              <div
+                className="hiw-sheen absolute inset-0 rounded-full"
+                style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.5), transparent 40%)', backgroundSize: '100% 240%' }}
+              />
+            )}
+            {!reduce && spineH > 0 && (
+              <motion.div
+                className="pointer-events-none absolute top-0 z-10"
+                style={{
+                  left: -4,
+                  right: -4,
+                  height: 56,
+                  borderRadius: 999,
+                  background: 'linear-gradient(180deg, transparent 0%, rgba(212,154,88,0.9) 60%, #FFF4E0 100%)',
+                  boxShadow: '0 0 10px rgba(212,154,88,0.5)',
+                  willChange: 'transform',
+                }}
+                animate={{ y: [-56, spineH] }}
+                transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+              />
+            )}
+            {!reduce && (
+              <motion.div
+                className="absolute left-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
+                style={{ top: orbTop }}
+              >
+                <motion.div
+                  className="h-3 w-3 rounded-full bg-[#D49A58] shadow-[0_0_14px_rgba(212,154,88,0.9)]"
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
+                />
+                <div
+                  className="absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full"
+                  style={{ background: 'radial-gradient(circle, rgba(212,154,88,0.35), transparent 70%)' }}
+                />
+              </motion.div>
+            )}
+          </div>
+
+          {/* Steps */}
+          <div className="relative flex w-full flex-col">
             {howItWorks.map((step, i) => (
-              <HowStep key={step.step} step={step} index={i} isLast={i === howItWorks.length - 1} language={language} />
+              <HowStep
+                key={step.step}
+                step={step}
+                index={i}
+                isLast={i === howItWorks.length - 1}
+                language={language}
+                active={active}
+                reduce={!!reduce}
+              />
             ))}
           </div>
         </div>
