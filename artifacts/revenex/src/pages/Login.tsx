@@ -65,13 +65,13 @@ export default function Login() {
     `w-full rounded-xl border ${err ? 'border-red-500/50 bg-red-500/5 focus:ring-red-500/10 focus:border-red-500' : 'border-[#E8E0D4] bg-[#FCFAF7] focus:border-[#7C3D0F] focus:ring-[#7C3D0F]/10'} pl-11 pr-4 py-2.5 text-[#1A1410] placeholder-[#9C8E83] outline-none focus:ring-4 transition-all text-sm font-medium`
 
   return (
-    <main className="h-screen flex flex-col lg:flex-row bg-[#F5F0E8] overflow-hidden relative">
+    <main className="h-screen flex flex-col lg:flex-row bg-gradient-to-br from-[#F5F0E8] via-[#EDE5D8] to-[#E3D8C6] overflow-hidden relative">
       {/* Decorative background glows */}
       <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#8B4513]/3 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/3 w-[300px] h-[300px] bg-[#7C3D0F]/3 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Left Column: Form Section */}
-      <div className="w-full lg:w-[45%] xl:w-[40%] flex flex-col justify-between p-6 lg:p-8 xl:p-12 h-screen relative z-10 bg-white/40 backdrop-blur-md border-r border-[#E8E0D4]/30 overflow-y-auto">
+      <div className="w-full lg:w-[45%] xl:w-[40%] flex flex-col justify-between p-6 lg:p-8 xl:p-12 h-screen relative z-10 bg-transparent border-r border-[#E8E0D4]/30 overflow-y-auto">
         {/* Upper section: Logo */}
         <div className="flex justify-between items-center mb-4 lg:mb-0">
           <Link href="/" className="flex items-center gap-2 group">
@@ -169,7 +169,7 @@ export default function Login() {
       </div>
 
       {/* Right Column: 3D Orbital Model Visual */}
-      <div className="hidden lg:flex lg:w-[55%] xl:w-[60%] flex-col items-center justify-center h-screen relative overflow-hidden bg-gradient-to-br from-[#F5F0E8] via-[#EDE5D8] to-[#E3D8C6] border-l border-[#E8E0D4]/30">
+      <div className="hidden lg:flex lg:w-[55%] xl:w-[60%] flex-col items-center justify-center h-screen relative overflow-hidden bg-transparent border-l border-[#E8E0D4]/30">
         <div className="absolute inset-0 opacity-[0.02] noise-overlay" />
         
         {/* Subtle background graphics/glows */}
