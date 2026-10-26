@@ -2562,7 +2562,7 @@ function StudentArt({ angle = 0, dip = 0, play = true, replayKey = 0, reading = 
         @keyframes rxOut{0%{opacity:1;transform:translate(0,0) rotate(0)}15%{transform:translate(0,-4px) rotate(0)}100%{opacity:0;transform:translate(10px,90px) rotate(7deg)}}
         @keyframes rxOutH{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(90px,24px)}}
         .rx-top{transform-origin:130px 380px}.rx-tidy{animation:rxTidy 2.6s cubic-bezier(.45,0,.2,1) both}
-        @keyframes rxTidy{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(14px,-4px) rotate(2deg)}45%{transform:translate(-6px,0) rotate(-1.5deg)}65%{transform:translate(8px,1px) rotate(1deg)}85%{transform:translate(0,0) rotate(0)}}.rx-reading{animation:rxRead 4.4s cubic-bezier(.45,0,.2,1) both}
+        @keyframes rxTidy{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(14px,-4px) rotate(2deg)}45%{transform:translate(-6px,0) rotate(-1.5deg)}65%{transform:translate(8px,1px) rotate(1deg)}85%{transform:translate(0,0) rotate(0)}}.rx-reading{animation:rxRead 6.8s cubic-bezier(.45,0,.2,1) both}
         @keyframes rxBreath{0%,100%{transform:scale(1,1)}50%{transform:scale(1.008,1.014)}}
         @keyframes rxTie{0%,100%{transform:rotate(0)}50%{transform:rotate(1.6deg)}}
         @keyframes rxSway{0%,100%{transform:rotate(0)}35%{transform:rotate(-1.2deg)}70%{transform:rotate(.9deg)}}
@@ -2570,7 +2570,7 @@ function StudentArt({ angle = 0, dip = 0, play = true, replayKey = 0, reading = 
         @keyframes rxB2{0%,18%{opacity:0;transform:translate(-70px,-120px) rotate(-14deg)}20%{opacity:1}29%{opacity:1;transform:translate(0,0) rotate(0);animation-timing-function:cubic-bezier(.3,0,.8,.5)}31%{transform:translate(0,2px) scale(1.01,.94)}35%{transform:translate(0,-7px) rotate(2deg);animation-timing-function:cubic-bezier(.3,0,.8,.5)}39%{transform:translate(0,0) rotate(0)}41%{transform:translate(0,1px)}43%{transform:translate(0,0)}100%{opacity:1;transform:translate(0,0)}}
         @keyframes rxB3{0%,36%{opacity:0;transform:translate(-70px,-120px) rotate(-14deg)}38%{opacity:1}47%{opacity:1;transform:translate(0,0) rotate(0);animation-timing-function:cubic-bezier(.3,0,.8,.5)}49%{transform:translate(0,2px) scale(1.01,.94)}53%{transform:translate(0,-7px) rotate(-2deg);animation-timing-function:cubic-bezier(.3,0,.8,.5)}57%{transform:translate(0,0) rotate(0)}59%{transform:translate(0,1px)}61%{transform:translate(0,0)}100%{opacity:1;transform:translate(0,0)}}
         @keyframes rxHand{0%,66%{opacity:0;transform:translate(90px,24px)}72%{opacity:1;transform:translate(40px,8px)}82%{opacity:1;transform:translate(0,0)}86%{transform:translate(0,3px)}90%,100%{opacity:1;transform:translate(0,0)}}
-        @keyframes rxRead{0%{transform:translate(0,0) rotate(0)}22%{transform:translate(18px,-54px) rotate(-8deg)}30%{transform:translate(20px,-58px) rotate(-12deg)}72%{transform:translate(20px,-58px) rotate(-12deg)}100%{transform:translate(0,0) rotate(0)}}
+        @keyframes rxRead{0%{transform:translate(0,0) rotate(0)}16%{transform:translate(22px,-80px) rotate(-10deg)}84%{transform:translate(22px,-80px) rotate(-10deg)}100%{transform:translate(0,0) rotate(0)}}
         @media (prefers-reduced-motion:reduce){.rx-a{animation:none!important}}
       `}</style>
       <g className="rx-a rx-torso">
@@ -2677,23 +2677,28 @@ function OrbitalHero() {
     let timer: ReturnType<typeof setTimeout>
     const wait = (ms: number) => new Promise<void>((r) => { timer = setTimeout(r, ms) })
     const visible = async () => { while (alive && (document.hidden || !rootRef.current || !(rootRef.current.getBoundingClientRect().bottom > 0))) await wait(1500) }
-    const scenes: Record<string, () => Promise<void>> = {
-      look: async () => { const d = Math.random() < 0.5 ? -1 : 1; setPose({ a: 6 * d, d: 0 }); await wait(1900); setPose({ a: -5 * d, d: 1 }); await wait(1700); setPose(null) },
-      nod: async () => { for (let i = 0; i < 2; i++) { setPose({ a: 0, d: 4 }); await wait(520); setPose({ a: 0, d: -1 }); await wait(520) } setPose(null) },
-      read: async () => { setReading(true); setPose({ a: -3, d: 4 }); await wait(4400); setReading(false); setPose(null) },
-      tidy: async () => { setTidy(true); setPose({ a: -2, d: 3 }); await wait(2600); setTidy(false); setPose(null) },
-    }
-    const names = Object.keys(scenes).sort(() => Math.random() - 0.5)
+    // fixed order every cycle: books drop and stack, he picks up the top book and looks around, puts it back, then everything falls away
     const cycle = async () => {
       await wait(5400)
-      for (const n of names.slice(0, 2)) {
-        await wait(2500 + Math.random() * 2000)
-        await visible()
-        if (!alive) return
-        await scenes[n]()
-      }
-      await wait(2500 + Math.random() * 2000)
       await visible()
+      if (!alive) return
+      for (let i = 0; i < 2; i++) { setPose({ a: 0, d: 4 }); await wait(520); setPose({ a: 0, d: -1 }); await wait(520) }
+      setPose(null)
+      await wait(900)
+      setReading(true)
+      setPose({ a: -2, d: 3 })
+      await wait(1500)
+      setPose({ a: -6, d: 0 })
+      await wait(1800)
+      setPose({ a: 6, d: 1 })
+      await wait(1900)
+      setPose({ a: -2, d: 3 })
+      await wait(1600)
+      setReading(false)
+      setPose(null)
+      await wait(1200)
+      setPose({ a: 6, d: 0 }); await wait(1500); setPose({ a: -5, d: 1 }); await wait(1400); setPose(null)
+      await wait(1000)
       if (!alive) return
       setExiting(true)
       await wait(2000)
