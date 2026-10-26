@@ -2540,7 +2540,7 @@ function ProductsSection() {
 }
 
 /* ─── Hero visual: single half-body student cut out of the site's own illustration set ─── */
-function StudentArt({ angle = 0, dip = 0, play = true, replayKey = 0, reading = false, tidy = false, exiting = false }: { angle?: number; dip?: number; play?: boolean; replayKey?: number; reading?: boolean; tidy?: boolean; exiting?: boolean }) {
+function StudentArt({ angle = 0, dip = 0, play = true, replayKey = 0, reading = false, tidy = false, exiting = false, expr = 'neutral' }: { angle?: number; dip?: number; play?: boolean; replayKey?: number; reading?: boolean; tidy?: boolean; exiting?: boolean; expr?: 'neutral' | 'curious' | 'smile' | 'surprised' }) {
   return (
     <svg viewBox="0 0 400 440" className="h-full w-full" role="img" aria-label="Student with books, connected to Revenex modules">
       <defs>
@@ -2552,6 +2552,8 @@ function StudentArt({ angle = 0, dip = 0, play = true, replayKey = 0, reading = 
         .rx-a{transform-box:view-box}
         .rx-torso{transform-origin:200px 440px;animation:rxBreath 5s cubic-bezier(.45,0,.55,1) infinite}
         .rx-tie{transform-origin:200px 318px;animation:rxTie 6s cubic-bezier(.45,0,.55,1) infinite;animation-delay:-1s}
+        .rx-eyes{transform-origin:200px 155px;animation:rxBlink 5.4s infinite;animation-delay:2.2s}
+        @keyframes rxBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
         .rx-sway{transform-origin:200px 222px;animation:rxSway 11s cubic-bezier(.45,0,.55,1) infinite}
         .rx-bk1{animation:rxB1 5s both}.rx-bk2{animation:rxB2 5s both}.rx-bk3{animation:rxB3 5s both}
         .rx-hand{animation:rxHand 5s both}
@@ -2607,8 +2609,11 @@ function StudentArt({ angle = 0, dip = 0, play = true, replayKey = 0, reading = 
       <path d="M160 128 C160 96 180 82 200 82 C222 82 240 96 240 128 L240 168 C240 202 222 222 200 222 C178 222 160 202 160 168Z" fill="url(#rxSk)" />
       {/* soft jaw shadow + nose + brow, no cartoon face */}
       <path d="M200 148 C196 164 194 172 200 176 C204 177 207 176 208 174" stroke="#B97B52" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".55" />
-      <path d="M170 142 q12 -7 24 -1 M206 141 q12 -6 24 1" stroke="#2B1B10" strokeWidth="4" fill="none" strokeLinecap="round" />
-      <path d="M186 196 q14 7 28 0" stroke="#A8603D" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity=".8" />
+      <g className="rx-a rx-eyes" style={{ transform: expr === 'surprised' ? 'scale(1.18)' : 'none', transformOrigin: '200px 155px', transformBox: 'view-box', transition: 'transform .2s ease' }}><ellipse cx="182" cy="155" rx="3.6" ry="4.4" fill="#2B1B10" /><ellipse cx="218" cy="155" rx="3.6" ry="4.4" fill="#2B1B10" /><circle cx="183.4" cy="153.4" r="1.1" fill="#F7E7D1" /><circle cx="219.4" cy="153.4" r="1.1" fill="#F7E7D1" /></g>
+      <g style={{ transform: expr === 'surprised' ? 'translateY(-6px)' : expr === 'curious' ? 'translateY(-4px)' : expr === 'smile' ? 'translateY(-1px)' : 'none', transition: 'transform .5s ease', transformBox: 'view-box' }}>
+      <path d="M170 142 q12 -7 24 -1 M206 141 q12 -6 24 1" stroke="#2B1B10" strokeWidth="4" fill="none" strokeLinecap="round" style={{ transform: expr === 'curious' ? 'rotate(0deg)' : 'none' }} />
+      </g>
+      {expr === 'surprised' ? <ellipse cx="200" cy="199" rx="5.5" ry="7" fill="#7A3A22" /> : <path d={expr === 'smile' ? 'M183 194 q17 13 34 0' : expr === 'curious' ? 'M191 198 q9 3 18 0' : 'M186 196 q14 7 28 0'} stroke="#A8603D" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity=".8" />}
       <path d="M164 176 C168 206 186 222 200 222 C190 214 176 200 170 172Z" fill="#B97B52" opacity=".25" />
       {/* hair */}
       <path d="M156 150 C146 92 178 66 206 68 C238 68 256 98 244 150 C240 128 232 112 216 106 C196 112 176 112 164 126 C160 134 158 142 156 150Z" fill="url(#rxHair)" />
@@ -2649,6 +2654,7 @@ function OrbitalHero() {
   const [reading, setReading] = useState(false)
   const [tidy, setTidy] = useState(false)
   const [exiting, setExiting] = useState(false)
+  const [expr, setExpr] = useState<'neutral' | 'curious' | 'smile' | 'surprised'>('neutral')
   const [pointer, setPointer] = useState(0)
 
   // module cards: connector index = array index
@@ -2679,6 +2685,7 @@ function OrbitalHero() {
     const visible = async () => { while (alive && (document.hidden || !rootRef.current || !(rootRef.current.getBoundingClientRect().bottom > 0))) await wait(1500) }
     // fixed order every cycle: books drop and stack, he picks up the top book and looks around, puts it back, then everything falls away
     const cycle = async () => {
+      setExpr('neutral')
       await wait(5400)
       await visible()
       if (!alive) return
@@ -2686,6 +2693,7 @@ function OrbitalHero() {
       setPose(null)
       await wait(900)
       setReading(true)
+      setExpr('curious')
       setPose({ a: -2, d: 3 })
       await wait(1500)
       setPose({ a: -6, d: 0 })
@@ -2695,11 +2703,13 @@ function OrbitalHero() {
       setPose({ a: -2, d: 3 })
       await wait(1600)
       setReading(false)
+      setExpr('smile')
       setPose(null)
       await wait(1200)
       setPose({ a: 6, d: 0 }); await wait(1500); setPose({ a: -5, d: 1 }); await wait(1400); setPose(null)
       await wait(1000)
       if (!alive) return
+      setExpr('surprised')
       setExiting(true)
       await wait(2000)
       if (!alive) return
@@ -2720,7 +2730,7 @@ function OrbitalHero() {
     const next = Math.round(Math.max(-1, Math.min(1, dx)) * 5 * 2) / 2
     if (next !== pointer) setPointer(next)
   }
-  const replay = () => { if (reduce) return; setReading(false); setTidy(false); setExiting(false); setPose(null); setReplayKey((k) => k + 1) }
+  const replay = () => { if (reduce) return; setExpr('neutral'); setReading(false); setTidy(false); setExiting(false); setPose(null); setReplayKey((k) => k + 1) }
 
   const card = 'absolute z-10 rounded-xl bg-white border border-[#EDE8E3] shadow-[0_14px_30px_-12px_rgba(36,29,21,0.35)] '
 
@@ -2753,7 +2763,7 @@ function OrbitalHero() {
         onClick={replay} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); replay() } }}
         className="absolute left-1/2 bottom-[2%] -translate-x-1/2 w-[74%] z-[6] cursor-pointer outline-none rounded-t-[999px] focus-visible:ring-2 focus-visible:ring-[#E3A82B] drop-shadow-[0_18px_22px_rgba(0,0,0,0.35)]"
       >
-        <StudentArt angle={angle} dip={dip} play={play} replayKey={replayKey} reading={reading} tidy={tidy} exiting={exiting} />
+        <StudentArt angle={angle} dip={dip} play={play} replayKey={replayKey} reading={reading} tidy={tidy} exiting={exiting} expr={expr} />
       </div>
 
       {mods.map((m) => (
