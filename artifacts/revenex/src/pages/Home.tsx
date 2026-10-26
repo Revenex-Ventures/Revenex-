@@ -397,8 +397,8 @@ function HowStep({
     show: { transition: { staggerChildren: 0.06, delayChildren: 0.12 } },
   }
   const tagItem: Variants = {
-    hidden: { opacity: 0, y: 8, filter: 'blur(6px)' },
-    show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.4, ease: 'easeOut' } },
+    hidden: { opacity: 0, y: 8 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
   }
 
 
@@ -757,6 +757,8 @@ function HowItWorksSection({ language }: { language: string }) {
   const [active, setActive] = useState(0)
   const [spineH, setSpineH] = useState(0)
   const reduce = useReducedMotion()
+  const orbsRef = useRef<HTMLElement>(null)
+  const orbsOn = useInView(orbsRef, { margin: '150px' })
   const t = language === 'hi' ? 'hi' : 'en'
 
   useLayoutEffect(() => {
@@ -788,26 +790,29 @@ function HowItWorksSection({ language }: { language: string }) {
   }
 
   return (
-    <section className="relative overflow-hidden border-t border-[#E8E0D4] bg-[#FAF8F5] py-24 lg:py-32" id="how-it-works">
+    <section ref={orbsRef} className="relative overflow-hidden border-t border-[#E8E0D4] bg-[#FAF8F5] py-24 lg:py-32" id="how-it-works">
       <style>{HiwCss}</style>
 
       {/* Background layers — drifting gradient orbs + faint circuit grid */}
       <div className="pointer-events-none absolute inset-0 bg-[#F0E8DC]/80" />
       <div className="hiw-circuit-grid pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
       <motion.div
-        className="pointer-events-none absolute -top-40 left-[10%] h-[440px] w-[440px] rounded-full bg-[#7C3D0F]/[0.05] blur-[120px]"
-        animate={reduce ? undefined : { x: [0, 60, -45, 0], y: [0, 45, -30, 0], scale: [1, 1.12, 0.96, 1] }}
-        transition={reduce ? undefined : { repeat: Infinity, repeatType: 'reverse', duration: 18, ease: 'easeInOut' }}
+        className="pointer-events-none absolute -top-72 -left-[5%] h-[760px] w-[760px] rounded-full"
+        style={{ background: 'radial-gradient(circle, rgba(124,61,15,0.07) 0%, transparent 68%)' }}
+        animate={reduce || !orbsOn ? undefined : { x: [0, 60, -45, 0], y: [0, 45, -30, 0], scale: [1, 1.12, 0.96, 1] }}
+        transition={reduce || !orbsOn ? undefined : { repeat: Infinity, repeatType: 'reverse', duration: 18, ease: 'easeInOut' }}
       />
       <motion.div
-        className="pointer-events-none absolute -bottom-40 right-[10%] h-[420px] w-[420px] rounded-full bg-[#8B4513]/[0.06] blur-[120px]"
-        animate={reduce ? undefined : { x: [0, -55, 40, 0], y: [0, -40, 25, 0], scale: [1, 1.08, 0.94, 1] }}
-        transition={reduce ? undefined : { repeat: Infinity, repeatType: 'reverse', duration: 20, ease: 'easeInOut' }}
+        className="pointer-events-none absolute -bottom-72 right-[0%] h-[740px] w-[740px] rounded-full"
+        style={{ background: 'radial-gradient(circle, rgba(139,69,19,0.08) 0%, transparent 68%)' }}
+        animate={reduce || !orbsOn ? undefined : { x: [0, -55, 40, 0], y: [0, -40, 25, 0], scale: [1, 1.08, 0.94, 1] }}
+        transition={reduce || !orbsOn ? undefined : { repeat: Infinity, repeatType: 'reverse', duration: 20, ease: 'easeInOut' }}
       />
       <motion.div
-        className="pointer-events-none absolute left-[30%] top-[6%] h-[400px] w-[400px] rounded-full bg-[#166534]/[0.05] blur-[120px]"
-        animate={reduce ? undefined : { x: [0, 40, -30, 0], y: [0, -35, 20, 0], scale: [1, 1.06, 0.97, 1] }}
-        transition={reduce ? undefined : { repeat: Infinity, repeatType: 'reverse', duration: 16, ease: 'easeInOut' }}
+        className="pointer-events-none absolute left-[20%] -top-[8%] h-[720px] w-[720px] rounded-full"
+        style={{ background: 'radial-gradient(circle, rgba(22,101,52,0.06) 0%, transparent 68%)' }}
+        animate={reduce || !orbsOn ? undefined : { x: [0, 40, -30, 0], y: [0, -35, 20, 0], scale: [1, 1.06, 0.97, 1] }}
+        transition={reduce || !orbsOn ? undefined : { repeat: Infinity, repeatType: 'reverse', duration: 16, ease: 'easeInOut' }}
       />
       <div
         className="pointer-events-none absolute inset-y-0 left-1/2 hidden w-[380px] -translate-x-1/2 md:block"
@@ -1847,6 +1852,18 @@ function WhyRevenexSection({ language }: { language: string }) {
 }
 
 
+let featureImagesPromise: Promise<Record<string, string>> | null = null
+function useFeatureImages() {
+  const [map, setMap] = useState<Record<string, string> | null>(null)
+  useEffect(() => {
+    let alive = true
+    featureImagesPromise = featureImagesPromise ?? import('@/lib/featureImages').then((m) => m.default)
+    featureImagesPromise.then((m) => { if (alive) setMap(m) })
+    return () => { alive = false }
+  }, [])
+  return map
+}
+
 function FeatureCard({ title, description, background, character, reverse, characterShiftX = 0, characterScale = 1, descriptionShiftX = 0, aspectRatio = '2 / 1' }: {
   title: string;
   description: string;
@@ -1859,6 +1876,7 @@ function FeatureCard({ title, description, background, character, reverse, chara
   aspectRatio?: string;
 }) {
   const aspect = aspectRatio || '17 / 9'
+  const imgs = useFeatureImages()
   const smoothEase: [number, number, number, number] = [0.33, 0, 0.2, 1]
   const dur = 0.7
 
@@ -1900,10 +1918,11 @@ function FeatureCard({ title, description, background, character, reverse, chara
         >
           {/* Full-size background illustration */}
           <img
-            src={background}
+            src={imgs ? (imgs[background] ?? background) : undefined}
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
+            decoding="async"
           />
 
           {/* Dark overlay — darkens the tilted background on hover */}
@@ -1920,9 +1939,11 @@ function FeatureCard({ title, description, background, character, reverse, chara
 
         {/* Layer 2 — Character: same canvas as background, rendered exactly on top, never rotates or darkens */}
         <motion.img
-          src={character}
+          src={imgs ? (imgs[character] ?? character) : undefined}
           alt=""
           className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+          loading="lazy"
+          decoding="async"
           style={{ filter: 'drop-shadow(0 4px 12px rgba(20,14,8,0.25))' }}
           variants={{
             initial: { y: 16, scale: characterScale, x: characterShiftX + 24 },
@@ -2046,7 +2067,6 @@ function EcosystemBackground({
               x: '-50%',
               y: '-50%',
               background: 'radial-gradient(ellipse, rgba(139,69,19,0.10), transparent 65%)',
-              filter: 'blur(50px)',
             }}
             animate={{ rotate: 360, scale: [1, 1.2, 1] }}
             transition={{ duration: 84, repeat: Infinity, ease: 'easeInOut' }}
@@ -2552,8 +2572,6 @@ function StudentArt({ angle = 0, dip = 0, play = true, replayKey = 0, reading = 
         .rx-a{transform-box:view-box}
         .rx-torso{transform-origin:200px 440px;animation:rxBreath 5s cubic-bezier(.45,0,.55,1) infinite}
         .rx-tie{transform-origin:200px 318px;animation:rxTie 6s cubic-bezier(.45,0,.55,1) infinite;animation-delay:-1s}
-        .rx-eyes{transform-origin:200px 155px;animation:rxBlink 5.4s infinite;animation-delay:2.2s}
-        @keyframes rxBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
         .rx-sway{transform-origin:200px 222px;animation:rxSway 11s cubic-bezier(.45,0,.55,1) infinite}
         .rx-bk1{animation:rxB1 5s both}.rx-bk2{animation:rxB2 5s both}.rx-bk3{animation:rxB3 5s both}
         .rx-hand{animation:rxHand 5s both}
@@ -2609,7 +2627,7 @@ function StudentArt({ angle = 0, dip = 0, play = true, replayKey = 0, reading = 
       <path d="M160 128 C160 96 180 82 200 82 C222 82 240 96 240 128 L240 168 C240 202 222 222 200 222 C178 222 160 202 160 168Z" fill="url(#rxSk)" />
       {/* soft jaw shadow + nose + brow, no cartoon face */}
       <path d="M200 148 C196 164 194 172 200 176 C204 177 207 176 208 174" stroke="#B97B52" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".55" />
-      <g className="rx-a rx-eyes" style={{ transform: expr === 'surprised' ? 'scale(1.18)' : 'none', transformOrigin: '200px 155px', transformBox: 'view-box', transition: 'transform .2s ease' }}><ellipse cx="182" cy="155" rx="3.6" ry="4.4" fill="#2B1B10" /><ellipse cx="218" cy="155" rx="3.6" ry="4.4" fill="#2B1B10" /><circle cx="183.4" cy="153.4" r="1.1" fill="#F7E7D1" /><circle cx="219.4" cy="153.4" r="1.1" fill="#F7E7D1" /></g>
+      
       <g style={{ transform: expr === 'surprised' ? 'translateY(-6px)' : expr === 'curious' ? 'translateY(-4px)' : expr === 'smile' ? 'translateY(-1px)' : 'none', transition: 'transform .5s ease', transformBox: 'view-box' }}>
       <path d="M170 142 q12 -7 24 -1 M206 141 q12 -6 24 1" stroke="#2B1B10" strokeWidth="4" fill="none" strokeLinecap="round" style={{ transform: expr === 'curious' ? 'rotate(0deg)' : 'none' }} />
       </g>
