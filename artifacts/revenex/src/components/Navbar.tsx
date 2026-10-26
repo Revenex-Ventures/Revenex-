@@ -209,7 +209,7 @@ import { useState, useEffect, useRef } from 'react'
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1">
                 <img src="/logo.png" alt="REVENEX" className="h-9 lg:h-10 w-auto object-contain drop-shadow-[0_4px_16px_rgba(227,181,129,0.35)]" />
                 <span className="text-xl font-black lg:text-2xl tracking-tight">
-                  <span className="text-white">EVEN</span><span className="text-[#E3B581]">EX</span>
+                  <span className="text-white">REVEN</span><span className="text-[#E3B581]">EX</span>
                 </span>
               </motion.div>
             </Link>
