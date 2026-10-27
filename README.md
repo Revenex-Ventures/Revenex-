@@ -82,7 +82,7 @@ pnpm --filter @workspace/revenex build
 
 ## Production Deployment Architecture
 
-The prepared deployment serves the React frontend and Express API together on Vercel. Deploy from the repository root; `api/[...path].ts` exports the API and `vercel.json` reserves `/api/*` for the Node function.
+The prepared deployment serves the React frontend and Express API together on Vercel. Deploy from the repository root; `api/[...path].js` exports the API and `vercel.json` reserves `/api/*` for the Node function.
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for the live-site diagnosis, required environment variables, Google setup, database provisioning, administrator bootstrap and verification steps. The previous external Railway/Firebase redirects do not identify a working backend.
 

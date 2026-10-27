@@ -44,8 +44,9 @@
     }
   ],
   "functions": {
-    "api/[...path].ts": {
+    "api/[...path].js": {
       "maxDuration": 30
     }
-  }
+  },
+  "buildCommand": "pnpm --filter @workspace/api-server build && pnpm run build"
 }

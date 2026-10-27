@@ -46,7 +46,7 @@
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "pnpm run build",
   "functions": {
-    "api/[...path].ts": {
+    "api/[...path].js": {
       "maxDuration": 30
     }
   }

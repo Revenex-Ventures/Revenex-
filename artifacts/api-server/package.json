@@ -10,7 +10,8 @@
     "start": "node --env-file-if-exists=.env --enable-source-maps ./dist/index.mjs",
     "test": "node tests/run.mjs",
     "typecheck": "tsc -p tsconfig.vercel.json --noEmit",
-    "bootstrap:admin": "node --env-file-if-exists=.env --import tsx src/bootstrap.ts"
+    "bootstrap:admin": "node --env-file-if-exists=.env --import tsx src/bootstrap.ts",
+    "test:compiled": "node tests/compiled-smoke.mjs"
   },
   "dependencies": {
     "@workspace/api-zod": "workspace:*",
