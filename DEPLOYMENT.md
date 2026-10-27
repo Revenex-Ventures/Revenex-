@@ -7,7 +7,7 @@ The checks made during this repair found:
 - `https://revenex.in/api/healthz` and the `www` equivalent return the SPA HTML, not JSON. Static hosting is swallowing API requests; POST requests consequently fail with 405.
 - The old Railway endpoint returns `Application not found`.
 - The old Cloudflare redirect points at a Firebase project different from `.firebaserc`. No working API was found there.
-- The configured PostgreSQL connection could not be verified from this environment. A usable database connection is still required before production can be considered operational.
+- The configured PostgreSQL connection timed out during a read-only connection check. A reachable database connection is still required before production can be considered operational.
 
 These are deployment problems; rebuilding the frontend alone does not resolve them.
 
