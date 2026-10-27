@@ -1,5 +1,7 @@
 import { Router, type IRouter } from "express";
 import { randomUUID } from "crypto";
+import { ChatMemory } from "../lib/chat-memory";
+import { schemas, validateBody } from "../lib/validation";
 
 const router: IRouter = Router();
 const KEY = (process.env["OPENROUTER_API_KEY"] ?? "").trim();
@@ -30,15 +32,30 @@ Core information about Revenex to use in your answers:
 - Tech Partners & Infrastructure:
   * Google Cloud (infrastructure), Firebase (auth/database), Gemini AI (insights), Razorpay (UPI payments), Twilio (SMS/WhatsApp alerts).
 - Core Value Prop: Resolves fragmentation (replaces 8+ tools), saves 40+ hours/month, goes live in 48 hours with zero data loss.`;
-const SYS_HI = SYS_EN + "\nRespond in Hindi (Devanagari). Keep responses short and conversational.";
+const SYS_HI =
+  SYS_EN +
+  "\nRespond in Hindi (Devanagari). Keep responses short and conversational.";
 
-const sessions = new Map<string, Array<{ role: string; content: string }>>();
+const sessions = new ChatMemory();
 
-async function callOpenRouter(model: string, messages: Array<{ role: string; content: string }>) {
+async function callOpenRouter(
+  model: string,
+  messages: Array<{ role: string; content: string }>,
+) {
   const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
-    headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json", "X-Title": "REVENEX Chatbot" },
-    body: JSON.stringify({ model, messages, max_tokens: 400, temperature: 0.2 }),
+    signal: AbortSignal.timeout(7000),
+    headers: {
+      Authorization: `Bearer ${KEY}`,
+      "Content-Type": "application/json",
+      "X-Title": "REVENEX Chatbot",
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      max_tokens: 400,
+      temperature: 0.2,
+    }),
   });
   return resp;
 }
@@ -49,41 +66,84 @@ const FREE_MODELS = [
   "meta-llama/llama-3.3-70b-instruct:free",
 ];
 
-router.post("/chat", async (req, res) => {
-  const { message, language } = req.body as { message?: string; language?: string };
-  if (!message?.trim()) { res.status(400).json({ error: "message required" }); return; }
-  if (!KEY) { res.status(503).json({ error: "AI not configured" }); return; }
+router.post("/chat", validateBody(schemas.chat), async (req, res) => {
+  const { message, language } = req.body as {
+    message?: string;
+    language?: string;
+  };
+  if (!message?.trim()) {
+    res.status(400).json({ error: "message required" });
+    return;
+  }
+  if (!KEY) {
+    res.status(503).json({ error: "AI not configured" });
+    return;
+  }
 
   try {
     const cookieName = "chat_session";
     let sid = req.cookies?.[cookieName] as string | undefined;
-    if (!sid) { sid = randomUUID(); res.cookie(cookieName, sid, { httpOnly: true, sameSite: "lax" }); }
+    if (!sid || !/^[a-f0-9-]{36}$/.test(sid)) {
+      sid = randomUUID();
+      res.cookie(cookieName, sid, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 30 * 60 * 1000,
+        path: "/",
+      });
+    }
 
     const memory = sessions.get(sid) ?? [];
-    const system = { role: "system", content: language === "hi" ? SYS_HI : SYS_EN };
+    const system = {
+      role: "system",
+      content: language === "hi" ? SYS_HI : SYS_EN,
+    };
     const msgs = [system, ...memory, { role: "user", content: message }];
 
     let r: Response | null = null;
     let usedModel = FREE_MODELS[0]!;
     for (const model of FREE_MODELS) {
       usedModel = model;
-      r = await callOpenRouter(model, msgs);
+      try {
+        r = await callOpenRouter(model, msgs);
+      } catch {
+        req.log.warn({ model }, "AI provider request timed out or failed");
+        continue;
+      }
       if (r.ok) break;
-      req.log.warn({ status: r.status, model }, "Model unavailable, trying next");
+      req.log.warn(
+        { status: r.status, model },
+        "Model unavailable, trying next",
+      );
     }
 
     if (!r || !r.ok) {
       req.log.error({ status: r?.status }, "OpenRouter all-models-failed");
-      const bodyText = await r?.text().catch(() => "") ?? "";
-      res.status(502).json({ error: "AI error", details: bodyText });
+      res
+        .status(502)
+        .json({
+          error: "AI is temporarily unavailable. Please try again later.",
+        });
       return;
     }
 
-    const d = await r.json() as { choices?: Array<{ message?: { content?: string } }> };
+    const d = (await r.json()) as {
+      choices?: Array<{ message?: { content?: string } }>;
+    };
     const reply = d.choices?.[0]?.message?.content?.trim() ?? "";
+    if (!reply) {
+      res
+        .status(502)
+        .json({ error: "AI returned an empty response. Please try again." });
+      return;
+    }
 
-    const newMem = [...memory, { role: "user", content: message }, { role: "assistant", content: reply }].slice(-12);
-    sessions.set(sid, newMem);
+    sessions.set(sid, [
+      ...memory,
+      { role: "user", content: message! },
+      { role: "assistant", content: reply },
+    ]);
 
     res.json({ reply, model: usedModel });
   } catch (err) {

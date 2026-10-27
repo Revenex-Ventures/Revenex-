@@ -1,3 +1,4 @@
+import { BrandLogo } from '@/components/BrandLogo'
 import { motion } from "framer-motion"
 import type { ReactNode } from "react"
 import { Link } from "wouter"
@@ -33,7 +34,7 @@ export function ShowcaseShell({
                 <span className="sm:hidden">Home</span>
               </span>
             </Link>
-            <img src="/logo.png" alt="REVENEX" className="h-7 w-auto object-contain opacity-90" />
+            <BrandLogo tone="dark" size="sm" />
           </div>
 
           <div className="flex items-center gap-3">

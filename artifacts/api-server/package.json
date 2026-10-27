@@ -7,8 +7,10 @@
   "scripts": {
     "dev": "pnpm run build && pnpm run start",
     "build": "node ./build.mjs",
-    "start": "node --env-file=.env --enable-source-maps ./dist/index.mjs",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "start": "node --env-file-if-exists=.env --enable-source-maps ./dist/index.mjs",
+    "test": "node tests/run.mjs",
+    "typecheck": "tsc -p tsconfig.vercel.json --noEmit",
+    "bootstrap:admin": "node --env-file-if-exists=.env --import tsx src/bootstrap.ts"
   },
   "dependencies": {
     "@workspace/api-zod": "workspace:*",
@@ -18,6 +20,9 @@
     "cors": "^2.8.6",
     "drizzle-orm": "catalog:",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "google-auth-library": "^10.5.0",
+    "zod": "catalog:",
     "firebase-admin": "^14.2.0",
     "firebase-functions": "^7.3.2",
     "jsonwebtoken": "^9.0.2",
@@ -34,6 +39,11 @@
     "esbuild": "0.27.3",
     "esbuild-plugin-pino": "^2.3.3",
     "pino-pretty": "^13.1.3",
-    "thread-stream": "3.1.0"
+    "thread-stream": "3.1.0",
+    "tsx": "catalog:",
+    "pg-mem": "^3.0.5"
+  },
+  "engines": {
+    "node": ">=22.9.0"
   }
 }

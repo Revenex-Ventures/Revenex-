@@ -7,7 +7,6 @@
  */
 
 export interface GoogleAuthInput {
-  email: string;
-  name: string;
-  googleId?: string;
+  /** Google-signed ID token verified by the backend */
+  credential: string;
 }

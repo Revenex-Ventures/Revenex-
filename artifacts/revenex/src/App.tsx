@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Switch, Route, useLocation } from "wouter";
 import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -6,32 +6,33 @@ import { LanguageProvider } from "@/lib/language-context";
 import { AuthProvider } from "@/lib/auth-context";
 import { CursorGlow } from "@/components/CursorGlow";
 import { Preloader } from "@/components/Preloader";
-import Home from "@/pages/Home";
-import About from "@/pages/About";
-import OurStory from "@/pages/OurStory";
-import Contact from "@/pages/Contact";
-import BookDemo from "@/pages/BookDemo";
-import OurTeam from "@/pages/OurTeam";
-import Homework from "@/pages/Homework";
-import StudentPortal from "@/pages/StudentPortal";
-import Transport from "@/pages/Transport";
-import Careers from "@/pages/Careers";
-import Login from "@/pages/Login";
-import Signup from "@/pages/Signup";
-import ResetPassword from "@/pages/ResetPassword";
-import FeatureDetail from "@/pages/FeatureDetail";
-import PrivacyPolicy from "@/pages/PrivacyPolicy";
-import Terms from "@/pages/Terms";
-import NotFound from "@/pages/not-found";
-import Admin from "@/pages/Admin";
-import AttendanceShowcase from "@/pages/showcase/Attendance";
-import AdmissionsShowcase from "@/pages/showcase/Admissions";
-import HomeworkShowcase from "@/pages/showcase/HomeworkShowcase";
-import ReportCardsShowcase from "@/pages/showcase/ReportCards";
-import FeeManagementShowcase from "@/pages/showcase/FeeManagement";
-import StudentPortalShowcase from "@/pages/showcase/StudentPortalShowcase";
-import TransportShowcase from "@/pages/showcase/TransportShowcase";
-import CommunicationShowcase from "@/pages/showcase/Communication";
+const Home = lazy(() => import("@/pages/Home"));
+const About = lazy(() => import("@/pages/About"));
+const OurStory = lazy(() => import("@/pages/OurStory"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const BookDemo = lazy(() => import("@/pages/BookDemo"));
+const OurTeam = lazy(() => import("@/pages/OurTeam"));
+const Homework = lazy(() => import("@/pages/Homework"));
+const StudentPortal = lazy(() => import("@/pages/StudentPortal"));
+const Transport = lazy(() => import("@/pages/Transport"));
+const Careers = lazy(() => import("@/pages/Careers"));
+const Login = lazy(() => import("@/pages/Login"));
+const Signup = lazy(() => import("@/pages/Signup"));
+const ResetPassword = lazy(() => import("@/pages/ResetPassword"));
+const FeatureDetail = lazy(() => import("@/pages/FeatureDetail"));
+const PrivacyPolicy = lazy(() => import("@/pages/PrivacyPolicy"));
+const Terms = lazy(() => import("@/pages/Terms"));
+const NotFound = lazy(() => import("@/pages/not-found"));
+const Admin = lazy(() => import("@/pages/Admin"));
+const AttendanceShowcase = lazy(() => import("@/pages/showcase/Attendance"));
+const AdmissionsShowcase = lazy(() => import("@/pages/showcase/Admissions"));
+const HomeworkShowcase = lazy(() => import("@/pages/showcase/HomeworkShowcase"));
+const ReportCardsShowcase = lazy(() => import("@/pages/showcase/ReportCards"));
+const FeeManagementShowcase = lazy(() => import("@/pages/showcase/FeeManagement"));
+const StudentPortalShowcase = lazy(() => import("@/pages/showcase/StudentPortalShowcase"));
+const TransportShowcase = lazy(() => import("@/pages/showcase/TransportShowcase"));
+const CommunicationShowcase = lazy(() => import("@/pages/showcase/Communication"));
+const MotionShowcase = lazy(() => import("@/pages/MotionShowcase"));
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -58,6 +59,7 @@ function Router() {
         <Route path="/solutions/student-portal" component={StudentPortalShowcase} />
         <Route path="/solutions/transport" component={TransportShowcase} />
         <Route path="/solutions/communication" component={CommunicationShowcase} />
+        <Route path="/motion-showcase" component={MotionShowcase} />
         <Route path="/careers" component={Careers} />
         <Route path="/features/:slug" component={FeatureDetail} />
         <Route path="/login" component={Login} />
@@ -78,7 +80,7 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2200);
+    }, 1400);
 
     return () => clearTimeout(timer);
   }, []);
@@ -91,7 +93,9 @@ function App() {
             {loading && <Preloader />}
           </AnimatePresence>
           <ScrollToTop />
-          <Router />
+          <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-[#17375D]" role="status">Loading…</div>}>
+            <Router />
+          </Suspense>
         </AuthProvider>
       </LanguageProvider>
     </QueryClientProvider>

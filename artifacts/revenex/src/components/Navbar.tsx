@@ -1,3 +1,4 @@
+import { BrandLogo } from '@/components/BrandLogo'
 import { useState, useEffect, useRef } from 'react'
   import { Link, useLocation } from 'wouter'
   import { motion, AnimatePresence } from 'framer-motion'
@@ -207,10 +208,7 @@ import { useState, useEffect, useRef } from 'react'
             <div className="absolute top-0 left-12 right-12 h-px bg-gradient-to-r from-transparent via-[#E3B581]/40 to-transparent" />
             <Link href="/" className="flex items-center shrink-0">
               <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} className="flex items-center gap-1">
-                <img src="/logo.png" alt="REVENEX" className="h-9 lg:h-10 w-auto object-contain drop-shadow-[0_4px_16px_rgba(227,181,129,0.35)]" />
-                <span className="text-xl font-black lg:text-2xl tracking-tight">
-                  <span className="text-white">EVEN</span><span className="text-[#E3B581]">EX</span>
-                </span>
+                <BrandLogo tone="light" size="sm" />
               </motion.div>
             </Link>
 
@@ -306,7 +304,7 @@ import { useState, useEffect, useRef } from 'react'
           <div className="lg:hidden relative flex items-end justify-around rounded-full bg-[#241D15]/90 backdrop-blur-2xl border border-[#3D2810] px-3 pb-1 pt-1 shadow-[0_10px_32px_-10px_rgba(0,0,0,0.5)] w-full max-w-sm">
             <Link href="/" className="flex flex-col items-center gap-0.5 cursor-pointer">
               <span className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${location === '/' ? 'bg-[#E3B581]/15 text-[#E3B581]' : 'text-[#C9BBA9] hover:text-white'}`}>
-                <House className="h-3.5 w-3.5" />
+                <img src="/brand/mark-light.svg" alt="Revenex" className="h-5 w-6 object-contain" />
               </span>
               <span className={`text-[8px] font-semibold ${location === '/' ? 'text-[#E3B581]' : 'text-[#C9BBA9]'}`}>Home</span>
             </Link>

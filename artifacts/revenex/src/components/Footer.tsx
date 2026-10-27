@@ -1,3 +1,6 @@
+import { apiRequest } from '@/lib/api'
+import { useQuery } from '@tanstack/react-query'
+import { BrandLogo } from '@/components/BrandLogo'
 import { useState, type FormEvent } from 'react'
 import { Link } from 'wouter'
 import { Linkedin, Github, Instagram, Mail, ArrowRight, ArrowUpRight, Phone, Sparkles, Check } from 'lucide-react'
@@ -46,6 +49,9 @@ export function Footer() {
 
   const [email, setEmail] = useState('')
   const [joined, setJoined] = useState(false)
+  const [joining, setJoining] = useState(false)
+  const [joinError, setJoinError] = useState('')
+  const { data: operational } = useQuery({ queryKey: ['service-ready'], queryFn: () => apiRequest('/api/readyz').then(() => true), retry: false, staleTime: 60000 })
 
   const product = [
     { label: 'Attendance', href: '/product/attendance' },
@@ -80,9 +86,15 @@ export function Footer() {
     { icon: Mail, href: 'mailto:team@revenex.in', label: 'Email' },
   ]
 
-  const handleJoin = (e: FormEvent) => {
+  const handleJoin = async (e: FormEvent) => {
     e.preventDefault()
-    if (email.trim()) setJoined(true)
+    if (joining || joined) return
+    setJoining(true); setJoinError('')
+    try {
+      await apiRequest('/api/contact', { method: 'POST', body: JSON.stringify({ name: 'Newsletter subscriber', email, subject: 'Newsletter subscription', message: 'Please add this email to Revenex product updates. Submitted through the website signup form.' }) })
+      setJoined(true)
+    } catch (error) { setJoinError(error instanceof Error ? error.message : 'Unable to join. Please try again.') }
+    finally { setJoining(false) }
   }
 
   return (
@@ -138,10 +150,7 @@ export function Footer() {
           {/* Col 1 — Brand */}
           <div className="col-span-2 lg:col-span-2 space-y-5">
             <div>
-              <img src="/logo.png" alt="REVENEX" className="h-8 sm:h-9 w-auto object-contain" />
-              <p className="text-[11px] text-white/40 font-medium uppercase tracking-widest mt-2">
-                Ventures Private Limited
-              </p>
+              <BrandLogo tone="light" size="lg" stacked full />
             </div>
             <p className="text-sm text-white/50 leading-relaxed max-w-xs">
               {language === 'en'
@@ -209,18 +218,19 @@ export function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter school email..."
-                  disabled={joined}
+                  disabled={joined || joining}
                   className="flex-1 bg-transparent outline-none text-sm text-[#F9F6F0] placeholder:text-white/30 px-3 py-2 min-w-0 disabled:opacity-60"
                 />
                 <button
                   type="submit"
-                  disabled={joined}
+                  disabled={joined || joining}
                   className="shrink-0 inline-flex items-center gap-1.5 bg-[#D49A58] text-[#18120E] font-semibold text-xs px-4 py-2.5 rounded-lg transition-all hover:bg-[#E0AA6E] disabled:bg-green-500/20 disabled:text-green-400"
                 >
                   {joined ? <Check className="h-3.5 w-3.5" /> : <ArrowUpRight className="h-3.5 w-3.5" />}
-                  {joined ? 'Joined' : 'Join'}
+                  {joined ? 'Joined' : joining ? 'Saving…' : 'Join'}
                 </button>
               </div>
+              {joinError && <p role="alert" className="text-[11px] text-red-300 mt-2">{joinError}</p>}
               {joined && (
                 <p className="text-[11px] text-green-400 mt-2">You're on the list — we'll be in touch.</p>
               )}
@@ -270,12 +280,12 @@ export function Footer() {
                 Built by <span className="text-white/70 font-semibold">Revenex Team</span>
               </span>
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/25">
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/15">
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 animate-ping" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
+                <span className="absolute inline-flex h-full w-full rounded-full bg-[#D8B65B] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D8B65B]" />
               </span>
-              <span className="text-[11px] font-semibold text-green-400">All systems operational</span>
+              <span className="text-[11px] font-semibold text-white/60">{operational ? 'All systems operational' : 'Service status unavailable'}</span>
             </div>
           </div>
         </div>

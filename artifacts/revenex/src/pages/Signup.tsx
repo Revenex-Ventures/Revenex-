@@ -1,3 +1,5 @@
+import { BrandLogo } from '@/components/BrandLogo'
+import { apiRequest } from '@/lib/api'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
 import { motion } from 'framer-motion'
@@ -42,32 +44,23 @@ export default function Signup() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
     setErrors({}); setLoading(true)
     try {
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, school: form.school, password: form.password }),
+      const data = await apiRequest<{ token: string; user: { id: number; name: string; email: string; role: string } }>('/api/auth/signup', {
+        method: 'POST', body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, school: form.school, password: form.password }),
       })
-      const data = await res.json() as { token?: string; user?: { id: number; name: string; email: string; role?: string }; message?: string }
-      if (!res.ok) {
-        setLoading(false)
-        if (res.status === 409) setErrors({ email: data.message ?? 'An account with this email already exists.' })
-        else setErrors({ general: data.message ?? 'Something went wrong.' } as typeof errors)
-        return
-      }
-      login(data.token ?? '', { id: data.user?.id ?? 0, name: data.user?.name ?? form.name, email: data.user?.email ?? form.email, role: data.user?.role ?? 'user' })
+      login(data.token, data.user)
       setLoading(false); setGoogleName(data.user?.name ?? form.name); setDone(true)
       setTimeout(() => navigate('/'), 2500)
-    } catch { setLoading(false); setErrors({ general: 'Connection error. Please try again.' } as typeof errors) }
+    } catch (error) { setErrors({ general: error instanceof Error ? error.message : 'Connection error. Please try again.' }) }
+    finally { setLoading(false) }
   }
 
-  const handleGoogleSuccess = async (email: string, name: string, googleId: string) => {
-    try {
-      const res = await fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, name, googleId }) })
-      const data = await res.json() as { token?: string; user?: { id: number; name: string; email: string; role?: string }; message?: string }
-      if (!res.ok) { setErrors({ general: data.message ?? 'Google sign-up failed.' } as typeof errors); return }
-      login(data.token ?? '', { id: data.user?.id ?? 0, name: data.user?.name ?? name, email: data.user?.email ?? email, role: data.user?.role ?? 'user' })
-      setGoogleName(data.user?.name ?? name); setDone(true)
-      setTimeout(() => navigate('/'), 2500)
-    } catch { setErrors({ general: 'Google sign-up failed. Please try again.' } as typeof errors) }
+  const handleGoogleSuccess = async (credential: string) => {
+    setErrors({})
+    const data = await apiRequest<{ token: string; user: { id: number; name: string; email: string; role: string } }>('/api/auth/google', {
+      method: 'POST', body: JSON.stringify({ credential }),
+    })
+    login(data.token, data.user)
+    navigate(data.user.role === 'admin' ? '/admin' : '/')
   }
 
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,9 +96,7 @@ export default function Signup() {
         {/* Upper section: Logo */}
         <div className="flex justify-between items-center mb-4 lg:mb-0">
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-2xl font-black tracking-tight transition-all duration-300 group-hover:opacity-90">
-              <span className="text-[#1A1410]">REVEN</span><span className="text-aqua">EX</span>
-            </span>
+            <BrandLogo size="md" />
           </Link>
         </div>
 

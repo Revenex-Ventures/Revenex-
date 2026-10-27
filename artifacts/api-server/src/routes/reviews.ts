@@ -1,3 +1,4 @@
+import { schemas, validateBody, escapeHtml } from "../lib/validation";
 import { Router, type IRouter } from "express";
 import { db } from "@workspace/db";
 import { reviewsTable } from "@workspace/db";
@@ -19,7 +20,7 @@ router.get("/reviews", async (req, res) => {
   }
 });
 
-router.post("/reviews", async (req, res) => {
+router.post("/reviews", validateBody(schemas.review), async (req, res) => {
   const { name, role, school, content, rating } = req.body as {
     name?: string;
     role?: string;
@@ -41,7 +42,7 @@ router.post("/reviews", async (req, res) => {
   try {
     const [review] = await db
       .insert(reviewsTable)
-      .values({ name, role, school, content, rating, approved: true })
+      .values({ name, role, school, content, rating, approved: false })
       .returning();
     res.status(201).json(review);
   } catch (err) {

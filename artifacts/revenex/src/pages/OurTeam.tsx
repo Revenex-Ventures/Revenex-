@@ -40,7 +40,7 @@ const team = [
     bioEn: 'Prasanna leads full-stack engineering, product design, and tool execution, focused on codebase integrity, scalable infrastructure deployment, and maintaining system reliability and quality.',
     bioHi: 'फुल-स्टैक इंजीनियरिंग, उत्पाद डिजाइन और उपकरण कार्यान्वयन का नेतृत्व करते हैं, जो कोडबेस अखंडता, स्केलेबल बुनियादी ढांचे और सिस्टम विश्वसनीयता पर केंद्रित है।',
     expertise: ['Product Engineering', 'System Architecture', 'Infrastructure Scaling', 'Quality Assurance', 'Troubleshooting'],
-    photo: '/Prasanna.png?v=7',
+    photo: '/Prasanna.png?v=8',
     photoClass: 'scale-100',
     accentColor: '#166534',
     email: 'prasannamate1754@gmail.com'

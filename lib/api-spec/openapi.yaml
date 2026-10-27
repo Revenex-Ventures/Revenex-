@@ -390,14 +390,10 @@ components:
     GoogleAuthInput:
       type: object
       properties:
-        email:
+        credential:
           type: string
-          format: email
-        name:
-          type: string
-        googleId:
-          type: string
-      required: [email, name]
+          description: Google-signed ID token verified by the backend
+      required: [credential]
 
     ForgotPasswordInput:
       type: object
@@ -406,6 +402,17 @@ components:
           type: string
           format: email
       required: [email]
+
+    ResetPasswordInput:
+      type: object
+      properties:
+        token:
+          type: string
+        password:
+          type: string
+          minLength: 8
+          maxLength: 72
+      required: [token, password]
 
     AuthUser:
       type: object
@@ -430,11 +437,7 @@ components:
       required: [token, user]
 
     MeResponse:
-      type: object
-      properties:
-        user:
-          $ref: "#/components/schemas/AuthUser"
-      required: [user]
+      $ref: "#/components/schemas/AuthUser"
 
     AuthError:
       type: object

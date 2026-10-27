@@ -1,36 +1,48 @@
 import { Router, type IRouter } from "express";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { db } from "@workspace/db";
 import { usersTable } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { eq, and, gt } from "drizzle-orm";
+import { schemas, validateBody, escapeHtml } from "../lib/validation";
+import {
+  authenticate,
+  createSession,
+  clearSession,
+  publicUser,
+  hashResetToken,
+} from "../lib/session";
+import { verifyGoogleCredential } from "../lib/google";
 import crypto from "crypto";
 
 const router: IRouter = Router();
-const JWT_SECRET = process.env["SESSION_SECRET"] ?? "revenex-secret-key";
-const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
-
-function setAuthCookie(res: import("express").Response, token: string) {
-  res.cookie("revenex_auth", token, {
-    httpOnly: true,
-    secure: process.env["NODE_ENV"] === "production",
-    sameSite: "lax",
-    maxAge: COOKIE_MAX_AGE,
-  });
-}
-
 function nowIST() {
-  return new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" });
+  return new Date().toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
 }
 
 async function sendEmail(to: string | string[], subject: string, html: string) {
   const key = process.env["RESEND_API_KEY"];
-  if (!key) return;
-  await fetch("https://api.resend.com/emails", {
+  if (!key) {
+    throw new Error("Email delivery is not configured");
+  }
+  const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-    body: JSON.stringify({ from: process.env["FROM_EMAIL"] ?? "team@revenex.in", to, subject, html }),
-  }).catch(() => { /* ignore */ });
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${key}`,
+    },
+    signal: AbortSignal.timeout(10000),
+    body: JSON.stringify({
+      from: process.env["FROM_EMAIL"] ?? "team@revenex.in",
+      to,
+      subject,
+      html,
+    }),
+  });
+  if (!response.ok) throw new Error("Email delivery failed");
 }
 
 function welcomeHtml(name: string) {
@@ -104,128 +116,267 @@ function resetConfirmHtml(name: string) {
 </div></div></body></html>`;
 }
 
-router.post("/auth/signup", async (req, res) => {
-  const { name, email, password, phone, school } = req.body as {
-    name?: string; email?: string; password?: string; phone?: string; school?: string;
-  };
-  if (!name || !email || !password) { res.status(400).json({ message: "Name, email and password are required" }); return; }
-  if (password.length < 6) { res.status(400).json({ message: "Password must be at least 6 characters" }); return; }
-  try {
-    const [existing] = await db.select().from(usersTable).where(eq(usersTable.email, email.toLowerCase()));
-    if (existing) { res.status(409).json({ message: "An account with this email already exists" }); return; }
-    const passwordHash = await bcrypt.hash(password, 12);
-    const [user] = await db.insert(usersTable).values({
-      name, email: email.toLowerCase(), passwordHash, phone: phone ?? null, school: school ?? null, provider: "email", role: "user",
-    }).returning();
-    const token = jwt.sign({ id: user.id, email: user.email, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: "7d" });
-    setAuthCookie(res, token);
-
-    const adminEmail = process.env["ADMIN_EMAIL"] ?? "team@revenex.in";
-    void Promise.all([
-      sendEmail(user.email, "Welcome to REVENEX — India's School ERP Platform", welcomeHtml(user.name)),
-      sendEmail(adminEmail, "New User Registration — REVENEX", adminNotifyHtml(user.name, user.email, "Email")),
-    ]).catch(() => { /* ignore */ });
-
-    res.status(201).json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
-  } catch (err) { req.log.error({ err }, "Signup error"); res.status(500).json({ message: "Something went wrong. Please try again." }); }
+router.post("/auth/signup", validateBody(schemas.signup), async (req, res) => {
+  const { name, email, password, phone, school } = req.body;
+  const [existing] = await db
+    .select({ id: usersTable.id })
+    .from(usersTable)
+    .where(eq(usersTable.email, email));
+  if (existing) {
+    res
+      .status(409)
+      .json({ message: "An account with this email already exists" });
+    return;
+  }
+  const passwordHash = await bcrypt.hash(password, 12);
+  const [user] = await db
+    .insert(usersTable)
+    .values({
+      name,
+      email,
+      passwordHash,
+      phone: phone || null,
+      school: school || null,
+      provider: "email",
+      role: "user",
+    })
+    .onConflictDoNothing({ target: usersTable.email })
+    .returning();
+  if (!user) {
+    res
+      .status(409)
+      .json({ message: "An account with this email already exists" });
+    return;
+  }
+  await Promise.all([
+    sendEmail(email, "Welcome to REVENEX", welcomeHtml(escapeHtml(name))),
+    sendEmail(
+      process.env.ADMIN_EMAIL ?? "team@revenex.in",
+      "New User Registration — REVENEX",
+      adminNotifyHtml(escapeHtml(name), escapeHtml(email), "Email"),
+    ),
+  ]).catch(() => req.log.warn("Registration email delivery failed"));
+  res.status(201).json(createSession(res, user));
 });
 
-router.post("/auth/login", async (req, res) => {
-  const { email, password } = req.body as { email?: string; password?: string };
-  if (!email || !password) { res.status(400).json({ message: "Email and password are required" }); return; }
-  try {
-    const [user] = await db.select().from(usersTable).where(eq(usersTable.email, email.toLowerCase()));
-    if (!user || !user.passwordHash) { res.status(401).json({ message: "Invalid email or password" }); return; }
-    const valid = await bcrypt.compare(password, user.passwordHash);
-    if (!valid) { res.status(401).json({ message: "Invalid email or password" }); return; }
-    await db.update(usersTable).set({ lastLogin: new Date() }).where(eq(usersTable.id, user.id));
-    const token = jwt.sign({ id: user.id, email: user.email, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: "7d" });
-    setAuthCookie(res, token);
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
-  } catch (err) { req.log.error({ err }, "Login error"); res.status(500).json({ message: "Something went wrong. Please try again." }); }
+router.post("/auth/login", validateBody(schemas.login), async (req, res) => {
+  const { email, password } = req.body;
+  const [user] = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.email, email));
+  if (
+    !user?.passwordHash ||
+    !(await bcrypt.compare(password, user.passwordHash))
+  ) {
+    res.status(401).json({ message: "Invalid email or password" });
+    return;
+  }
+  await db
+    .update(usersTable)
+    .set({ lastLogin: new Date() })
+    .where(eq(usersTable.id, user.id));
+  res.json(createSession(res, user));
 });
 
-router.post("/auth/google", async (req, res) => {
-  const { email, name, googleId } = req.body as { email?: string; name?: string; googleId?: string };
-  if (!email || !name) { res.status(400).json({ message: "Email and name are required" }); return; }
+router.post("/auth/google", validateBody(schemas.google), async (req, res) => {
+  if (!process.env.GOOGLE_CLIENT_ID?.trim()) {
+    res
+      .status(503)
+      .json({
+        message:
+          "Google sign-in is currently unavailable. Please use email sign-in.",
+      });
+    return;
+  }
+  let identity;
   try {
-    const adminEmail = (process.env["ADMIN_EMAIL"] ?? "team@revenex.in").toLowerCase();
-    const roleToAssign = email.toLowerCase() === adminEmail ? "admin" : "user";
-
-    let [user] = await db.select().from(usersTable).where(eq(usersTable.email, email.toLowerCase()));
-    if (user) {
-      const updates: Record<string, unknown> = { lastLogin: new Date(), googleId: googleId ?? user.googleId };
-      if (roleToAssign === "admin" && user.role !== "admin") updates.role = "admin";
-      await db.update(usersTable).set(updates).where(eq(usersTable.id, user.id));
-      [user] = await db.select().from(usersTable).where(eq(usersTable.id, user.id));
-    } else {
-      [user] = await db.insert(usersTable).values({
+    identity = await verifyGoogleCredential(req.body.credential);
+  } catch {
+    res
+      .status(401)
+      .json({
+        message: "Google sign-in could not be verified. Please try again.",
+      });
+    return;
+  }
+  const { email, name, googleId, authoritative } = identity;
+  let [user] = await db
+    .select()
+    .from(usersTable)
+    .where(eq(usersTable.googleId, googleId));
+  if (!user) {
+    [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.email, email));
+    if (
+      user &&
+      ((user.googleId && user.googleId !== googleId) || !authoritative)
+    ) {
+      res
+        .status(409)
+        .json({
+          message:
+            "Please sign in with your email and password for this account.",
+        });
+      return;
+    }
+  }
+  if (!user) {
+    [user] = await db
+      .insert(usersTable)
+      .values({
         name,
-        email: email.toLowerCase(),
+        email,
+        googleId,
         provider: "google",
-        googleId: googleId ?? null,
-        role: roleToAssign,
-      }).returning();
-      void Promise.all([
-        sendEmail(user.email, "Welcome to REVENEX — India's School ERP Platform", welcomeHtml(user.name)),
-        sendEmail(adminEmail, "New User Registration — REVENEX", adminNotifyHtml(user.name, user.email, "Google")),
-      ]).catch(() => { /* ignore */ });
+        role: "user",
+        lastLogin: new Date(),
+      })
+      .onConflictDoNothing({ target: usersTable.email })
+      .returning();
+    if (!user) {
+      res
+        .status(409)
+        .json({ message: "Account changed. Please try signing in again." });
+      return;
     }
-    const token = jwt.sign({ id: user.id, email: user.email, name: user.name, role: user.role }, JWT_SECRET, { expiresIn: "7d" });
-    setAuthCookie(res, token);
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
-  } catch (err) { req.log.error({ err }, "Google auth error"); res.status(500).json({ message: "Something went wrong. Please try again." }); }
+    await sendEmail(
+      email,
+      "Welcome to REVENEX",
+      welcomeHtml(escapeHtml(name)),
+    ).catch(() => req.log.warn("Welcome email delivery failed"));
+  } else {
+    [user] = await db
+      .update(usersTable)
+      .set({ googleId, lastLogin: new Date() })
+      .where(eq(usersTable.id, user.id))
+      .returning();
+  }
+  res.json(createSession(res, user));
 });
 
-router.post("/auth/forgot-password", async (req, res) => {
-  const { email } = req.body as { email?: string };
-  if (!email) { res.status(400).json({ message: "Email is required" }); return; }
-  try {
-    const [user] = await db.select().from(usersTable).where(eq(usersTable.email, email.toLowerCase()));
-    if (!user) { res.json({ message: "If this email is registered, a reset link has been sent." }); return; }
-    const token = crypto.randomBytes(32).toString("hex");
-    const expiry = new Date(Date.now() + 60 * 60 * 1000);
-    await db.update(usersTable).set({ resetToken: token, resetTokenExpiry: expiry }).where(eq(usersTable.id, user.id));
-    const appUrl = (process.env["APP_URL"] ?? "http://localhost:3000").replace(/\/$/, "");
-    const resetUrl = `${appUrl}/reset-password?token=${token}`;
-    req.log.info({ email, resetUrl }, "Password reset requested");
-    void sendEmail(email, "Reset your REVENEX password", resetHtml(user.name, resetUrl)).catch(() => { /* ignore */ });
-    res.json({ message: "If this email is registered, a reset link has been sent." });
-  } catch (err) { req.log.error({ err }, "Forgot password error"); res.status(500).json({ message: "Something went wrong. Please try again." }); }
-});
-
-router.post("/auth/reset-password", async (req, res) => {
-  const { token, password } = req.body as { token?: string; password?: string };
-  if (!token || !password) { res.status(400).json({ message: "Token and password are required" }); return; }
-  if (password.length < 8) { res.status(400).json({ message: "Password must be at least 8 characters" }); return; }
-  try {
-    const [user] = await db.select().from(usersTable).where(eq(usersTable.resetToken, token));
-    if (!user) { res.status(400).json({ message: "Invalid or expired reset link. Please request a new one." }); return; }
-    if (!user.resetTokenExpiry || user.resetTokenExpiry < new Date()) {
-      res.status(400).json({ message: "This reset link has expired. Please request a new password reset." }); return;
+router.post(
+  "/auth/forgot-password",
+  validateBody(schemas.forgot),
+  async (req, res) => {
+    if (!process.env.RESEND_API_KEY?.trim()) {
+      res
+        .status(503)
+        .json({
+          message:
+            "Password reset email is temporarily unavailable. Please contact support.",
+        });
+      return;
     }
+    const { email } = req.body;
+    const [user] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.email, email));
+    if (user) {
+      const token = crypto.randomBytes(32).toString("hex");
+      const tokenHash = hashResetToken(token);
+      await db
+        .update(usersTable)
+        .set({
+          resetToken: tokenHash,
+          resetTokenExpiry: new Date(Date.now() + 3600000),
+        })
+        .where(eq(usersTable.id, user.id));
+      const appUrl = (process.env.APP_URL ?? "http://localhost:5173").replace(
+        /\/$/,
+        "",
+      );
+      try {
+        await sendEmail(
+          email,
+          "Reset your REVENEX password",
+          resetHtml(
+            escapeHtml(user.name),
+            `${appUrl}/reset-password?token=${token}`,
+          ),
+        );
+      } catch {
+        await db
+          .update(usersTable)
+          .set({ resetToken: null, resetTokenExpiry: null })
+          .where(
+            and(
+              eq(usersTable.id, user.id),
+              eq(usersTable.resetToken, tokenHash),
+            ),
+          );
+        req.log.warn("Password reset email delivery failed");
+        res
+          .status(503)
+          .json({
+            message: "Unable to send reset email. Please try again later.",
+          });
+        return;
+      }
+    }
+    res.json({
+      message: "If this email is registered, a reset link has been sent.",
+    });
+  },
+);
+
+router.post(
+  "/auth/reset-password",
+  validateBody(schemas.reset),
+  async (req, res) => {
+    const { token, password } = req.body;
+    const tokenHash = hashResetToken(token);
     const passwordHash = await bcrypt.hash(password, 12);
-    await db.update(usersTable)
-      .set({ passwordHash, resetToken: null, resetTokenExpiry: null, lastLogin: new Date() })
-      .where(eq(usersTable.id, user.id));
-    req.log.info({ userId: user.id }, "Password reset successful");
-    void sendEmail(user.email, "Your REVENEX Password Has Been Reset", resetConfirmHtml(user.name)).catch(() => { /* ignore */ });
-    res.json({ message: "Password updated successfully. You can now sign in with your new password." });
-  } catch (err) { req.log.error({ err }, "Reset password error"); res.status(500).json({ message: "Something went wrong. Please try again." }); }
-});
+    const [user] = await db
+      .update(usersTable)
+      .set({ passwordHash, resetToken: null, resetTokenExpiry: null })
+      .where(
+        and(
+          eq(usersTable.resetToken, tokenHash),
+          gt(usersTable.resetTokenExpiry, new Date()),
+        ),
+      )
+      .returning();
+    if (!user) {
+      res
+        .status(400)
+        .json({
+          message: "Invalid or expired reset link. Please request a new one.",
+        });
+      return;
+    }
+    clearSession(res);
+    await sendEmail(
+      user.email,
+      "Your REVENEX Password Has Been Reset",
+      resetConfirmHtml(escapeHtml(user.name)),
+    ).catch(() => req.log.warn("Password reset confirmation delivery failed"));
+    res.json({
+      message:
+        "Password updated successfully. You can now sign in with your new password.",
+    });
+  },
+);
 
 router.post("/auth/logout", (_req, res) => {
-  res.clearCookie("revenex_auth");
+  clearSession(res);
   res.json({ message: "Logged out successfully" });
 });
 
-router.get("/auth/me", (req, res) => {
-  const token = (req.cookies?.["revenex_auth"] as string | undefined) ?? req.headers.authorization?.replace("Bearer ", "");
-  if (!token) { res.status(401).json({ message: "Not authenticated" }); return; }
-  try {
-    const payload = jwt.verify(token, JWT_SECRET) as { id: number; email: string; name: string; role: string };
-    res.json({ id: payload.id, email: payload.email, name: payload.name, role: payload.role });
-  } catch { res.status(401).json({ message: "Invalid or expired token" }); }
+router.get("/auth/me", authenticate, (_req, res) => {
+  res.json(publicUser(res.locals.user));
 });
-
+router.get("/auth/session", (req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  if (!req.cookies?.revenex_auth && !req.headers.authorization) {
+    res.json({ user: null });
+    return;
+  }
+  return authenticate(req, res, () => {
+    res.json({ user: publicUser(res.locals.user) });
+  });
+});
 export default router;

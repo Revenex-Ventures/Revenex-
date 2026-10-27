@@ -54,7 +54,7 @@
   --ring: 22 85% 26%;
   --aqua: #7C3D0F;
   --navy: #F5F0E8;
-  --app-font-sans: 'Inter', sans-serif;
+  --app-font-sans: 'Plus Jakarta Sans', 'Inter', sans-serif;
   --radius: 0.75rem;
 }
 
@@ -275,6 +275,16 @@
     align-items: stretch;
   }
 
+  .reviews-marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  @media (max-width: 640px) {
+    .reviews-marquee-track {
+      animation-duration: 50s;
+    }
+  }
+
   @keyframes marquee {
     0% {
       transform: translateX(0);
@@ -424,3 +434,11 @@
     animation: glow-pulse 3s ease-in-out infinite;
   }
 }
+/* Shared artwork based on the original Revenex Ventures identity. */
+.brand-logo { display: inline-flex; align-items: center; gap: .55rem; flex-shrink: 0; vertical-align: middle; max-width: 100%; }
+.brand-logo__mark { flex-shrink: 0; object-fit: contain; }
+.brand-logo__type { display: flex; flex-direction: column; align-items: center; gap: .4rem; max-width: 100%; }
+.brand-logo__type > img { display: block; width: 100%; height: auto; }
+.brand-logo--stacked { flex-direction: column; gap: 1rem; }
+.brand-logo__company { color: #B99640; font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(8px, .65em, 11px); font-weight: 700; letter-spacing: .18em; line-height: 1.4; text-transform: uppercase; white-space: nowrap; }
+.brand-logo__descriptor { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 8px; font-weight: 500; letter-spacing: .34em; line-height: 1.5; text-transform: uppercase; white-space: nowrap; }

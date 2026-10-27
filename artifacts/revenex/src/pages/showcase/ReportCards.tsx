@@ -1,3 +1,4 @@
+import { BrandLogo } from '@/components/BrandLogo'
 import { useState } from "react"
 import { motion } from "framer-motion"
 import {
@@ -154,7 +155,7 @@ function ReportCardFlip() {
         <div className="absolute inset-0 overflow-hidden rounded-3xl border border-[#E5DDD2] bg-gradient-to-br from-white to-[#F3ECE0] p-7 shadow-[0_24px_60px_rgba(212,154,88,0.18)] [backface-visibility:hidden]">
           <div aria-hidden className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#D49A58]/15 blur-[70px]" />
           <div className="flex items-center justify-between">
-            <img src="/logo.png" alt="REVENEX" className="h-6 w-auto" />
+            <BrandLogo tone="dark" size="sm" />
             <span className="rounded-full border border-[#D49A58]/40 bg-[#D49A58]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#A34E17]">
               Term 2 · 2025-26
             </span>

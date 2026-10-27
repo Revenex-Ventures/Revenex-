@@ -1,3 +1,4 @@
+import { BrandLogo } from '@/components/BrandLogo'
 import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence, useMotionValue, useSpring, useMotionTemplate } from "framer-motion"
 import {
@@ -107,7 +108,7 @@ function HoloCard() {
         <div className="relative flex h-full flex-col" style={{ transform: "translateZ(46px)" }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <img src="/logo.png" alt="REVENEX" className="h-6 w-auto opacity-90" />
+              <BrandLogo tone="light" size="sm" />
               <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#D49A58]">Student ID</span>
             </div>
             <div className="flex items-center gap-1.5">

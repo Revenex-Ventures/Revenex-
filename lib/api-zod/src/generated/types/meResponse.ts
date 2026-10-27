@@ -7,6 +7,4 @@
  */
 import type { AuthUser } from './authUser';
 
-export interface MeResponse {
-  user: AuthUser;
-}
+export type MeResponse = AuthUser;

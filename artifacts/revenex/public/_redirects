@@ -1,6 +1,3 @@
-# Cloudflare Pages Redirect & Reverse Proxy configuration
-# Matches /api/* requests and forwards them directly to the Firebase Cloud Function API endpoint
-/api/* https://asia-south1-revenex-ventures.cloudfunctions.net/api/:splat 200
-
+# Static SPA fallback only. The full application requires the Vercel Node API entry point.
 # Fallback for Single Page Application (SPA) routing in React (wouter)
 /* /index.html 200

@@ -1,3 +1,6 @@
+import { BrandLogo } from '@/components/BrandLogo'
+import { apiRequest } from '@/lib/api';
+import { useAuth } from '@/lib/auth-context';
 import { useEffect, useState, useCallback } from "react";
 import { useLocation } from "wouter";
 
@@ -13,27 +16,8 @@ type Tab = "overview" | "contacts" | "demos" | "reviews" | "users";
 
 const DEMO_STATUSES = ["pending", "contacted", "scheduled", "completed"];
 
-function getToken(): string | null {
-  return localStorage.getItem("revenex_token");
-}
-
 async function apiFetch(path: string, options: RequestInit = {}) {
-  const token = getToken();
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    ...(options.headers as Record<string, string> ?? {}),
-  };
-  if (token) headers["Authorization"] = `Bearer ${token}`;
-  const res = await fetch(`${BASE}/api${path}`, {
-    ...options,
-    headers,
-    credentials: "include",
-  });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error((body as { message?: string }).message ?? `Request failed: ${res.status}`);
-  }
-  return res.json();
+  return apiRequest(`${BASE}/api${path}`, options);
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -75,6 +59,7 @@ function formatDate(iso: string) {
 
 export default function Admin() {
   const [, navigate] = useLocation();
+  const { logout } = useAuth();
   const [tab, setTab] = useState<Tab>("overview");
   const [adminName, setAdminName] = useState("");
   const [authChecked, setAuthChecked] = useState(false);
@@ -240,10 +225,9 @@ export default function Admin() {
     } catch (e) { showToast((e as Error).message, "error"); }
   }
 
-  function handleLogout() {
-    localStorage.removeItem("revenex_token");
-    void fetch(`${BASE}/api/auth/logout`, { method: "POST", credentials: "include" });
-    navigate("/login");
+  async function handleLogout() {
+    try { await logout(); navigate("/login"); }
+    catch (error) { showToast((error as Error).message, "error"); }
   }
 
   if (!authChecked) {
@@ -276,7 +260,7 @@ export default function Admin() {
 
       <header style={{ background: "#111118", borderBottom: "1px solid #1e1e2e", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <a href="/" style={{ color: "#6C63FF", textDecoration: "none", fontSize: 22, fontWeight: 700 }}>Revenex</a>
+          <a href="/" style={{ color: "#6C63FF", textDecoration: "none", fontSize: 22, fontWeight: 700 }}><BrandLogo tone="light" size="sm" /></a>
           <span style={{ color: "#444", fontSize: 18 }}>/</span>
           <span style={{ color: "#fff", fontWeight: 600 }}>Admin Panel</span>
         </div>

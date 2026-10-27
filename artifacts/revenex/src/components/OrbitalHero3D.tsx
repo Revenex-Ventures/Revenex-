@@ -60,7 +60,7 @@ function StudentModel() {
 
   useLayoutEffect(() => {
     baseColor.colorSpace = THREE.SRGBColorSpace;
-    baseColor.flipY = true;
+    baseColor.flipY = false;
     scene.traverse((obj) => {
       const mesh = obj as any;
       if (mesh.isMesh && mesh.material) {

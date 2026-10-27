@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { BorderTrail } from '@/components/motion-primitives/border-trail'
 
 const testimonials = [
   {
@@ -34,10 +35,19 @@ export default function Testimonials() {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.12 }}
-              className="glass-card p-6 rounded-2xl border border-[#E8E0D4]"
+              className="glass-card p-6 rounded-2xl border border-[#E8E0D4] relative overflow-hidden"
             >
-              <p className="text-[#3D3128] leading-relaxed mb-4">“{t.quote}”</p>
-              <div className="mt-3 flex items-center gap-3">
+              <BorderTrail
+                size={80}
+                className="bg-gradient-to-r from-[#D49A58] via-[#F0E8DC] to-[#A34E17] opacity-50"
+                transition={{
+                  repeat: Infinity,
+                  duration: 8,
+                  ease: 'linear',
+                }}
+              />
+              <p className="text-[#3D3128] leading-relaxed mb-4 relative z-10">“{t.quote}”</p>
+              <div className="mt-3 flex items-center gap-3 relative z-10">
                 <div className="w-10 h-10 rounded-full bg-[#F0E8DC] flex items-center justify-center text-[#1A1410] font-bold">{t.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
                 <div>
                   <div className="text-sm font-bold text-[#1A1410]">{t.name}</div>

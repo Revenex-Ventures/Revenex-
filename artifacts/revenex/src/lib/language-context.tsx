@@ -235,7 +235,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>('en')
 
   useEffect(() => {
-    const saved = localStorage.getItem('revenex-language') as Language
+    let saved: string | null = null
+    try { saved = localStorage.getItem('revenex-language') } catch { /* Storage may be disabled. */ }
     if (saved && (saved === 'en' || saved === 'hi')) {
       setLanguageState(saved)
     }
@@ -243,7 +244,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)
-    localStorage.setItem('revenex-language', lang)
+    try { localStorage.setItem('revenex-language', lang) } catch { /* Storage may be disabled. */ }
   }
 
   const t = (key: string): string => {

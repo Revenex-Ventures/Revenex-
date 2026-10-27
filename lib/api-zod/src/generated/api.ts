@@ -141,9 +141,7 @@ export const LogInResponse = zod.object({
  * @summary Sign in or sign up with Google
  */
 export const GoogleAuthBody = zod.object({
-  "email": zod.string().email(),
-  "name": zod.string(),
-  "googleId": zod.string().optional()
+  "credential": zod.string().describe('Google-signed ID token verified by the backend')
 })
 
 export const GoogleAuthResponse = zod.object({
@@ -169,12 +167,10 @@ export const LogOutResponse = zod.object({
  * @summary Get current user
  */
 export const GetMeResponse = zod.object({
-  "user": zod.object({
   "id": zod.number(),
   "name": zod.string(),
   "email": zod.string(),
   "role": zod.string()
-})
 })
 
 
@@ -186,6 +182,24 @@ export const ForgotPasswordBody = zod.object({
 })
 
 export const ForgotPasswordResponse = zod.object({
+  "message": zod.string()
+})
+
+
+/**
+ * @summary Reset password using a reset token
+ */
+export const resetPasswordBodyPasswordMin = 8;
+export const resetPasswordBodyPasswordMax = 72;
+
+
+
+export const ResetPasswordBody = zod.object({
+  "token": zod.string(),
+  "password": zod.string().min(resetPasswordBodyPasswordMin).max(resetPasswordBodyPasswordMax)
+})
+
+export const ResetPasswordResponse = zod.object({
   "message": zod.string()
 })
 

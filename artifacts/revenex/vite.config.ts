@@ -44,6 +44,17 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    chunkSizeWarningLimit: 1200,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "react-vendor": ["react", "react-dom", "wouter"],
+          "motion-vendor": ["framer-motion"],
+          "query-vendor": ["@tanstack/react-query"],
+          "three-vendor": ["three", "@react-three/fiber", "@react-three/drei"],
+        },
+      },
+    },
   },
   server: {
     port,

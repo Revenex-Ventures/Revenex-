@@ -22,6 +22,7 @@ import type {
 import type {
   AuthError,
   AuthResponse,
+  AuthUser,
   ContactInput,
   DemoRequestInput,
   ErrorResponse,
@@ -29,7 +30,7 @@ import type {
   GoogleAuthInput,
   HealthStatus,
   LoginInput,
-  MeResponse,
+  ResetPasswordInput,
   Review,
   ReviewInput,
   SignUpInput,
@@ -718,9 +719,9 @@ export const getGetMeUrl = () => {
 /**
  * @summary Get current user
  */
-export const getMe = async ( options?: RequestInit): Promise<MeResponse> => {
+export const getMe = async ( options?: RequestInit): Promise<AuthUser> => {
 
-  return customFetch<MeResponse>(getGetMeUrl(),
+  return customFetch<AuthUser>(getGetMeUrl(),
   {
     ...options,
     method: 'GET'
@@ -852,5 +853,75 @@ export const useForgotPassword = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getForgotPasswordMutationOptions(options));
+    }
+
+export const getResetPasswordUrl = () => {
+
+
+
+
+  return `/api/auth/reset-password`
+}
+
+/**
+ * @summary Reset password using a reset token
+ */
+export const resetPassword = async (resetPasswordInput: ResetPasswordInput, options?: RequestInit): Promise<SuccessResponse> => {
+
+  return customFetch<SuccessResponse>(getResetPasswordUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(resetPasswordInput)
+  }
+);}
+
+
+
+
+export const getResetPasswordMutationOptions = <TError = ErrorType<AuthError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordInput>}, TContext> => {
+
+const mutationKey = ['resetPassword'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetPassword>>, {data: BodyType<ResetPasswordInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  resetPassword(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResetPasswordMutationResult = NonNullable<Awaited<ReturnType<typeof resetPassword>>>
+    export type ResetPasswordMutationBody = BodyType<ResetPasswordInput>
+    export type ResetPasswordMutationError = ErrorType<AuthError>
+
+    /**
+ * @summary Reset password using a reset token
+ */
+export const useResetPassword = <TError = ErrorType<AuthError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword>>, TError,{data: BodyType<ResetPasswordInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof resetPassword>>,
+        TError,
+        {data: BodyType<ResetPasswordInput>},
+        TContext
+      > => {
+      return useMutation(getResetPasswordMutationOptions(options));
     }
 

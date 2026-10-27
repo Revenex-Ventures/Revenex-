@@ -1,3 +1,5 @@
+import { BrandLogo } from '@/components/BrandLogo'
+import { apiRequest } from '@/lib/api'
 import { useState, useEffect } from 'react'
   import { Link, useLocation } from 'wouter'
   import { motion } from 'framer-motion'
@@ -35,16 +37,10 @@ import { useState, useEffect } from 'react'
       if (err) { setError(err); return }
       setError(''); setLoading(true)
       try {
-        const res = await fetch('/api/auth/reset-password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token, password: form.password }),
-        })
-        const data = await res.json() as { message?: string }
-        if (!res.ok) { setError(data.message ?? 'Password reset failed. The link may have expired.'); setLoading(false); return }
+        await apiRequest('/api/auth/reset-password', { method: 'POST', body: JSON.stringify({ token, password: form.password }) })
         setSuccess(true)
         setTimeout(() => navigate('/login'), 3000)
-      } catch { setError('Connection error. Please try again.') }
+      } catch (error) { setError(error instanceof Error ? error.message : 'Connection error. Please try again.') }
       finally { setLoading(false) }
     }
 
@@ -65,7 +61,7 @@ import { useState, useEffect } from 'react'
 
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="w-full max-w-md">
           <Link href="/" className="flex justify-center mb-8">
-            <span className="text-2xl font-black"><span className="text-[#1A1410]">REVEN</span><span className="text-aqua">EX</span></span>
+            <BrandLogo size="md" />
           </Link>
 
           <div className="glass-card animated-border rounded-3xl overflow-hidden">

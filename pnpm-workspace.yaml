@@ -54,6 +54,8 @@ catalog:
   clsx: ^2.1.1
   drizzle-orm: ^0.45.2
   framer-motion: ^12.23.24
+  motion: ^12.23.24
+  react-use-measure: ^2.1.7
   lucide-react: ^0.545.0
   # Must be this exact version because expo requires it
   react: 19.1.0
@@ -75,6 +77,8 @@ onlyBuiltDependencies:
   - unrs-resolver
 
 overrides:
+  '@types/react': 19.1.17
+  '@types/react-dom': 19.1.11
   # replit uses linux-x64 only, we can exclude all other platforms
   "esbuild>@esbuild/darwin-arm64": "-"
   "esbuild>@esbuild/darwin-x64": "-"

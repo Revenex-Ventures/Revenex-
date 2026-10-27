@@ -1,3 +1,4 @@
+import { apiRequest } from '@/lib/api'
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, X, Send, Bot, Sparkles, WifiOff } from 'lucide-react'
@@ -13,83 +14,9 @@ const QUICK = [
 ]
 
 async function askServer(message: string, language: string): Promise<{ reply: string; model?: string }> {
-  const res = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message, language }) })
-  if (!res.ok) {
-    const txt = await res.text().catch(() => '')
-    throw new Error('server-' + String(res.status) + ' ' + txt)
-  }
-  const d = await res.json() as { reply?: string; model?: string }
-  if (!d.reply) throw new Error('empty')
-  return { reply: d.reply, model: d.model }
-}
-
-const OPENROUTER_KEY = "sk-or-" + "v1-" + "707d9e2aa4bcce40c01dbe51e73a75be938aa4bd311b0652088abbcc1aa04392";
-
-const SYS_EN = `You are the official conversational AI assistant of Revenex, India's leading School ERP SaaS platform.
-
-Your primary goal is to guide visitors, answer quick questions, and encourage them to book a demo or contact support.
-
-CRITICAL INSTRUCTIONS FOR CONVERSATIONAL TONE:
-1. Be extremely concise. Keep your responses under 2-3 short, friendly sentences.
-2. Never dump tables, long lists, or complete lists of features unless specifically asked.
-3. Respond warmly and conversationally like a human customer success agent.
-4. Always end with a helpful, single follow-up question or call-to-action (e.g., "Would you like to see how our fee collection works?", "Shall I help you book a demo?").
-
-Core information about Revenex to use in your answers:
-- It is a cloud School ERP for K-12 and higher-ed (CBSE/ICSE/State boards).
-- Core modules: Admissions, attendance (biometric), fees (Razorpay UPI), exam/grading, SMS/WhatsApp communications, HR/payroll.
-- Free for schools with under 500 students. Paid plan is ₹20,000/year.
-- Founders & Team:
-  * Rounak Vijay Sute: Founder & CEO. Leads product strategy & partnerships.
-  * Rohan Rajendra Raundal: Co-Founder & Head of Finance. Leads financial operations & compliance.
-  * Prasanna Mate: Technical Director. Built the entire platform from scratch, leads engineering & deployments.
-  * Isha Singh: Head of Marketing. Drives brand building, digital presence, and lead generation.
-- Contact Details:
-  * Phone: +91 90217 44355
-  * Email: team@revenex.in (or prasannamate1754@gmail.com for the Technical Director)
-  * Location: Maharashtra, India.
-  * Support: Mon-Sat, 2-hour critical issue SLA.
-- Tech Partners & Infrastructure:
-  * Google Cloud (infrastructure), Firebase (auth/database), Gemini AI (insights), Razorpay (UPI payments), Twilio (SMS/WhatsApp alerts).
-- Core Value Prop: Resolves fragmentation (replaces 8+ tools), saves 40+ hours/month, goes live in 48 hours with zero data loss.`;
-
-const SYS_HI = SYS_EN + "\nRespond in Hindi (Devanagari). Keep responses short and conversational.";
-
-async function askOpenRouterDirect(message: string, language: string, history: Msg[]): Promise<{ reply: string; model: string }> {
-  const systemPrompt = language === "hi" ? SYS_HI : SYS_EN;
-  const messages = [
-    { role: "system", content: systemPrompt },
-    ...history.filter(m => !m.isError && !m.text.startsWith("Model:")).map(m => ({
-      role: m.isUser ? "user" : "assistant",
-      content: m.text
-    })),
-    { role: "user", content: message }
-  ];
-  
-  const resp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${OPENROUTER_KEY}`,
-      "Content-Type": "application/json",
-      "X-Title": "REVENEX Chatbot Fallback"
-    },
-    body: JSON.stringify({
-      model: "openrouter/free",
-      messages,
-      max_tokens: 400,
-      temperature: 0.2
-    })
-  });
-  
-  if (!resp.ok) {
-    throw new Error(`direct-openrouter-${resp.status}`);
-  }
-  
-  const d = await resp.json() as { choices?: Array<{ message?: { content?: string } }> };
-  const reply = d.choices?.[0]?.message?.content?.trim() ?? "";
-  if (!reply) throw new Error("empty reply");
-  
-  return { reply, model: "openrouter/free (direct fallback)" };
+  const data = await apiRequest<{ reply: string; model?: string }>('/api/chat', { method: 'POST', body: JSON.stringify({ message, language }) })
+  if (!data.reply) throw new Error('The assistant is temporarily unavailable.')
+  return data
 }
 
 function getLocalResponse(message: string, language: string): string | null {
@@ -138,8 +65,10 @@ function getLocalResponse(message: string, language: string): string | null {
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Msg[]>(() => {
-    const saved = sessionStorage.getItem('revenex_chat_messages')
-    return saved ? JSON.parse(saved) : []
+    try {
+      const saved = JSON.parse(sessionStorage.getItem('revenex_chat_messages') ?? '[]')
+      return Array.isArray(saved) ? saved.filter(m => typeof m.text === 'string' && typeof m.id === 'number' && typeof m.isUser === 'boolean').slice(-60) : []
+    } catch { return [] }
   })
   const [input, setInput] = useState('')
   const [typing, setTyping] = useState(false)
@@ -151,37 +80,29 @@ export function Chatbot() {
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages, typing])
 
   useEffect(() => {
-    sessionStorage.setItem('revenex_chat_messages', JSON.stringify(messages))
+    try { sessionStorage.setItem('revenex_chat_messages', JSON.stringify(messages.slice(-60))) } catch { /* Storage may be disabled. */ }
   }, [messages])
 
   const send = async (txt?: string) => {
-    const text = (txt ?? input).trim(); if (!text) return
-    setMessages(p => [...p, { text, isUser: true, id: idRef.current++ }])
+    const text = (txt ?? input).trim(); if (!text || typing) return
+    setMessages(p => [...p.slice(-59), { text, isUser: true, id: idRef.current++ }])
     setInput(''); setTyping(true); setOffline(false)
     try {
       const { reply } = await askServer(text, language)
-      setMessages(p => [...p, { text: reply, isUser: false, id: idRef.current++, isError: false }])
+      setMessages(p => [...p.slice(-59), { text: reply, isUser: false, id: idRef.current++, isError: false }])
     } catch (e: any) {
-      console.warn("Backend API failed, trying direct client fallback...", e)
-      try {
-        // Fallback directly to OpenRouter API from client
-        const { reply } = await askOpenRouterDirect(text, language, messages)
-        setMessages(p => [...p, { text: reply, isUser: false, id: idRef.current++, isError: false }])
-      } catch (directErr: any) {
-        console.error("Both backend and direct fallback failed:", directErr)
-        
-        // Attempt local keyword-matching fallback as the ultimate safeguard
-        const localReply = getLocalResponse(text, language)
-        if (localReply) {
-          setMessages(p => [...p, { text: localReply, isUser: false, id: idRef.current++, isError: false }])
-        } else {
-          // General helpful offline responder instead of showing raw error status
-          const generalReply = language === 'en'
-            ? "I'm having trouble connecting to the AI server right now, but I can tell you that REVENEX is a premium School ERP starting free. You can call us at +91 90217 44355, email team@revenex.in, or click 'Book a Demo' to schedule a live walkthrough!"
-            : "मैं अभी AI सर्वर से कनेक्ट नहीं हो पा रहा हूँ, लेकिन मैं आपको बता सकता हूँ कि REVENEX एक प्रीमियम स्कूल ERP है जो मुफ्त से शुरू होता है। आप हमें +91 90217 44355 पर कॉल कर सकते हैं, team@revenex.in पर ईमेल कर सकते हैं, या लाइव डेमो के लिए 'डेमो बुक करें' पर क्लिक कर सकते हैं!";
-            
-          setMessages(p => [...p, { text: generalReply, isUser: false, id: idRef.current++, isError: false }])
-        }
+      // Keep provider failures out of the visitor console; offer local help.
+      setOffline(true)
+
+      const localReply = getLocalResponse(text, language)
+      if (localReply) {
+        setMessages(p => [...p.slice(-59), { text: localReply, isUser: false, id: idRef.current++, isError: false }])
+      } else {
+        const generalReply = language === 'en'
+          ? "I'm having trouble connecting to the AI server right now, but I can tell you that REVENEX is a premium School ERP starting free. You can call us at +91 90217 44355, email team@revenex.in, or click 'Book a Demo' to schedule a live walkthrough!"
+          : "मैं अभी AI सर्वर से कनेक्ट नहीं हो पा रहा हूँ, लेकिन मैं आपको बता सकता हूँ कि REVENEX एक प्रीमियम स्कूल ERP है जो मुफ्त से शुरू होता है। आप हमें +91 90217 44355 पर कॉल कर सकते हैं, team@revenex.in पर ईमेल भेज सकते हैं, या लाइव डेमो के लिए 'डेमो बुक करें' पर क्लिक कर सकते हैं!";
+
+        setMessages(p => [...p.slice(-59), { text: generalReply, isUser: false, id: idRef.current++, isError: false }])
       }
     } finally { setTyping(false) }
   }
@@ -317,7 +238,7 @@ export function Chatbot() {
               <div className='flex gap-2 items-center bg-white border border-[#E0D4C0] rounded-2xl px-4 py-2 focus-within:border-[#8B4513]/50 focus-within:shadow-sm transition-all'>
                 <input 
                   type='text' 
-                  value={input} 
+                  value={input} maxLength={2000}
                   onChange={e => setInput(e.target.value)} 
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void send() } }} 
                   placeholder={t('chatbot.placeholder')} 

@@ -1,3 +1,5 @@
+import { BrandLogo } from '@/components/BrandLogo'
+import { apiRequest } from '@/lib/api'
 import { useState } from 'react'
 import { Link, useLocation } from 'wouter'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -24,9 +26,9 @@ export default function Login() {
     if (!forgotEmail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) { setForgotError('Please enter a valid email address'); return }
     setForgotError(''); setForgotLoading(true)
     try {
-      await fetch('/api/auth/forgot-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: forgotEmail }) })
+      await apiRequest('/api/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email: forgotEmail }) })
       setForgotSuccess(true)
-    } catch { setForgotError('Connection error. Please try again.') }
+    } catch (error) { setForgotError(error instanceof Error ? error.message : 'Connection error. Please try again.') }
     finally { setForgotLoading(false) }
   }
 
@@ -43,22 +45,20 @@ export default function Login() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
     setErrors({}); setLoading(true)
     try {
-      const res = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: form.email, password: form.password }) })
-      const data = await res.json() as { token?: string; user?: { id: number; name: string; email: string; role?: string }; message?: string }
-      if (!res.ok) { setErrors({ general: data.message ?? 'Invalid email or password.' }); setLoading(false); return }
-      login(data.token ?? '', { id: data.user?.id ?? 0, name: data.user?.name ?? '', email: data.user?.email ?? '', role: data.user?.role ?? 'user' })
+      const data = await apiRequest<{ token: string; user: { id: number; name: string; email: string; role: string } }>('/api/auth/login', { method: 'POST', body: JSON.stringify({ email: form.email, password: form.password }) })
+      login(data.token, data.user)
       navigate(data.user?.role === 'admin' ? '/admin' : '/')
-    } catch { setErrors({ general: 'Connection error. Please try again.' }); setLoading(false) }
+    } catch (error) { setErrors({ general: error instanceof Error ? error.message : 'Connection error. Please try again.' }) }
+    finally { setLoading(false) }
   }
 
-  const handleGoogleSuccess = async (email: string, name: string, googleId: string) => {
-    try {
-      const res = await fetch('/api/auth/google', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, name, googleId }) })
-      const data = await res.json() as { token?: string; user?: { id: number; name: string; email: string; role?: string }; message?: string }
-      if (!res.ok) { setErrors({ general: data.message ?? 'Google sign-in failed.' }); return }
-      login(data.token ?? '', { id: data.user?.id ?? 0, name: data.user?.name ?? '', email: data.user?.email ?? '', role: data.user?.role ?? 'user' })
-      navigate(data.user?.role === 'admin' ? '/admin' : '/')
-    } catch { setErrors({ general: 'Google sign-in failed. Please try again.' }) }
+  const handleGoogleSuccess = async (credential: string) => {
+    setErrors({})
+    const data = await apiRequest<{ token: string; user: { id: number; name: string; email: string; role: string } }>('/api/auth/google', {
+      method: 'POST', body: JSON.stringify({ credential }),
+    })
+    login(data.token, data.user)
+    navigate(data.user.role === 'admin' ? '/admin' : '/')
   }
 
   const inputClass = (err?: string) =>
@@ -75,9 +75,7 @@ export default function Login() {
         {/* Upper section: Logo */}
         <div className="flex justify-between items-center mb-4 lg:mb-0">
           <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-2xl font-black tracking-tight transition-all duration-300 group-hover:opacity-90">
-              <span className="text-[#1A1410]">REVEN</span><span className="text-aqua">EX</span>
-            </span>
+            <BrandLogo size="md" />
           </Link>
         </div>
 

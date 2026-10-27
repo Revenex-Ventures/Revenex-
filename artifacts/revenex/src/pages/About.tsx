@@ -1,3 +1,4 @@
+import { BrandLogo } from '@/components/BrandLogo'
 import { useState, useEffect } from 'react'
 import { Link } from 'wouter'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -509,7 +510,7 @@ export default function About() {
               <div className="h-full w-full p-2.5 pt-5 flex flex-col justify-between text-[8px] text-[#3D3128] font-sans bg-[#F5F0E8]">
                 {/* Header */}
                 <div className="flex justify-between items-center border-b border-[#E8E0D4] pb-1">
-                  <span className="font-black text-[#1A1410] tracking-wide">REVENEX</span>
+                  <BrandLogo size="xs" className="scale-75 origin-left" />
                   <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                 </div>
                 {/* Dynamic Screen Data */}

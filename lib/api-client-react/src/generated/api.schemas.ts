@@ -67,13 +67,21 @@ export interface LoginInput {
 }
 
 export interface GoogleAuthInput {
-  email: string;
-  name: string;
-  googleId?: string;
+  /** Google-signed ID token verified by the backend */
+  credential: string;
 }
 
 export interface ForgotPasswordInput {
   email: string;
+}
+
+export interface ResetPasswordInput {
+  token: string;
+  /**
+     * @minLength 8
+     * @maxLength 72
+     */
+  password: string;
 }
 
 export interface AuthUser {
@@ -88,9 +96,7 @@ export interface AuthResponse {
   user: AuthUser;
 }
 
-export interface MeResponse {
-  user: AuthUser;
-}
+export type MeResponse = AuthUser;
 
 export interface AuthError {
   message: string;

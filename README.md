@@ -48,7 +48,7 @@ Revenex/
 ## Local Development Setup
 
 ### Prerequisites
-- Node.js (v18+ recommended)
+- Node.js 22.9+
 - `pnpm` (Workspace dependency manager)
 
 ### Installation
@@ -82,20 +82,14 @@ pnpm --filter @workspace/revenex build
 
 ## Production Deployment Architecture
 
-Revenex is deployed using a decoupled architecture for maximum speed and scalability:
+The prepared deployment serves the React frontend and Express API together on Vercel. Deploy from the repository root; `api/[...path].ts` exports the API and `vercel.json` reserves `/api/*` for the Node function.
 
-1.  **Frontend Website (React/Vite)**: Deployed automatically on **Vercel** via GitHub integration.
-    - Deployment URL: [https://revenex.in](https://revenex.in)
-    - Vercel routes all non-API paths (`/((?!api/).*)`) to `index.html` to support Client-Side routing (Wouter).
-    - To prevent white screen crashes, Vercel is configured in `vercel.json` with `"outputDirectory": "artifacts/revenex/dist/public"`.
-2.  **Backend API Server (Express/Node)**: Hosted separately on **Railway** with core database synchronization.
-    - API Endpoint: `https://workspaceapi-server-production-51b0.up.railway.app`
-    - Vercel reverse-proxies `/api/:path*` traffic to the Railway server.
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for the live-site diagnosis, required environment variables, Google setup, database provisioning, administrator bootstrap and verification steps. The previous external Railway/Firebase redirects do not identify a working backend.
 
 ---
 
 ## Development Guidelines
 
 1.  **Strict Styling Constraints**: The site uses a luxury, warm-beige design language. Review [README-COLORS.md](file:///c:/VS%20Code/Revenex/artifacts/revenex/docs/README-COLORS.md) before styling.
-2.  **No Direct Fallbacks without API Integration**: The Chatbot is configured to default to local client-side API requests via OpenRouter if the API server goes offline, but standard calls must go through the API server route (`/api/chat`).
+2.  **Chatbot keys stay on the server**: AI requests go through `/api/chat`. If unavailable, the client offers limited local help without calling OpenRouter directly.
 3.  **Vite Asset Management**: Place all assets (images/logos) inside the `attached_assets` workspace directory and import them using `@assets` alias.

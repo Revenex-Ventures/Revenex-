@@ -17,6 +17,7 @@ export * from './googleAuthInput';
 export * from './healthStatus';
 export * from './loginInput';
 export * from './meResponse';
+export * from './resetPasswordInput';
 export * from './review';
 export * from './reviewInput';
 export * from './signUpInput';
