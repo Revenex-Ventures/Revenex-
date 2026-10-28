@@ -13,7 +13,7 @@ These are deployment problems; rebuilding the frontend alone does not resolve th
 
 ## Prepared deployment: Vercel frontend and API together
 
-Deploy from the **repository root** with the existing `vercel.json`. The Node function at `api/[...path].js` loads the compiled Express app bundle. It serves `/api/*` inside the same deployment as the Vite frontend; it does not proxy credentials to an external backend. Client-side pages retain their SPA fallback. The function has a 30-second timeout; provider requests have shorter timeouts.
+Deploy from the **repository root** with the existing `vercel.json`. The Node function at `api/index.js` loads the compiled Express app bundle. It serves `/api/*` inside the same deployment as the Vite frontend; it does not proxy credentials to an external backend. Client-side pages retain their SPA fallback. The function has a 30-second timeout; provider requests have shorter timeouts.
 
 Set these in the deployment's environment settings:
 

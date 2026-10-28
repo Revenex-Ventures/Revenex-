@@ -6,7 +6,7 @@ process.env.NODE_ENV = "production";
 process.env.LOG_LEVEL = "silent";
 process.env.SESSION_SECRET = "isolated-compiled-api-test-secret-32-characters";
 process.env.DATABASE_URL = "postgresql://unused:unused@127.0.0.1:5432/unused";
-const { default: handler } = await import("../../../api/[...path].js");
+const { default: handler } = await import("../../../api/index.js");
 const server = http.createServer((req, res) => {
   Promise.resolve(handler(req, res)).catch((error) => {
     console.error(error.name);
