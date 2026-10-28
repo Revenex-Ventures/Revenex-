@@ -1,3 +1,4 @@
+import { verifiedConnectionString } from "./connection-options";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import * as schema from "./schema";
@@ -10,7 +11,7 @@ if (!process.env.DATABASE_URL) {
   );
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL, connectionTimeoutMillis: 5000, idleTimeoutMillis: 30000, max: 10, statement_timeout: 10000 });
+export const pool = new Pool({ connectionString: verifiedConnectionString(process.env.DATABASE_URL), connectionTimeoutMillis: 5000, idleTimeoutMillis: 30000, max: 10, statement_timeout: 10000 });
 pool.on("error", () => { console.error("Unexpected idle database connection error"); });
 export const db = drizzle(pool, { schema });
 

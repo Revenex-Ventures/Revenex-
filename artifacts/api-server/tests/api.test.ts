@@ -1,3 +1,5 @@
+import { requestRateLimitKey } from "../src/lib/limits";
+import { verifiedConnectionString } from "../../../lib/db/src/connection-options";
 import { onRequest as proxyPagesApi } from "../../../server/cloudflare-api-proxy";
 import express from "express";
 import { createHttpLogger } from "../src/lib/http-logger";
@@ -825,4 +827,19 @@ test("Cloudflare API route uses only the fixed backend and preserves JSON respon
     assert.equal(failure.status, 503);
     assert.doesNotMatch(await failure.text(), /private upstream details/);
   } finally { globalThis.fetch = originalFetch; }
+});
+
+test("rate-limit keys ignore untrusted Forwarded headers and group IPv6 addresses", () => {
+  const first = { ip: "192.0.2.4", socket: {}, headers: { forwarded: "for=192.0.2.99" } };
+  assert.equal(requestRateLimitKey(first as any), requestRateLimitKey({ ...first, headers: {} } as any));
+  assert.notEqual(requestRateLimitKey(first as any), requestRateLimitKey({ ip: "192.0.2.5", socket: {} } as any));
+  assert.equal(requestRateLimitKey({ ip: "2001:db8:abcd::1", socket: {} } as any), requestRateLimitKey({ ip: "2001:db8:abcd::2", socket: {} } as any));
+});
+test("database TLS normalization retains full certificate verification and hides invalid input", () => {
+  for (const mode of ["prefer", "require", "verify-ca", "verify-full"]) {
+    const value = verifiedConnectionString(`postgresql://user:example@localhost/db?sslmode=${mode}`);
+    assert.equal(new URL(value).searchParams.get("sslmode"), "verify-full");
+  }
+  assert.equal(new URL(verifiedConnectionString("postgresql://user:example@localhost/db?sslmode=disable")).searchParams.get("sslmode"), "disable");
+  assert.throws(() => verifiedConnectionString("private invalid input"), error => error instanceof Error && !error.message.includes("private invalid input"));
 });

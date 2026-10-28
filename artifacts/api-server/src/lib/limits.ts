@@ -1,5 +1,12 @@
-import { rateLimit } from "express-rate-limit";
+import type { Request } from "express";
+import { rateLimit, ipKeyGenerator } from "express-rate-limit";
 import { DatabaseRateLimitStore } from "./rate-limit-store";
+
+// Use only Express's address resolved through the explicitly configured proxy
+// hops. The client-supplied Forwarded header cannot select another quota key.
+export function requestRateLimitKey(req: Pick<Request, "ip" | "socket">): string {
+  return ipKeyGenerator(req.ip || req.socket.remoteAddress || "unknown");
+}
 
 export function limiter(
   limit: number,
@@ -8,6 +15,7 @@ export function limiter(
 ) {
   return rateLimit({
     limit,
+    keyGenerator: requestRateLimitKey,
     windowMs,
     standardHeaders: "draft-8",
     legacyHeaders: false,

@@ -1,6 +1,6 @@
 # Local verification — 28 October 2026
 
-The frontend build, workspace TypeScript checks and 25 isolated backend HTTP tests passed. The latest security patch updates qs to 6.16.1. Audit: zero critical, zero moderate, one high finding in node-forge through Expo development tooling; upstream has no published fix. This is not a claim of an attack-proof site.
+The frontend build, workspace TypeScript checks and 27 isolated backend HTTP tests passed. The latest security patch updates qs to 6.16.1. Audit: zero critical, zero moderate, one high finding in node-forge through Expo development tooling; upstream has no published fix. This is not a claim of an attack-proof site.
 
 ## Hero and model
 
@@ -18,12 +18,12 @@ Useful status and security logs remain enabled. Query strings, raw error stacks,
 
 The Three.js Clock deprecation warning remains upstream: the current React Three Fiber release still constructs the deprecated clock. It is a compatibility notice, not a credential leak. We have not suppressed warnings globally. See [Fiber source](https://github.com/pmndrs/react-three-fiber/blob/v9.8.2/packages/fiber/src/core/store.ts) and [Three Clock source](https://github.com/mrdoob/three.js/blob/r185/src/core/Clock.js).
 
-## Before public release
+## Operational follow-up
 
-1. Review these local changes. The user has authorized pushing this iteration after verification. Production configuration checks below still apply.
+1. The release is published. Live JSON health, readiness, session, review and FAQ checks passed; admin protection and invalid form/Google-token requests behaved correctly.
 2. Deploy the repository root to the prepared Vercel frontend/API project. Confirm DATABASE_URL and SESSION_SECRET in its environment settings; do not paste secrets into chat.
 3. Set GOOGLE_CLIENT_ID in the backend and the identical VITE_GOOGLE_CLIENT_ID at build time. In Google Cloud Console, select the intended project, open APIs & Services → Credentials → the OAuth web client, and authorize the exact public website origin.
-4. Attach the public domain to the deployment that serves the API. Currently `https://www.revenex.in/api/healthz` returns HTML rather than API JSON. A successful static frontend deploy does not establish a working API.
+4. The public domain now forwards API requests to Vercel through Pages Functions; `/api/healthz` and `/api/readyz` return HTTP 200 JSON. Keep this fixed-origin route when changing hosting settings.
 5. Check public `/api/healthz` and `/api/readyz` for JSON and HTTP 200, then verify Google sign-in, reset email delivery and a non-sensitive chatbot conversation. Configure provider sender verification and spending limits in their dashboards as needed.
 6. Only if AI replies are requested later: open [OpenRouter Keys](https://openrouter.ai/settings/keys), create a server API key, and set `OPENROUTER_API_KEY` in `artifacts/api-server/.env` locally and in the production backend environment settings. Do not use a VITE variable or paste it into chat. Restart the API, then test an open-ended question. The current key is rejected with HTTP 401.
 7. Resolve the remaining Expo/node-forge advisory when an upstream patch is available. Avoid using its certificate tooling on untrusted input in the meantime.
@@ -33,3 +33,5 @@ References: [OpenRouter API parameters](https://openrouter.ai/docs/api_reference
 ## Release routing
 
 Cloudflare Pages API entrypoints preserve same-origin cookies and forward only to the fixed first-party Vercel production origin. Regression checks cover POST forwarding, response headers and safe upstream errors. The production build command is `pnpm run build:web`, which checks and builds the web application, API and their libraries; the full workspace build remains in GitHub verification.
+
+The production session secret was generated privately and replaced during release. Remaining exposed database/provider/admin credentials need owner rotation. Proxy quota keys deliberately use only the Express trusted-proxy address, and database TLS mode normalization preserves full certificate verification.

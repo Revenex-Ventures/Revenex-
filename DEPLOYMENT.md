@@ -1,15 +1,14 @@
 # Revenex deployment and verification
 
-## Current live-site diagnosis
+## Live release — 28 October 2026
 
-The checks made during this repair found:
+The website is published at https://www.revenex.in. Cloudflare Pages serves the frontend and forwards `/api/*` to the first-party Vercel backend. Live JSON health, database readiness, session and reviews checks succeeded. Protected admin access and invalid form/Google-token requests were rejected as expected. No records were created and no emails were sent during verification.
 
-- `https://revenex.in/api/healthz` and the `www` equivalent return the SPA HTML, not JSON. Static hosting is swallowing API requests; POST requests consequently fail with 405.
-- The old Railway endpoint returns `Application not found`.
-- The old Cloudflare redirect points at a Firebase project different from `.firebaserc`. No working API was found there.
-- On October 28, the configured PostgreSQL database became reachable. The additive security migration was applied successfully and the local API returned ready. Confirm the deployment uses the intended database before releasing.
+The production session secret was replaced privately with a new random secret. Vercel's production alias is public; generated deployment URLs and previews retain Vercel authentication. Both frontend and backend use the same public Google OAuth client ID. Full interactive Google sign-in and email delivery still depend on provider-console settings and were not exercised with a real account.
 
-These are deployment problems; rebuilding the frontend alone does not resolve them.
+Database TLS aliases are normalized to `verify-full`, and rate-limit keys use Express's configured trusted-proxy address with IPv6 grouping. Production trusts one Vercel hop; Cloudflare-origin requests may share the proxy's address because Vercel overwrites external forwarding headers. Additional per-visitor limits can be enforced at Cloudflare.
+
+The database, provider keys and administrator credentials pasted into chat still require private rotation by the owner. The production session secret has already been replaced. Environment values are excluded from Git and deployment source uploads.
 
 ## Prepared deployment: Vercel frontend and API together
 
@@ -61,7 +60,7 @@ After deployment, verify:
 5. Reset emails arrive, their links point at the public origin, and a consumed reset link cannot be reused.
 6. Chat answers through `/api/chat`. Provider keys never appear in browser requests or bundles.
 
-The custom domain still needs to point to this deployment. The current Cloudflare **static-only** deployment does not run the Node backend. No domain or hosting account was changed. The only database change was the additive security migration; existing users, credentials and business records were not modified. The obsolete external API redirects were removed from the prepared Vercel configuration.
+The custom domain now reaches the API through the Pages Function proxy. DNS records were not changed. Database changes remain limited to the additive security migration; business records were not modified by release verification.
 
 ## Local use
 
