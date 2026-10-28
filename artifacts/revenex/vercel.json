@@ -64,5 +64,6 @@
       "maxDuration": 30
     }
   },
-  "buildCommand": "pnpm run build:web"
+  "buildCommand": "pnpm run build:web",
+  "installCommand": "pnpm install --frozen-lockfile --prod=false"
 }
