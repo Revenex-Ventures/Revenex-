@@ -59,7 +59,7 @@
       ]
     }
   ],
-  "installCommand": "pnpm install --frozen-lockfile --prod=false",
+  "installCommand": "pnpm install --frozen-lockfile --prod=false --force",
   "buildCommand": "pnpm run build:web",
   "functions": {
     "api/[...path].js": {
