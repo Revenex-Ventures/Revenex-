@@ -18,6 +18,8 @@ import { useState, useEffect } from 'react'
     useEffect(() => {
       const params = new URLSearchParams(window.location.search)
       const t = params.get('token')
+      // Remove reset credentials from browser history and subsequent referrers.
+      if (t) window.history.replaceState(null, '', window.location.pathname)
       if (!t) {
         setError('Invalid or missing reset token. Please request a new password reset.')
       } else {

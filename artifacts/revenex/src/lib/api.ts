@@ -4,6 +4,7 @@ export async function apiRequest<T>(
 ): Promise<T> {
   const headers = new Headers(options.headers);
   headers.set("Accept", "application/json");
+  headers.set("X-Revenex-Request", "1");
   if (options.body) headers.set("Content-Type", "application/json");
   let response: Response;
   try {

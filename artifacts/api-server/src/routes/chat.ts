@@ -1,3 +1,4 @@
+import { buildChatSystemPrompt, getPublicAnswer } from "@workspace/api-zod";
 import { Router, type IRouter } from "express";
 import { randomUUID } from "crypto";
 import { ChatMemory } from "../lib/chat-memory";
@@ -5,36 +6,6 @@ import { schemas, validateBody } from "../lib/validation";
 
 const router: IRouter = Router();
 const KEY = (process.env["OPENROUTER_API_KEY"] ?? "").trim();
-const SYS_EN = `You are the official conversational AI assistant of Revenex, India's leading School ERP SaaS platform.
-
-Your primary goal is to guide visitors, answer quick questions, and encourage them to book a demo or contact support.
-
-CRITICAL INSTRUCTIONS FOR CONVERSATIONAL TONE:
-1. Be extremely concise. Keep your responses under 2-3 short, friendly sentences.
-2. Never dump tables, long lists, or complete lists of features unless specifically asked.
-3. Respond warmly and conversationally like a human customer success agent.
-4. Always end with a helpful, single follow-up question or call-to-action (e.g., "Would you like to see how our fee collection works?", "Shall I help you book a demo?").
-
-Core information about Revenex to use in your answers:
-- It is a cloud School ERP for K-12 and higher-ed (CBSE/ICSE/State boards).
-- Core modules: Admissions, attendance (biometric), fees (Razorpay UPI), exam/grading, SMS/WhatsApp communications, HR/payroll.
-- Free for schools with under 500 students. Paid plan is ₹20,000/year.
-- Founders & Team:
-  * Rounak Vijay Sute: Founder & CEO. Leads product strategy & partnerships.
-  * Rohan Rajendra Raundal: Co-Founder & Head of Finance. Leads financial operations & compliance.
-  * Prasanna Mate: Technical Director. Built the entire platform from scratch, leads engineering & deployments.
-  * Isha Singh: Head of Marketing. Drives brand building, digital presence, and lead generation.
-- Contact Details:
-  * Phone: +91 90217 44355
-  * Email: team@revenex.in (or prasannamate1754@gmail.com for the Technical Director)
-  * Location: Maharashtra, India.
-  * Support: Mon-Sat, 2-hour critical issue SLA.
-- Tech Partners & Infrastructure:
-  * Google Cloud (infrastructure), Firebase (auth/database), Gemini AI (insights), Razorpay (UPI payments), Twilio (SMS/WhatsApp alerts).
-- Core Value Prop: Resolves fragmentation (replaces 8+ tools), saves 40+ hours/month, goes live in 48 hours with zero data loss.`;
-const SYS_HI =
-  SYS_EN +
-  "\nRespond in Hindi (Devanagari). Keep responses short and conversational.";
 
 const sessions = new ChatMemory();
 
@@ -53,18 +24,18 @@ async function callOpenRouter(
     body: JSON.stringify({
       model,
       messages,
-      max_tokens: 400,
+      max_tokens: 320,
       temperature: 0.2,
     }),
   });
   return resp;
 }
 
-const FREE_MODELS = [
-  "openrouter/free",
-  "google/gemini-2.5-flash:free",
-  "meta-llama/llama-3.3-70b-instruct:free",
-];
+const FREE_MODELS = (process.env.OPENROUTER_MODELS ?? "openrouter/free")
+  .split(",")
+  .map((model) => model.trim())
+  .filter(Boolean)
+  .slice(0, 3);
 
 router.post("/chat", validateBody(schemas.chat), async (req, res) => {
   const { message, language } = req.body as {
@@ -73,6 +44,11 @@ router.post("/chat", validateBody(schemas.chat), async (req, res) => {
   };
   if (!message?.trim()) {
     res.status(400).json({ error: "message required" });
+    return;
+  }
+  const publicReply = getPublicAnswer(message, language ?? "en");
+  if (publicReply) {
+    res.json({ reply: publicReply, model: "public-knowledge" });
     return;
   }
   if (!KEY) {
@@ -97,7 +73,7 @@ router.post("/chat", validateBody(schemas.chat), async (req, res) => {
     const memory = sessions.get(sid) ?? [];
     const system = {
       role: "system",
-      content: language === "hi" ? SYS_HI : SYS_EN,
+      content: buildChatSystemPrompt(language ?? "en"),
     };
     const msgs = [system, ...memory, { role: "user", content: message }];
 
@@ -112,6 +88,19 @@ router.post("/chat", validateBody(schemas.chat), async (req, res) => {
         continue;
       }
       if (r.ok) break;
+      // Access and account failures affect every model on this provider key.
+      // Retrying another model only repeats a request that cannot succeed.
+      if ([401, 402, 403].includes(r.status)) {
+        req.log.error(
+          { status: r.status, model, code: "AI_PROVIDER_ACCESS" },
+          "AI provider rejected account access; check server configuration",
+        );
+        res.status(503).json({
+          error:
+            "AI replies are temporarily unavailable. You can still use FAQ help or contact our team.",
+        });
+        return;
+      }
       req.log.warn(
         { status: r.status, model },
         "Model unavailable, trying next",
@@ -120,18 +109,18 @@ router.post("/chat", validateBody(schemas.chat), async (req, res) => {
 
     if (!r || !r.ok) {
       req.log.error({ status: r?.status }, "OpenRouter all-models-failed");
-      res
-        .status(502)
-        .json({
-          error: "AI is temporarily unavailable. Please try again later.",
-        });
+      res.status(502).json({
+        error: "AI is temporarily unavailable. Please try again later.",
+      });
       return;
     }
 
     const d = (await r.json()) as {
       choices?: Array<{ message?: { content?: string } }>;
     };
-    const reply = d.choices?.[0]?.message?.content?.trim() ?? "";
+    const rawReply = d.choices?.[0]?.message?.content;
+    const reply =
+      typeof rawReply === "string" ? rawReply.trim().slice(0, 4000) : "";
     if (!reply) {
       res
         .status(502)

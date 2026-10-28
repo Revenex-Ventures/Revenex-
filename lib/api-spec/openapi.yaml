@@ -430,11 +430,9 @@ components:
     AuthResponse:
       type: object
       properties:
-        token:
-          type: string
         user:
           $ref: "#/components/schemas/AuthUser"
-      required: [token, user]
+      required: [user]
 
     MeResponse:
       $ref: "#/components/schemas/AuthUser"

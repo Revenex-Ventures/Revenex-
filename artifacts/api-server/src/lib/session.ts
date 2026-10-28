@@ -1,13 +1,16 @@
 import crypto from "node:crypto";
 import jwt from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
-import { db, usersTable, type User } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { db, usersTable, authSessionsTable, type User } from "@workspace/db";
+import { eq, and, gt, lt } from "drizzle-orm";
 
 const secret = (process.env.SESSION_SECRET ?? "").trim();
 if (secret.length < 32)
   throw new Error("SESSION_SECRET must contain at least 32 characters");
 const production = process.env.NODE_ENV === "production";
+export const authCookieName = production
+  ? "__Host-revenex_auth"
+  : "revenex_auth";
 const cookieOptions = {
   httpOnly: true,
   secure: production,
@@ -30,23 +33,49 @@ export const publicUser = (user: User) => ({
   role: user.role,
 });
 
-export function createSession(res: Response, user: User) {
-  const token = jwt.sign({ id: user.id, version: version(user) }, secret, {
-    algorithm: "HS256",
-    expiresIn: "7d",
-    issuer: "revenex",
-    audience: "revenex-web",
-  });
-  res.cookie("revenex_auth", token, {
+export async function createSession(res: Response, user: User) {
+  const token = jwt.sign(
+    { id: user.id, version: version(user), jti: crypto.randomUUID() },
+    secret,
+    {
+      algorithm: "HS256",
+      expiresIn: "7d",
+      issuer: "revenex",
+      audience: "revenex-web",
+    },
+  );
+  await db
+    .delete(authSessionsTable)
+    .where(lt(authSessionsTable.expiresAt, new Date()));
+  await db
+    .insert(authSessionsTable)
+    .values({
+      tokenHash: hashResetToken(token),
+      userId: user.id,
+      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    });
+  res.cookie(authCookieName, token, {
     ...cookieOptions,
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
   res.setHeader("Cache-Control", "no-store");
-  return { token, user: publicUser(user) };
+  return { user: publicUser(user) };
+}
+
+export async function revokeSession(req: Request, res: Response) {
+  const token =
+    req.cookies?.[authCookieName] ??
+    req.headers.authorization?.replace(/^Bearer /, "");
+  clearSession(res);
+  if (typeof token === "string" && token.length <= 4096)
+    await db
+      .delete(authSessionsTable)
+      .where(eq(authSessionsTable.tokenHash, hashResetToken(token)));
 }
 
 export function clearSession(res: Response) {
-  res.clearCookie("revenex_auth", cookieOptions);
+  res.clearCookie(authCookieName, cookieOptions);
+  if (production) res.clearCookie("revenex_auth", cookieOptions);
 }
 
 export async function authenticate(
@@ -56,9 +85,9 @@ export async function authenticate(
 ) {
   res.setHeader("Cache-Control", "no-store");
   const token =
-    req.cookies?.revenex_auth ??
+    req.cookies?.[authCookieName] ??
     req.headers.authorization?.replace(/^Bearer /, "");
-  if (!token) {
+  if (typeof token !== "string" || !token || token.length > 4096) {
     res.status(401).json({ message: "Not authenticated" });
     return;
   }
@@ -71,7 +100,8 @@ export async function authenticate(
     }) as jwt.JwtPayload;
     if (
       !Number.isSafeInteger(payload.id) ||
-      typeof payload.version !== "string"
+      typeof payload.version !== "string" ||
+      typeof payload.jti !== "string"
     )
       throw new Error("Invalid session");
   } catch {
@@ -80,6 +110,21 @@ export async function authenticate(
     return;
   }
   try {
+    const [session] = await db
+      .select()
+      .from(authSessionsTable)
+      .where(
+        and(
+          eq(authSessionsTable.tokenHash, hashResetToken(token)),
+          eq(authSessionsTable.userId, payload.id),
+          gt(authSessionsTable.expiresAt, new Date()),
+        ),
+      );
+    if (!session) {
+      clearSession(res);
+      res.status(401).json({ message: "Invalid or expired session" });
+      return;
+    }
     const [user] = await db
       .select()
       .from(usersTable)

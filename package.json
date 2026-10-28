@@ -15,11 +15,6 @@
     "prettier": "^3.8.4",
     "typescript": "~5.9.3"
   },
-  "pnpm": {
-    "overrides": {
-      "drizzle-orm": "0.45.2"
-    }
-  },
   "engines": {
     "node": ">=22.9.0"
   },

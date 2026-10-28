@@ -1,8 +1,8 @@
+import securityHeaders from "./security-headers.json";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
-import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
 
 const rawPort = process.env.PORT || "5173";
 const port = Number(rawPort);
@@ -18,7 +18,6 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    runtimeErrorOverlay(),
     ...(process.env.NODE_ENV !== "production" &&
     process.env.REPL_ID !== undefined
       ? [
@@ -59,8 +58,8 @@ export default defineConfig({
   server: {
     port,
     strictPort: true,
-    host: "0.0.0.0",
-    allowedHosts: true,
+    host: "127.0.0.1",
+    allowedHosts: ["localhost", "127.0.0.1"],
     fs: {
       strict: true,
     },
@@ -72,9 +71,10 @@ export default defineConfig({
     },
   },
   preview: {
+    headers: securityHeaders,
     port,
-    host: "0.0.0.0",
-    allowedHosts: true,
+    host: "127.0.0.1",
+    allowedHosts: ["localhost", "127.0.0.1"],
     proxy: {
       "/api": {
         target: "http://127.0.0.1:8080",

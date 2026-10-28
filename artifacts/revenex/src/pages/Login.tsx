@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, EyeOff, Mail, Lock, ArrowRight, LogIn, AlertCircle, X, CheckCircle2 } from 'lucide-react'
 import GoogleSignInButton from '@/components/GoogleSignInButton'
 import { useAuth } from '@/lib/auth-context'
-import OrbitalHero from '@/components/OrbitalHero3D'
+import StudentHero3D from '@/components/StudentHero3D'
 
 export default function Login() {
   const [, navigate] = useLocation()
@@ -45,8 +45,8 @@ export default function Login() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
     setErrors({}); setLoading(true)
     try {
-      const data = await apiRequest<{ token: string; user: { id: number; name: string; email: string; role: string } }>('/api/auth/login', { method: 'POST', body: JSON.stringify({ email: form.email, password: form.password }) })
-      login(data.token, data.user)
+      const data = await apiRequest<{ user: { id: number; name: string; email: string; role: string } }>('/api/auth/login', { method: 'POST', body: JSON.stringify({ email: form.email, password: form.password }) })
+      login(data.user)
       navigate(data.user?.role === 'admin' ? '/admin' : '/')
     } catch (error) { setErrors({ general: error instanceof Error ? error.message : 'Connection error. Please try again.' }) }
     finally { setLoading(false) }
@@ -54,10 +54,10 @@ export default function Login() {
 
   const handleGoogleSuccess = async (credential: string) => {
     setErrors({})
-    const data = await apiRequest<{ token: string; user: { id: number; name: string; email: string; role: string } }>('/api/auth/google', {
+    const data = await apiRequest<{ user: { id: number; name: string; email: string; role: string } }>('/api/auth/google', {
       method: 'POST', body: JSON.stringify({ credential }),
     })
-    login(data.token, data.user)
+    login(data.user)
     navigate(data.user.role === 'admin' ? '/admin' : '/')
   }
 
@@ -65,7 +65,7 @@ export default function Login() {
     `w-full rounded-xl border ${err ? 'border-red-500/50 bg-red-500/5 focus:ring-red-500/10 focus:border-red-500' : 'border-[#E8E0D4] bg-[#FCFAF7] focus:border-[#7C3D0F] focus:ring-[#7C3D0F]/10'} pl-11 pr-4 py-2.5 text-[#1A1410] placeholder-[#9C8E83] outline-none focus:ring-4 transition-all text-sm font-medium`
 
   return (
-    <main className="h-screen flex flex-col lg:flex-row bg-gradient-to-br from-[#F5F0E8] via-[#EDE5D8] to-[#E3D8C6] overflow-hidden relative">
+    <main id="login-student-section" className="h-screen flex flex-col lg:flex-row bg-gradient-to-br from-[#F5F0E8] via-[#EDE5D8] to-[#E3D8C6] overflow-hidden relative">
       {/* Decorative background glows */}
       <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#8B4513]/3 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/3 w-[300px] h-[300px] bg-[#7C3D0F]/3 rounded-full blur-[120px] pointer-events-none" />
@@ -175,8 +175,8 @@ export default function Login() {
         <div className="absolute bottom-1/10 left-1/10 w-[400px] h-[400px] bg-[#7C3D0F]/4 rounded-full blur-[140px] pointer-events-none" />
 
         {/* orbital component */}
-        <div className="w-full max-w-[640px] transform scale-85 xl:scale-95 transition-transform duration-500">
-          <OrbitalHero />
+        <div className="w-full max-w-[640px]">
+          <StudentHero3D interactionRootId="login-student-section" />
         </div>
       </div>
 

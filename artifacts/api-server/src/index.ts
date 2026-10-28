@@ -25,15 +25,20 @@ if (
 
   if (!Number.isInteger(port) || port < 1 || port > 65535)
     throw new Error("Invalid PORT");
-  const server = app.listen(port, (err) => {
-    if (err) {
-      logger.error({ err }, "Error listening on port");
-      process.exit(1);
-    }
+  const server = app.listen(
+    port,
+    process.env.HOST ??
+      (process.env.NODE_ENV === "production" ? "0.0.0.0" : "127.0.0.1"),
+    (err) => {
+      if (err) {
+        logger.error({ err }, "Error listening on port");
+        process.exit(1);
+      }
 
-    logger.info({ port }, "Local server listening");
-    void seedAdmin().catch((err) => logger.warn({ err }, "Seed failed"));
-  });
+      logger.info({ port }, "Local server listening");
+      void seedAdmin().catch((err) => logger.warn({ err }, "Seed failed"));
+    },
+  );
   const shutdown = () => {
     server.close(() => {
       void import("@workspace/db")

@@ -17,7 +17,7 @@ export interface AuthUser {
 interface AuthContextType {
   user: AuthUser | null;
   loading: boolean;
-  login: (token: string, user: AuthUser) => void;
+  login: (user: AuthUser) => void;
   logout: () => Promise<void>;
 }
 const AuthContext = createContext<AuthContextType>({
@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       active = false;
     };
   }, []);
-  const login = useCallback((_token: string, data: AuthUser) => {
+  const login = useCallback((data: AuthUser) => {
     setUser(data);
   }, []);
   const logout = useCallback(async () => {

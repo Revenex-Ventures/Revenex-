@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { Eye, EyeOff, Mail, Lock, ArrowRight, User, Phone, Building2, AlertCircle, CheckCircle2, UserPlus } from 'lucide-react'
 import GoogleSignInButton from '@/components/GoogleSignInButton'
 import { useAuth } from '@/lib/auth-context'
-import OrbitalHero from '@/components/OrbitalHero3D'
+import StudentHero3D from '@/components/StudentHero3D'
 
 export default function Signup() {
   const [, navigate] = useLocation()
@@ -44,10 +44,10 @@ export default function Signup() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
     setErrors({}); setLoading(true)
     try {
-      const data = await apiRequest<{ token: string; user: { id: number; name: string; email: string; role: string } }>('/api/auth/signup', {
+      const data = await apiRequest<{ user: { id: number; name: string; email: string; role: string } }>('/api/auth/signup', {
         method: 'POST', body: JSON.stringify({ name: form.name, email: form.email, phone: form.phone, school: form.school, password: form.password }),
       })
-      login(data.token, data.user)
+      login(data.user)
       setLoading(false); setGoogleName(data.user?.name ?? form.name); setDone(true)
       setTimeout(() => navigate('/'), 2500)
     } catch (error) { setErrors({ general: error instanceof Error ? error.message : 'Connection error. Please try again.' }) }
@@ -56,10 +56,10 @@ export default function Signup() {
 
   const handleGoogleSuccess = async (credential: string) => {
     setErrors({})
-    const data = await apiRequest<{ token: string; user: { id: number; name: string; email: string; role: string } }>('/api/auth/google', {
+    const data = await apiRequest<{ user: { id: number; name: string; email: string; role: string } }>('/api/auth/google', {
       method: 'POST', body: JSON.stringify({ credential }),
     })
-    login(data.token, data.user)
+    login(data.user)
     navigate(data.user.role === 'admin' ? '/admin' : '/')
   }
 
@@ -86,7 +86,7 @@ export default function Signup() {
   const strength = passwordStrength()
 
   return (
-    <main className="h-screen flex flex-col lg:flex-row bg-gradient-to-br from-[#F5F0E8] via-[#EDE5D8] to-[#E3D8C6] overflow-hidden relative">
+    <main id="signup-student-section" className="h-screen flex flex-col lg:flex-row bg-gradient-to-br from-[#F5F0E8] via-[#EDE5D8] to-[#E3D8C6] overflow-hidden relative">
       {/* Decorative background glows */}
       <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-[#8B4513]/3 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/3 w-[300px] h-[300px] bg-[#7C3D0F]/3 rounded-full blur-[120px] pointer-events-none" />
@@ -256,8 +256,8 @@ export default function Signup() {
         <div className="absolute bottom-1/10 left-1/10 w-[400px] h-[400px] bg-[#7C3D0F]/4 rounded-full blur-[140px] pointer-events-none" />
 
         {/* orbital component */}
-        <div className="w-full max-w-[640px] transform scale-85 xl:scale-95 transition-transform duration-500">
-          <OrbitalHero />
+        <div className="w-full max-w-[640px]">
+          <StudentHero3D interactionRootId="signup-student-section" />
         </div>
       </div>
     </main>

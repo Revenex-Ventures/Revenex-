@@ -50,6 +50,7 @@ try {
         GOOGLE_CLIENT_ID: "test-client.apps.googleusercontent.com",
         RESEND_API_KEY: "test-email-key",
         OPENROUTER_API_KEY: "test-ai-key",
+        OPENROUTER_MODELS: "test/primary,test/fallback",
         APP_URL: "http://localhost:5173",
         TRUST_PROXY_HOPS: "0",
       },

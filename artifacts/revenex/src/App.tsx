@@ -1,10 +1,9 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useCallback, lazy, Suspense } from "react";
 import { Switch, Route, useLocation } from "wouter";
 import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LanguageProvider } from "@/lib/language-context";
 import { AuthProvider } from "@/lib/auth-context";
-import { CursorGlow } from "@/components/CursorGlow";
 import { Preloader } from "@/components/Preloader";
 const Home = lazy(() => import("@/pages/Home"));
 const About = lazy(() => import("@/pages/About"));
@@ -26,12 +25,22 @@ const NotFound = lazy(() => import("@/pages/not-found"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const AttendanceShowcase = lazy(() => import("@/pages/showcase/Attendance"));
 const AdmissionsShowcase = lazy(() => import("@/pages/showcase/Admissions"));
-const HomeworkShowcase = lazy(() => import("@/pages/showcase/HomeworkShowcase"));
+const HomeworkShowcase = lazy(
+  () => import("@/pages/showcase/HomeworkShowcase"),
+);
 const ReportCardsShowcase = lazy(() => import("@/pages/showcase/ReportCards"));
-const FeeManagementShowcase = lazy(() => import("@/pages/showcase/FeeManagement"));
-const StudentPortalShowcase = lazy(() => import("@/pages/showcase/StudentPortalShowcase"));
-const TransportShowcase = lazy(() => import("@/pages/showcase/TransportShowcase"));
-const CommunicationShowcase = lazy(() => import("@/pages/showcase/Communication"));
+const FeeManagementShowcase = lazy(
+  () => import("@/pages/showcase/FeeManagement"),
+);
+const StudentPortalShowcase = lazy(
+  () => import("@/pages/showcase/StudentPortalShowcase"),
+);
+const TransportShowcase = lazy(
+  () => import("@/pages/showcase/TransportShowcase"),
+);
+const CommunicationShowcase = lazy(
+  () => import("@/pages/showcase/Communication"),
+);
 const MotionShowcase = lazy(() => import("@/pages/MotionShowcase"));
 import { ScrollToTop } from "@/components/ScrollToTop";
 
@@ -55,10 +64,19 @@ function Router() {
         <Route path="/product/admissions" component={AdmissionsShowcase} />
         <Route path="/product/homework" component={HomeworkShowcase} />
         <Route path="/product/report-cards" component={ReportCardsShowcase} />
-        <Route path="/solutions/fee-management" component={FeeManagementShowcase} />
-        <Route path="/solutions/student-portal" component={StudentPortalShowcase} />
+        <Route
+          path="/solutions/fee-management"
+          component={FeeManagementShowcase}
+        />
+        <Route
+          path="/solutions/student-portal"
+          component={StudentPortalShowcase}
+        />
         <Route path="/solutions/transport" component={TransportShowcase} />
-        <Route path="/solutions/communication" component={CommunicationShowcase} />
+        <Route
+          path="/solutions/communication"
+          component={CommunicationShowcase}
+        />
         <Route path="/motion-showcase" component={MotionShowcase} />
         <Route path="/careers" component={Careers} />
         <Route path="/features/:slug" component={FeatureDetail} />
@@ -77,23 +95,26 @@ function Router() {
 function App() {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1400);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const finishLoading = useCallback(() => setLoading(false), []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <AuthProvider>
           <AnimatePresence mode="wait">
-            {loading && <Preloader />}
+            {loading && <Preloader onComplete={finishLoading} />}
           </AnimatePresence>
           <ScrollToTop />
-          <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-[#17375D]" role="status">Loading…</div>}>
+          <Suspense
+            fallback={
+              <div
+                className="min-h-screen flex items-center justify-center text-[#17375D]"
+                role="status"
+              >
+                Loading…
+              </div>
+            }
+          >
             <Router />
           </Suspense>
         </AuthProvider>

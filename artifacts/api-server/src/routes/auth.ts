@@ -7,6 +7,8 @@ import { schemas, validateBody, escapeHtml } from "../lib/validation";
 import {
   authenticate,
   createSession,
+  revokeSession,
+  authCookieName,
   clearSession,
   publicUser,
   hashResetToken,
@@ -156,7 +158,7 @@ router.post("/auth/signup", validateBody(schemas.signup), async (req, res) => {
       adminNotifyHtml(escapeHtml(name), escapeHtml(email), "Email"),
     ),
   ]).catch(() => req.log.warn("Registration email delivery failed"));
-  res.status(201).json(createSession(res, user));
+  res.status(201).json(await createSession(res, user));
 });
 
 router.post("/auth/login", validateBody(schemas.login), async (req, res) => {
@@ -176,28 +178,24 @@ router.post("/auth/login", validateBody(schemas.login), async (req, res) => {
     .update(usersTable)
     .set({ lastLogin: new Date() })
     .where(eq(usersTable.id, user.id));
-  res.json(createSession(res, user));
+  res.json(await createSession(res, user));
 });
 
 router.post("/auth/google", validateBody(schemas.google), async (req, res) => {
   if (!process.env.GOOGLE_CLIENT_ID?.trim()) {
-    res
-      .status(503)
-      .json({
-        message:
-          "Google sign-in is currently unavailable. Please use email sign-in.",
-      });
+    res.status(503).json({
+      message:
+        "Google sign-in is currently unavailable. Please use email sign-in.",
+    });
     return;
   }
   let identity;
   try {
     identity = await verifyGoogleCredential(req.body.credential);
   } catch {
-    res
-      .status(401)
-      .json({
-        message: "Google sign-in could not be verified. Please try again.",
-      });
+    res.status(401).json({
+      message: "Google sign-in could not be verified. Please try again.",
+    });
     return;
   }
   const { email, name, googleId, authoritative } = identity;
@@ -214,12 +212,10 @@ router.post("/auth/google", validateBody(schemas.google), async (req, res) => {
       user &&
       ((user.googleId && user.googleId !== googleId) || !authoritative)
     ) {
-      res
-        .status(409)
-        .json({
-          message:
-            "Please sign in with your email and password for this account.",
-        });
+      res.status(409).json({
+        message:
+          "Please sign in with your email and password for this account.",
+      });
       return;
     }
   }
@@ -254,7 +250,7 @@ router.post("/auth/google", validateBody(schemas.google), async (req, res) => {
       .where(eq(usersTable.id, user.id))
       .returning();
   }
-  res.json(createSession(res, user));
+  res.json(await createSession(res, user));
 });
 
 router.post(
@@ -262,12 +258,10 @@ router.post(
   validateBody(schemas.forgot),
   async (req, res) => {
     if (!process.env.RESEND_API_KEY?.trim()) {
-      res
-        .status(503)
-        .json({
-          message:
-            "Password reset email is temporarily unavailable. Please contact support.",
-        });
+      res.status(503).json({
+        message:
+          "Password reset email is temporarily unavailable. Please contact support.",
+      });
       return;
     }
     const { email } = req.body;
@@ -309,11 +303,9 @@ router.post(
             ),
           );
         req.log.warn("Password reset email delivery failed");
-        res
-          .status(503)
-          .json({
-            message: "Unable to send reset email. Please try again later.",
-          });
+        res.status(503).json({
+          message: "Unable to send reset email. Please try again later.",
+        });
         return;
       }
     }
@@ -341,11 +333,9 @@ router.post(
       )
       .returning();
     if (!user) {
-      res
-        .status(400)
-        .json({
-          message: "Invalid or expired reset link. Please request a new one.",
-        });
+      res.status(400).json({
+        message: "Invalid or expired reset link. Please request a new one.",
+      });
       return;
     }
     clearSession(res);
@@ -361,8 +351,8 @@ router.post(
   },
 );
 
-router.post("/auth/logout", (_req, res) => {
-  clearSession(res);
+router.post("/auth/logout", async (req, res) => {
+  await revokeSession(req, res);
   res.json({ message: "Logged out successfully" });
 });
 
@@ -371,7 +361,7 @@ router.get("/auth/me", authenticate, (_req, res) => {
 });
 router.get("/auth/session", (req, res, next) => {
   res.setHeader("Cache-Control", "no-store");
-  if (!req.cookies?.revenex_auth && !req.headers.authorization) {
+  if (!req.cookies?.[authCookieName] && !req.headers.authorization) {
     res.json({ user: null });
     return;
   }

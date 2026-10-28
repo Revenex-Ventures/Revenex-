@@ -100,7 +100,7 @@ router.post("/demo", validateBody(schemas.demo), async (req, res) => {
         .catch((err) => req.log.warn({ err }, "Failed to send demo email"));
     }
 
-    req.log.info({ name, schoolName, email }, "Demo request submitted");
+    req.log.info("Demo request submitted");
     res.json({
       message:
         "Thank you for booking a demo. Our team will contact you shortly to confirm your session.",

@@ -1,3 +1,4 @@
+import StudentHero3D from '@/components/StudentHero3D'
 import { useRef, useState, useEffect, useCallback, useMemo, useLayoutEffect, Suspense, type CSSProperties } from 'react'
 import { Link } from 'wouter'
 import { useQueryClient } from '@tanstack/react-query'
@@ -1755,241 +1756,6 @@ function ProductsSection() {
   )
 }
 
-/* ─── Hero visual: single half-body student cut out of the site's own illustration set ─── */
-function StudentArt({ angle = 0, dip = 0, play = true, replayKey = 0, reading = false, tidy = false, exiting = false, expr = 'neutral' }: { angle?: number; dip?: number; play?: boolean; replayKey?: number; reading?: boolean; tidy?: boolean; exiting?: boolean; expr?: 'neutral' | 'curious' | 'smile' | 'surprised' }) {
-  return (
-    <svg viewBox="0 0 400 440" className="h-full w-full" role="img" aria-label="Student with books, connected to Revenex modules">
-      <defs>
-        <linearGradient id="rxJ" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#C2814C" /><stop offset="1" stopColor="#8E5028" /></linearGradient>
-        <linearGradient id="rxSk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stopColor="#E9B88F" /><stop offset="1" stopColor="#D49B71" /></linearGradient>
-        <linearGradient id="rxHair" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#3A271A" /><stop offset="1" stopColor="#1C120B" /></linearGradient>
-      </defs>
-      <style>{`
-        .rx-a{transform-box:view-box}
-        .rx-torso{transform-origin:200px 440px;animation:rxBreath 5s cubic-bezier(.45,0,.55,1) infinite}
-        .rx-tie{transform-origin:200px 318px;animation:rxTie 6s cubic-bezier(.45,0,.55,1) infinite;animation-delay:-1s}
-        .rx-sway{transform-origin:200px 222px;animation:rxSway 11s cubic-bezier(.45,0,.55,1) infinite}
-        .rx-bk1{animation:rxB1 5s both}.rx-bk2{animation:rxB2 5s both}.rx-bk3{animation:rxB3 5s both}
-        .rx-hand{animation:rxHand 5s both}
-        .rx-exit .rx-hand{animation:rxOutH 1.5s cubic-bezier(.5,0,.8,.5) both}
-        .rx-exit .rx-bk3{animation:rxOut 1.3s cubic-bezier(.5,0,.8,.5) .15s both}
-        .rx-exit .rx-bk2{animation:rxOut 1.3s cubic-bezier(.5,0,.8,.5) .35s both}
-        .rx-exit .rx-bk1{animation:rxOut 1.3s cubic-bezier(.5,0,.8,.5) .55s both}
-        @keyframes rxOut{0%{opacity:1;transform:translate(0,0) rotate(0)}15%{transform:translate(0,-4px) rotate(0)}100%{opacity:0;transform:translate(10px,90px) rotate(7deg)}}
-        @keyframes rxOutH{0%{opacity:1;transform:translate(0,0)}100%{opacity:0;transform:translate(90px,24px)}}
-        .rx-top{transform-origin:130px 380px}.rx-tidy{animation:rxTidy 2.6s cubic-bezier(.45,0,.2,1) both}
-        @keyframes rxTidy{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(14px,-4px) rotate(2deg)}45%{transform:translate(-6px,0) rotate(-1.5deg)}65%{transform:translate(8px,1px) rotate(1deg)}85%{transform:translate(0,0) rotate(0)}}.rx-reading{animation:rxRead 6.8s cubic-bezier(.45,0,.2,1) both}
-        @keyframes rxBreath{0%,100%{transform:scale(1,1)}50%{transform:scale(1.008,1.014)}}
-        @keyframes rxTie{0%,100%{transform:rotate(0)}50%{transform:rotate(1.6deg)}}
-        @keyframes rxSway{0%,100%{transform:rotate(0)}35%{transform:rotate(-1.2deg)}70%{transform:rotate(.9deg)}}
-        @keyframes rxB1{0%,0%{opacity:0;transform:translate(-70px,-120px) rotate(-14deg)}2%{opacity:1}11%{opacity:1;transform:translate(0,0) rotate(0);animation-timing-function:cubic-bezier(.3,0,.8,.5)}13%{transform:translate(0,2px) scale(1.01,.94)}17%{transform:translate(0,-7px) rotate(-3deg);animation-timing-function:cubic-bezier(.3,0,.8,.5)}21%{transform:translate(0,0) rotate(0)}23%{transform:translate(0,1px)}25%{transform:translate(0,0)}100%{opacity:1;transform:translate(0,0)}}
-        @keyframes rxB2{0%,18%{opacity:0;transform:translate(-70px,-120px) rotate(-14deg)}20%{opacity:1}29%{opacity:1;transform:translate(0,0) rotate(0);animation-timing-function:cubic-bezier(.3,0,.8,.5)}31%{transform:translate(0,2px) scale(1.01,.94)}35%{transform:translate(0,-7px) rotate(2deg);animation-timing-function:cubic-bezier(.3,0,.8,.5)}39%{transform:translate(0,0) rotate(0)}41%{transform:translate(0,1px)}43%{transform:translate(0,0)}100%{opacity:1;transform:translate(0,0)}}
-        @keyframes rxB3{0%,36%{opacity:0;transform:translate(-70px,-120px) rotate(-14deg)}38%{opacity:1}47%{opacity:1;transform:translate(0,0) rotate(0);animation-timing-function:cubic-bezier(.3,0,.8,.5)}49%{transform:translate(0,2px) scale(1.01,.94)}53%{transform:translate(0,-7px) rotate(-2deg);animation-timing-function:cubic-bezier(.3,0,.8,.5)}57%{transform:translate(0,0) rotate(0)}59%{transform:translate(0,1px)}61%{transform:translate(0,0)}100%{opacity:1;transform:translate(0,0)}}
-        @keyframes rxHand{0%,66%{opacity:0;transform:translate(90px,24px)}72%{opacity:1;transform:translate(40px,8px)}82%{opacity:1;transform:translate(0,0)}86%{transform:translate(0,3px)}90%,100%{opacity:1;transform:translate(0,0)}}
-        @keyframes rxRead{0%{transform:translate(0,0) rotate(0)}16%{transform:translate(22px,-80px) rotate(-10deg)}84%{transform:translate(22px,-80px) rotate(-10deg)}100%{transform:translate(0,0) rotate(0)}}
-        @media (prefers-reduced-motion:reduce){.rx-a{animation:none!important}}
-      `}</style>
-      <g className="rx-a rx-torso">
-      {/* torso */}
-      <path d="M30 440 C34 350 70 308 142 286 L258 286 C330 308 366 350 370 440Z" fill="url(#rxJ)" />
-      {/* shoulder light */}
-      <path d="M70 330 C100 305 130 295 150 290 L150 310 C120 316 96 330 80 352Z" fill="#E3A978" opacity=".35" />
-      {/* shirt + collar */}
-      <path d="M160 284 L200 372 L240 284 Z" fill="#FBF3E6" />
-      <path d="M160 284 L190 318 L168 326 L146 292Z" fill="#EFE0C8" />
-      <path d="M240 284 L210 318 L232 326 L254 292Z" fill="#EFE0C8" />
-      {/* lapels */}
-      <path d="M146 292 L168 326 L196 380 L176 440 L128 440 C122 380 128 330 146 292Z" fill="#7B431F" opacity=".75" />
-      <path d="M254 292 L232 326 L204 380 L224 440 L272 440 C278 380 272 330 254 292Z" fill="#7B431F" opacity=".75" />
-      <path d="M168 326 L196 380 M232 326 L204 380" stroke="#E3B581" strokeWidth="1.5" opacity=".7" />
-      <g className="rx-a rx-tie">
-      {/* tie */}
-      <path d="M193 318 L207 318 L210 332 L206 440 L194 440 L190 332Z" fill="#241D15" />
-      <path d="M190 318 H210 L207 330 H193Z" fill="#2F251B" />
-      </g>
-      {/* pocket square */}
-      <path d="M262 352 L292 348 L294 364 L264 368Z" fill="#E3A82B" />
-      {/* crest */}
-      <g transform="translate(84 372)"><path d="M0 0 H20 V15 C20 24 10 28 10 28 C10 28 0 24 0 15Z" fill="#F7E7D1" /><text x="10" y="18" textAnchor="middle" fontSize="12" fontWeight="800" fill="#7B431F" fontFamily="sans-serif">R</text></g>
-      </g>
-      {/* neck */}
-      <path d="M178 196 H222 V282 C222 296 178 296 178 282Z" fill="url(#rxSk)" />
-      <path d="M178 238 C192 262 210 262 222 244 V262 C208 280 192 280 178 262Z" fill="#B97B52" opacity=".45" />
-      <g style={{ transform: `rotate(${angle}deg) translateY(${dip}px)`, transformOrigin: '200px 222px', transformBox: 'view-box', transition: 'transform 1.1s cubic-bezier(.4,0,.2,1)' }}>
-      <g className="rx-a rx-sway">
-      {/* ears + head */}
-      <ellipse cx="158" cy="160" rx="7" ry="13" fill="#D49B71" />
-      <ellipse cx="242" cy="160" rx="7" ry="13" fill="#D49B71" />
-      <path d="M160 128 C160 96 180 82 200 82 C222 82 240 96 240 128 L240 168 C240 202 222 222 200 222 C178 222 160 202 160 168Z" fill="url(#rxSk)" />
-      {/* soft jaw shadow + nose + brow, no cartoon face */}
-      <path d="M200 148 C196 164 194 172 200 176 C204 177 207 176 208 174" stroke="#B97B52" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".55" />
-
-      <g style={{ transform: expr === 'surprised' ? 'translateY(-6px)' : expr === 'curious' ? 'translateY(-4px)' : expr === 'smile' ? 'translateY(-1px)' : 'none', transition: 'transform .5s ease', transformBox: 'view-box' }}>
-      <path d="M170 142 q12 -7 24 -1 M206 141 q12 -6 24 1" stroke="#2B1B10" strokeWidth="4" fill="none" strokeLinecap="round" style={{ transform: expr === 'curious' ? 'rotate(0deg)' : 'none' }} />
-      </g>
-      {expr === 'surprised' ? <ellipse cx="200" cy="199" rx="5.5" ry="7" fill="#7A3A22" /> : <path d={expr === 'smile' ? 'M183 194 q17 13 34 0' : expr === 'curious' ? 'M191 198 q9 3 18 0' : 'M186 196 q14 7 28 0'} stroke="#A8603D" strokeWidth="3.5" fill="none" strokeLinecap="round" opacity=".8" />}
-      <path d="M164 176 C168 206 186 222 200 222 C190 214 176 200 170 172Z" fill="#B97B52" opacity=".25" />
-      {/* hair */}
-      <path d="M156 150 C146 92 178 66 206 68 C238 68 256 98 244 150 C240 128 232 112 216 106 C196 112 176 112 164 126 C160 134 158 142 156 150Z" fill="url(#rxHair)" />
-      <path d="M170 100 C190 84 222 84 238 104" stroke="#6B4A33" strokeWidth="3" fill="none" strokeLinecap="round" opacity=".6" />
-      </g>
-      </g>
-      {/* books: separate objects, entrance plays once */}
-      <g key={replayKey} className={exiting ? 'rx-exit' : undefined} style={play ? undefined : { visibility: 'hidden' }}>
-      <g className="rx-a rx-bk1"><g transform="translate(58 414) rotate(-1)">
-        <rect width="150" height="24" rx="4" fill="#E3A82B" /><rect width="12" height="24" rx="4" fill="#C98F17" /><rect x="14" y="19" width="132" height="3" rx="1.5" fill="#F7E7D1" opacity=".8" />
-      </g></g>
-      <g className="rx-a rx-bk2"><g transform="translate(64 390) rotate(-4)">
-        <rect width="150" height="24" rx="4" fill="#241D15" /><rect width="12" height="24" rx="4" fill="#3A2C1F" /><rect x="30" y="8" width="60" height="4" rx="2" fill="#E3B581" /><rect x="14" y="19" width="132" height="3" rx="1.5" fill="#F7E7D1" opacity=".7" />
-      </g></g>
-      <g className={reading ? 'rx-a rx-top rx-reading' : tidy ? 'rx-a rx-top rx-tidy' : 'rx-a rx-top'}>
-      <g className="rx-a rx-bk3"><g transform="translate(56 367) rotate(3)">
-        <rect width="150" height="23" rx="4" fill="#F7E7D1" /><rect width="12" height="23" rx="4" fill="#E3B581" /><rect x="30" y="8" width="50" height="4" rx="2" fill="#8B4513" /><rect x="14" y="18" width="132" height="3" rx="1.5" fill="#fff" opacity=".8" />
-      </g></g>
-      <g className="rx-a rx-hand">
-        <g transform="translate(-34 -38)">
-          <path d="M200 424 C208 400 236 390 262 398 C270 402 268 416 258 420 L226 440 Z" fill="url(#rxSk)" />
-          <path d="M232 412 L262 404 M238 424 L266 412" stroke="#B97B52" strokeWidth="2.5" strokeLinecap="round" opacity=".6" />
-        </g>
-      </g>
-      </g>
-      </g>
-    </svg>
-  )
-}
-
-function OrbitalHero() {
-  const reduce = useReducedMotion()
-  const rootRef = useRef<HTMLDivElement>(null)
-  const inView = useInView(rootRef, { amount: 0.4 })
-  const [play, setPlay] = useState(false)
-  const [replayKey, setReplayKey] = useState(0)
-  const [pose, setPose] = useState<{ a: number; d: number } | null>(null)
-  const [reading, setReading] = useState(false)
-  const [tidy, setTidy] = useState(false)
-  const [exiting, setExiting] = useState(false)
-  const [expr, setExpr] = useState<'neutral' | 'curious' | 'smile' | 'surprised'>('neutral')
-  const [pointer, setPointer] = useState(0)
-
-  // module cards: connector index = array index
-  const mods: Array<{ t: string; s: string; Icon: LucideIcon; pos: string; dur: number; dl: number; hide?: boolean; angle: number; dip: number }> = [
-    { t: 'Attendance', s: 'Daily tracking', Icon: CalendarCheck, pos: 'top-[8%] -left-[1%] lg:-left-[8%]', dur: 4.4, dl: 0, angle: -6, dip: -1 },
-    { t: 'Fees', s: 'Online collection', Icon: IndianRupee, pos: 'top-[6%] right-[0%] lg:-right-[6%]', dur: 4.8, dl: 0.8, angle: 6, dip: -1 },
-    { t: 'Homework', s: 'Assign & review', Icon: BookMarked, pos: 'top-[38%] -left-[3%] lg:-left-[12%]', dur: 4.1, dl: 0.4, hide: true, angle: -5, dip: 0 },
-    { t: 'Transport', s: 'Routes & buses', Icon: Bus, pos: 'top-[42%] right-[-3%] lg:-right-[12%]', dur: 5, dl: 1.2, angle: 5, dip: 0 },
-    { t: 'Communication', s: 'Parent updates', Icon: MessageCircle, pos: 'bottom-[26%] -left-[2%] lg:-left-[10%]', dur: 4.6, dl: 0.6, hide: true, angle: -4, dip: 2 },
-    { t: 'Library', s: 'Books & issues', Icon: BookOpen, pos: 'bottom-[18%] right-[0%] lg:-right-[5%]', dur: 4.3, dl: 1.5, hide: true, angle: 4, dip: 2 },
-    { t: 'Admissions', s: 'Online applications', Icon: UserPlus, pos: 'max-sm:-bottom-[5%] bottom-[0%] left-[0%] lg:-left-[10%]', dur: 4.9, dl: 0.2, angle: -3, dip: 3 },
-  ]
-  const links: Array<[number, number]> = [[20, 16], [80, 14], [14, 44], [86, 48], [14, 68], [84, 78], [20, 92]]
-  const hub = [50, 66]
-
-  // one-time entrance once the hero is on screen; reduced motion shows the finished stack
-  useEffect(() => {
-    if (reduce) { setPlay(true); return }
-    if (inView && !play) setPlay(true)
-  }, [inView, play, reduce])
-
-  // one full cycle per replayKey: entrance, rest, two scenes, books fall away, then the cycle restarts on the empty start state
-  useEffect(() => {
-    if (reduce || !play) return
-    let alive = true
-    let timer: ReturnType<typeof setTimeout>
-    const wait = (ms: number) => new Promise<void>((r) => { timer = setTimeout(r, ms) })
-    const visible = async () => { while (alive && (document.hidden || !rootRef.current || !(rootRef.current.getBoundingClientRect().bottom > 0))) await wait(1500) }
-    // fixed order every cycle: books drop and stack, he picks up the top book and looks around, puts it back, then everything falls away
-    const cycle = async () => {
-      setExpr('neutral')
-      await wait(5400)
-      await visible()
-      if (!alive) return
-      for (let i = 0; i < 2; i++) { setPose({ a: 0, d: 4 }); await wait(520); setPose({ a: 0, d: -1 }); await wait(520) }
-      setPose(null)
-      await wait(900)
-      setReading(true)
-      setExpr('curious')
-      setPose({ a: -2, d: 3 })
-      await wait(1500)
-      setPose({ a: -6, d: 0 })
-      await wait(1800)
-      setPose({ a: 6, d: 1 })
-      await wait(1900)
-      setPose({ a: -2, d: 3 })
-      await wait(1600)
-      setReading(false)
-      setExpr('smile')
-      setPose(null)
-      await wait(1200)
-      setPose({ a: 6, d: 0 }); await wait(1500); setPose({ a: -5, d: 1 }); await wait(1400); setPose(null)
-      await wait(1000)
-      if (!alive) return
-      setExpr('surprised')
-      setExiting(true)
-      await wait(2000)
-      if (!alive) return
-      setExiting(false)
-      setReplayKey((k) => k + 1)
-    }
-    cycle()
-    return () => { alive = false; clearTimeout(timer) }
-  }, [play, reduce, replayKey])
-
-  const angle = reduce ? 0 : pose ? pose.a : pointer
-  const dip = reduce ? 0 : pose ? pose.d : 0
-
-  const onMove = (e: React.PointerEvent) => {
-    if (reduce || e.pointerType !== 'mouse' || !rootRef.current) return
-    const r = rootRef.current.getBoundingClientRect()
-    const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2)
-    const next = Math.round(Math.max(-1, Math.min(1, dx)) * 5 * 2) / 2
-    if (next !== pointer) setPointer(next)
-  }
-  const replay = () => { if (reduce) return; setExpr('neutral'); setReading(false); setTidy(false); setExiting(false); setPose(null); setReplayKey((k) => k + 1) }
-
-  const card = 'absolute z-10 rounded-xl bg-white border border-[#EDE8E3] shadow-[0_14px_30px_-12px_rgba(36,29,21,0.35)] '
-
-  return (
-    <div ref={rootRef} onPointerMove={onMove} onPointerLeave={() => setPointer(0)} className="relative mx-auto w-full max-w-[560px] aspect-[28/29]">
-      {/* dark arch stage with copper glow */}
-      <div aria-hidden className="absolute left-1/2 bottom-[2%] -translate-x-1/2 w-[74%] h-[88%] rounded-t-[999px] rounded-b-[28px] overflow-hidden"
-        style={{ background: 'radial-gradient(circle at 50% 34%, #8B4513 0%, #4A2A12 38%, #241D15 78%)', boxShadow: '0 40px 70px -30px rgba(36,29,21,0.65)' }}>
-        <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: 'radial-gradient(#F7E7D1 1px, transparent 1px)', backgroundSize: '18px 18px' }} />
-        <div className="absolute top-[12%] left-1/2 -translate-x-1/2 w-[86%] aspect-square rounded-full border border-[#E3B581]/30" />
-        <div className="absolute top-[26%] left-1/2 -translate-x-1/2 w-[58%] aspect-square rounded-full border border-[#E3B581]/25" />
-      </div>
-      <div aria-hidden className="absolute left-1/2 bottom-[2%] -translate-x-1/2 w-[82%] h-[93%] rounded-t-[999px] rounded-b-[34px] border border-[#8B4513]/30" />
-
-      {/* connections: student to every module; a light travels to the module he looks at */}
-      <svg aria-hidden viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 z-[5] h-full w-full pointer-events-none">
-        {links.map(([x, y], i) => {
-          const d = `M${hub[0]} ${hub[1]} C ${(hub[0] + x) / 2} ${hub[1]}, ${(hub[0] + x) / 2} ${y}, ${x} ${y}`
-          return (
-            <g key={i} className={mods[i].hide ? 'max-sm:hidden' : ''}>
-              <path d={d} fill="none" stroke="#E3B581" strokeOpacity="0.6" strokeWidth="1" strokeDasharray="3 4" vectorEffect="non-scaling-stroke" />
-              <circle cx={x} cy={y} r="1" fill="#E3A82B" opacity="0.7" />
-            </g>
-          )
-        })}
-      </svg>
-
-      <div
-        role="button" tabIndex={0} aria-label="Replay the student animation"
-        onClick={replay} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); replay() } }}
-        className="absolute left-1/2 bottom-[2%] -translate-x-1/2 w-[74%] z-[6] cursor-pointer outline-none rounded-t-[999px] focus-visible:ring-2 focus-visible:ring-[#E3A82B] drop-shadow-[0_18px_22px_rgba(0,0,0,0.35)]"
-      >
-        <StudentArt angle={angle} dip={dip} play={play} replayKey={replayKey} reading={reading} tidy={tidy} exiting={exiting} expr={expr} />
-      </div>
-
-      {mods.map((m) => (
-        <div key={m.t} className={`${card} ${m.pos} p-2 lg:p-3 flex items-center gap-2 ${m.hide ? 'max-sm:hidden' : ''}`}>
-          <span className="w-6 h-6 lg:w-8 lg:h-8 shrink-0 rounded-lg bg-[#241D15] flex items-center justify-center"><m.Icon className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#E3B581]" /></span>
-          <div className="leading-tight"><div className="text-[9px] lg:text-[10px] uppercase tracking-wider text-[#8B4513] font-bold">{m.t}</div><div className="text-[11px] lg:text-sm font-semibold text-[#1A1410] whitespace-nowrap">{m.s}</div></div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
 export default function Home() {
   const { language, t } = useLanguage()
 
@@ -1998,7 +1764,7 @@ export default function Home() {
       <Navbar />
 
       {/* ── HERO ── */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <section id="introduction" className="relative flex items-center justify-center overflow-hidden pt-24 pb-4 lg:pt-28 lg:pb-6">
         <div className="absolute inset-0 hero-glow pointer-events-none" />
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#7C3D0F]/6 rounded-full blur-[140px]" />
@@ -2006,8 +1772,8 @@ export default function Home() {
         </div>
         <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(139, 69, 19,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid lg:grid-cols-[42fr_58fr] gap-12 items-center">
+        <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4 lg:py-0">
+          <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[58fr_42fr] lg:gap-8">
             <div className="text-left">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
@@ -2020,32 +1786,28 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl xl:text-[4.2rem] mb-6 leading-[1.05]"
+                className="mb-5 text-[clamp(1.3rem,6.5vw,1.6rem)] sm:text-[clamp(1.85rem,3.55vw,3.15rem)] font-black leading-[1.08] tracking-[-.045em]"
               >
-                <span className="text-[#1A1410]">{t('hero.title')}</span>
-                <br />
-                <span className="text-[#1A1410]">{t('hero.title2')}</span>
-                <br />
-                <span className="gradient-text">{t('hero.titleHighlight')}</span>
-                <br />
-                <span className="text-[#1A1410]">{t('hero.titleEnd')}</span>{' '}
-                <span className="gradient-text">{t('hero.titleBrand')}</span>
+                {language === 'en' ? <>
+                  <span className="block whitespace-nowrap text-[#1A1410]">Streamline School</span>
+                  <span className="block whitespace-nowrap text-[#1A1410]">Management <span className="gradient-text">with REVENEX.</span></span>
+                </> : <><span className="block text-[#1A1410]">स्कूल प्रबंधन आसान,</span><span className="block gradient-text">REVENEX के साथ।</span></>}
               </motion.h1>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="max-w-xl text-lg text-[#3D3128] leading-relaxed mb-8"
+                className="mb-7 max-w-[36rem] text-base leading-relaxed text-[#6B5D52] lg:text-[17px]"
               >
-                {t('hero.subtitle')}
+                {language === 'en' ? <><span className="block sm:hidden">Attendance, fees &amp; communication.</span><span className="hidden sm:block">One cloud ERP for attendance, fees and communication.</span><span className="block sm:hidden">Less admin. More school time.</span><span className="hidden sm:block">Less admin. More time for your school.</span></> : 'उपस्थिति, शुल्क और संचार के लिए एक क्लाउड ERP। कम प्रशासनिक काम, स्कूल के लिए ज़्यादा समय।'}
               </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.35 }}
-                className="flex flex-col sm:flex-row gap-4 mb-8"
+                className="flex flex-col sm:flex-row gap-3"
               >
                 <Link href="/book-demo">
                   <motion.span
@@ -2068,9 +1830,9 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Orbital 3D hero visual */}
+            {/* Student stays inside its own grid column and introduction bounds. */}
             <div className="relative flex items-center justify-center origin-center w-full min-w-0">
-              <OrbitalHero />
+              <StudentHero3D interactionRootId="introduction" />
             </div>
           </div>
         </div>

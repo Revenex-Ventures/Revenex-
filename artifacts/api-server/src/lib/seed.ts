@@ -37,7 +37,7 @@ export async function seedAdmin(): Promise<void> {
         role: "admin",
         provider: "email",
       });
-      logger.info({ email: adminEmail }, "Admin user created successfully");
+      logger.info("Admin user created successfully");
     }
   } catch (err) {
     logger.error({ err }, "Admin bootstrap failed");

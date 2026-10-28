@@ -75,7 +75,7 @@ router.post("/contact", validateBody(schemas.contact), async (req, res) => {
         .catch((err) => req.log.warn({ err }, "Failed to send contact email"));
     }
 
-    req.log.info({ name, email }, "Contact form submitted");
+    req.log.info("Contact form submitted");
     res.json({
       message: "Thank you for your message. We will get back to you soon.",
     });

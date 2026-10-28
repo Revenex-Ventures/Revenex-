@@ -16,6 +16,10 @@ router.get("/readyz", async (_req, res) => {
     await pool.query("SELECT id, approved FROM reviews LIMIT 0");
     await pool.query("SELECT id, status FROM contacts LIMIT 0");
     await pool.query("SELECT id, status FROM demo_requests LIMIT 0");
+    await pool.query(
+      "SELECT token_hash, user_id, expires_at FROM auth_sessions LIMIT 0",
+    );
+    await pool.query("SELECT key, hits, reset_at FROM request_limits LIMIT 0");
     res.json({ status: "ready" });
   } catch {
     res

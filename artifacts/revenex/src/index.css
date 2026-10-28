@@ -442,3 +442,55 @@
 .brand-logo--stacked { flex-direction: column; gap: 1rem; }
 .brand-logo__company { color: #B99640; font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(8px, .65em, 11px); font-weight: 700; letter-spacing: .18em; line-height: 1.4; text-transform: uppercase; white-space: nowrap; }
 .brand-logo__descriptor { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 8px; font-weight: 500; letter-spacing: .34em; line-height: 1.5; text-transform: uppercase; white-space: nowrap; }
+
+/* Leave room for mobile navigation and the device home indicator. */
+@media (max-width: 1023px) {
+  body:has([data-mobile-nav]) { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+  .mobile-nav > a, .mobile-nav > button { min-width: 44px; min-height: 48px; justify-content: center; }
+  .mobile-nav > a > span:last-child, .mobile-nav > button > span:last-child { font-size: 10px; }
+}
+
+/* Shared student portrait: upright module labels follow an invisible ellipse. */
+.student-module {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #e8e0d4;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff 10%, #fffaf0 100%);
+  box-shadow: 0 4px 16px rgb(61 49 40 / 8%);
+  color: #3d3128;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  offset-path: inset(24px 48px 30px round 38px);
+  offset-rotate: 0deg;
+  animation: student-module-orbit 40s linear infinite;
+}
+@keyframes student-module-orbit {
+  0% { offset-distance: 0%; transform: scale(0.94) rotate(-4deg); box-shadow: 0 6px 18px #8b451318; }
+  25% { offset-distance: 25%; transform: scale(1.02) rotate(3deg); box-shadow: 0 10px 24px #b88b3833; }
+  50% { offset-distance: 50%; transform: scale(0.94) rotate(-3deg); box-shadow: 0 6px 18px #8b451318; }
+  75% { offset-distance: 75%; transform: scale(1.02) rotate(4deg); box-shadow: 0 10px 24px #b88b3833; }
+  100% { offset-distance: 100%; transform: scale(0.94) rotate(-4deg); box-shadow: 0 6px 18px #8b451318; }
+}
+@media (min-width: 640px) {
+  .student-module { font-size: 11px; padding: 0.65rem 0.8rem; }
+}
+
+.student-module svg { padding: 4px; box-sizing: content-box; background: #f4e9d5; border-radius: 8px; }
+@media (min-width: 640px) {
+ .student-module { offset-path: inset(24px 65px 30px round 60px); }
+}
+@media (prefers-reduced-motion: reduce) {
+ .student-module { animation: none; }
+}
+
+@media (max-width: 359px) {
+  .student-module { padding: 5px; offset-path: inset(24px 28px 30px round 28px); }
+  .student-module-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+}
