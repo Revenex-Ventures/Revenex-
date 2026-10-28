@@ -49,6 +49,7 @@ try {
         SESSION_SECRET: "isolated-tests-only-secret-at-least-32-characters",
         GOOGLE_CLIENT_ID: "test-client.apps.googleusercontent.com",
         RESEND_API_KEY: "test-email-key",
+        CHAT_MODE: "ai",
         OPENROUTER_API_KEY: "test-ai-key",
         OPENROUTER_MODELS: "test/primary,test/fallback",
         APP_URL: "http://localhost:5173",

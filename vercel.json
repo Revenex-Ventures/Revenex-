@@ -60,7 +60,7 @@
     }
   ],
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm run build",
+  "buildCommand": "pnpm run build:web",
   "functions": {
     "api/[...path].js": {
       "maxDuration": 30

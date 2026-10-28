@@ -64,5 +64,5 @@
       "maxDuration": 30
     }
   },
-  "buildCommand": "pnpm --filter @workspace/api-server build && pnpm run build"
+  "buildCommand": "pnpm run build:web"
 }

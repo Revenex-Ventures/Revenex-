@@ -1773,8 +1773,8 @@ export default function Home() {
         <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(139, 69, 19,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4 lg:py-0">
-          <div className="grid min-w-0 items-center gap-8 lg:grid-cols-[58fr_42fr] lg:gap-8">
-            <div className="text-left">
+          <div className="grid min-w-0 items-center gap-8 min-[600px]:grid-cols-[58fr_42fr] min-[600px]:gap-4 lg:gap-8">
+            <div className="min-w-0 text-left">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#8B4513] animate-pulse" />
@@ -1786,7 +1786,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="mb-5 text-[clamp(1.3rem,6.5vw,1.6rem)] sm:text-[clamp(1.85rem,3.55vw,3.15rem)] font-black leading-[1.08] tracking-[-.045em]"
+                className="mb-5 text-[clamp(1.3rem,6.5vw,1.6rem)] min-[600px]:text-[clamp(1.15rem,3.4vw,3.15rem)] font-black leading-[1.08] tracking-[-.045em]"
               >
                 {language === 'en' ? <>
                   <span className="block whitespace-nowrap text-[#1A1410]">Streamline School</span>
@@ -1798,7 +1798,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="mb-7 max-w-[36rem] text-base leading-relaxed text-[#6B5D52] lg:text-[17px]"
+                className="mb-7 max-w-[36rem] text-base min-[600px]:text-xs md:text-sm leading-relaxed text-[#6B5D52] lg:text-[17px]"
               >
                 {language === 'en' ? <><span className="block sm:hidden">Attendance, fees &amp; communication.</span><span className="hidden sm:block">One cloud ERP for attendance, fees and communication.</span><span className="block sm:hidden">Less admin. More school time.</span><span className="hidden sm:block">Less admin. More time for your school.</span></> : 'उपस्थिति, शुल्क और संचार के लिए एक क्लाउड ERP। कम प्रशासनिक काम, स्कूल के लिए ज़्यादा समय।'}
               </motion.p>
@@ -1807,13 +1807,13 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.35 }}
-                className="flex flex-col sm:flex-row gap-3"
+                className="flex flex-col min-[600px]:flex-row gap-3"
               >
                 <Link href="/book-demo">
                   <motion.span
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center justify-center gap-2 gradient-bg text-white font-bold px-8 py-4 rounded-2xl text-base transition-all cursor-pointer shadow-lg"
+                    className="inline-flex items-center justify-center gap-2 gradient-bg text-white font-bold px-8 py-4 min-[600px]:px-3 min-[600px]:text-xs lg:px-8 lg:text-base rounded-2xl text-base transition-all cursor-pointer shadow-lg"
                   >
                     {t('hero.cta.demo')} <ArrowRight className="h-5 w-5" />
                   </motion.span>
@@ -1822,7 +1822,7 @@ export default function Home() {
                   <motion.span
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-4 rounded-2xl text-base transition-all hover:bg-[#F0E8DC] cursor-pointer"
+                    className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-4 min-[600px]:px-3 min-[600px]:text-xs lg:px-8 lg:text-base rounded-2xl text-base transition-all hover:bg-[#F0E8DC] cursor-pointer"
                   >
                     {language === 'en' ? 'Sign In' : 'साइन इन करें'} <ArrowRight className="h-5 w-5 opacity-60" />
                   </motion.span>

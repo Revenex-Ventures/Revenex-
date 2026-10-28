@@ -1,4 +1,4 @@
-import { buildChatSystemPrompt, getPublicAnswer } from "@workspace/api-zod";
+import { buildChatSystemPrompt, getPublicAnswer, getFaqAnswer } from "@workspace/api-zod";
 import { Router, type IRouter } from "express";
 import { randomUUID } from "crypto";
 import { ChatMemory } from "../lib/chat-memory";
@@ -44,6 +44,11 @@ router.post("/chat", validateBody(schemas.chat), async (req, res) => {
   };
   if (!message?.trim()) {
     res.status(400).json({ error: "message required" });
+    return;
+  }
+  // FAQ mode is the default: unsupported questions never reach a paid provider.
+  if (process.env.CHAT_MODE !== "ai") {
+    res.json({ reply: getFaqAnswer(message, language ?? "en"), model: "public-knowledge" });
     return;
   }
   const publicReply = getPublicAnswer(message, language ?? "en");

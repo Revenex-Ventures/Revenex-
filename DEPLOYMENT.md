@@ -97,3 +97,9 @@ The shared `BrandLogo` component uses scalable RV mark and geometric wordmark ar
 Dependency patches remove the reported critical findings. The final audit retains one high-severity advisory, GHSA-86w9-cpqp-85rv, in node-forge 1.4.0 through Expo CLI development tooling; no upstream patched release was available at the audit. It is not bundled in the web or Express production outputs. Do not use the Expo certificate tooling with untrusted certificates until upstream resolves it. Re-run `pnpm audit` before releasing. No vulnerable dependency is silently excluded from audit results.
 
 Request logs strip query strings, unknown paths, credential fields and raw database error details. Password reset links leave browser history after capture. Production responses include CSP and no-store headers; cookies are HttpOnly, Secure and host-only. These controls require the prepared deployment configuration and reachable, migrated database; local tests do not verify live hosting settings.
+
+## October 28 production routing update
+
+The Vercel build now checks and builds only the deployed web/API applications with `pnpm run build:web`; unrelated mockup and mobile projects keep their workspace checks in CI. Cloudflare Pages Functions forward `/api/*` to the fixed production Vercel origin, preserving same-origin cookies and request bodies. Entrypoints cover either the repository root or `artifacts/revenex` as the Pages project root. Static assets stay outside Functions via `_routes.json`. No provider credentials are stored in this routing code.
+
+The website and backend default to FAQ help (`CHAT_MODE=faq`); no OpenRouter request is required. The production backend also needs the public `GOOGLE_CLIENT_ID` to match the frontend build client ID. Confirm successful production JSON readiness after deployment; a build success alone is insufficient.

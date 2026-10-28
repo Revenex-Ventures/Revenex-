@@ -8,35 +8,24 @@ import {
   useState,
   type RefObject,
 } from "react";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { useInView, useReducedMotion } from "framer-motion";
 import * as THREE from "three";
 import { CalendarCheck, IndianRupee, BookOpen, Bus, MessageCircle, Library, UserPlus, Pause, Play } from "lucide-react";
 
 const modules = [
-  { label: "Attendance", Icon: CalendarCheck },
-  { label: "Fees", Icon: IndianRupee },
-  { label: "Homework", Icon: BookOpen },
-  { label: "Transport", Icon: Bus },
-  { label: "Communication", Icon: MessageCircle },
-  { label: "Library", Icon: Library },
-  { label: "Admissions", Icon: UserPlus },
+  { label: "Attendance", caption: "Daily tracking", Icon: CalendarCheck },
+  { label: "Fees", caption: "Fee management", Icon: IndianRupee },
+  { label: "Homework", caption: "Assign & review", Icon: BookOpen },
+  { label: "Transport", caption: "Routes & buses", Icon: Bus },
+  { label: "Communication", caption: "Parent updates", Icon: MessageCircle },
+  { label: "Library", caption: "Books & issues", Icon: Library },
+  { label: "Admissions", caption: "Student enrolment", Icon: UserPlus },
 ];
 
 useGLTF.setDecoderPath("/draco/");
 type LookTarget = RefObject<THREE.Vector2>;
-
-function PortraitLens() {
-  const { camera, size } = useThree();
-  useLayoutEffect(() => {
-    if (camera instanceof THREE.PerspectiveCamera) {
-      camera.fov = size.width < 400 ? 50 : 34;
-      camera.updateProjectionMatrix();
-    }
-  }, [camera, size.width]);
-  return null;
-}
 
 function Student({
   target,
@@ -170,7 +159,7 @@ function Student({
       {/* Keep the original pose, but frame the face and torso like a portrait. */}
       <primitive
         object={model}
-        position={[-center.x, -center.y - 0.23, -center.z]}
+        position={[-center.x, -center.y - 0.245, -center.z]}
       />
     </group>
   );
@@ -228,7 +217,7 @@ export default function StudentHero3D({
       ref={visual}
       role="group"
       aria-label="Revenex student: gently turns toward your pointer within this section"
-      className="relative h-[380px] w-full overflow-hidden sm:h-[440px] lg:h-[520px] xl:h-[560px]"
+      className="student-portrait relative h-[380px] w-full overflow-hidden sm:h-[440px] lg:h-[520px] xl:h-[560px]"
       data-student-hero
     >
       {near && (
@@ -250,7 +239,6 @@ export default function StudentHero3D({
             redraw.current = invalidate;
           }}
         >
-          <PortraitLens />
           <ambientLight intensity={1.3} />
           <directionalLight position={[3, 5, 4]} intensity={2} />
           <directionalLight
@@ -264,15 +252,21 @@ export default function StudentHero3D({
         </Canvas>
       )}
       <div className="student-modules absolute inset-0 pointer-events-none" aria-label="School management modules">
-        {modules.map(({ label, Icon }, index) => (
+        {modules.map(({ label, caption, Icon }, index) => (
           <span key={label} className="student-module" title={label} aria-label={label} style={{
             offsetDistance: `${index * 100 / modules.length}%`,
             animationDelay: `${-index * 40 / modules.length}s`,
             animationPlayState: near && !paused && !reduced ? "running" : "paused",
             animationName: reduced ? "none" : undefined,
           }}>
-            <Icon aria-hidden="true" className="h-3.5 w-3.5 shrink-0 text-[#8B4513]" />
-            <span className="student-module-label">{label}</span>
+            <span className="student-module-card">
+              <span className="student-module-icon" aria-hidden="true"><Icon size={16} /></span>
+              <span className="student-module-copy">
+                <span className="student-module-label">{label}</span>
+                <span className="student-module-caption">{caption}</span>
+              </span>
+              <span className="student-module-spark" aria-hidden="true" />
+            </span>
           </span>
         ))}
       </div>

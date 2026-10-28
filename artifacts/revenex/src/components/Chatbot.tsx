@@ -1,8 +1,7 @@
-import { getPublicAnswer } from "../../../../lib/api-zod/src/chat-knowledge";
-import { apiRequest } from "@/lib/api";
+import { getFaqAnswer } from "../../../../lib/api-zod/src/chat-knowledge";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Bot, Sparkles, Info } from "lucide-react";
+import { MessageCircle, X, Send, Bot } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
 
 interface Msg {
@@ -19,24 +18,12 @@ const QUICK = [
   { en: "Contact Support", hi: "सपोर्ट से संपर्क करें" },
 ];
 
-async function askServer(
-  message: string,
-  language: string,
-): Promise<{ reply: string; model?: string }> {
-  const data = await apiRequest<{ reply: string; model?: string }>(
-    "/api/chat",
-    { method: "POST", body: JSON.stringify({ message, language }) },
-  );
-  if (!data.reply) throw new Error("The assistant is temporarily unavailable.");
-  return data;
-}
-
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>(() => {
     try {
       const saved = JSON.parse(
-        sessionStorage.getItem("revenex_chat_messages") ?? "[]",
+        sessionStorage.getItem("revenex_faq_messages") ?? "[]",
       );
       return Array.isArray(saved)
         ? saved
@@ -55,8 +42,6 @@ export function Chatbot() {
   });
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
-  const [offline, setOffline] = useState(false);
-  const [aiActive, setAiActive] = useState(false);
   const { language, t } = useLanguage();
   const endRef = useRef<HTMLDivElement>(null);
   const idRef = useRef(
@@ -70,7 +55,7 @@ export function Chatbot() {
   useEffect(() => {
     try {
       sessionStorage.setItem(
-        "revenex_chat_messages",
+        "revenex_faq_messages",
         JSON.stringify(messages.slice(-60)),
       );
     } catch {
@@ -91,53 +76,12 @@ export function Chatbot() {
     ]);
     setInput("");
     setTyping(true);
-    try {
-      const localReply = getPublicAnswer(text, language);
-      let reply = localReply;
-      if (!reply) {
-        reply = (await askServer(text, language)).reply;
-        setOffline(false);
-        setAiActive(true);
-      }
-      setMessages((p) => [
-        ...p.slice(-59),
-        { text: reply, isUser: false, id: idRef.current++, isError: false },
-      ]);
-    } catch (e: any) {
-      // Keep provider failures out of the visitor console; offer local help.
-      setOffline(true);
-      setAiActive(false);
-
-      const localReply = getPublicAnswer(text, language);
-      if (localReply) {
-        setMessages((p) => [
-          ...p.slice(-59),
-          {
-            text: localReply,
-            isUser: false,
-            id: idRef.current++,
-            isError: false,
-          },
-        ]);
-      } else {
-        const generalReply =
-          language === "en"
-            ? "I'm having trouble connecting to the AI server right now, but I can tell you that I can help with public information about REVENEX. You can call us at +91 90217 44355, email team@revenex.in, or click 'Book a Demo' to schedule a live walkthrough!"
-            : "मैं अभी AI सर्वर से कनेक्ट नहीं हो पा रहा हूँ, लेकिन मैं आपको बता सकता हूँ कि REVENEX स्कूल प्रबंधन के लिए एक ERP प्लेटफॉर्म है। आप हमें +91 90217 44355 पर कॉल कर सकते हैं, team@revenex.in पर ईमेल भेज सकते हैं, या लाइव डेमो के लिए 'डेमो बुक करें' पर क्लिक कर सकते हैं!";
-
-        setMessages((p) => [
-          ...p.slice(-59),
-          {
-            text: generalReply,
-            isUser: false,
-            id: idRef.current++,
-            isError: false,
-          },
-        ]);
-      }
-    } finally {
-      setTyping(false);
-    }
+    const reply = getFaqAnswer(text, language);
+    setMessages((p) => [
+      ...p.slice(-59),
+      { text: reply, isUser: false, id: idRef.current++, isError: false },
+    ]);
+    setTyping(false);
   };
 
   return (
@@ -198,26 +142,9 @@ export function Chatbot() {
                       className="w-2 h-2 rounded-full inline-block"
                       style={{ background: "#22c55e" }}
                     />
-                    {offline ? (
-                      <span className="text-white/80 text-xs">
-                        {language === "hi"
-                          ? "सीमित सहायता"
-                          : "FAQ help available"}
-                      </span>
-                    ) : (
-                      <>
-                        <span className="text-white/80 text-xs">
-                          {language === "hi"
-                            ? aiActive
-                              ? "AI सहायता"
-                              : "वेबसाइट सहायक"
-                            : aiActive
-                              ? "AI-powered"
-                              : "Website assistant"}
-                        </span>
-                        <Sparkles className="h-3 w-3 text-white/90" />
-                      </>
-                    )}
+                    <span className="text-white/80 text-xs">
+                      {language === "hi" ? "FAQ सहायता उपलब्ध" : "FAQ help available"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -229,18 +156,6 @@ export function Chatbot() {
                 <X className="h-4 w-4 text-white/80 hover:text-white" />
               </button>
             </div>
-
-            {/* Offline warning */}
-            {offline && (
-              <div className="px-4 py-2 bg-[#F5F0E8] border-b border-[#E8E0D4] flex items-center gap-2">
-                <Info className="h-3.5 w-3.5 text-[#6B5D52] flex-shrink-0" />
-                <p className="text-[#6B5D52] text-xs font-semibold">
-                  {language === "hi"
-                    ? "AI जवाब अभी उपलब्ध नहीं हैं। फीचर्स, डेमो या संपर्क की जानकारी पूछ सकते हैं।"
-                    : "AI replies are temporarily unavailable. You can still ask about features, demos or contact details."}
-                </p>
-              </div>
-            )}
 
             {/* Messages Body */}
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 min-h-0 max-h-[380px]">

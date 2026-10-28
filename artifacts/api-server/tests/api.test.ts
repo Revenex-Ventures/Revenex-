@@ -1,3 +1,4 @@
+import { onRequest as proxyPagesApi } from "../../../server/cloudflare-api-proxy";
 import express from "express";
 import { createHttpLogger } from "../src/lib/http-logger";
 import { getPublicAnswer, buildChatSystemPrompt } from "@workspace/api-zod";
@@ -686,6 +687,10 @@ test("malformed JSON, oversized bodies, cross-site writes, unknown API paths and
 
 test("chat public knowledge avoids false promises and substring collisions", async () => {
   assert.equal(getPublicAnswer("this is a detailed question", "en"), null);
+  assert.match(getPublicAnswer("what is your name", "en")!, /REVENEX website assistant/);
+  assert.match(getPublicAnswer("Who are you?", "en")!, /cannot access private school records/);
+  assert.match(getPublicAnswer("what can you do?", "en")!, /features/);
+  assert.equal(getPublicAnswer("who are your competitors?", "en"), null);
   assert.match(
     getPublicAnswer("What does it cost?", "en")!,
     /confirm current pricing/i,
@@ -776,4 +781,48 @@ test("chat stops model retries on provider access failures and keeps FAQs availa
       aiAccessStatus = 0;
     }
   }
+});
+
+test("FAQ mode handles unknown questions without contacting the AI provider", async () => {
+  const previousMode = process.env.CHAT_MODE;
+  delete process.env.CHAT_MODE;
+  const before = aiRequestCount;
+  try {
+    const result = await request("/chat", "POST", { message: "Explain custom grading policies for our school", language: "en" });
+    assert.equal(result.status, 200);
+    assert.equal(result.data.model, "public-knowledge");
+    assert.match(result.data.reply, /isn’t covered by our public FAQs/);
+    assert.equal(aiRequestCount, before);
+  } finally {
+    process.env.CHAT_MODE = previousMode;
+  }
+});
+
+test("Cloudflare API route uses only the fixed backend and preserves JSON responses", async () => {
+  const originalFetch = globalThis.fetch;
+  let target = "";
+  let body = "";
+  globalThis.fetch = async (input) => {
+    const request = input as Request;
+    target = request.url;
+    body = await request.text();
+    assert.equal(request.headers.get("host"), null);
+    assert.equal(request.headers.get("origin"), "https://www.revenex.in");
+    return Response.json({ status: "ok" }, { headers: { "Set-Cookie": "test-session=example; HttpOnly; Secure; Path=/" } });
+  };
+  try {
+    const response = await proxyPagesApi({ request: new Request("https://www.revenex.in/api/chat?test=1", {
+      method: "POST", headers: { "content-type": "application/json", origin: "https://www.revenex.in" }, body: JSON.stringify({ message: "hello" }),
+    }) });
+    assert.equal(target, "https://revenex-revenex-ventures-projects.vercel.app/api/chat?test=1");
+    assert.match(body, /hello/);
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("cache-control"), "no-store");
+    assert.match(response.headers.get("set-cookie")!, /HttpOnly/);
+    assert.deepEqual(await response.json(), { status: "ok" });
+    globalThis.fetch = async () => { throw new Error("private upstream details"); };
+    const failure = await proxyPagesApi({ request: new Request("https://www.revenex.in/api/healthz") });
+    assert.equal(failure.status, 503);
+    assert.doesNotMatch(await failure.text(), /private upstream details/);
+  } finally { globalThis.fetch = originalFetch; }
 });
