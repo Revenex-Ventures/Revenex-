@@ -217,7 +217,7 @@ export default function StudentHero3D({
       ref={visual}
       role="group"
       aria-label="Revenex student: gently turns toward your pointer within this section"
-      className="student-portrait relative h-[380px] w-full overflow-hidden sm:h-[440px] lg:h-[520px] xl:h-[560px]"
+      className="student-portrait relative h-[380px] w-full overflow-visible sm:h-[440px] lg:h-[520px] xl:h-[560px]"
       data-student-hero
     >
       {near && (

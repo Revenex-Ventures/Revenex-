@@ -459,7 +459,7 @@
   color: #3d3128;
   white-space: nowrap;
   pointer-events: auto;
-  offset-path: inset(34px 76px 38px round 60px);
+  offset-path: inset(12px 44px 12px round 60px);
   offset-rotate: 0deg;
   animation: student-module-orbit 40s linear infinite;
 }
@@ -535,8 +535,8 @@
   40% { opacity: 1; }
   65%, 100% { transform: translateX(35%); opacity: 0; }
 }
-@container (max-width: 400px) {
-  .student-module { offset-path: inset(36px 52px 40px round 38px); }
+@container (max-width: 440px) {
+  .student-module { offset-path: inset(10px 40px 10px round 38px); }
   .student-module-card { flex-direction: column; gap: 4px; padding: 7px 9px; border-radius: 14px 14px 14px 4px; }
   .student-module-icon { width: 24px; height: 26px; border-radius: 8px; }
   .student-module-icon svg { width: 13px; height: 13px; }
@@ -547,4 +547,11 @@
 @media (prefers-reduced-motion: reduce) {
   .student-module, .student-module-icon, .student-module-card::after { animation: none; }
   .student-module-card { transition: none; }
+}
+
+/* Smaller columns keep readable labels outside the student's silhouette. */
+@container (max-width: 320px) {
+  .student-module { offset-path: inset(8px 24px 8px round 30px); }
+  .student-module-card { padding: 6px; }
+  .student-module-label { font-size: 8px; }
 }

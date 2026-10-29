@@ -1764,7 +1764,7 @@ export default function Home() {
       <Navbar />
 
       {/* ── HERO ── */}
-      <section id="introduction" className="relative flex items-center justify-center overflow-hidden pt-24 pb-4 lg:pt-28 lg:pb-6">
+      <section id="introduction" className="relative flex items-center justify-center overflow-hidden pt-24 pb-8 lg:pt-28 lg:pb-10">
         <div className="absolute inset-0 hero-glow pointer-events-none" />
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#7C3D0F]/6 rounded-full blur-[140px]" />
@@ -1773,7 +1773,7 @@ export default function Home() {
         <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, rgba(139, 69, 19,0.8) 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
 
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4 lg:py-0">
-          <div className="grid min-w-0 items-center gap-8 min-[600px]:grid-cols-[58fr_42fr] min-[600px]:gap-4 lg:gap-8">
+          <div className="grid min-w-0 items-center gap-8 min-[600px]:grid-cols-2 lg:grid-cols-[54fr_46fr] min-[600px]:gap-4 lg:gap-8">
             <div className="min-w-0 text-left">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
@@ -1786,7 +1786,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="mb-5 text-[clamp(1.3rem,6.5vw,1.6rem)] min-[600px]:text-[clamp(1.15rem,3.4vw,3.15rem)] font-black leading-[1.08] tracking-[-.045em]"
+                className="mb-5 text-[clamp(1.3rem,6.5vw,1.6rem)] min-[600px]:text-[clamp(1.15rem,3.15vw,3.15rem)] font-black leading-[1.08] tracking-[-.045em]"
               >
                 {language === 'en' ? <>
                   <span className="block whitespace-nowrap text-[#1A1410]">Streamline School</span>
