@@ -7,6 +7,8 @@ import {
   ChevronRightIcon,
 } from "lucide-react"
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
+import { hi, enIN } from "react-day-picker/locale"
+import { useLanguage } from "@/lib/language-context"
 
 import { cn } from "@/lib/utils"
 import { Button, buttonVariants } from "@/components/ui/button"
@@ -23,10 +25,12 @@ function Calendar({
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"]
 }) {
+  const { language } = useLanguage()
   const defaultClassNames = getDefaultClassNames()
 
   return (
     <DayPicker
+      locale={language === "hi" ? hi : enIN}
       showOutsideDays={showOutsideDays}
       className={cn(
         "bg-background group/calendar p-3 [--cell-size:2rem] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
@@ -37,7 +41,7 @@ function Calendar({
       captionLayout={captionLayout}
       formatters={{
         formatMonthDropdown: (date) =>
-          date.toLocaleString("default", { month: "short" }),
+          date.toLocaleString(language === "hi" ? "hi-IN" : "en-IN", { month: "short" }),
         ...formatters,
       }}
       classNames={{

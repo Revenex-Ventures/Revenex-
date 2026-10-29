@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useCallback, useRef, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
@@ -45,6 +46,7 @@ interface Burst {
 }
 
 function AttendanceGauge() {
+  const siteText = useSiteText();
   const R = 70
   const C = 2 * Math.PI * R
   const target = 96.4
@@ -92,15 +94,14 @@ function AttendanceGauge() {
           />
           <span className="text-2xl font-black text-[#A34E17]">%</span>
         </div>
-        <span className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-[#8A7A6B]">
-          Attendance this week
-        </span>
+        <span className="mt-1 text-[11px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Attendance this week")}</span>
       </div>
     </div>
   )
 }
 
 export default function Attendance() {
+  const siteText = useSiteText();
   const [present, setPresent] = useState<Record<string, boolean>>({})
   const [bursts, setBursts] = useState<Burst[]>([])
   const dragging = useRef(false)
@@ -130,17 +131,14 @@ export default function Attendance() {
   return (
     <ShowcaseShell
       section="Product"
-      label="Attendance"
+      label={siteText("Attendance")}
       accent={GOLD}
       title={
-        <>
-          Attendance that{" "}
-          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">
-            runs itself
-          </span>
+        <>{siteText("Attendance that")}{" "}
+          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">{siteText("runs itself")}</span>
         </>
       }
-      subtitle="Biometric punch-in, live period-wise registers, and automatic parent alerts — attendance tracked to the second and calculated to the decimal."
+      subtitle={siteText("Biometric punch-in, live period-wise registers, and automatic parent alerts — attendance tracked to the second and calculated to the decimal.")}
     >
       {/* ── Hero interactive grid ── */}
       <section className="relative mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
@@ -157,30 +155,30 @@ export default function Attendance() {
               <div className="mt-8 grid w-full grid-cols-3 gap-3">
                 <div className="flex flex-col items-center gap-0.5 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-3">
                   <span className="counter-num text-xl font-black text-[#221910]">212</span>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Days</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Days")}</span>
                 </div>
                 <div className="flex flex-col items-center gap-0.5 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-3">
                   <span className="counter-num text-xl font-black text-[#3BA855]">98.1%</span>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">On-time</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("On-time")}</span>
                 </div>
                 <div className="flex flex-col items-center gap-0.5 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-3">
                   <span className="counter-num text-xl font-black text-[#A34E17]">1,240</span>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Students</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Students")}</span>
                 </div>
               </div>
             </GlassCard>
             <div className="grid w-full grid-cols-3 gap-3">
               <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-4 text-center backdrop-blur-md">
                 <Fingerprint className="h-5 w-5 text-[#A34E17]" />
-                <span className="text-xs font-semibold text-[#61544A]">Biometric punch-in</span>
+                <span className="text-xs font-semibold text-[#61544A]">{siteText("Biometric punch-in")}</span>
               </div>
               <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-4 text-center backdrop-blur-md">
                 <Camera className="h-5 w-5 text-[#A34E17]" />
-                <span className="text-xs font-semibold text-[#61544A]">Face recognition</span>
+                <span className="text-xs font-semibold text-[#61544A]">{siteText("Face recognition")}</span>
               </div>
               <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-4 text-center backdrop-blur-md">
                 <Clock className="h-5 w-5 text-[#A34E17]" />
-                <span className="text-xs font-semibold text-[#61544A]">Period-wise registers</span>
+                <span className="text-xs font-semibold text-[#61544A]">{siteText("Period-wise registers")}</span>
               </div>
             </div>
           </div>
@@ -194,12 +192,12 @@ export default function Attendance() {
                   <span className="relative inline-flex h-3 w-3 rounded-full bg-[#4ADE80]" />
                 </span>
                 <div>
-                  <h3 className="text-sm font-bold text-[#221910]">Biometric Scan Zone</h3>
-                  <p className="text-xs text-[#8A7A6B]">Click or drag across faces to mark present</p>
+                  <h3 className="text-sm font-bold text-[#221910]">{siteText("Biometric Scan Zone")}</h3>
+                  <p className="text-xs text-[#8A7A6B]">{siteText("Click or drag across faces to mark present")}</p>
                 </div>
               </div>
               <span className="rounded-full border border-[#E5DDD2] bg-white/70 px-3 py-1 text-[11px] font-bold text-[#61544A]">
-                {presentCount}/{STUDENTS.length}
+                {siteText(presentCount)}/{siteText(STUDENTS.length)}
               </span>
             </div>
 
@@ -226,11 +224,11 @@ export default function Attendance() {
                       className="flex h-11 w-11 items-center justify-center rounded-full text-sm font-black text-[#221910] transition-transform group-hover:scale-105"
                       style={{ background: isPresent ? PRESENT : "#F0E8DC" }}
                     >
-                      {s.name.slice(0, 1)}
+                      {siteText(s.name.slice(0, 1))}
                     </span>
                     <span className="text-center">
-                      <span className="block text-[11px] font-bold text-[#221910]">{s.name}</span>
-                      <span className="block text-[10px] text-[#8A7A6B]">{s.grade}</span>
+                      <span className="block text-[11px] font-bold text-[#221910]">{siteText(s.name)}</span>
+                      <span className="block text-[10px] text-[#8A7A6B]">{siteText(s.grade)}</span>
                     </span>
                     <AnimatePresence>
                       {isPresent && (
@@ -251,8 +249,8 @@ export default function Attendance() {
 
             <div className="mt-6">
               <div className="mb-2 flex items-center justify-between text-xs">
-                <span className="font-semibold text-[#61544A]">Today&apos;s register</span>
-                <span className="counter-num font-black text-[#3BA855]">{progress}%</span>
+                <span className="font-semibold text-[#61544A]">{siteText("Today's register")}</span>
+                <span className="counter-num font-black text-[#3BA855]">{siteText(progress)}%</span>
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-[#E5DDD2]">
                 <motion.div
@@ -264,9 +262,7 @@ export default function Attendance() {
                 />
               </div>
               <p className="mt-3 flex items-center gap-1.5 text-[11px] text-[#8A7A6B]">
-                <Users className="h-3.5 w-3.5" />
-                Every punch-in flows straight into the class register and the parents&apos; phone.
-              </p>
+                <Users className="h-3.5 w-3.5" />{siteText("Every punch-in flows straight into the class register and the parents' phone.")}</p>
             </div>
           </GlassCard>
         </div>
@@ -307,8 +303,8 @@ export default function Attendance() {
           <SectionHeading
             kicker="Why schools choose it"
             accent={GOLD}
-            title="Three things every principal loves"
-            subtitle="Automation that removes the register chore, cuts proxy attendance, and keeps parents informed without a single phone call."
+            title={siteText("Three things every principal loves")}
+            subtitle={siteText("Automation that removes the register chore, cuts proxy attendance, and keeps parents informed without a single phone call.")}
           />
         </Reveal>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
@@ -318,8 +314,8 @@ export default function Attendance() {
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D49A58]/40 bg-[#D49A58]/10">
                   <Icon className="h-6 w-6 text-[#A34E17]" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-[#221910]">{title}</h3>
-                <p className="text-sm leading-relaxed text-[#61544A]">{desc}</p>
+                <h3 className="mb-2 text-lg font-bold text-[#221910]">{siteText(title)}</h3>
+                <p className="text-sm leading-relaxed text-[#61544A]">{siteText(desc)}</p>
               </GlassCard>
             </Reveal>
           ))}
@@ -336,12 +332,8 @@ export default function Attendance() {
             />
             <div className="relative">
               <ShieldCheck className="mx-auto mb-4 h-9 w-9 text-[#A34E17]" />
-              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">
-                Make every classroom clockwork-precise
-              </h3>
-              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">
-                See live attendance, biometric hardware, and parent alerts in a 20-minute demo built around your school.
-              </p>
+              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">{siteText("Make every classroom clockwork-precise")}</h3>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">{siteText("See live attendance, biometric hardware, and parent alerts in a 20-minute demo built around your school.")}</p>
               <div className="mt-8 flex justify-center">
                 <DemoButton />
               </div>

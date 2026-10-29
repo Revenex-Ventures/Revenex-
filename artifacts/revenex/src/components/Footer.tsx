@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { apiRequest } from '@/lib/api'
 import { useQuery } from '@tanstack/react-query'
 import { BrandLogo } from '@/components/BrandLogo'
@@ -10,6 +11,7 @@ import { useLanguage } from '@/lib/language-context'
 const EASE = cubicBezier(0.22, 1, 0.36, 1)
 
 function MagneticLink({ href, children }: { href: string; children: string }) {
+  const siteText = useSiteText();
   const [hovered, setHovered] = useState(false)
   return (
     <li key={children}>
@@ -28,7 +30,7 @@ function MagneticLink({ href, children }: { href: string; children: string }) {
               transition={{ type: 'spring', stiffness: 380, damping: 34 }}
             />
           )}
-          <span className="relative">{children}</span>
+          <span className="relative">{siteText(children)}</span>
           <motion.span
             className="relative text-[#D49A58]"
             initial={false}
@@ -44,6 +46,7 @@ function MagneticLink({ href, children }: { href: string; children: string }) {
 }
 
 export function Footer() {
+  const siteText = useSiteText();
   const { language } = useLanguage()
   const year = new Date().getFullYear()
 
@@ -118,28 +121,22 @@ export function Footer() {
               <div className="flex items-center gap-2 mb-5">
                 <span className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#D49A58]/25 bg-[#D49A58]/5">
                   <Sparkles className="h-3 w-3 text-[#D49A58]" />
-                  <span className="text-[11px] font-semibold text-[#D49A58] tracking-widest uppercase">REVENEX</span>
+                  <span className="text-[11px] font-semibold text-[#D49A58] tracking-widest uppercase">{siteText("REVENEX")}</span>
                 </span>
               </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#F9F6F0] font-medium leading-tight mb-3">
-                Ready to automate your school operations?
-              </h2>
-              <p className="max-w-xl text-sm sm:text-base text-white/50 leading-relaxed mb-0">
-                Experience hassle-free admissions, instant fee collection, and automated attendance with REVENEX.
-              </p>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif text-[#F9F6F0] font-medium leading-tight mb-3">{siteText("Ready to automate your school operations?")}</h2>
+              <p className="max-w-xl text-sm sm:text-base text-white/50 leading-relaxed mb-0">{siteText("Experience hassle-free admissions, instant fee collection, and automated attendance with REVENEX.")}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 lg:flex-col xl:flex-row">
               <Link href="/book-demo">
-                <span className="inline-flex items-center justify-center gap-2 bg-[#D49A58] text-[#18120E] font-semibold px-7 py-3.5 rounded-xl text-sm transition-all hover:bg-[#E0AA6E] hover:shadow-[0_0_24px_rgba(212,154,88,0.35)] cursor-pointer">
-                  Schedule a Demo <ArrowRight className="h-4 w-4" />
+                <span className="inline-flex items-center justify-center gap-2 bg-[#D49A58] text-[#18120E] font-semibold px-7 py-3.5 rounded-xl text-sm transition-all hover:bg-[#E0AA6E] hover:shadow-[0_0_24px_rgba(212,154,88,0.35)] cursor-pointer">{siteText("Schedule a Demo ")}<ArrowRight className="h-4 w-4" />
                 </span>
               </Link>
               <a
                 href="tel:+919021744355"
                 className="inline-flex items-center justify-center gap-2 border border-white/15 text-white/80 font-semibold px-7 py-3.5 rounded-xl text-sm transition-all hover:border-[#D49A58]/50 hover:text-[#D49A58]"
               >
-                <Phone className="h-4 w-4" /> Call Sales
-              </a>
+                <Phone className="h-4 w-4" />{siteText(" Call Sales")}</a>
             </div>
           </div>
         </motion.div>
@@ -153,9 +150,9 @@ export function Footer() {
               <BrandLogo tone="light" size="lg" stacked full />
             </div>
             <p className="text-sm text-white/50 leading-relaxed max-w-xs">
-              {language === 'en'
+              {siteText(language === 'en'
                 ? 'India\'s modern School ERP platform built for educators.'
-                : 'भारत का आधुनिक स्कूल ERP प्लेटफॉर्म।'}
+                : 'भारत का आधुनिक स्कूल ERP प्लेटफॉर्म।')}
             </p>
             <div className="flex items-center gap-2.5">
               {socials.map(({ icon: Icon, href, label }) => (
@@ -164,7 +161,7 @@ export function Footer() {
                   href={href}
                   target={href.startsWith('http') ? '_blank' : undefined}
                   rel="noopener noreferrer"
-                  aria-label={label}
+                  aria-label={siteText(label)}
                   className="w-9 h-9 rounded-xl bg-white/[0.06] border border-white/10 backdrop-blur-sm flex items-center justify-center text-white/50 hover:text-[#D49A58] hover:border-[#D49A58]/40 hover:bg-[#D49A58]/10 hover:shadow-[0_0_16px_rgba(212,154,88,0.2)] transition-all"
                 >
                   <Icon className="h-4 w-4" />
@@ -175,32 +172,32 @@ export function Footer() {
 
           {/* Col 2 — Product */}
           <div>
-            <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">Product</h4>
+            <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">{siteText("Product")}</h4>
             <ul className="space-y-1">
               {product.map(({ label, href }) => (
-                <MagneticLink key={label} href={href}>{label}</MagneticLink>
+                <MagneticLink key={label} href={href}>{siteText(label)}</MagneticLink>
               ))}
             </ul>
           </div>
 
           {/* Col 3 — Solutions */}
           <div>
-            <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">Solutions</h4>
+            <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">{siteText("Solutions")}</h4>
             <ul className="space-y-1">
               {solutions.map(({ label, href }) => (
-                <MagneticLink key={label} href={href}>{label}</MagneticLink>
+                <MagneticLink key={label} href={href}>{siteText(label)}</MagneticLink>
               ))}
             </ul>
           </div>
 
           {/* Col 4 — Company */}
           <div>
-            <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">Company</h4>
+            <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">{siteText("Company")}</h4>
             <ul className="space-y-3">
               {company.map(({ label, href }) => (
                 <li key={label}>
                   <Link href={href}>
-                    <span className="text-sm text-white/50 hover:text-[#F9F6F0] transition-colors cursor-pointer">{label}</span>
+                    <span className="text-sm text-white/50 hover:text-[#F9F6F0] transition-colors cursor-pointer">{siteText(label)}</span>
                   </Link>
                 </li>
               ))}
@@ -209,7 +206,7 @@ export function Footer() {
 
           {/* Col 5 — Contact & Newsletter */}
           <div className="col-span-2 md:col-span-1">
-            <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">Stay Updated</h4>
+            <h4 className="text-xs font-black text-[#D49A58] uppercase tracking-widest mb-5">{siteText("Stay Updated")}</h4>
             <form onSubmit={handleJoin} className="mb-6">
               <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.06] border border-white/10 focus-within:border-[#D49A58]/50 transition-colors">
                 <input
@@ -217,7 +214,7 @@ export function Footer() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter school email..."
+                  placeholder={siteText("Enter school email...")}
                   disabled={joined || joining}
                   className="flex-1 bg-transparent outline-none text-sm text-[#F9F6F0] placeholder:text-white/30 px-3 py-2 min-w-0 disabled:opacity-60"
                 />
@@ -227,19 +224,17 @@ export function Footer() {
                   className="shrink-0 inline-flex items-center gap-1.5 bg-[#D49A58] text-[#18120E] font-semibold text-xs px-4 py-2.5 rounded-lg transition-all hover:bg-[#E0AA6E] disabled:bg-green-500/20 disabled:text-green-400"
                 >
                   {joined ? <Check className="h-3.5 w-3.5" /> : <ArrowUpRight className="h-3.5 w-3.5" />}
-                  {joined ? 'Joined' : joining ? 'Saving…' : 'Join'}
+                  {siteText(joined ? 'Joined' : joining ? 'Saving…' : 'Join')}
                 </button>
               </div>
-              {joinError && <p role="alert" className="text-[11px] text-red-300 mt-2">{joinError}</p>}
+              {joinError && <p role="alert" className="text-[11px] text-red-300 mt-2">{siteText(joinError)}</p>}
               {joined && (
-                <p className="text-[11px] text-green-400 mt-2">You're on the list — we'll be in touch.</p>
+                <p className="text-[11px] text-green-400 mt-2">{siteText("You're on the list — we'll be in touch.")}</p>
               )}
             </form>
             <ul className="space-y-3">
               <li>
-                <a href="mailto:team@revenex.in" className="text-sm text-white/50 hover:text-[#D49A58] transition-colors">
-                  team@revenex.in
-                </a>
+                <a href="mailto:team@revenex.in" className="text-sm text-white/50 hover:text-[#D49A58] transition-colors">{siteText("team@revenex.in")}</a>
               </li>
               <li>
                 <a href="tel:+919021744355" className="text-sm text-white/50 hover:text-[#D49A58] transition-colors">
@@ -247,7 +242,7 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <p className="text-sm text-white/50">Pune &amp; Sangamner, Maharashtra</p>
+                <p className="text-sm text-white/50">{siteText("Pune & Sangamner, Maharashtra")}</p>
               </li>
             </ul>
           </div>
@@ -259,25 +254,21 @@ export function Footer() {
             aria-hidden
             className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-[10rem] sm:text-[14rem] font-black text-white opacity-[0.03] tracking-widest select-none pointer-events-none"
             style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-          >
-            REVENEX
-          </span>
+          >{siteText("REVENEX")}</span>
 
           <div className="relative flex flex-col lg:flex-row items-center justify-between gap-4">
             <p className="text-xs text-white/40 text-center lg:text-left">
-              &copy; {year} REVENEX VENTURES PRIVATE LIMITED. All rights reserved.
-            </p>
+              &copy; {siteText(year)}{siteText(" REVENEX VENTURES PRIVATE LIMITED. All rights reserved.")}</p>
             <div className="flex items-center gap-5">
               <div className="flex items-center gap-5">
                 {legal.map(({ label, href }) => (
                   <Link key={href} href={href}>
-                    <span className="text-xs text-white/40 hover:text-[#D49A58] transition-colors cursor-pointer">{label}</span>
+                    <span className="text-xs text-white/40 hover:text-[#D49A58] transition-colors cursor-pointer">{siteText(label)}</span>
                   </Link>
                 ))}
               </div>
               <span className="hidden sm:inline h-3.5 w-px bg-white/10" />
-              <span className="text-xs text-white/40">
-                Built by <span className="text-white/70 font-semibold">Revenex Team</span>
+              <span className="text-xs text-white/40">{siteText("Built by ")}<span className="text-white/70 font-semibold">{siteText("Revenex Team")}</span>
               </span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/15">
@@ -285,7 +276,7 @@ export function Footer() {
                 <span className="absolute inline-flex h-full w-full rounded-full bg-[#D8B65B] opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#D8B65B]" />
               </span>
-              <span className="text-[11px] font-semibold text-white/60">{operational ? 'All systems operational' : 'Service status unavailable'}</span>
+              <span className="text-[11px] font-semibold text-white/60">{siteText(operational ? 'All systems operational' : 'Service status unavailable')}</span>
             </div>
           </div>
         </div>

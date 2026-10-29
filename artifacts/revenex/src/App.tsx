@@ -1,8 +1,8 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useState, useCallback, lazy, Suspense } from "react";
 import { Switch, Route, useLocation } from "wouter";
 import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { LanguageProvider } from "@/lib/language-context";
 import { AuthProvider } from "@/lib/auth-context";
 import { Preloader } from "@/components/Preloader";
 const Home = lazy(() => import("@/pages/Home"));
@@ -93,13 +93,13 @@ function Router() {
 }
 
 function App() {
+  const siteText = useSiteText();
   const [loading, setLoading] = useState(true);
 
   const finishLoading = useCallback(() => setLoading(false), []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LanguageProvider>
         <AuthProvider>
           <AnimatePresence mode="wait">
             {loading && <Preloader onComplete={finishLoading} />}
@@ -110,15 +110,12 @@ function App() {
               <div
                 className="min-h-screen flex items-center justify-center text-[#17375D]"
                 role="status"
-              >
-                Loading…
-              </div>
+              >{siteText("Loading…")}</div>
             }
           >
             <Router />
           </Suspense>
         </AuthProvider>
-      </LanguageProvider>
     </QueryClientProvider>
   );
 }

@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { BrandLogo } from '@/components/BrandLogo'
 import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence, useMotionValue, useSpring, useMotionTemplate } from "framer-motion"
@@ -46,6 +47,7 @@ function useNow() {
 }
 
 function HoloCard() {
+  const siteText = useSiteText();
   const ref = useRef<HTMLDivElement>(null)
   const rx = useMotionValue(0)
   const ry = useMotionValue(0)
@@ -109,7 +111,7 @@ function HoloCard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <BrandLogo tone="light" size="sm" />
-              <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#D49A58]">Student ID</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.25em] text-[#D49A58]">{siteText("Student ID")}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <Wifi className="h-3.5 w-3.5 text-[#4ADE80]" />
@@ -120,28 +122,23 @@ function HoloCard() {
 
           <div className="mt-4 flex flex-1 items-center gap-4">
             <div className="relative shrink-0">
-              <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F0E8DC] to-[#D9CCBB] text-xl font-black text-[#18120E] sm:h-20 sm:w-20 sm:text-2xl">
-                AN
-              </span>
+              <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-[#F0E8DC] to-[#D9CCBB] text-xl font-black text-[#18120E] sm:h-20 sm:w-20 sm:text-2xl">{siteText("AN")}</span>
               <span className="absolute -bottom-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-[#4ADE80] shadow-[0_0_12px_rgba(74,222,128,0.7)]">
                 <BadgeCheck className="h-3.5 w-3.5 text-[#18120E]" />
               </span>
             </div>
             <div className="min-w-0">
-              <h3 className="truncate font-display text-lg font-black tracking-tight text-[#F9F6F0] sm:text-xl">
-                Ananya Nair
-              </h3>
-              <p className="mt-0.5 text-xs text-white/50">Grade VIII-A · Roll 27 · Blood A+</p>
+              <h3 className="truncate font-display text-lg font-black tracking-tight text-[#F9F6F0] sm:text-xl">{siteText("Ananya Nair")}</h3>
+              <p className="mt-0.5 text-xs text-white/50">{siteText("Grade VIII-A · Roll 27 · Blood A+")}</p>
               <p className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[10px] font-bold text-white/60">
-                <Fingerprint className="h-3 w-3 text-[#D49A58]" /> Biometric verified
-              </p>
+                <Fingerprint className="h-3 w-3 text-[#D49A58]" />{siteText(" Biometric verified")}</p>
             </div>
           </div>
 
           <div className="mt-4 flex items-end justify-between">
             <div>
-              <p className="text-[9px] uppercase tracking-widest text-white/35">ID Number</p>
-              <p className="counter-num text-sm font-black tracking-widest text-[#F9F6F0]">RVX-2025-0347</p>
+              <p className="text-[9px] uppercase tracking-widest text-white/35">{siteText("ID Number")}</p>
+              <p className="counter-num text-sm font-black tracking-widest text-[#F9F6F0]">{siteText("RVX-2025-0347")}</p>
             </div>
             <div className="flex items-end gap-[3px]">
               {[3, 1, 2, 1, 4, 1, 2, 3, 1, 1, 4, 2, 1, 3, 2, 1].map((w, i) => (
@@ -157,8 +154,7 @@ function HoloCard() {
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Sparkles className="h-3 w-3" /> Holographic ID
-      </motion.span>
+        <Sparkles className="h-3 w-3" />{siteText(" Holographic ID")}</motion.span>
       <motion.span
         className="absolute -right-2 bottom-8 flex items-center gap-1.5 rounded-full border border-[#4ADE80]/30 bg-[#18120E]/90 px-3 py-1.5 text-[10px] font-bold text-[#4ADE80] backdrop-blur-md"
         animate={{ y: [0, 6, 0] }}
@@ -167,14 +163,13 @@ function HoloCard() {
         <span className="relative flex h-1.5 w-1.5">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4ADE80] opacity-75" />
           <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4ADE80]" />
-        </span>
-        Verified
-      </motion.span>
+        </span>{siteText("Verified")}</motion.span>
     </div>
   )
 }
 
 function NextClassBento() {
+  const siteText = useSiteText();
   const now = useNow()
   const secNow = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds()
   const dayEnd = 24 * 3600
@@ -207,17 +202,15 @@ function NextClassBento() {
             <Clock3 className="h-4 w-4 text-[#A34E17]" />
           </span>
           <div>
-            <h3 className="text-sm font-bold text-[#221910]">Today&apos;s Timetable</h3>
-            <p className="text-[11px] text-[#8A7A6B]">Class VIII-A · {tomorrow ? "tomorrow" : "live"} schedule</p>
+            <h3 className="text-sm font-bold text-[#221910]">{siteText("Today's Timetable")}</h3>
+            <p className="text-[11px] text-[#8A7A6B]">{siteText("Class VIII-A · ")}{siteText(tomorrow ? "tomorrow" : "live")}{siteText(" schedule")}</p>
           </div>
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full border border-[#4ADE80]/40 bg-[#4ADE80]/15 px-3 py-1 text-[10px] font-bold text-[#2E8B52]">
           <span className="relative flex h-1.5 w-1.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4ADE80] opacity-75" />
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#4ADE80]" />
-          </span>
-          LIVE
-        </span>
+          </span>{siteText("LIVE")}</span>
       </div>
 
       <div className="relative mb-5 overflow-hidden rounded-2xl border border-[#D49A58]/40 bg-gradient-to-br from-[#D49A58]/15 to-transparent p-5">
@@ -226,14 +219,13 @@ function NextClassBento() {
           className="absolute inset-x-0 top-0 h-px"
           style={{ background: "linear-gradient(90deg, transparent, rgba(212,154,88,0.8), transparent)" }}
         />
-        <p className="text-[10px] font-black uppercase tracking-widest text-[#A34E17]">
-          Next class · {next.subject}
+        <p className="text-[10px] font-black uppercase tracking-widest text-[#A34E17]">{siteText("Next class · ")}{siteText(next.subject)}
         </p>
         <p className="mt-1.5 font-display text-xl font-black tracking-tight text-[#221910]">
-          {tomorrow ? "Starts tomorrow" : `Starts in ${countdown}`}
+          {siteText(tomorrow ? "Starts tomorrow" : `Starts in ${countdown}`)}
         </p>
         <p className="mt-2 flex items-center gap-1.5 text-xs text-[#61544A]">
-          <Clock3 className="h-3.5 w-3.5 text-[#A34E17]" /> {next.time} · {next.room}
+          <Clock3 className="h-3.5 w-3.5 text-[#A34E17]" /> {siteText(next.time)} · {siteText(next.room)}
         </p>
       </div>
 
@@ -247,21 +239,19 @@ function NextClassBento() {
                 isNext ? "border border-[#D49A58]/50 bg-[#D49A58]/10" : "border border-transparent"
               }`}
             >
-              <span className="counter-num w-11 font-black text-[#B8A995]">{p.time}</span>
+              <span className="counter-num w-11 font-black text-[#B8A995]">{siteText(p.time)}</span>
               <span
                 className="h-2 w-2 shrink-0 rounded-full"
                 style={{ background: p.color, boxShadow: isNext ? `0 0 10px ${p.color}` : "none" }}
               />
-              <span className={`flex-1 font-semibold ${isNext ? "text-[#221910]" : "text-[#61544A]"}`}>{p.subject}</span>
-              <span className="hidden text-[10px] text-[#B8A995] sm:inline">{p.room}</span>
+              <span className={`flex-1 font-semibold ${isNext ? "text-[#221910]" : "text-[#61544A]"}`}>{siteText(p.subject)}</span>
+              <span className="hidden text-[10px] text-[#B8A995] sm:inline">{siteText(p.room)}</span>
               {isNext && (
                 <motion.span
                   initial={{ scale: 0.6, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   className="rounded-full bg-[#D49A58] px-2 py-0.5 text-[9px] font-black text-[#221910] shadow-[0_0_14px_rgba(212,154,88,0.5)]"
-                >
-                  NEXT
-                </motion.span>
+                >{siteText("NEXT")}</motion.span>
               )}
             </li>
           )
@@ -272,20 +262,18 @@ function NextClassBento() {
 }
 
 export default function StudentPortalShowcase() {
+  const siteText = useSiteText();
   return (
     <ShowcaseShell
       section="Solutions"
-      label="Student Portal"
+      label={siteText("Student Portal")}
       accent={GOLD}
       title={
-        <>
-          The whole school in a{" "}
-          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">
-            student&apos;s pocket
-          </span>
+        <>{siteText("The whole school in a")}{" "}
+          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">{siteText("student's pocket")}</span>
         </>
       }
-      subtitle="A holographic ID, a live timetable, and every digital locker in one place — the entire school, one tap away for every student and parent."
+      subtitle={siteText("A holographic ID, a live timetable, and every digital locker in one place — the entire school, one tap away for every student and parent.")}
     >
       {/* ── Hero: holographic ID + bento ── */}
       <section className="mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
@@ -298,19 +286,19 @@ export default function StudentPortalShowcase() {
                 <span className="counter-num text-base font-black text-[#A34E17] sm:text-lg">
                   <CountUp to={2140} suffix="+" />
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Students on portal</span>
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Students on portal")}</span>
               </div>
               <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-4 text-center backdrop-blur-md">
                 <span className="counter-num text-base font-black text-[#3BA855] sm:text-lg">
                   <CountUp to={100} suffix="%" />
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Card adoption</span>
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Card adoption")}</span>
               </div>
               <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-4 text-center backdrop-blur-md">
                 <span className="counter-num text-base font-black text-[#221910] sm:text-lg">
                   <CountUp to={24} suffix="/7" />
                 </span>
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Offline access</span>
+                <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Offline access")}</span>
               </div>
             </div>
           </div>
@@ -321,9 +309,8 @@ export default function StudentPortalShowcase() {
             <div>
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="flex items-center gap-2 text-sm font-bold text-[#221910]">
-                  <BadgeCheck className="h-4 w-4 text-[#A34E17]" /> Digital Lockers
-                </h3>
-                <span className="text-[11px] text-[#8A7A6B]">6 secured vaults</span>
+                  <BadgeCheck className="h-4 w-4 text-[#A34E17]" />{siteText(" Digital Lockers")}</h3>
+                <span className="text-[11px] text-[#8A7A6B]">{siteText("6 secured vaults")}</span>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {LOCKERS.map(({ icon: Icon, label, desc, color }, i) => (
@@ -340,8 +327,8 @@ export default function StudentPortalShowcase() {
                     >
                       <Icon className="h-5 w-5" style={{ color }} />
                     </div>
-                    <p className="text-xs font-bold text-[#221910]">{label}</p>
-                    <p className="mt-0.5 text-[10px] text-[#8A7A6B]">{desc}</p>
+                    <p className="text-xs font-bold text-[#221910]">{siteText(label)}</p>
+                    <p className="mt-0.5 text-[10px] text-[#8A7A6B]">{siteText(desc)}</p>
                   </motion.div>
                 ))}
               </div>
@@ -356,8 +343,8 @@ export default function StudentPortalShowcase() {
           <SectionHeading
             kicker="One login, zero friction"
             accent={GOLD}
-            title="Students carry everything on their phone"
-            subtitle="No lost report cards, no forgotten fee receipts, no missed PTMs — the whole school lives in one verified, always-on pocket app."
+            title={siteText("Students carry everything on their phone")}
+            subtitle={siteText("No lost report cards, no forgotten fee receipts, no missed PTMs — the whole school lives in one verified, always-on pocket app.")}
           />
         </Reveal>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
@@ -371,8 +358,8 @@ export default function StudentPortalShowcase() {
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D49A58]/40 bg-[#D49A58]/10">
                   <Icon className="h-6 w-6 text-[#A34E17]" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-[#221910]">{title}</h3>
-                <p className="text-sm leading-relaxed text-[#61544A]">{desc}</p>
+                <h3 className="mb-2 text-lg font-bold text-[#221910]">{siteText(title)}</h3>
+                <p className="text-sm leading-relaxed text-[#61544A]">{siteText(desc)}</p>
               </GlassCard>
             </Reveal>
           ))}
@@ -386,12 +373,8 @@ export default function StudentPortalShowcase() {
             <div aria-hidden className="absolute -top-20 left-1/3 h-80 w-80 rounded-full bg-[#D49A58]/20 blur-[110px]" />
             <div className="relative">
               <ShieldCheck className="mx-auto mb-4 h-9 w-9 text-[#A34E17]" />
-              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">
-                Give every family the whole school
-              </h3>
-              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">
-                See the student portal live — holographic IDs, timetables, and lockers built around your school.
-              </p>
+              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">{siteText("Give every family the whole school")}</h3>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">{siteText("See the student portal live — holographic IDs, timetables, and lockers built around your school.")}</p>
               <div className="mt-8 flex justify-center">
                 <DemoButton />
               </div>

@@ -1,6 +1,8 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { FeatureSteps, type Feature } from "@/components/ui/feature-section";
 
 export function HowItWorks({ language }: { language: "en" | "hi" }) {
+  const siteText = useSiteText();
   const hi = language === "hi";
   const features: Feature[] = [
     {
@@ -69,7 +71,7 @@ export function HowItWorks({ language }: { language: "en" | "hi" }) {
         <div className="mb-10 text-center sm:mb-14">
           <span className="inline-flex items-center gap-2 rounded-full border border-[#DDCEBA] bg-[#EEE5D8]/60 px-4 py-2 text-[10px] font-bold uppercase tracking-[.18em] text-[#8B4513]">
             <span className="h-1.5 w-1.5 rounded-full bg-[#B58447]" />{" "}
-            {hi ? "कैसे काम करता है" : "HOW IT WORKS"}
+            {siteText(hi ? "कैसे काम करता है" : "HOW IT WORKS")}
           </span>
           <h2 className="mt-5 text-[clamp(1.9rem,4vw,3.2rem)] font-extrabold leading-[1.12] tracking-[-.045em] text-[#241A13]">
             {hi ? (
@@ -79,17 +81,15 @@ export function HowItWorks({ language }: { language: "en" | "hi" }) {
                 <span className="text-[#8B4513]">सफल संचालन तक।</span>
               </>
             ) : (
-              <>
-                From first hello
-                <br className="sm:hidden" /> to{" "}
-                <span className="text-[#8B4513]">ready to go.</span>
+              <>{siteText("From first hello")}<br className="sm:hidden" />{siteText(" to")}{" "}
+                <span className="text-[#8B4513]">{siteText("ready to go.")}</span>
               </>
             )}
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-[#7B6B5C] sm:text-base">
-            {hi
+            {siteText(hi
               ? "चार आसान चरण। हर कदम पर हमारी टीम आपके साथ।"
-              : "Four simple steps. A personal approach. We handle the setup, so you can focus on your school."}
+              : "Four simple steps. A personal approach. We handle the setup, so you can focus on your school.")}
           </p>
         </div>
         <FeatureSteps

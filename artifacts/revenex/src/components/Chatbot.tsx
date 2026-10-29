@@ -1,14 +1,17 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { getFaqAnswer } from "../../../../lib/api-zod/src/chat-knowledge";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Bot } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import { apiRequest } from "@/lib/api";
 
 interface Msg {
   text: string;
   isUser: boolean;
   id: number;
   isError?: boolean;
+  language?: "en" | "hi";
 }
 
 const QUICK = [
@@ -19,6 +22,7 @@ const QUICK = [
 ];
 
 export function Chatbot() {
+  const siteText = useSiteText();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>(() => {
     try {
@@ -72,17 +76,32 @@ export function Chatbot() {
     }
     setMessages((p) => [
       ...p.slice(-59),
-      { text, isUser: true, id: idRef.current++ },
+      { text, isUser: true, id: idRef.current++, language },
     ]);
     setInput("");
     setTyping(true);
-    const reply = getFaqAnswer(text, language);
-    setMessages((p) => [
-      ...p.slice(-59),
-      { text: reply, isUser: false, id: idRef.current++, isError: false },
-    ]);
-    setTyping(false);
+    try {
+      const result = await apiRequest<{ reply: string }>("/api/chat", {
+        method: "POST",
+        body: JSON.stringify({ message: text, language }),
+        signal: AbortSignal.timeout(18000),
+      });
+      if (typeof result.reply !== "string" || !result.reply.trim()) throw new Error("Empty reply");
+      setMessages(p => [...p.slice(-59), { text: result.reply, isUser: false, id: idRef.current++, language }]);
+    } catch {
+      const notice = language === "hi"
+        ? "एआई उत्तर अभी उपलब्ध नहीं है। उपलब्ध जानकारी: "
+        : "AI replies are currently unavailable. Available FAQ help: ";
+      setMessages(p => [...p.slice(-59), {
+        text: notice + getFaqAnswer(text, language), isUser: false,
+        id: idRef.current++, isError: true, language,
+      }]);
+    } finally {
+      setTyping(false);
+    }
   };
+
+  const visibleMessages = messages.filter(msg => (msg.language ?? "en") === language);
 
   return (
     <>
@@ -100,7 +119,7 @@ export function Chatbot() {
             }}
             onClick={() => setIsOpen(true)}
             className="fixed bottom-[calc(6rem+env(safe-area-inset-bottom))] right-4 sm:right-6 z-[60] lg:bottom-6"
-            aria-label="Open chat"
+            aria-label={siteText("Open chat")}
           >
             <div className="relative w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300">
               <MessageCircle className="h-6 w-6 text-white" />
@@ -135,7 +154,7 @@ export function Chatbot() {
                 </div>
                 <div>
                   <p className="font-semibold text-white text-sm">
-                    {t("chatbot.title")}
+                    {siteText(t("chatbot.title"))}
                   </p>
                   <div className="flex items-center gap-1">
                     <span
@@ -143,7 +162,7 @@ export function Chatbot() {
                       style={{ background: "#22c55e" }}
                     />
                     <span className="text-white/80 text-xs">
-                      {language === "hi" ? "FAQ सहायता उपलब्ध" : "FAQ help available"}
+                      {siteText(language === "hi" ? "वेबसाइट सहायता" : "Website assistant")}
                     </span>
                   </div>
                 </div>
@@ -151,7 +170,7 @@ export function Chatbot() {
               <button
                 onClick={() => setIsOpen(false)}
                 className="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
-                aria-label="Close"
+                aria-label={siteText("Close")}
               >
                 <X className="h-4 w-4 text-white/80 hover:text-white" />
               </button>
@@ -159,16 +178,16 @@ export function Chatbot() {
 
             {/* Messages Body */}
             <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3 min-h-0 max-h-[380px]">
-              {messages.length === 0 && (
+              {visibleMessages.length === 0 && (
                 <div className="text-center py-6">
                   <div className="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center mx-auto mb-3">
                     <Bot className="h-7 w-7 text-white" />
                   </div>
                   <p className="text-[#3D3128] font-semibold text-base mb-1">
-                    {t("chatbot.title")}
+                    {siteText(t("chatbot.title"))}
                   </p>
                   <p className="text-[#6B5D52] text-sm">
-                    {t("chatbot.greeting")}
+                    {siteText(t("chatbot.greeting"))}
                   </p>
                   <div className="mt-5 flex flex-wrap gap-2 justify-center">
                     {QUICK.map((q) => (
@@ -179,14 +198,14 @@ export function Chatbot() {
                         }
                         className="text-xs px-3 py-2 rounded-full border border-[#E0D4C0] bg-white text-[#3D3128] hover:border-[#8B4513] hover:text-[#8B4513] hover:shadow-sm transition-all"
                       >
-                        {language === "en" ? q.en : q.hi}
+                        {siteText(language === "en" ? q.en : q.hi)}
                       </button>
                     ))}
                   </div>
                 </div>
               )}
 
-              {messages.map((msg) => (
+              {visibleMessages.map((msg) => (
                 <motion.div
                   key={msg.id}
                   initial={{ opacity: 0, y: 8 }}
@@ -205,10 +224,10 @@ export function Chatbot() {
                           : "bg-white border border-[#E0D4C0] text-[#1A1410]/90 rounded-bl-sm shadow-sm")
                     }
                   >
-                    {msg.text}
+                    {msg.isUser ? msg.text : siteText(msg.text)}
                     {!msg.isUser && msg.text.startsWith("Model:") ? (
                       <div className="text-[10px] text-[#6B5D52] mt-1 border-t border-[#E8E0D4] pt-1">
-                        {msg.text}
+                        {siteText(msg.text)}
                       </div>
                     ) : null}
                   </div>
@@ -254,7 +273,7 @@ export function Chatbot() {
                       void send();
                     }
                   }}
-                  placeholder={t("chatbot.placeholder")}
+                  placeholder={siteText(t("chatbot.placeholder"))}
                   className="flex-1 bg-transparent text-[#1A1410]/90 placeholder-[#6B5D52]/40 text-sm outline-none"
                   disabled={typing}
                 />
@@ -262,7 +281,7 @@ export function Chatbot() {
                   onClick={() => void send()}
                   disabled={!input.trim() || typing}
                   className="w-8 h-8 gradient-bg rounded-xl flex items-center justify-center disabled:opacity-40 flex-shrink-0 transition-transform active:scale-95"
-                  aria-label="Send"
+                  aria-label={siteText("Send")}
                 >
                   <Send className="h-3.5 w-3.5 text-white" />
                 </button>

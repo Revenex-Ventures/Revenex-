@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import {
   Suspense,
   useCallback,
@@ -25,6 +26,15 @@ const modules = [
 ];
 
 useGLTF.setDecoderPath("/draco/");
+
+const studentModelUrl = "/student.glb";
+const studentTextureUrl = "/student-basecolor.webp";
+
+// Warm the same loader caches used by Student before the canvas enters view.
+// Starting both here also avoids Suspense delaying the texture request until
+// the compressed model has finished downloading and decoding.
+useGLTF.preload(studentModelUrl);
+useLoader.preload(THREE.TextureLoader, studentTextureUrl);
 type LookTarget = RefObject<THREE.Vector2>;
 
 function Student({
@@ -36,8 +46,8 @@ function Student({
   reduced: boolean;
   onReady: () => void;
 }) {
-  const { scene } = useGLTF("/student.glb");
-  const texture = useLoader(THREE.TextureLoader, "/student-basecolor.webp");
+  const { scene } = useGLTF(studentModelUrl);
+  const texture = useLoader(THREE.TextureLoader, studentTextureUrl);
   const pivot = useRef<THREE.Group>(null);
   const headTurn = useMemo(() => new THREE.Vector2(), []);
   const { model, center, materials } = useMemo(() => {
@@ -170,6 +180,7 @@ export default function StudentHero3D({
 }: {
   interactionRootId: string;
 }) {
+  const siteText = useSiteText();
   const visual = useRef<HTMLDivElement>(null);
   const target = useRef(new THREE.Vector2());
   const redraw = useRef<() => void>(() => {});
@@ -216,7 +227,7 @@ export default function StudentHero3D({
     <div
       ref={visual}
       role="group"
-      aria-label="Revenex student: gently turns toward your pointer within this section"
+      aria-label={siteText("Revenex student: gently turns toward your pointer within this section")}
       className="student-portrait relative h-[380px] w-full overflow-visible sm:h-[440px] lg:h-[520px] xl:h-[560px]"
       data-student-hero
     >
@@ -251,9 +262,9 @@ export default function StudentHero3D({
           </Suspense>
         </Canvas>
       )}
-      <div className="student-modules absolute inset-0 pointer-events-none" aria-label="School management modules">
+      <div className="student-modules absolute inset-0 pointer-events-none" aria-label={siteText("School management modules")}>
         {modules.map(({ label, caption, Icon }, index) => (
-          <span key={label} className="student-module" title={label} aria-label={label} style={{
+          <span key={label} className="student-module" title={siteText(label)} aria-label={siteText(label)} style={{
             offsetDistance: `${index * 100 / modules.length}%`,
             animationDelay: `${-index * 40 / modules.length}s`,
             animationPlayState: near && !paused && !reduced ? "running" : "paused",
@@ -262,8 +273,8 @@ export default function StudentHero3D({
             <span className="student-module-card">
               <span className="student-module-icon" aria-hidden="true"><Icon size={16} /></span>
               <span className="student-module-copy">
-                <span className="student-module-label">{label}</span>
-                <span className="student-module-caption">{caption}</span>
+                <span className="student-module-label">{siteText(label)}</span>
+                <span className="student-module-caption">{siteText(caption)}</span>
               </span>
               <span className="student-module-spark" aria-hidden="true" />
             </span>
@@ -273,18 +284,16 @@ export default function StudentHero3D({
       {!reduced && (
         <button type="button" onClick={() => setPaused(value => !value)}
           className="absolute bottom-1 right-2 flex min-h-10 items-center gap-1 rounded-full bg-[#F5F0E8]/90 px-3 text-[10px] font-medium text-[#6B5D52] hover:bg-white"
-          aria-label={paused ? "Resume moving module labels" : "Pause moving module labels"}>
+          aria-label={siteText(paused ? "Resume moving module labels" : "Pause moving module labels")}>
           {paused ? <Play size={12} /> : <Pause size={12} />}
-          {paused ? "Resume" : "Pause"}
+          {siteText(paused ? "Resume" : "Pause")}
         </button>
       )}
       {near && !ready && (
         <span
           role="status"
           className="absolute inset-0 flex items-center justify-center text-xs text-[#8B7866]"
-        >
-          Loading student…
-        </span>
+        >{siteText("Loading student…")}</span>
       )}
     </div>
   );

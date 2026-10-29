@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useRef, useState } from "react"
 import { motion, AnimatePresence, type PanInfo } from "framer-motion"
 import {
@@ -155,6 +156,7 @@ const cardVariants = {
 }
 
 export default function Admissions() {
+  const siteText = useSiteText();
   const [columns, setColumns] = useState<Record<ColumnId, Applicant[]>>(INITIAL)
   const [active, setActive] = useState<Applicant | null>(null)
   const colRefs = useRef<Record<ColumnId, HTMLDivElement | null>>({
@@ -206,34 +208,25 @@ export default function Admissions() {
   return (
     <ShowcaseShell
       section="Product"
-      label="Admissions"
+      label={siteText("Admissions")}
       accent={GOLD}
       title={
-        <>
-          From first inquiry to{" "}
-          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">
-            enrolled
-          </span>{" "}
-          in one pipeline
-        </>
+        <>{siteText("From first inquiry to")}{" "}
+          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">{siteText("enrolled")}</span>{" "}{siteText("in one pipeline")}</>
       }
-      subtitle="Drag applicants through the full admission funnel — inquiry, document verification, interview, and enrollment — with every document tracked and verified along the way."
+      subtitle={siteText("Drag applicants through the full admission funnel — inquiry, document verification, interview, and enrollment — with every document tracked and verified along the way.")}
     >
       {/* ── Kanban pipeline ── */}
       <section className="mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-sm text-[#61544A]">
-            Drag any applicant to the next stage — or let automation do the paperwork.
-          </p>
+          <p className="text-sm text-[#61544A]">{siteText("Drag any applicant to the next stage — or let automation do the paperwork.")}</p>
           <motion.button
             type="button"
             onClick={autoVerify}
             whileTap={{ scale: 0.97 }}
             className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#D49A58] to-[#E9B97E] px-5 py-2.5 text-sm font-bold text-[#221910] shadow-[0_8px_24px_rgba(212,154,88,0.35)] transition-all hover:shadow-[0_10px_32px_rgba(212,154,88,0.5)]"
           >
-            <Zap className="h-4 w-4 transition-transform group-hover:scale-125" />
-            Auto-Verify &amp; Advance All
-          </motion.button>
+            <Zap className="h-4 w-4 transition-transform group-hover:scale-125" />{siteText("Auto-Verify & Advance All")}</motion.button>
         </div>
         <motion.div
           variants={boardVariants}
@@ -257,15 +250,15 @@ export default function Admissions() {
                     <col.icon className="h-4 w-4" style={{ color: col.color }} />
                   </span>
                   <div>
-                    <h3 className="text-sm font-bold text-[#221910]">{col.title}</h3>
-                    <p className="text-[10px] text-[#8A7A6B]">{col.hint}</p>
+                    <h3 className="text-sm font-bold text-[#221910]">{siteText(col.title)}</h3>
+                    <p className="text-[10px] text-[#8A7A6B]">{siteText(col.hint)}</p>
                   </div>
                 </div>
                 <span
                   className="counter-num rounded-full px-2 py-0.5 text-[11px] font-black"
                   style={{ background: `${col.color}1A`, color: col.color }}
                 >
-                  {columns[col.id].length}
+                  {siteText(columns[col.id].length)}
                 </span>
               </div>
 
@@ -288,18 +281,16 @@ export default function Admissions() {
                     >
                       <div className="mb-2 flex items-center justify-between">
                         <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F0E8DC] text-xs font-black text-[#221910]">
-                          {a.name.split(" ").map((n) => n[0]).join("")}
+                          {siteText(a.name.split(" ").map((n) => n[0]).join(""))}
                         </span>
-                        <span className="rounded-full border border-[#E5DDD2] bg-white/70 px-2 py-0.5 text-[10px] font-bold text-[#61544A]">
-                          Grade {a.grade}
+                        <span className="rounded-full border border-[#E5DDD2] bg-white/70 px-2 py-0.5 text-[10px] font-bold text-[#61544A]">{siteText("Grade ")}{siteText(a.grade)}
                         </span>
                       </div>
-                      <h4 className="text-sm font-bold text-[#221910]">{a.name}</h4>
-                      <p className="text-xs text-[#61544A]">{a.course}</p>
+                      <h4 className="text-sm font-bold text-[#221910]">{siteText(a.name)}</h4>
+                      <p className="text-xs text-[#61544A]">{siteText(a.course)}</p>
                       <div className="mt-3 flex items-center gap-2 text-[10px] font-semibold text-[#3BA855]">
                         <CheckCircle2 className="h-3 w-3" />
-                        {a.docs.filter((d) => d.verified).length}/{a.docs.length} docs verified
-                      </div>
+                        {siteText(a.docs.filter((d) => d.verified).length)}/{siteText(a.docs.length)}{siteText(" docs verified")}</div>
                       <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100">
                         <ArrowRight className="h-4 w-4 text-[#A34E17]" />
                       </span>
@@ -311,9 +302,7 @@ export default function Admissions() {
           ))}
         </motion.div>
 
-        <p className="mt-6 text-center text-xs text-[#8A7A6B]">
-          Tip: hover any applicant card to preview their file, or drag it to the next stage.
-        </p>
+        <p className="mt-6 text-center text-xs text-[#8A7A6B]">{siteText("Tip: hover any applicant card to preview their file, or drag it to the next stage.")}</p>
       </section>
 
       {/* ── Slide-out preview drawer ── */}
@@ -323,7 +312,7 @@ export default function Admissions() {
             <motion.button
               key="drawer-backdrop"
               type="button"
-              aria-label="Close preview"
+              aria-label={siteText("Close preview")}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -341,17 +330,17 @@ export default function Admissions() {
               <div className="flex items-center justify-between border-b border-[#E5DDD2] px-6 py-5">
                 <div className="flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F0E8DC] text-sm font-black text-[#221910]">
-                    {active.name.split(" ").map((n) => n[0]).join("")}
+                    {siteText(active.name.split(" ").map((n) => n[0]).join(""))}
                   </span>
                   <div>
-                    <h3 className="text-sm font-bold text-[#221910]">{active.name}</h3>
-                    <p className="text-xs text-[#8A7A6B]">Grade {active.grade} · {active.course}</p>
+                    <h3 className="text-sm font-bold text-[#221910]">{siteText(active.name)}</h3>
+                    <p className="text-xs text-[#8A7A6B]">{siteText("Grade ")}{siteText(active.grade)} · {siteText(active.course)}</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setActive(null)}
-                  aria-label="Close"
+                  aria-label={siteText("Close")}
                   className="rounded-lg border border-[#E5DDD2] bg-white/70 p-2 text-[#61544A] transition-colors hover:text-[#A34E17]"
                 >
                   <X className="h-4 w-4" />
@@ -359,21 +348,19 @@ export default function Admissions() {
               </div>
 
               <div className="flex-1 overflow-y-auto px-6 py-6">
-                <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-[#8A7A6B]">Parent</p>
-                <p className="mb-4 text-sm font-semibold text-[#221910]">{active.parent}</p>
+                <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-[#8A7A6B]">{siteText("Parent")}</p>
+                <p className="mb-4 text-sm font-semibold text-[#221910]">{siteText(active.parent)}</p>
 
                 <div className="mb-6 space-y-2 text-xs text-[#61544A]">
                   <p className="flex items-center gap-2">
-                    <Phone className="h-3.5 w-3.5 text-[#A34E17]" /> {active.phone}
+                    <Phone className="h-3.5 w-3.5 text-[#A34E17]" /> {siteText(active.phone)}
                   </p>
                   <p className="flex items-center gap-2">
-                    <Mail className="h-3.5 w-3.5 text-[#A34E17]" /> {active.email}
+                    <Mail className="h-3.5 w-3.5 text-[#A34E17]" /> {siteText(active.email)}
                   </p>
                 </div>
 
-                <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-[#8A7A6B]">
-                  Verified documents
-                </p>
+                <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-[#8A7A6B]">{siteText("Verified documents")}</p>
                 <ul className="space-y-2">
                   {active.docs.map((d) => (
                     <li
@@ -386,16 +373,14 @@ export default function Admissions() {
                     >
                       <span className="flex items-center gap-2.5 font-medium text-[#221910]/80">
                         <FileText className="h-4 w-4 text-[#8A7A6B]" />
-                        {d.label}
+                        {siteText(d.label)}
                       </span>
                       {d.verified ? (
                         <span className="inline-flex items-center gap-1 rounded-full bg-[#4ADE80]/20 px-2.5 py-0.5 text-[10px] font-bold text-[#2E8B52]">
-                          <CheckCircle2 className="h-3 w-3" /> Verified
-                        </span>
+                          <CheckCircle2 className="h-3 w-3" />{siteText(" Verified")}</span>
                       ) : (
                         <span className="inline-flex items-center gap-1 rounded-full bg-[#F5F0E6] px-2.5 py-0.5 text-[10px] font-bold text-[#8A7A6B]">
-                          <Clock3 className="h-3 w-3" /> Pending
-                        </span>
+                          <Clock3 className="h-3 w-3" />{siteText(" Pending")}</span>
                       )}
                     </li>
                   ))}
@@ -406,9 +391,7 @@ export default function Admissions() {
                 <button
                   type="button"
                   className="w-full rounded-xl bg-[#D49A58] py-3 text-sm font-bold text-[#221910] transition-all hover:bg-[#E0AA6E] hover:shadow-[0_0_20px_rgba(212,154,88,0.45)]"
-                >
-                  Send next-step update
-                </button>
+                >{siteText("Send next-step update")}</button>
               </div>
             </motion.aside>
           </>
@@ -421,8 +404,8 @@ export default function Admissions() {
           <SectionHeading
             kicker="The admission office, digitised"
             accent={GOLD}
-            title="No more lost files or follow-up calls"
-            subtitle="Every lead, document, and decision sits in one visible pipeline — so the admission team always knows exactly where each child stands."
+            title={siteText("No more lost files or follow-up calls")}
+            subtitle={siteText("Every lead, document, and decision sits in one visible pipeline — so the admission team always knows exactly where each child stands.")}
           />
         </Reveal>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
@@ -436,8 +419,8 @@ export default function Admissions() {
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D49A58]/40 bg-[#D49A58]/10">
                   <Icon className="h-6 w-6 text-[#A34E17]" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-[#221910]">{title}</h3>
-                <p className="text-sm leading-relaxed text-[#61544A]">{desc}</p>
+                <h3 className="mb-2 text-lg font-bold text-[#221910]">{siteText(title)}</h3>
+                <p className="text-sm leading-relaxed text-[#61544A]">{siteText(desc)}</p>
               </GlassCard>
             </Reveal>
           ))}
@@ -451,12 +434,8 @@ export default function Admissions() {
             <div aria-hidden className="absolute -top-20 right-1/4 h-80 w-80 rounded-full bg-[#D49A58]/20 blur-[110px]" />
             <div className="relative">
               <FileSearch className="mx-auto mb-4 h-9 w-9 text-[#A34E17]" />
-              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">
-                Fill your seats months faster
-              </h3>
-              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">
-                Watch a 20-minute demo of the REVENEX admission pipeline and see how schools recover 15+ staff hours a week.
-              </p>
+              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">{siteText("Fill your seats months faster")}</h3>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">{siteText("Watch a 20-minute demo of the REVENEX admission pipeline and see how schools recover 15+ staff hours a week.")}</p>
               <div className="mt-8 flex justify-center">
                 <DemoButton />
               </div>

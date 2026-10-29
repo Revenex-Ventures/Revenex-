@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { motion } from 'framer-motion'
 import { Link } from 'wouter'
 import {
@@ -62,6 +63,7 @@ const steps = [
 ]
 
 export default function Transport() {
+  const siteText = useSiteText();
   const { language } = useLanguage()
 
   return (
@@ -79,25 +81,24 @@ export default function Transport() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-6">
               <BusFront className="h-3.5 w-3.5 text-[#166534]" />
               <span className="text-xs font-semibold text-[#3D3128] uppercase tracking-widest">
-                {language === 'en' ? 'School Transport' : 'स्कूल परिवहन'}
+                {siteText(language === 'en' ? 'School Transport' : 'स्कूल परिवहन')}
               </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1410] leading-[1.1] font-display tracking-tight mb-6 max-w-3xl">
-              Every bus, every stop, <span className="gradient-text">every child accounted for</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1410] leading-[1.1] font-display tracking-tight mb-6 max-w-3xl">{siteText("Every bus, every stop, ")}<span className="gradient-text">{siteText("every child accounted for")}</span>
             </h1>
             <p className="max-w-2xl text-lg text-[#3D3128] leading-relaxed mb-8">
-              {language === 'en'
+              {siteText(language === 'en'
                 ? 'Live GPS tracking, digital manifests, and automatic parent alerts turn school transport from a daily worry into a fully managed service.'
-                : 'लाइव GPS ट्रैकिंग, डिजिटल मैनिफेस्ट और स्वचालित पैरेंट अलर्ट स्कूल परिवहन को दैनिक चिंता से पूरी तरह प्रबंधित सेवा में बदल देते हैं।'}
+                : 'लाइव GPS ट्रैकिंग, डिजिटल मैनिफेस्ट और स्वचालित पैरेंट अलर्ट स्कूल परिवहन को दैनिक चिंता से पूरी तरह प्रबंधित सेवा में बदल देते हैं।')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/book-demo">
                 <span className="inline-flex items-center gap-2 btn-primary cursor-pointer">
-                  {language === 'en' ? 'Book a Demo' : 'डेमो बुक करें'} <ArrowRight className="h-5 w-5" />
+                  {siteText(language === 'en' ? 'Book a Demo' : 'डेमो बुक करें')} <ArrowRight className="h-5 w-5" />
                 </span>
               </Link>
               <a href="/contact" className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-7 py-3.5 rounded-xl text-base transition-all hover:bg-[#1A1410]/5 cursor-pointer">
-                <PhoneCall className="h-4 w-4" /> {language === 'en' ? 'Talk to Us' : 'हमसे बात करें'}
+                <PhoneCall className="h-4 w-4" /> {siteText(language === 'en' ? 'Talk to Us' : 'हमसे बात करें')}
               </a>
             </div>
           </motion.div>
@@ -108,10 +109,8 @@ export default function Transport() {
       <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-14">
-            <span className="text-[11px] font-black text-[#166534] uppercase tracking-widest mb-3">Transport Suite</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">
-              Safety, visibility, and control — all in one
-            </h2>
+            <span className="text-[11px] font-black text-[#166534] uppercase tracking-widest mb-3">{siteText("Transport Suite")}</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">{siteText("Safety, visibility, and control — all in one")}</h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -127,12 +126,12 @@ export default function Transport() {
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style={{ background: `${color}14`, border: `1px solid ${color}25` }}>
                   <Icon className="h-6 w-6" style={{ color }} />
                 </div>
-                <h3 className="text-lg font-bold text-[#1A1410] mb-2">{title}</h3>
-                <p className="text-sm text-[#6B5D52] leading-relaxed mb-5">{desc}</p>
+                <h3 className="text-lg font-bold text-[#1A1410] mb-2">{siteText(title)}</h3>
+                <p className="text-sm text-[#6B5D52] leading-relaxed mb-5">{siteText(desc)}</p>
                 <ul className="space-y-1.5">
                   {points.map((p) => (
                     <li key={p} className="flex items-center gap-2 text-xs font-medium text-[#3D3128]">
-                      <CheckCircle2 className="h-3.5 w-3.5" style={{ color }} /> {p}
+                      <CheckCircle2 className="h-3.5 w-3.5" style={{ color }} /> {siteText(p)}
                     </li>
                   ))}
                 </ul>
@@ -146,10 +145,8 @@ export default function Transport() {
       <section className="py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-14">
-            <span className="text-[11px] font-black text-[#166534] uppercase tracking-widest mb-3">How It Works</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">
-              From route planning to peace of mind
-            </h2>
+            <span className="text-[11px] font-black text-[#166534] uppercase tracking-widest mb-3">{siteText("How It Works")}</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">{siteText("From route planning to peace of mind")}</h2>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -163,13 +160,13 @@ export default function Transport() {
                 className="relative glass-card rounded-3xl p-6"
               >
                 <div className="absolute -top-3 -left-3 w-8 h-8 rounded-xl bg-[#166534] text-[#F5F0E8] flex items-center justify-center text-xs font-black">
-                  {i + 1}
+                  {siteText(i + 1)}
                 </div>
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-[#F0E8DC] border border-[#E8E0D4] mb-4">
                   <Icon className="h-5 w-5 text-[#166534]" />
                 </div>
-                <h3 className="text-base font-bold text-[#1A1410] mb-1.5">{title}</h3>
-                <p className="text-sm text-[#6B5D52] leading-relaxed">{desc}</p>
+                <h3 className="text-base font-bold text-[#1A1410] mb-1.5">{siteText(title)}</h3>
+                <p className="text-sm text-[#6B5D52] leading-relaxed">{siteText(desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -191,19 +188,14 @@ export default function Transport() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-3">
                   <ShieldCheck className="h-5 w-5 text-[#166534]" />
-                  <span className="text-xs font-black text-[#166534] uppercase tracking-widest">Our Safety Promise</span>
+                  <span className="text-xs font-black text-[#166534] uppercase tracking-widest">{siteText("Our Safety Promise")}</span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-[#1A1410] font-display tracking-tight mb-3">
-                  Zero-phone, zero-surprise school commutes
-                </h3>
-                <p className="max-w-xl text-[#3D3128] leading-relaxed">
-                  When every trip is live-tracked and every child is on a digital manifest, incidents become exceptions — and parents never have to guess.
-                </p>
+                <h3 className="text-2xl sm:text-3xl font-black text-[#1A1410] font-display tracking-tight mb-3">{siteText("Zero-phone, zero-surprise school commutes")}</h3>
+                <p className="max-w-xl text-[#3D3128] leading-relaxed">{siteText("When every trip is live-tracked and every child is on a digital manifest, incidents become exceptions — and parents never have to guess.")}</p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link href="/book-demo">
-                  <span className="inline-flex items-center gap-2 bg-[#166534] text-white font-semibold px-7 py-3.5 rounded-xl text-sm transition-all hover:bg-[#15803D] hover:shadow-[0_0_24px_rgba(22,101,52,0.35)] cursor-pointer">
-                    Book a Demo <ArrowRight className="h-4 w-4" />
+                  <span className="inline-flex items-center gap-2 bg-[#166534] text-white font-semibold px-7 py-3.5 rounded-xl text-sm transition-all hover:bg-[#15803D] hover:shadow-[0_0_24px_rgba(22,101,52,0.35)] cursor-pointer">{siteText("Book a Demo ")}<ArrowRight className="h-4 w-4" />
                   </span>
                 </Link>
               </div>

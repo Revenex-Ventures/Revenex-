@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { cn } from '@/lib/utils';
 import {
   motion,
@@ -29,6 +30,7 @@ export function TextLoop({
   trigger = true,
   mode = 'popLayout',
 }: TextLoopProps) {
+  const siteText = useSiteText();
   const [currentIndex, setCurrentIndex] = useState(0);
   const items = Children.toArray(children);
 
@@ -63,7 +65,7 @@ export function TextLoop({
           transition={transition}
           variants={variants || motionVariants}
         >
-          {items[currentIndex]}
+          {siteText(items[currentIndex])}
         </motion.div>
       </AnimatePresence>
     </div>

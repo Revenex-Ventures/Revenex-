@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { BrandLogo } from '@/components/BrandLogo'
 import { apiRequest } from '@/lib/api';
 import { useAuth } from '@/lib/auth-context';
@@ -21,6 +22,7 @@ async function apiFetch(path: string, options: RequestInit = {}) {
 }
 
 function StatusBadge({ status }: { status: string }) {
+  const siteText = useSiteText();
   const colors: Record<string, string> = {
     pending: "#f59e0b",
     resolved: "#10b981",
@@ -41,14 +43,15 @@ function StatusBadge({ status }: { status: string }) {
       color: colors[status] ?? "#6b7280",
       border: `1px solid ${colors[status] ?? "#6b7280"}44`,
       textTransform: "capitalize",
-    }}>{status}</span>
+    }}>{siteText(status)}</span>
   );
 }
 
 function StarRating({ rating }: { rating: number }) {
+  const siteText = useSiteText();
   return (
     <span style={{ color: "#f59e0b", fontSize: 14 }}>
-      {"★".repeat(rating)}{"☆".repeat(5 - rating)}
+      {siteText("★".repeat(rating))}{siteText("☆".repeat(5 - rating))}
     </span>
   );
 }
@@ -58,6 +61,7 @@ function formatDate(iso: string) {
 }
 
 export default function Admin() {
+  const siteText = useSiteText();
   const [, navigate] = useLocation();
   const { logout } = useAuth();
   const [tab, setTab] = useState<Tab>("overview");
@@ -172,7 +176,7 @@ export default function Admin() {
   }
 
   async function deleteContact(id: number) {
-    if (!confirm("Delete this contact request?")) return;
+    if (!confirm(siteText("Delete this contact request?"))) return;
     try {
       await apiFetch(`/admin/contacts/${id}`, { method: "DELETE" });
       setContacts(prev => prev.filter(c => c.id !== id));
@@ -190,7 +194,7 @@ export default function Admin() {
   }
 
   async function deleteDemo(id: number) {
-    if (!confirm("Delete this demo request?")) return;
+    if (!confirm(siteText("Delete this demo request?"))) return;
     try {
       await apiFetch(`/admin/demos/${id}`, { method: "DELETE" });
       setDemos(prev => prev.filter(d => d.id !== id));
@@ -208,7 +212,7 @@ export default function Admin() {
   }
 
   async function deleteReview(id: number) {
-    if (!confirm("Delete this review?")) return;
+    if (!confirm(siteText("Delete this review?"))) return;
     try {
       await apiFetch(`/admin/reviews/${id}`, { method: "DELETE" });
       setReviews(prev => prev.filter(r => r.id !== id));
@@ -233,7 +237,7 @@ export default function Admin() {
   if (!authChecked) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0a0a0f" }}>
-        <div style={{ color: "#fff", fontSize: 18 }}>Verifying access…</div>
+        <div style={{ color: "#fff", fontSize: 18 }}>{siteText("Verifying access…")}</div>
       </div>
     );
   }
@@ -255,18 +259,18 @@ export default function Admin() {
           background: toast.type === "success" ? "#10b981" : "#ef4444",
           color: "#fff", boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
           animation: "fadeIn 0.2s ease",
-        }}>{toast.msg}</div>
+        }}>{siteText(toast.msg)}</div>
       )}
 
       <header style={{ background: "#111118", borderBottom: "1px solid #1e1e2e", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <a href="/" style={{ color: "#6C63FF", textDecoration: "none", fontSize: 22, fontWeight: 700 }}><BrandLogo tone="light" size="sm" /></a>
           <span style={{ color: "#444", fontSize: 18 }}>/</span>
-          <span style={{ color: "#fff", fontWeight: 600 }}>Admin Panel</span>
+          <span style={{ color: "#fff", fontWeight: 600 }}>{siteText("Admin Panel")}</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ color: "#888", fontSize: 14 }}>Logged in as <strong style={{ color: "#6C63FF" }}>{adminName}</strong></span>
-          <button onClick={handleLogout} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>Logout</button>
+          <span style={{ color: "#888", fontSize: 14 }}>{siteText("Logged in as ")}<strong style={{ color: "#6C63FF" }}>{siteText(adminName)}</strong></span>
+          <button onClick={handleLogout} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>{siteText("Logout")}</button>
         </div>
       </header>
 
@@ -285,7 +289,7 @@ export default function Admin() {
                 textAlign: "left", transition: "all 0.15s",
               }}
             >
-              <span>{t.icon}</span> {t.label}
+              <span>{siteText(t.icon)}</span> {siteText(t.label)}
             </button>
           ))}
         </nav>
@@ -293,7 +297,7 @@ export default function Admin() {
         <main style={{ flex: 1, padding: "32px", overflowY: "auto" }}>
           {tab === "overview" && (
             <div>
-              <h2 style={{ margin: "0 0 24px", fontSize: 24 }}>Dashboard Overview</h2>
+              <h2 style={{ margin: "0 0 24px", fontSize: 24 }}>{siteText("Dashboard Overview")}</h2>
               {stats ? (
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 20, marginBottom: 32 }}>
                   {[
@@ -306,24 +310,24 @@ export default function Admin() {
                       background: "#111118", border: "1px solid #1e1e2e", borderRadius: 12,
                       padding: "24px", textAlign: "center",
                     }}>
-                      <div style={{ fontSize: 32, marginBottom: 8 }}>{card.icon}</div>
-                      <div style={{ fontSize: 36, fontWeight: 700, color: card.color }}>{card.value}</div>
-                      <div style={{ fontSize: 13, color: "#666", marginTop: 4 }}>{card.label}</div>
+                      <div style={{ fontSize: 32, marginBottom: 8 }}>{siteText(card.icon)}</div>
+                      <div style={{ fontSize: 36, fontWeight: 700, color: card.color }}>{siteText(card.value)}</div>
+                      <div style={{ fontSize: 13, color: "#666", marginTop: 4 }}>{siteText(card.label)}</div>
                     </div>
                   ))}
                 </div>
               ) : (
-                <div style={{ color: "#666" }}>Loading stats…</div>
+                <div style={{ color: "#666" }}>{siteText("Loading stats…")}</div>
               )}
               <div style={{ background: "#111118", border: "1px solid #1e1e2e", borderRadius: 12, padding: "24px" }}>
-                <h3 style={{ margin: "0 0 12px", color: "#aaa", fontSize: 16 }}>Quick Actions</h3>
+                <h3 style={{ margin: "0 0 12px", color: "#aaa", fontSize: 16 }}>{siteText("Quick Actions")}</h3>
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                   {(["contacts", "demos", "reviews", "users"] as Tab[]).map(t => (
                     <button key={t} onClick={() => setTab(t)} style={{
                       background: "#1e1e2e", border: "1px solid #333", color: "#fff",
                       padding: "10px 20px", borderRadius: 8, cursor: "pointer", fontSize: 13, fontWeight: 500,
                       textTransform: "capitalize",
-                    }}>Manage {t}</button>
+                    }}>{siteText("Manage ")}{siteText(t)}</button>
                   ))}
                 </div>
               </div>
@@ -333,11 +337,11 @@ export default function Admin() {
           {tab === "contacts" && (
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-                <h2 style={{ margin: 0, fontSize: 24 }}>Contact Requests <span style={{ color: "#444", fontSize: 16 }}>({contacts.length})</span></h2>
-                <button onClick={() => void loadContacts()} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>↻ Refresh</button>
+                <h2 style={{ margin: 0, fontSize: 24 }}>{siteText("Contact Requests ")}<span style={{ color: "#444", fontSize: 16 }}>({siteText(contacts.length)})</span></h2>
+                <button onClick={() => void loadContacts()} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>{siteText("↻ Refresh")}</button>
               </div>
-              {loading ? <div style={{ color: "#666" }}>Loading…</div> : contacts.length === 0 ? (
-                <div style={{ color: "#666", textAlign: "center", padding: 40 }}>No contact requests yet.</div>
+              {loading ? <div style={{ color: "#666" }}>{siteText("Loading…")}</div> : contacts.length === 0 ? (
+                <div style={{ color: "#666", textAlign: "center", padding: 40 }}>{siteText("No contact requests yet.")}</div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {contacts.map(c => (
@@ -345,22 +349,22 @@ export default function Admin() {
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
                         <div>
                           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                            <strong style={{ fontSize: 16 }}>{c.name}</strong>
+                            <strong style={{ fontSize: 16 }}>{siteText(c.name)}</strong>
                             <StatusBadge status={c.status} />
                           </div>
-                          <div style={{ color: "#888", fontSize: 13, marginBottom: 4 }}>📧 {c.email} {c.institution && `· 🏫 ${c.institution}`}</div>
-                          {c.subject && <div style={{ color: "#aaa", fontSize: 13, marginBottom: 6 }}>Subject: {c.subject}</div>}
-                          <div style={{ color: "#ccc", fontSize: 14, lineHeight: 1.5, maxWidth: 600 }}>{c.message}</div>
-                          <div style={{ color: "#555", fontSize: 12, marginTop: 8 }}>{formatDate(c.createdAt)}</div>
+                          <div style={{ color: "#888", fontSize: 13, marginBottom: 4 }}>📧 {siteText(c.email)} {siteText(c.institution && `· 🏫 ${c.institution}`)}</div>
+                          {c.subject && <div style={{ color: "#aaa", fontSize: 13, marginBottom: 6 }}>{siteText("Subject: ")}{siteText(c.subject)}</div>}
+                          <div style={{ color: "#ccc", fontSize: 14, lineHeight: 1.5, maxWidth: 600 }}>{siteText(c.message)}</div>
+                          <div style={{ color: "#555", fontSize: 12, marginTop: 8 }}>{siteText(formatDate(c.createdAt))}</div>
                         </div>
                         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                           {c.status !== "resolved" && (
-                            <button onClick={() => void updateContactStatus(c.id, "resolved")} style={{ background: "#10b98122", border: "1px solid #10b98144", color: "#10b981", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>✓ Resolve</button>
+                            <button onClick={() => void updateContactStatus(c.id, "resolved")} style={{ background: "#10b98122", border: "1px solid #10b98144", color: "#10b981", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>{siteText("✓ Resolve")}</button>
                           )}
                           {c.status !== "pending" && (
-                            <button onClick={() => void updateContactStatus(c.id, "pending")} style={{ background: "#f59e0b22", border: "1px solid #f59e0b44", color: "#f59e0b", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>↩ Reopen</button>
+                            <button onClick={() => void updateContactStatus(c.id, "pending")} style={{ background: "#f59e0b22", border: "1px solid #f59e0b44", color: "#f59e0b", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>{siteText("↩ Reopen")}</button>
                           )}
-                          <button onClick={() => void deleteContact(c.id)} style={{ background: "#ef444422", border: "1px solid #ef444444", color: "#ef4444", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>🗑 Delete</button>
+                          <button onClick={() => void deleteContact(c.id)} style={{ background: "#ef444422", border: "1px solid #ef444444", color: "#ef4444", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>{siteText("🗑 Delete")}</button>
                         </div>
                       </div>
                     </div>
@@ -373,11 +377,11 @@ export default function Admin() {
           {tab === "demos" && (
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-                <h2 style={{ margin: 0, fontSize: 24 }}>Demo Requests <span style={{ color: "#444", fontSize: 16 }}>({demos.length})</span></h2>
-                <button onClick={() => void loadDemos()} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>↻ Refresh</button>
+                <h2 style={{ margin: 0, fontSize: 24 }}>{siteText("Demo Requests ")}<span style={{ color: "#444", fontSize: 16 }}>({siteText(demos.length)})</span></h2>
+                <button onClick={() => void loadDemos()} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>{siteText("↻ Refresh")}</button>
               </div>
-              {loading ? <div style={{ color: "#666" }}>Loading…</div> : demos.length === 0 ? (
-                <div style={{ color: "#666", textAlign: "center", padding: 40 }}>No demo requests yet.</div>
+              {loading ? <div style={{ color: "#666" }}>{siteText("Loading…")}</div> : demos.length === 0 ? (
+                <div style={{ color: "#666", textAlign: "center", padding: 40 }}>{siteText("No demo requests yet.")}</div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {demos.map(d => (
@@ -385,15 +389,15 @@ export default function Admin() {
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
                         <div>
                           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                            <strong style={{ fontSize: 16 }}>{d.name}</strong>
+                            <strong style={{ fontSize: 16 }}>{siteText(d.name)}</strong>
                             <StatusBadge status={d.status} />
                           </div>
-                          <div style={{ color: "#aaa", fontSize: 14, marginBottom: 4 }}>🏫 {d.schoolName} {d.city && `· 📍 ${d.city}`}</div>
-                          <div style={{ color: "#888", fontSize: 13, marginBottom: 4 }}>📧 {d.email} {d.phone && `· 📱 ${d.phone}`}</div>
-                          {d.students && <div style={{ color: "#888", fontSize: 13, marginBottom: 4 }}>Students: {d.students} {d.type && `· Type: ${d.type}`}</div>}
-                          {(d.preferredDate ?? d.preferredTime) && <div style={{ color: "#888", fontSize: 13, marginBottom: 4 }}>Preferred: {d.preferredDate} {d.preferredTime}</div>}
-                          {d.message && <div style={{ color: "#ccc", fontSize: 14, lineHeight: 1.5, maxWidth: 600 }}>{d.message}</div>}
-                          <div style={{ color: "#555", fontSize: 12, marginTop: 8 }}>{formatDate(d.createdAt)}</div>
+                          <div style={{ color: "#aaa", fontSize: 14, marginBottom: 4 }}>🏫 {siteText(d.schoolName)} {siteText(d.city && `· 📍 ${d.city}`)}</div>
+                          <div style={{ color: "#888", fontSize: 13, marginBottom: 4 }}>📧 {siteText(d.email)} {siteText(d.phone && `· 📱 ${d.phone}`)}</div>
+                          {d.students && <div style={{ color: "#888", fontSize: 13, marginBottom: 4 }}>{siteText("Students: ")}{siteText(d.students)} {siteText(d.type && `· Type: ${d.type}`)}</div>}
+                          {(d.preferredDate ?? d.preferredTime) && <div style={{ color: "#888", fontSize: 13, marginBottom: 4 }}>{siteText("Preferred: ")}{siteText(d.preferredDate)} {siteText(d.preferredTime)}</div>}
+                          {d.message && <div style={{ color: "#ccc", fontSize: 14, lineHeight: 1.5, maxWidth: 600 }}>{siteText(d.message)}</div>}
+                          <div style={{ color: "#555", fontSize: 12, marginTop: 8 }}>{siteText(formatDate(d.createdAt))}</div>
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           <select
@@ -401,9 +405,9 @@ export default function Admin() {
                             onChange={e => void updateDemoStatus(d.id, e.target.value)}
                             style={{ background: "#1e1e2e", border: "1px solid #333", color: "#fff", padding: "8px 12px", borderRadius: 6, cursor: "pointer", fontSize: 13 }}
                           >
-                            {DEMO_STATUSES.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+                            {DEMO_STATUSES.map(s => <option key={s} value={s}>{siteText(s.charAt(0).toUpperCase() + s.slice(1))}</option>)}
                           </select>
-                          <button onClick={() => void deleteDemo(d.id)} style={{ background: "#ef444422", border: "1px solid #ef444444", color: "#ef4444", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>🗑 Delete</button>
+                          <button onClick={() => void deleteDemo(d.id)} style={{ background: "#ef444422", border: "1px solid #ef444444", color: "#ef4444", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>{siteText("🗑 Delete")}</button>
                         </div>
                       </div>
                     </div>
@@ -416,16 +420,15 @@ export default function Admin() {
           {tab === "reviews" && (
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-                <h2 style={{ margin: 0, fontSize: 24 }}>Reviews <span style={{ color: "#444", fontSize: 16 }}>({reviews.length})</span></h2>
+                <h2 style={{ margin: 0, fontSize: 24 }}>{siteText("Reviews ")}<span style={{ color: "#444", fontSize: 16 }}>({siteText(reviews.length)})</span></h2>
                 <div style={{ display: "flex", gap: 8 }}>
                   <span style={{ color: "#888", fontSize: 13, alignSelf: "center" }}>
-                    {reviews.filter(r => r.approved).length} approved · {reviews.filter(r => !r.approved).length} pending
-                  </span>
-                  <button onClick={() => void loadReviews()} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>↻ Refresh</button>
+                    {siteText(reviews.filter(r => r.approved).length)}{siteText(" approved · ")}{siteText(reviews.filter(r => !r.approved).length)}{siteText(" pending")}</span>
+                  <button onClick={() => void loadReviews()} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>{siteText("↻ Refresh")}</button>
                 </div>
               </div>
-              {loading ? <div style={{ color: "#666" }}>Loading…</div> : reviews.length === 0 ? (
-                <div style={{ color: "#666", textAlign: "center", padding: 40 }}>No reviews yet.</div>
+              {loading ? <div style={{ color: "#666" }}>{siteText("Loading…")}</div> : reviews.length === 0 ? (
+                <div style={{ color: "#666", textAlign: "center", padding: 40 }}>{siteText("No reviews yet.")}</div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {reviews.map(r => (
@@ -436,21 +439,21 @@ export default function Admin() {
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: 12 }}>
                         <div>
                           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                            <strong style={{ fontSize: 16 }}>{r.name}</strong>
+                            <strong style={{ fontSize: 16 }}>{siteText(r.name)}</strong>
                             <StatusBadge status={r.approved ? "approved" : "pending"} />
                           </div>
-                          <div style={{ color: "#888", fontSize: 13, marginBottom: 6 }}>{r.role} · {r.school}</div>
+                          <div style={{ color: "#888", fontSize: 13, marginBottom: 6 }}>{siteText(r.role)} · {siteText(r.school)}</div>
                           <StarRating rating={r.rating} />
-                          <div style={{ color: "#ccc", fontSize: 14, lineHeight: 1.6, maxWidth: 600, marginTop: 8 }}>"{r.content}"</div>
-                          <div style={{ color: "#555", fontSize: 12, marginTop: 8 }}>{formatDate(r.createdAt)}</div>
+                          <div style={{ color: "#ccc", fontSize: 14, lineHeight: 1.6, maxWidth: 600, marginTop: 8 }}>"{siteText(r.content)}"</div>
+                          <div style={{ color: "#555", fontSize: 12, marginTop: 8 }}>{siteText(formatDate(r.createdAt))}</div>
                         </div>
                         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                           {!r.approved ? (
-                            <button onClick={() => void approveReview(r.id, true)} style={{ background: "#10b98122", border: "1px solid #10b98144", color: "#10b981", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>✓ Approve</button>
+                            <button onClick={() => void approveReview(r.id, true)} style={{ background: "#10b98122", border: "1px solid #10b98144", color: "#10b981", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>{siteText("✓ Approve")}</button>
                           ) : (
-                            <button onClick={() => void approveReview(r.id, false)} style={{ background: "#f59e0b22", border: "1px solid #f59e0b44", color: "#f59e0b", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>↩ Reject</button>
+                            <button onClick={() => void approveReview(r.id, false)} style={{ background: "#f59e0b22", border: "1px solid #f59e0b44", color: "#f59e0b", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>{siteText("↩ Reject")}</button>
                           )}
-                          <button onClick={() => void deleteReview(r.id)} style={{ background: "#ef444422", border: "1px solid #ef444444", color: "#ef4444", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>🗑 Delete</button>
+                          <button onClick={() => void deleteReview(r.id)} style={{ background: "#ef444422", border: "1px solid #ef444444", color: "#ef4444", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>{siteText("🗑 Delete")}</button>
                         </div>
                       </div>
                     </div>
@@ -463,40 +466,40 @@ export default function Admin() {
           {tab === "users" && (
             <div>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-                <h2 style={{ margin: 0, fontSize: 24 }}>Users <span style={{ color: "#444", fontSize: 16 }}>({users.length})</span></h2>
-                <button onClick={() => void loadUsers()} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>↻ Refresh</button>
+                <h2 style={{ margin: 0, fontSize: 24 }}>{siteText("Users ")}<span style={{ color: "#444", fontSize: 16 }}>({siteText(users.length)})</span></h2>
+                <button onClick={() => void loadUsers()} style={{ background: "#1e1e2e", border: "1px solid #333", color: "#aaa", padding: "8px 16px", borderRadius: 8, cursor: "pointer", fontSize: 13 }}>{siteText("↻ Refresh")}</button>
               </div>
-              {loading ? <div style={{ color: "#666" }}>Loading…</div> : users.length === 0 ? (
-                <div style={{ color: "#666", textAlign: "center", padding: 40 }}>No users yet.</div>
+              {loading ? <div style={{ color: "#666" }}>{siteText("Loading…")}</div> : users.length === 0 ? (
+                <div style={{ color: "#666", textAlign: "center", padding: 40 }}>{siteText("No users yet.")}</div>
               ) : (
                 <div style={{ overflowX: "auto" }}>
                   <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
                     <thead>
                       <tr style={{ borderBottom: "1px solid #1e1e2e" }}>
                         {["ID", "Name", "Email", "Role", "Provider", "School", "Joined", "Last Login", "Actions"].map(h => (
-                          <th key={h} style={{ padding: "10px 12px", textAlign: "left", color: "#666", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap" }}>{h}</th>
+                          <th key={h} style={{ padding: "10px 12px", textAlign: "left", color: "#666", fontWeight: 600, fontSize: 12, whiteSpace: "nowrap" }}>{siteText(h)}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
                       {users.map(u => (
                         <tr key={u.id} style={{ borderBottom: "1px solid #1e1e2e" }}>
-                          <td style={{ padding: "12px", color: "#555" }}>{u.id}</td>
-                          <td style={{ padding: "12px", fontWeight: 500 }}>{u.name}</td>
-                          <td style={{ padding: "12px", color: "#888" }}>{u.email}</td>
+                          <td style={{ padding: "12px", color: "#555" }}>{siteText(u.id)}</td>
+                          <td style={{ padding: "12px", fontWeight: 500 }}>{siteText(u.name)}</td>
+                          <td style={{ padding: "12px", color: "#888" }}>{siteText(u.email)}</td>
                           <td style={{ padding: "12px" }}><StatusBadge status={u.role} /></td>
-                          <td style={{ padding: "12px", color: "#888", textTransform: "capitalize" }}>{u.provider}</td>
-                          <td style={{ padding: "12px", color: "#888" }}>{u.school ?? "—"}</td>
-                          <td style={{ padding: "12px", color: "#666", whiteSpace: "nowrap" }}>{formatDate(u.createdAt)}</td>
-                          <td style={{ padding: "12px", color: "#666", whiteSpace: "nowrap" }}>{u.lastLogin ? formatDate(u.lastLogin) : "—"}</td>
+                          <td style={{ padding: "12px", color: "#888", textTransform: "capitalize" }}>{siteText(u.provider)}</td>
+                          <td style={{ padding: "12px", color: "#888" }}>{siteText(u.school ?? "—")}</td>
+                          <td style={{ padding: "12px", color: "#666", whiteSpace: "nowrap" }}>{siteText(formatDate(u.createdAt))}</td>
+                          <td style={{ padding: "12px", color: "#666", whiteSpace: "nowrap" }}>{siteText(u.lastLogin ? formatDate(u.lastLogin) : "—")}</td>
                           <td style={{ padding: "12px" }}>
                             <select
                               value={u.role}
                               onChange={e => void updateUserRole(u.id, e.target.value)}
                               style={{ background: "#1e1e2e", border: "1px solid #333", color: "#fff", padding: "4px 8px", borderRadius: 4, cursor: "pointer", fontSize: 12 }}
                             >
-                              <option value="user">user</option>
-                              <option value="admin">admin</option>
+                              <option value="user">{siteText("user")}</option>
+                              <option value="admin">{siteText("admin")}</option>
                             </select>
                           </td>
                         </tr>

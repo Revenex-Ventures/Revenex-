@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -21,6 +22,7 @@ const letters = [
 ];
 
 export function Preloader({ onComplete }: { onComplete: () => void }) {
+  const siteText = useSiteText();
   const reduced = useReducedMotion();
   useEffect(() => {
     const timer = window.setTimeout(onComplete, reduced ? 250 : 3300);
@@ -30,7 +32,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
   return (
     <motion.div
       role="status"
-      aria-label="Welcome to Revenex"
+      aria-label={siteText("Welcome to Revenex")}
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: reduced ? 0 : 0.35 } }}
       className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#F5F0E8] px-6"
@@ -41,7 +43,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
       >
         <motion.img
           src="/brand/mark-dark.svg"
-          alt=""
+          alt={""}
           width={112}
           height={86}
           initial={
@@ -54,7 +56,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
         <svg
           viewBox="0 0 461 50"
           role="img"
-          aria-label="REVENEX"
+          aria-label={siteText("REVENEX")}
           className="h-auto w-full max-w-[320px] overflow-visible fill-[#17375D]"
         >
           {letters.map((letter, index) => (
@@ -82,25 +84,21 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
           transition={{ delay: reduced ? 0 : 2.15, duration: 0.5 }}
           className="mt-4 flex w-full flex-col items-center text-center"
         >
-          <p className="text-[11px] font-bold uppercase leading-relaxed tracking-[.16em] text-[#9A7628] sm:text-xs">
-            Ventures Pvt. Ltd.
-          </p>
-          <p className="mt-1.5 text-[8px] font-semibold uppercase leading-relaxed tracking-[.26em] text-[#17375D] sm:text-[9px]">
-            Software Solutions
-          </p>
+          <p className="text-[11px] font-bold uppercase leading-relaxed tracking-[.16em] text-[#9A7628] sm:text-xs">{siteText("Ventures Pvt. Ltd.")}</p>
+          <p className="mt-1.5 text-[8px] font-semibold uppercase leading-relaxed tracking-[.26em] text-[#17375D] sm:text-[9px]">{siteText("Software Solutions")}</p>
           <span aria-hidden="true" className="mt-5 h-px w-12 bg-[#B99640]/35" />
           <p className="mt-4 flex items-center justify-center gap-3 text-[11px] font-medium leading-none tracking-[.08em] text-[#6B5D52] sm:gap-4 sm:text-xs">
-            <span>Build</span>
+            <span>{siteText("Build")}</span>
             <span
               aria-hidden="true"
               className="h-1 w-1 rounded-full bg-[#B99640]"
             />
-            <span>Innovate</span>
+            <span>{siteText("Innovate")}</span>
             <span
               aria-hidden="true"
               className="h-1 w-1 rounded-full bg-[#B99640]"
             />
-            <span>Grow</span>
+            <span>{siteText("Grow")}</span>
           </p>
         </motion.div>
       </div>

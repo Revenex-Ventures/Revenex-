@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useEffect, useRef, useState } from "react"
 import { motion, AnimatePresence, animate, useMotionValue, useMotionValueEvent } from "framer-motion"
 import {
@@ -46,6 +47,7 @@ function BusMap({
   enabled: Record<ZoneId, boolean>
   onStatus: (current: string[], entered: Zone | null) => void
 }) {
+  const siteText = useSiteText();
   const routeRef = useRef<SVGPathElement>(null)
   const prevInside = useRef<string[]>([])
   const progress = useMotionValue(0)
@@ -93,15 +95,13 @@ function BusMap({
             <Navigation className="h-4 w-4 text-[#A34E17]" />
           </span>
           <div>
-            <h3 className="text-sm font-bold text-[#221910]">Route 7 · City Centre → School</h3>
+            <h3 className="text-sm font-bold text-[#221910]">{siteText("Route 7 · City Centre → School")}</h3>
             <p className="flex items-center gap-1.5 text-[11px] text-[#8A7A6B]">
-              <Clock3 className="h-3 w-3" /> ETA 12 min · 6 stops · 34 students
-            </p>
+              <Clock3 className="h-3 w-3" />{siteText(" ETA 12 min · 6 stops · 34 students")}</p>
           </div>
         </div>
         <span className="inline-flex items-center gap-1.5 rounded-full border border-[#4ADE80]/40 bg-[#4ADE80]/15 px-3 py-1 text-[10px] font-bold text-[#2E8B52]">
-          <CheckCircle2 className="h-3 w-3" /> On time
-        </span>
+          <CheckCircle2 className="h-3 w-3" />{siteText(" On time")}</span>
       </div>
 
       <div className="relative">
@@ -185,7 +185,7 @@ function BusMap({
                   fontSize="11"
                   fontWeight="700"
                 >
-                  {z.name}
+                  {siteText(z.name)}
                 </text>
               </g>
             )
@@ -230,18 +230,17 @@ function GeofencePanel({
   inside: string[]
   toggle: (id: ZoneId) => void
 }) {
+  const siteText = useSiteText();
   return (
     <GlassCard className="p-6 sm:p-7">
       <div className="mb-5 flex items-center justify-between">
         <div>
           <h3 className="flex items-center gap-2 text-sm font-bold text-[#221910]">
-            <ShieldAlert className="h-4 w-4 text-[#A34E17]" /> Geofence Alerts
-          </h3>
-          <p className="mt-0.5 text-[11px] text-[#8A7A6B]">Toggle the safety zones on your route</p>
+            <ShieldAlert className="h-4 w-4 text-[#A34E17]" />{siteText(" Geofence Alerts")}</h3>
+          <p className="mt-0.5 text-[11px] text-[#8A7A6B]">{siteText("Toggle the safety zones on your route")}</p>
         </div>
         <span className="rounded-full border border-[#E5DDD2] bg-white/70 px-3 py-1 text-[10px] font-black text-[#61544A]">
-          {Object.values(enabled).filter(Boolean).length}/3 armed
-        </span>
+          {siteText(Object.values(enabled).filter(Boolean).length)}{siteText("/3 armed")}</span>
       </div>
 
       <div className="space-y-3">
@@ -261,9 +260,9 @@ function GeofencePanel({
                 <MapPin className="h-4 w-4 text-[#A34E17]" />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-bold text-[#221910]">{z.name}</p>
+                <p className="truncate text-xs font-bold text-[#221910]">{siteText(z.name)}</p>
                 <p className="text-[10px] text-[#8A7A6B]">
-                  {z.parents} parents · {isInside ? "bus inside" : on ? "armed" : "muted"}
+                  {siteText(z.parents)}{siteText(" parents · ")}{siteText(isInside ? "bus inside" : on ? "armed" : "muted")}
                 </p>
               </div>
               <button
@@ -290,19 +289,19 @@ function GeofencePanel({
           <span className="counter-num text-lg font-black text-[#3BA855]">
             <CountUp to={98.2} decimals={1} suffix="%" />
           </span>
-          <span className="text-[9px] font-semibold uppercase tracking-widest text-[#8A7A6B]">On-time</span>
+          <span className="text-[9px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("On-time")}</span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <span className="counter-num text-lg font-black text-[#221910]">
             <CountUp to={34} />
           </span>
-          <span className="text-[9px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Trips today</span>
+          <span className="text-[9px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Trips today")}</span>
         </div>
         <div className="flex flex-col items-center gap-1">
           <span className="counter-num text-lg font-black text-[#A34E17]">
             <CountUp to={1240} suffix="+" />
           </span>
-          <span className="text-[9px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Pings sent</span>
+          <span className="text-[9px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Pings sent")}</span>
         </div>
       </div>
     </GlassCard>
@@ -310,6 +309,7 @@ function GeofencePanel({
 }
 
 export default function TransportShowcase() {
+  const siteText = useSiteText();
   const [enabled, setEnabled] = useState<Record<ZoneId, boolean>>(INITIAL_ENABLED)
   const [inside, setInside] = useState<string[]>([])
   const [alert, setAlert] = useState<{ id: number; text: string } | null>(null)
@@ -331,18 +331,13 @@ export default function TransportShowcase() {
   return (
     <ShowcaseShell
       section="Solutions"
-      label="Transport"
+      label={siteText("Transport")}
       accent={GOLD}
       title={
-        <>
-          Transport that{" "}
-          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">
-            arrives on time
-          </span>
-          , every time
-        </>
+        <>{siteText("Transport that")}{" "}
+          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">{siteText("arrives on time")}</span>{siteText(", every time")}</>
       }
-      subtitle="Live GPS, geofenced safety zones, and instant parent pings — every child accounted for on every route, every single day."
+      subtitle={siteText("Live GPS, geofenced safety zones, and instant parent pings — every child accounted for on every route, every single day.")}
     >
       {/* ── Hero: live map + geofence panel ── */}
       <section className="mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
@@ -364,8 +359,8 @@ export default function TransportShowcase() {
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#D49A58] opacity-75" />
                     <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#D49A58]" />
                   </span>
-                  <p className="flex-1 text-xs font-semibold text-[#221910]">{alert.text}</p>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#A34E17]">Geofence</span>
+                  <p className="flex-1 text-xs font-semibold text-[#221910]">{siteText(alert.text)}</p>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#A34E17]">{siteText("Geofence")}</span>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -383,8 +378,8 @@ export default function TransportShowcase() {
           <SectionHeading
             kicker="From the first stop to the last"
             accent={GOLD}
-            title="No bus ever goes missing again"
-            subtitle="Schools see every vehicle live, drivers follow safe routes, and parents relax — because they always know where their child is."
+            title={siteText("No bus ever goes missing again")}
+            subtitle={siteText("Schools see every vehicle live, drivers follow safe routes, and parents relax — because they always know where their child is.")}
           />
         </Reveal>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
@@ -398,8 +393,8 @@ export default function TransportShowcase() {
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D49A58]/40 bg-[#D49A58]/10">
                   <Icon className="h-6 w-6 text-[#A34E17]" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-[#221910]">{title}</h3>
-                <p className="text-sm leading-relaxed text-[#61544A]">{desc}</p>
+                <h3 className="mb-2 text-lg font-bold text-[#221910]">{siteText(title)}</h3>
+                <p className="text-sm leading-relaxed text-[#61544A]">{siteText(desc)}</p>
               </GlassCard>
             </Reveal>
           ))}
@@ -413,12 +408,8 @@ export default function TransportShowcase() {
             <div aria-hidden className="absolute -top-20 right-1/4 h-80 w-80 rounded-full bg-[#D49A58]/20 blur-[110px]" />
             <div className="relative">
               <Bus className="mx-auto mb-4 h-9 w-9 text-[#A34E17]" />
-              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">
-                Give every parent peace of mind
-              </h3>
-              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">
-                See live routes, geofences, and parent alerts in a 20-minute demo built around your school.
-              </p>
+              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">{siteText("Give every parent peace of mind")}</h3>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">{siteText("See live routes, geofences, and parent alerts in a 20-minute demo built around your school.")}</p>
               <div className="mt-8 flex justify-center">
                 <DemoButton />
               </div>

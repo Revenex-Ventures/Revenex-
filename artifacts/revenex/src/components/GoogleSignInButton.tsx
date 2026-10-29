@@ -1,5 +1,7 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useState, useRef, useEffect } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { useLanguage } from "@/lib/language-context";
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID?.trim() ?? "";
 interface Props {
   onSuccess: (credential: string) => Promise<void>;
@@ -11,6 +13,8 @@ export default function GoogleSignInButton({
   onError,
   mode = "signin",
 }: Props) {
+  const siteText = useSiteText();
+  const { language } = useLanguage();
   const [loading, setLoading] = useState(false);
   const container = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(220);
@@ -24,9 +28,7 @@ export default function GoogleSignInButton({
   }, []);
   if (!clientId)
     return (
-      <p className="text-center text-sm text-[#6B5D52] py-3">
-        Google sign-in is currently unavailable. Please continue with email.
-      </p>
+      <p className="text-center text-sm text-[#6B5D52] py-3">{siteText("Google sign-in is currently unavailable. Please continue with email.")}</p>
     );
   return (
     <div
@@ -34,7 +36,7 @@ export default function GoogleSignInButton({
       className="flex w-full min-h-11 flex-col items-center justify-center gap-2"
       aria-busy={loading}
     >
-      <GoogleOAuthProvider clientId={clientId}>
+      <GoogleOAuthProvider clientId={clientId} locale={language} key={language}>
         <div className={loading ? "pointer-events-none opacity-60" : ""}>
           <GoogleLogin
             text={mode === "signup" ? "signup_with" : "signin_with"}
@@ -69,9 +71,7 @@ export default function GoogleSignInButton({
         </div>
       </GoogleOAuthProvider>
       {loading && (
-        <span role="status" className="text-xs text-[#6B5D52]">
-          Verifying your account…
-        </span>
+        <span role="status" className="text-xs text-[#6B5D52]">{siteText("Verifying your account…")}</span>
       )}
     </div>
   );

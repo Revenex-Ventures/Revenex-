@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import React from 'react'
 import { motion } from 'framer-motion'
 import { BorderTrail } from '@/components/motion-primitives/border-trail'
@@ -21,12 +22,13 @@ const testimonials = [
 ]
 
 export default function Testimonials() {
+  const siteText = useSiteText();
   return (
     <section className="py-16 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-8">
-          <h3 className="text-sm font-black uppercase tracking-widest text-[#3D3128]">Trusted By Schools</h3>
-          <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1A1410] mt-3">What our customers say</h2>
+          <h3 className="text-sm font-black uppercase tracking-widest text-[#3D3128]">{siteText("Trusted By Schools")}</h3>
+          <h2 className="text-3xl lg:text-4xl font-extrabold text-[#1A1410] mt-3">{siteText("What our customers say")}</h2>
         </div>
         <div className="grid gap-6 sm:grid-cols-3">
           {testimonials.map((t, i) => (
@@ -46,12 +48,12 @@ export default function Testimonials() {
                   ease: 'linear',
                 }}
               />
-              <p className="text-[#3D3128] leading-relaxed mb-4 relative z-10">“{t.quote}”</p>
+              <p className="text-[#3D3128] leading-relaxed mb-4 relative z-10">“{siteText(t.quote)}”</p>
               <div className="mt-3 flex items-center gap-3 relative z-10">
-                <div className="w-10 h-10 rounded-full bg-[#F0E8DC] flex items-center justify-center text-[#1A1410] font-bold">{t.name.split(' ').map(n=>n[0]).slice(0,2).join('')}</div>
+                <div className="w-10 h-10 rounded-full bg-[#F0E8DC] flex items-center justify-center text-[#1A1410] font-bold">{siteText(t.name.split(' ').map(n=>n[0]).slice(0,2).join(''))}</div>
                 <div>
-                  <div className="text-sm font-bold text-[#1A1410]">{t.name}</div>
-                  <div className="text-xs text-[#3D3128]">{t.title}</div>
+                  <div className="text-sm font-bold text-[#1A1410]">{siteText(t.name)}</div>
+                  <div className="text-xs text-[#3D3128]">{siteText(t.title)}</div>
                 </div>
               </div>
             </motion.blockquote>

@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
@@ -29,6 +30,7 @@ export function FeatureSteps({
   autoPlayInterval = 2000,
   language = "en",
 }: FeatureStepsProps) {
+  const siteText = useSiteText();
   const root = useRef<HTMLDivElement>(null);
   const visible = useInView(root, { amount: 0.25 });
   const reduced = useReducedMotion();
@@ -90,7 +92,7 @@ export function FeatureSteps({
       <div
         className="relative order-2 space-y-2 sm:space-y-3 lg:order-1"
         aria-label={
-          isHindi ? "शुरू करने के चार चरण" : "Four steps to get started"
+          siteText(isHindi ? "शुरू करने के चार चरण" : "Four steps to get started")
         }
       >
         <div
@@ -136,7 +138,7 @@ export function FeatureSteps({
                     selected ? "text-[#2A1D13]" : "text-[#716458]",
                   )}
                 >
-                  {feature.title}
+                  {siteText(feature.title)}
                 </span>
                 <span
                   className={cn(
@@ -144,7 +146,7 @@ export function FeatureSteps({
                     selected ? "text-[#6B5D52]" : "text-[#85796C]",
                   )}
                 >
-                  {feature.content}
+                  {siteText(feature.content)}
                 </span>
                 {selected && (
                   <span
@@ -178,14 +180,14 @@ export function FeatureSteps({
         >
           <div className="absolute left-5 top-5 z-10 flex items-center gap-2 rounded-full border border-white/80 bg-[#FFFDFA]/90 px-3 py-2 text-[9px] font-bold uppercase tracking-[.14em] text-[#7C512A] backdrop-blur sm:left-6 sm:top-6 sm:text-[10px]">
             <span className="h-1.5 w-1.5 rounded-full bg-[#A67135]" />
-            {isHindi ? `चरण ${active.step} / 04` : `STEP ${active.step} / 04`}
+            {siteText(isHindi ? `चरण ${active.step} / 04` : `STEP ${active.step} / 04`)}
           </div>
           <div className="relative aspect-[4/3]">
             <AnimatePresence initial={false}>
               <motion.img
                 key={active.image}
                 src={active.image}
-                alt={active.imageAlt}
+                alt={siteText(active.imageAlt)}
                 width={1200}
                 height={900}
                 initial={
@@ -203,10 +205,10 @@ export function FeatureSteps({
           </div>
           <div className="relative border-t border-[#E2D4C1] bg-[#FFFDFA] px-5 py-5 sm:px-7 sm:py-6">
             <p className="text-[10px] font-bold uppercase tracking-[.16em] text-[#9A713F]">
-              {isHindi ? "आपके संस्थान के लिए" : "BUILT AROUND YOUR SCHOOL"}
+              {siteText(isHindi ? "आपके संस्थान के लिए" : "BUILT AROUND YOUR SCHOOL")}
             </p>
             <p className="mt-2 text-base font-semibold leading-relaxed tracking-[-.02em] text-[#3D2817] sm:text-lg">
-              {active.caption}
+              {siteText(active.caption)}
             </p>
           </div>
         </div>
@@ -228,7 +230,7 @@ export function FeatureSteps({
               onClick={() =>
                 select((current - 1 + features.length) % features.length)
               }
-              aria-label={isHindi ? "पिछला चरण" : "Previous step"}
+              aria-label={siteText(isHindi ? "पिछला चरण" : "Previous step")}
               className="flex h-11 w-11 items-center justify-center rounded-full text-[#795B3D] hover:bg-[#EDE3D5] focus-visible:outline-[#8B4513]"
             >
               <ArrowLeft className="h-4 w-4" />
@@ -238,7 +240,7 @@ export function FeatureSteps({
                 type="button"
                 onClick={() => setPaused((value) => !value)}
                 aria-label={
-                  paused ? "Play automatic steps" : "Pause automatic steps"
+                  siteText(paused ? "Play automatic steps" : "Pause automatic steps")
                 }
                 aria-pressed={paused}
                 className="flex h-11 w-11 items-center justify-center rounded-full border border-[#DDCEB9] text-[#795B3D] hover:bg-[#EDE3D5] focus-visible:outline-[#8B4513]"
@@ -253,7 +255,7 @@ export function FeatureSteps({
             <button
               type="button"
               onClick={() => select((current + 1) % features.length)}
-              aria-label={isHindi ? "अगला चरण" : "Next step"}
+              aria-label={siteText(isHindi ? "अगला चरण" : "Next step")}
               className="flex h-11 w-11 items-center justify-center rounded-full text-[#795B3D] hover:bg-[#EDE3D5] focus-visible:outline-[#8B4513]"
             >
               <ArrowRight className="h-4 w-4" />

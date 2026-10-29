@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { motion, cubicBezier, animate, useMotionValue, useTransform } from "framer-motion"
 import { useEffect } from "react"
 import type { CSSProperties, ComponentType, ReactNode } from "react"
@@ -23,6 +24,7 @@ export function Eyebrow({
   accent?: string
   children: ReactNode
 }) {
+  const siteText = useSiteText();
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
@@ -34,7 +36,7 @@ export function Eyebrow({
         style={{ borderColor: `${accent}40`, color: accent }}
       >
         <Icon className="h-3.5 w-3.5" />
-        <span className="text-[11px] font-bold uppercase tracking-widest">{children}</span>
+        <span className="text-[11px] font-bold uppercase tracking-widest">{siteText(children)}</span>
       </span>
     </motion.div>
   )
@@ -47,9 +49,10 @@ export function GlassCard({
   className?: string
   children: ReactNode
 }) {
+  const siteText = useSiteText();
   return (
     <div className={`rounded-3xl border border-[#E5DDD2] bg-white/70 backdrop-blur-xl shadow-[0_20px_50px_rgba(212,154,88,0.12)] ${className}`}>
-      {children}
+      {siteText(children)}
     </div>
   )
 }
@@ -63,6 +66,7 @@ export function Reveal({
   delay?: number
   className?: string
 }) {
+  const siteText = useSiteText();
   return (
     <motion.div
       initial={{ opacity: 0, y: 28 }}
@@ -71,7 +75,7 @@ export function Reveal({
       transition={{ duration: 0.6, delay, ease: EASE }}
       className={className}
     >
-      {children}
+      {siteText(children)}
     </motion.div>
   )
 }
@@ -89,20 +93,21 @@ export function SectionHeading({
   accent?: string
   center?: boolean
 }) {
+  const siteText = useSiteText();
   return (
     <div className={center ? "flex flex-col items-center" : ""}>
       <span
         className="text-[11px] font-bold uppercase tracking-widest"
         style={{ color: accent }}
       >
-        {kicker}
+        {siteText(kicker)}
       </span>
       <h2
         className={`mt-3 font-display text-3xl sm:text-4xl font-black tracking-tight text-[#221910] ${
           center ? "text-center" : ""
         }`}
       >
-        {title}
+        {siteText(title)}
       </h2>
       {subtitle && (
         <p
@@ -110,7 +115,7 @@ export function SectionHeading({
             center ? "text-center" : ""
           }`}
         >
-          {subtitle}
+          {siteText(subtitle)}
         </p>
       )}
     </div>
@@ -118,10 +123,11 @@ export function SectionHeading({
 }
 
 export function DemoButton({ label = "Book a Demo" }: { label?: string }) {
+  const siteText = useSiteText();
   return (
     <Link href="/book-demo">
       <span className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#D49A58] px-7 py-3.5 text-sm font-bold text-[#221910] transition-all hover:bg-[#E0AA6E] hover:shadow-[0_0_24px_rgba(212,154,88,0.45)]">
-        {label} <ArrowRight className="h-4 w-4" />
+        {siteText(label)} <ArrowRight className="h-4 w-4" />
       </span>
     </Link>
   )
@@ -136,16 +142,17 @@ export function StatPill({
   label: string
   accent?: string
 }) {
+  const siteText = useSiteText();
   return (
     <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#E5DDD2] bg-white/70 px-5 py-4 backdrop-blur-xl shadow-[0_10px_30px_rgba(212,154,88,0.10)]">
       <span
         className="counter-num text-2xl sm:text-3xl font-black tracking-tight"
         style={{ color: accent }}
       >
-        {value}
+        {siteText(value)}
       </span>
       <span className="text-[11px] font-semibold uppercase tracking-widest text-[#8A7A6B]">
-        {label}
+        {siteText(label)}
       </span>
     </div>
   )
@@ -168,8 +175,9 @@ export function CountUp({
   className?: string
   style?: CSSProperties
 }) {
+  const siteText = useSiteText();
   const value = useMotionValue(0)
-  const text = useTransform(value, (v) => `${prefix}${v.toFixed(decimals)}${suffix}`)
+  const text = useTransform(value, (v) => v.toFixed(decimals))
 
   useEffect(() => {
     const controls = animate(value, to, {
@@ -181,7 +189,7 @@ export function CountUp({
 
   return (
     <motion.span className={className} style={{ ...style, fontVariantNumeric: "tabular-nums" }}>
-      {text}
+      {siteText(prefix)}<motion.span>{text}</motion.span>{siteText(suffix)}
     </motion.span>
   )
 }

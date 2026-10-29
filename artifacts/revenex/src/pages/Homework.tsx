@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { motion } from 'framer-motion'
 import { Link } from 'wouter'
 import {
@@ -62,6 +63,7 @@ const steps = [
 ]
 
 export default function Homework() {
+  const siteText = useSiteText();
   const { language } = useLanguage()
 
   return (
@@ -79,25 +81,23 @@ export default function Homework() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-6">
               <Sparkles className="h-3.5 w-3.5 text-[#8B4513]" />
               <span className="text-xs font-semibold text-[#3D3128] uppercase tracking-widest">
-                {language === 'en' ? 'Digital Homework' : 'डिजिटल गृहकार्य'}
+                {siteText(language === 'en' ? 'Digital Homework' : 'डिजिटल गृहकार्य')}
               </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1410] leading-[1.1] font-display tracking-tight mb-6 max-w-3xl">
-              Homework that <span className="gradient-text">writes itself off</span> your to-do list
-            </h1>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1410] leading-[1.1] font-display tracking-tight mb-6 max-w-3xl">{siteText("Homework that ")}<span className="gradient-text">{siteText("writes itself off")}</span>{siteText(" your to-do list")}</h1>
             <p className="max-w-2xl text-lg text-[#3D3128] leading-relaxed mb-8">
-              {language === 'en'
+              {siteText(language === 'en'
                 ? 'Assign, collect, and grade homework digitally. Teachers save hours every week, students never lose a worksheet, and parents always know what\'s due.'
-                : 'होमवर्क को डिजिटल रूप से असाइन, एकत्र और ग्रेड करें। शिक्षक हर हफ्ते घंटों बचाते हैं, छात्र कभी भी वर्कशीट नहीं खोते हैं, और माता-पिता हमेशा जानते हैं कि क्या देय है।'}
+                : 'होमवर्क को डिजिटल रूप से असाइन, एकत्र और ग्रेड करें। शिक्षक हर हफ्ते घंटों बचाते हैं, छात्र कभी भी वर्कशीट नहीं खोते हैं, और माता-पिता हमेशा जानते हैं कि क्या देय है।')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/book-demo">
                 <span className="inline-flex items-center gap-2 btn-primary cursor-pointer">
-                  {language === 'en' ? 'Book a Demo' : 'डेमो बुक करें'} <ArrowRight className="h-5 w-5" />
+                  {siteText(language === 'en' ? 'Book a Demo' : 'डेमो बुक करें')} <ArrowRight className="h-5 w-5" />
                 </span>
               </Link>
               <a href="/contact" className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-7 py-3.5 rounded-xl text-base transition-all hover:bg-[#1A1410]/5 cursor-pointer">
-                {language === 'en' ? 'Talk to a Specialist' : 'विशेषज्ञ से बात करें'}
+                {siteText(language === 'en' ? 'Talk to a Specialist' : 'विशेषज्ञ से बात करें')}
               </a>
             </div>
           </motion.div>
@@ -108,10 +108,8 @@ export default function Homework() {
       <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-14">
-            <span className="text-[11px] font-black text-[#8B4513] uppercase tracking-widest mb-3">Everything Included</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">
-              A complete homework workflow
-            </h2>
+            <span className="text-[11px] font-black text-[#8B4513] uppercase tracking-widest mb-3">{siteText("Everything Included")}</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">{siteText("A complete homework workflow")}</h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -127,12 +125,12 @@ export default function Homework() {
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style={{ background: `${color}14`, border: `1px solid ${color}25` }}>
                   <Icon className="h-6 w-6" style={{ color }} />
                 </div>
-                <h3 className="text-lg font-bold text-[#1A1410] mb-2">{title}</h3>
-                <p className="text-sm text-[#6B5D52] leading-relaxed mb-5">{desc}</p>
+                <h3 className="text-lg font-bold text-[#1A1410] mb-2">{siteText(title)}</h3>
+                <p className="text-sm text-[#6B5D52] leading-relaxed mb-5">{siteText(desc)}</p>
                 <ul className="space-y-1.5">
                   {points.map((p) => (
                     <li key={p} className="flex items-center gap-2 text-xs font-medium text-[#3D3128]">
-                      <CheckCircle2 className="h-3.5 w-3.5" style={{ color }} /> {p}
+                      <CheckCircle2 className="h-3.5 w-3.5" style={{ color }} /> {siteText(p)}
                     </li>
                   ))}
                 </ul>
@@ -146,10 +144,8 @@ export default function Homework() {
       <section className="py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-14">
-            <span className="text-[11px] font-black text-[#8B4513] uppercase tracking-widest mb-3">How It Works</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">
-              From assignment to alert in four steps
-            </h2>
+            <span className="text-[11px] font-black text-[#8B4513] uppercase tracking-widest mb-3">{siteText("How It Works")}</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">{siteText("From assignment to alert in four steps")}</h2>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -163,13 +159,13 @@ export default function Homework() {
                 className="relative glass-card rounded-3xl p-6"
               >
                 <div className="absolute -top-3 -left-3 w-8 h-8 rounded-xl bg-[#1A1410] text-[#F5F0E8] flex items-center justify-center text-xs font-black">
-                  {i + 1}
+                  {siteText(i + 1)}
                 </div>
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-[#F0E8DC] border border-[#E8E0D4] mb-4">
                   <Icon className="h-5 w-5 text-[#8B4513]" />
                 </div>
-                <h3 className="text-base font-bold text-[#1A1410] mb-1.5">{title}</h3>
-                <p className="text-sm text-[#6B5D52] leading-relaxed">{desc}</p>
+                <h3 className="text-base font-bold text-[#1A1410] mb-1.5">{siteText(title)}</h3>
+                <p className="text-sm text-[#6B5D52] leading-relaxed">{siteText(desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -189,15 +185,10 @@ export default function Homework() {
             <div className="absolute -top-20 left-1/3 w-[380px] h-[380px] bg-[#D49A58]/15 rounded-full blur-[110px] pointer-events-none" />
             <div className="relative">
               <CalendarCheck2 className="h-10 w-10 text-[#D49A58] mx-auto mb-5" />
-              <h2 className="text-2xl sm:text-4xl font-black text-[#F9F6F0] font-display tracking-tight mb-3">
-                Give your teachers their evenings back
-              </h2>
-              <p className="max-w-xl mx-auto text-white/50 text-base leading-relaxed mb-8">
-                See how REVENEX Homework eliminates the paper chase at your school with a free, no-obligation demo.
-              </p>
+              <h2 className="text-2xl sm:text-4xl font-black text-[#F9F6F0] font-display tracking-tight mb-3">{siteText("Give your teachers their evenings back")}</h2>
+              <p className="max-w-xl mx-auto text-white/50 text-base leading-relaxed mb-8">{siteText("See how REVENEX Homework eliminates the paper chase at your school with a free, no-obligation demo.")}</p>
               <Link href="/book-demo">
-                <span className="inline-flex items-center gap-2 bg-[#D49A58] text-[#18120E] font-semibold px-8 py-4 rounded-xl text-base transition-all hover:bg-[#E0AA6E] hover:shadow-[0_0_24px_rgba(212,154,88,0.35)] cursor-pointer">
-                  Schedule a Demo <ArrowRight className="h-5 w-5" />
+                <span className="inline-flex items-center gap-2 bg-[#D49A58] text-[#18120E] font-semibold px-8 py-4 rounded-xl text-base transition-all hover:bg-[#E0AA6E] hover:shadow-[0_0_24px_rgba(212,154,88,0.35)] cursor-pointer">{siteText("Schedule a Demo ")}<ArrowRight className="h-5 w-5" />
                 </span>
               </Link>
             </div>

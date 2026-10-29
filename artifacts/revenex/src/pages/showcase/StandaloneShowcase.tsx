@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   ArrowLeft, ArrowRight, Check, Clock, MapPin, Bus, Bell, MessageCircle,
@@ -51,17 +52,18 @@ type ReactNode = React.ReactNode;
    ============================================================ */
 
 function Eyebrow({ children }: { children: ReactNode }) {
+  const siteText = useSiteText();
   return (
     <div className="ev-eyebrow">
-      {children}
-      <style>{`
+      {siteText(children)}
+      <style>{siteText(`
         .ev-eyebrow{
           font-family:'JetBrains Mono',monospace;
           font-size:11px; letter-spacing:.16em; font-weight:600;
           color:#D49A58; text-transform:uppercase;
           display:inline-flex; align-items:center; gap:8px;
         }
-      `}</style>
+      `)}</style>
     </div>
   );
 }
@@ -106,25 +108,26 @@ function useTilt(strength = 10) {
 }
 
 function PageShell({ id, onBack, children }: { id: ViewId; onBack: () => void; children: ReactNode }) {
+  const siteText = useSiteText();
   const meta = META[id];
   const Icon = meta.icon;
   return (
     <div className="ev-shell" key={id}>
       <button className="ev-back" onClick={onBack}>
         <ArrowLeft size={15} strokeWidth={2.4} />
-        <span>Back to Home</span>
+        <span>{siteText("Back to Home")}</span>
       </button>
 
       <div className="ev-shell-head">
         <Eyebrow>
           <Icon size={13} strokeWidth={2.4} />
-          {meta.eyebrow}
+          {siteText(meta.eyebrow)}
         </Eyebrow>
       </div>
 
-      {children}
+      {siteText(children)}
 
-      <style>{`
+      <style>{siteText(`
         .ev-shell{
           animation: shellIn 640ms cubic-bezier(0.22,1,0.36,1) both;
           padding: 56px clamp(20px,5vw,64px) 80px;
@@ -150,17 +153,18 @@ function PageShell({ id, onBack, children }: { id: ViewId; onBack: () => void; c
         @media (prefers-reduced-motion: reduce){
           .ev-shell{ animation: none; }
         }
-      `}</style>
+      `)}</style>
     </div>
   );
 }
 
 function Hero({ title, sub }: { title: string; sub: string }) {
+  const siteText = useSiteText();
   return (
     <div style={{ marginBottom: 40 }}>
-      <h1 className="ev-hero-title">{title}</h1>
-      <p className="ev-hero-sub">{sub}</p>
-      <style>{`
+      <h1 className="ev-hero-title">{siteText(title)}</h1>
+      <p className="ev-hero-sub">{siteText(sub)}</p>
+      <style>{siteText(`
         .ev-hero-title{
           font-family:'Fraunces', serif; font-weight:560; font-optical-sizing:auto;
           font-size: clamp(32px, 4.4vw, 52px); line-height:1.04; letter-spacing:-0.01em;
@@ -170,7 +174,7 @@ function Hero({ title, sub }: { title: string; sub: string }) {
           font-family:'Inter',sans-serif; font-size:16px; line-height:1.6;
           color:#B4A99A; max-width: 560px;
         }
-      `}</style>
+      `)}</style>
     </div>
   );
 }
@@ -181,6 +185,7 @@ function Hero({ title, sub }: { title: string; sub: string }) {
    ============================================================ */
 
 function AttendancePage() {
+  const siteText = useSiteText();
   const [active, setActive] = useState(false);
   const [students, setStudents] = useState([
     { id: 1, name: "Aarav", present: false },
@@ -208,7 +213,7 @@ function AttendancePage() {
 
   return (
     <>
-      <Hero title="Every child, accounted for." sub="Biometric or one-tap attendance, synced to parents in real time — no register, no guesswork." />
+      <Hero title={siteText("Every child, accounted for.")} sub="Biometric or one-tap attendance, synced to parents in real time — no register, no guesswork." />
       <div className="att-grid">
         <div className="att-gauge-card">
           <div className="att-gauge-wrap">
@@ -230,8 +235,8 @@ function AttendancePage() {
               <circle cx="100" cy="100" r={r + 14} fill="none" stroke="#D49A58" strokeWidth="1" opacity="0.35" className="att-radar-ring" />
             </svg>
             <div className="att-gauge-center">
-              <div className="att-gauge-num">{value.toFixed(1)}<span>%</span></div>
-              <div className="att-gauge-label">Present today</div>
+              <div className="att-gauge-num">{siteText(value.toFixed(1))}<span>%</span></div>
+              <div className="att-gauge-label">{siteText("Present today")}</div>
             </div>
           </div>
         </div>
@@ -239,27 +244,27 @@ function AttendancePage() {
         <div className="att-scan-card">
           <div className="att-scan-head">
             <Fingerprint size={16} color="#D49A58" strokeWidth={2} />
-            <span>Biometric Scan Zone</span>
-            <span className="att-scan-count">{presentCount}/{students.length} marked</span>
+            <span>{siteText("Biometric Scan Zone")}</span>
+            <span className="att-scan-count">{siteText(presentCount)}/{siteText(students.length)}{siteText(" marked")}</span>
           </div>
           <div className="att-avatar-grid">
             {students.map((s) => (
               <button key={s.id} className={`att-avatar ${s.present ? "is-present" : ""}`} onClick={() => !s.present && markPresent(s.id)}>
                 <div className="att-avatar-circle">
-                  {s.present ? <Check size={18} strokeWidth={3} /> : <span>{s.name[0]}</span>}
+                  {s.present ? <Check size={18} strokeWidth={3} /> : <span>{siteText(s.name[0])}</span>}
                   {burst === s.id && Array.from({ length: 6 }).map((_, i) => (
                     <span key={i} className="att-particle" style={{ "--i": i } as React.CSSProperties} />
                   ))}
                 </div>
-                <span className="att-avatar-name">{s.name}</span>
+                <span className="att-avatar-name">{siteText(s.name)}</span>
               </button>
             ))}
           </div>
-          <p className="att-scan-hint">Tap a student to simulate a scan.</p>
+          <p className="att-scan-hint">{siteText("Tap a student to simulate a scan.")}</p>
         </div>
       </div>
 
-      <style>{`
+      <style>{siteText(`
         .att-grid{ display:grid; grid-template-columns: minmax(0,0.85fr) minmax(0,1.15fr); gap:20px; }
         @media (max-width: 760px){ .att-grid{ grid-template-columns: 1fr; } }
         .att-gauge-card, .att-scan-card{
@@ -305,7 +310,7 @@ function AttendancePage() {
           0%{ opacity:1; transform: rotate(calc(var(--i) * 60deg)) translateY(0) scale(1); }
           100%{ opacity:0; transform: rotate(calc(var(--i) * 60deg)) translateY(-30px) scale(0.4); }
         }
-      `}</style>
+      `)}</style>
     </>
   );
 }
@@ -316,6 +321,7 @@ function AttendancePage() {
    ============================================================ */
 
 function AdmissionsPage() {
+  const siteText = useSiteText();
   const columns = [
     { id: "inquiry", label: "Inquiry", items: [{ n: "Rhea Sharma", d: "2 docs" }, { n: "Vivaan Rao", d: "1 doc" }] },
     { id: "verify", label: "Document Verification", items: [{ n: "Ananya Iyer", d: "4/4 verified" }] },
@@ -328,13 +334,13 @@ function AdmissionsPage() {
 
   return (
     <>
-      <Hero title="From inquiry to enrolled, in one pipeline." sub="Track every applicant through the funnel with document verification built in." />
+      <Hero title={siteText("From inquiry to enrolled, in one pipeline.")} sub="Track every applicant through the funnel with document verification built in." />
       <div className="adm-board">
         {columns.map((col, ci) => (
           <div className="adm-col" key={col.id} style={{ transitionDelay: `${ci * 90}ms` }} data-mounted={mounted}>
             <div className="adm-col-head">
-              <span>{col.label}</span>
-              <span className="adm-col-count">{col.items.length}</span>
+              <span>{siteText(col.label)}</span>
+              <span className="adm-col-count">{siteText(col.items.length)}</span>
             </div>
             <div className="adm-col-body">
               {col.items.map((it, ii) => (
@@ -346,12 +352,12 @@ function AdmissionsPage() {
                   onMouseEnter={() => setHovered(`${col.id}-${ii}`)}
                   onMouseLeave={() => setHovered(null)}
                 >
-                  <div className="adm-card-name">{it.n}</div>
-                  <div className="adm-card-meta">{it.d}</div>
+                  <div className="adm-card-name">{siteText(it.n)}</div>
+                  <div className="adm-card-meta">{siteText(it.d)}</div>
                   <div className={`adm-drawer ${hovered === `${col.id}-${ii}` ? "is-open" : ""}`}>
-                    <div className="adm-badge"><ShieldCheck size={11} /> ID proof</div>
-                    <div className="adm-badge"><ShieldCheck size={11} /> Birth cert.</div>
-                    <div className="adm-badge alt"><ShieldCheck size={11} /> Transfer cert.</div>
+                    <div className="adm-badge"><ShieldCheck size={11} />{siteText(" ID proof")}</div>
+                    <div className="adm-badge"><ShieldCheck size={11} />{siteText(" Birth cert.")}</div>
+                    <div className="adm-badge alt"><ShieldCheck size={11} />{siteText(" Transfer cert.")}</div>
                   </div>
                 </div>
               ))}
@@ -359,7 +365,7 @@ function AdmissionsPage() {
           </div>
         ))}
       </div>
-      <style>{`
+      <style>{siteText(`
         .adm-board{ display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
         @media (max-width: 900px){ .adm-board{ grid-template-columns: 1fr 1fr; } }
         @media (max-width: 560px){ .adm-board{ grid-template-columns: 1fr; } }
@@ -395,7 +401,7 @@ function AdmissionsPage() {
           border-radius:6px; padding:3px 7px; width:fit-content;
         }
         .adm-badge.alt{ color:#D49A58; background:rgba(212,154,88,0.08); border-color:rgba(212,154,88,0.25); }
-      `}</style>
+      `)}</style>
     </>
   );
 }
@@ -406,12 +412,13 @@ function AdmissionsPage() {
    ============================================================ */
 
 function TiltCard({ children }: { children: ReactNode }) {
+  const siteText = useSiteText();
   const { ref, style, onMove, onLeave } = useTilt(8);
   return (
     <div ref={ref} className="hw-tilt" style={style} onMouseMove={onMove} onMouseLeave={onLeave}>
       <div className="hw-glare" style={{ background: `radial-gradient(circle at var(--glare-x,50%) var(--glare-y,50%), rgba(212,154,88,0.18), transparent 60%)` }} />
-      {children}
-      <style>{`
+      {siteText(children)}
+      <style>{siteText(`
         .hw-tilt{
           position:relative; background: rgba(255,255,255,0.045); backdrop-filter: blur(10px);
           border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:20px;
@@ -419,12 +426,13 @@ function TiltCard({ children }: { children: ReactNode }) {
           transform-style: preserve-3d; overflow:hidden;
         }
         .hw-glare{ position:absolute; inset:0; pointer-events:none; transition: background 120ms; }
-      `}</style>
+      `)}</style>
     </div>
   );
 }
 
 function HomeworkPage() {
+  const siteText = useSiteText();
   const [filter, setFilter] = useState("Today");
   const [burstKey, setBurstKey] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -445,12 +453,12 @@ function HomeworkPage() {
 
   return (
     <>
-      <Hero title="Homework that hands itself in." sub="Glassy task cards, one-tap submission, and a deadline dial that keeps kids on schedule." />
+      <Hero title={siteText("Homework that hands itself in.")} sub="Glassy task cards, one-tap submission, and a deadline dial that keeps kids on schedule." />
 
       <div className="hw-dial">
         {["Today", "This Week", "Overdue"].map((f) => (
           <button key={f} className={`hw-dial-btn ${filter === f ? "is-active" : ""}`} onClick={() => setFilter(f)}>
-            {f}
+            {siteText(f)}
           </button>
         ))}
       </div>
@@ -458,19 +466,19 @@ function HomeworkPage() {
       <div className="hw-grid">
         {visible.map((task) => (
           <TiltCard key={task.t}>
-            <div className="hw-subj">{task.subj}</div>
-            <div className="hw-task-title">{task.t}</div>
+            <div className="hw-subj">{siteText(task.subj)}</div>
+            <div className="hw-task-title">{siteText(task.t)}</div>
             <div className="hw-task-foot">
-              <span className={`hw-due hw-due-${task.due.replace(/\s/g, "")}`}><Clock size={11} /> {task.due}</span>
+              <span className={`hw-due hw-due-${task.due.replace(/\s/g, "")}`}><Clock size={11} /> {siteText(task.due)}</span>
             </div>
           </TiltCard>
         ))}
-        {visible.length === 0 && <p className="hw-empty">Nothing here — clear schedule.</p>}
+        {visible.length === 0 && <p className="hw-empty">{siteText("Nothing here — clear schedule.")}</p>}
       </div>
 
       <div className="hw-submit-row">
         <button className="hw-submit-btn" onClick={submit}>
-          <Send size={14} /> {submitted ? "Submitted!" : "Submit Homework"}
+          <Send size={14} /> {siteText(submitted ? "Submitted!" : "Submit Homework")}
         </button>
         <div key={burstKey} className="hw-confetti-zone">
           {submitted && Array.from({ length: 16 }).map((_, i) => (
@@ -479,7 +487,7 @@ function HomeworkPage() {
         </div>
       </div>
 
-      <style>{`
+      <style>{siteText(`
         .hw-dial{ display:inline-flex; gap:4px; background:#221A13; border:1px solid rgba(255,255,255,0.08); border-radius:999px; padding:4px; margin-bottom:26px; }
         .hw-dial-btn{
           font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600; color:#9C8F80;
@@ -514,7 +522,7 @@ function HomeworkPage() {
           0%{ opacity:1; transform: translate(0,0) rotate(0deg); }
           100%{ opacity:0; transform: translate(calc((var(--i) - 8) * 14px), -70px) rotate(340deg); }
         }
-      `}</style>
+      `)}</style>
     </>
   );
 }
@@ -525,6 +533,7 @@ function HomeworkPage() {
    ============================================================ */
 
 function ReportCardsPage() {
+  const siteText = useSiteText();
   const [drawn, setDrawn] = useState(false);
   const [flipped, setFlipped] = useState(false);
   useEffect(() => { const t = setTimeout(() => setDrawn(true), 200); return () => clearTimeout(t); }, []);
@@ -541,7 +550,7 @@ function ReportCardsPage() {
 
   return (
     <>
-      <Hero title="Performance, plotted honestly." sub="A living radar of every subject, and a report card that flips to reveal the remark." />
+      <Hero title={siteText("Performance, plotted honestly.")} sub="A living radar of every subject, and a report card that flips to reveal the remark." />
       <div className="rc-grid">
         <div className="rc-radar-card">
           <svg viewBox="0 0 220 220" className="rc-radar-svg">
@@ -558,7 +567,7 @@ function ReportCardsPage() {
               return (
                 <g key={a}>
                   <line x1={cx} y1={cy} x2={lx} y2={ly} stroke="rgba(255,255,255,0.06)" />
-                  <text x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="rc-axis-label">{a}</text>
+                  <text x={x} y={y} textAnchor="middle" dominantBaseline="middle" className="rc-axis-label">{siteText(a)}</text>
                 </g>
               );
             })}
@@ -583,20 +592,20 @@ function ReportCardsPage() {
           <div className={`rc-flip-card ${flipped ? "is-flipped" : ""}`} onClick={() => setFlipped((f) => !f)}>
             <div className="rc-face rc-front">
               <GraduationCap size={22} color="#D49A58" />
-              <div className="rc-front-title">Term Report</div>
-              <div className="rc-front-sub">Sara Khan · Grade 4</div>
-              <div className="rc-flip-hint">Click to flip</div>
+              <div className="rc-front-title">{siteText("Term Report")}</div>
+              <div className="rc-front-sub">{siteText("Sara Khan · Grade 4")}</div>
+              <div className="rc-flip-hint">{siteText("Click to flip")}</div>
             </div>
             <div className="rc-face rc-back">
-              <div className="rc-back-head">Teacher Remarks</div>
-              <p className="rc-remark">"Consistent, curious, and always the first to help a classmate. Keep pushing in Art."</p>
-              <div className="rc-stamp">APPROVED</div>
+              <div className="rc-back-head">{siteText("Teacher Remarks")}</div>
+              <p className="rc-remark">{siteText("\"Consistent, curious, and always the first to help a classmate. Keep pushing in Art.\"")}</p>
+              <div className="rc-stamp">{siteText("APPROVED")}</div>
             </div>
           </div>
         </div>
       </div>
 
-      <style>{`
+      <style>{siteText(`
         .rc-grid{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap:24px; align-items:center; }
         @media (max-width:760px){ .rc-grid{ grid-template-columns: 1fr; } }
         .rc-radar-card{ background:#221A13; border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:20px; }
@@ -623,7 +632,7 @@ function ReportCardsPage() {
           align-self:flex-end; font-family:'JetBrains Mono',monospace; font-size:11px; font-weight:700; color:#8FE3AC;
           border:2px solid #8FE3AC; padding:4px 10px; border-radius:6px; transform: rotate(-8deg); opacity:0.85;
         }
-      `}</style>
+      `)}</style>
     </>
   );
 }
@@ -633,17 +642,18 @@ function ReportCardsPage() {
    ============================================================ */
 
 function Odometer({ value }: { value: number }) {
+  const siteText = useSiteText();
   const digits = Math.round(value).toString().padStart(6, "0").split("");
   return (
     <div className="fee-odo">
       {digits.map((d, i) => (
         <div key={i} className="fee-odo-digit">
           <div className="fee-odo-track" style={{ transform: `translateY(-${Number(d) * 10}%)` }}>
-            {Array.from({ length: 10 }).map((_, n) => <span key={n}>{n}</span>)}
+            {Array.from({ length: 10 }).map((_, n) => <span key={n}>{siteText(n)}</span>)}
           </div>
         </div>
       ))}
-      <style>{`
+      <style>{siteText(`
         .fee-odo{ display:flex; gap:3px; }
         .fee-odo-digit{
           width: 30px; height: 44px; overflow:hidden; background:#18120E; border-radius:6px;
@@ -654,12 +664,13 @@ function Odometer({ value }: { value: number }) {
           height:44px; display:flex; align-items:center; justify-content:center;
           font-family:'JetBrains Mono',monospace; font-weight:700; font-size:22px; color:#F9F6F0;
         }
-      `}</style>
+      `)}</style>
     </div>
   );
 }
 
 function FeeManagementPage() {
+  const siteText = useSiteText();
   const [active, setActive] = useState(false);
   useEffect(() => { const t = setTimeout(() => setActive(true), 150); return () => clearTimeout(t); }, []);
   const total = useCountUp(45000, 1600, active);
@@ -669,18 +680,18 @@ function FeeManagementPage() {
 
   return (
     <>
-      <Hero title="Fees, without the follow-up calls." sub="Watch the annual total roll in, then model an installment plan live for any family." />
+      <Hero title={siteText("Fees, without the follow-up calls.")} sub="Watch the annual total roll in, then model an installment plan live for any family." />
       <div className="fee-grid">
         <div className="fee-odo-card">
-          <div className="fee-odo-label">Annual Tuition</div>
+          <div className="fee-odo-label">{siteText("Annual Tuition")}</div>
           <Odometer value={total} />
-          <div className="fee-odo-currency">₹ · INR</div>
+          <div className="fee-odo-currency">{siteText("₹ · INR")}</div>
         </div>
 
         <div className="fee-slider-card">
           <div className="fee-slider-head">
             <CreditCard size={15} color="#D49A58" />
-            <span>Installment Split</span>
+            <span>{siteText("Installment Split")}</span>
           </div>
           <div className="fee-slider-row">
             <input
@@ -688,19 +699,19 @@ function FeeManagementPage() {
               onChange={(e) => setSplit(Number(e.target.value))}
               className="fee-slider"
             />
-            <span className="fee-slider-value">{split}×</span>
+            <span className="fee-slider-value">{siteText(split)}×</span>
           </div>
 
           <div className="fee-receipt">
-            <div className="fee-receipt-row"><span>Total fee</span><span>₹45,000</span></div>
-            <div className="fee-receipt-row"><span>Installments</span><span>{split}</span></div>
+            <div className="fee-receipt-row"><span>{siteText("Total fee")}</span><span>₹45,000</span></div>
+            <div className="fee-receipt-row"><span>{siteText("Installments")}</span><span>{siteText(split)}</span></div>
             <div className="fee-receipt-divider" />
-            <div className="fee-receipt-row fee-receipt-total"><span>Per installment</span><span>₹{perInstallment.toLocaleString("en-IN")}</span></div>
+            <div className="fee-receipt-row fee-receipt-total"><span>{siteText("Per installment")}</span><span>₹{siteText(perInstallment.toLocaleString("en-IN"))}</span></div>
           </div>
         </div>
       </div>
 
-      <style>{`
+      <style>{siteText(`
         .fee-grid{ display:grid; grid-template-columns: 0.9fr 1.1fr; gap:20px; }
         @media (max-width:760px){ .fee-grid{ grid-template-columns: 1fr; } }
         .fee-odo-card, .fee-slider-card{ background:#221A13; border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:26px; }
@@ -721,7 +732,7 @@ function FeeManagementPage() {
         .fee-receipt-divider{ height:1px; background: rgba(255,255,255,0.1); margin: 6px 0; }
         .fee-receipt-total{ font-weight:700; color:#F9F6F0; font-size:15px; }
         .fee-receipt-total span:last-child{ color:#D49A58; font-family:'JetBrains Mono',monospace; }
-      `}</style>
+      `)}</style>
     </>
   );
 }
@@ -731,53 +742,54 @@ function FeeManagementPage() {
    ============================================================ */
 
 function StudentPortalPage() {
+  const siteText = useSiteText();
   const { ref, style, onMove, onLeave } = useTilt(14);
   const nextClassMin = 12;
 
   return (
     <>
-      <Hero title="One card. Their whole school life." sub="A holographic ID that reacts to touch, and a locker that's always one tap away." />
+      <Hero title={siteText("One card. Their whole school life.")} sub="A holographic ID that reacts to touch, and a locker that's always one tap away." />
       <div className="sp-grid">
         <div className="sp-id-zone">
           <div ref={ref} className="sp-id-card" style={style} onMouseMove={onMove} onMouseLeave={onLeave}>
             <div className="sp-id-sheen" style={{ background: `radial-gradient(circle at var(--glare-x,50%) var(--glare-y,50%), rgba(255,255,255,0.35), transparent 55%)` }} />
             <div className="sp-id-top">
               <GraduationCap size={18} color="#18120E" />
-              <span>REVENEX ID</span>
+              <span>{siteText("REVENEX ID")}</span>
             </div>
-            <div className="sp-id-avatar">SK</div>
-            <div className="sp-id-name">Sara Khan</div>
-            <div className="sp-id-meta">Grade 4 · Roll No. 14</div>
+            <div className="sp-id-avatar">{siteText("SK")}</div>
+            <div className="sp-id-name">{siteText("Sara Khan")}</div>
+            <div className="sp-id-meta">{siteText("Grade 4 · Roll No. 14")}</div>
             <div className="sp-id-barcode" />
           </div>
         </div>
 
         <div className="sp-bento">
           <div className="sp-bento-card sp-bento-wide">
-            <div className="sp-bento-label"><Clock size={12} /> Next Class</div>
-            <div className="sp-bento-big">Science <span className="sp-bento-badge">in {nextClassMin} min</span></div>
-            <div className="sp-bento-sub">Room 204 · Ms. Verma</div>
+            <div className="sp-bento-label"><Clock size={12} />{siteText(" Next Class")}</div>
+            <div className="sp-bento-big">{siteText("Science ")}<span className="sp-bento-badge">{siteText("in ")}{siteText(nextClassMin)}{siteText(" min")}</span></div>
+            <div className="sp-bento-sub">{siteText("Room 204 · Ms. Verma")}</div>
           </div>
           <div className="sp-bento-card">
-            <div className="sp-bento-label">Today</div>
+            <div className="sp-bento-label">{siteText("Today")}</div>
             <div className="sp-bento-list">
-              <div>9:00 Math</div>
-              <div>10:00 Science</div>
-              <div>11:15 Art</div>
+              <div>{siteText("9:00 Math")}</div>
+              <div>{siteText("10:00 Science")}</div>
+              <div>{siteText("11:15 Art")}</div>
             </div>
           </div>
           <div className="sp-bento-card">
-            <div className="sp-bento-label">Digital Locker</div>
+            <div className="sp-bento-label">{siteText("Digital Locker")}</div>
             <div className="sp-bento-locker">
-              <div className="sp-locker-item">Homework</div>
-              <div className="sp-locker-item">Report Card</div>
-              <div className="sp-locker-item">Timetable</div>
+              <div className="sp-locker-item">{siteText("Homework")}</div>
+              <div className="sp-locker-item">{siteText("Report Card")}</div>
+              <div className="sp-locker-item">{siteText("Timetable")}</div>
             </div>
           </div>
         </div>
       </div>
 
-      <style>{`
+      <style>{siteText(`
         .sp-grid{ display:grid; grid-template-columns: 0.75fr 1.25fr; gap:24px; align-items:start; }
         @media (max-width:760px){ .sp-grid{ grid-template-columns: 1fr; } }
         .sp-id-zone{ perspective: 1000px; display:flex; justify-content:center; }
@@ -819,7 +831,7 @@ function StudentPortalPage() {
           border:1px solid rgba(255,255,255,0.07); border-radius:10px; padding:8px 10px; cursor:pointer; transition: all 200ms;
         }
         .sp-locker-item:hover{ border-color: rgba(212,154,88,0.4); background: rgba(212,154,88,0.06); }
-      `}</style>
+      `)}</style>
     </>
   );
 }
@@ -830,12 +842,13 @@ function StudentPortalPage() {
    ============================================================ */
 
 function TransportPage() {
+  const siteText = useSiteText();
   const [geofence, setGeofence] = useState(true);
   const routeD = "M 20,180 C 60,60 140,220 190,90 S 320,20 380,110";
 
   return (
     <>
-      <Hero title="Know exactly where the bus is." sub="Live route tracking with geofenced safety alerts at every stop." />
+      <Hero title={siteText("Know exactly where the bus is.")} sub="Live route tracking with geofenced safety alerts at every stop." />
       <div className="tr-grid">
         <div className="tr-map-card">
           <svg viewBox="0 0 400 220" className="tr-map-svg">
@@ -866,33 +879,33 @@ function TransportPage() {
             </g>
           </svg>
           <div className="tr-map-legend">
-            <span><span className="tr-dot gold" /> Bus 07</span>
-            <span><span className="tr-dot cream" /> Stop</span>
+            <span><span className="tr-dot gold" />{siteText(" Bus 07")}</span>
+            <span><span className="tr-dot cream" />{siteText(" Stop")}</span>
           </div>
         </div>
 
         <div className="tr-side-card">
           <div className="tr-side-head">
             <RadarIcon size={15} color="#D49A58" />
-            <span>Geofence Alerts</span>
+            <span>{siteText("Geofence Alerts")}</span>
           </div>
-          <p className="tr-side-copy">Ripple pulses when the bus enters a designated safety zone near a stop.</p>
+          <p className="tr-side-copy">{siteText("Ripple pulses when the bus enters a designated safety zone near a stop.")}</p>
           <button className={`tr-toggle ${geofence ? "is-on" : ""}`} onClick={() => setGeofence((g) => !g)}>
             <span className="tr-toggle-knob" />
           </button>
-          <div className="tr-side-status">{geofence ? "Alerts active" : "Alerts paused"}</div>
+          <div className="tr-side-status">{siteText(geofence ? "Alerts active" : "Alerts paused")}</div>
 
           <div className="tr-eta">
             <MapPin size={13} color="#D49A58" />
             <div>
-              <div className="tr-eta-label">Next stop</div>
-              <div className="tr-eta-value">Shivaji Nagar · 4 min</div>
+              <div className="tr-eta-label">{siteText("Next stop")}</div>
+              <div className="tr-eta-value">{siteText("Shivaji Nagar · 4 min")}</div>
             </div>
           </div>
         </div>
       </div>
 
-      <style>{`
+      <style>{siteText(`
         .tr-grid{ display:grid; grid-template-columns: 1.4fr 0.9fr; gap:20px; }
         @media (max-width:800px){ .tr-grid{ grid-template-columns: 1fr; } }
         .tr-map-card{ background:#221A13; border:1px solid rgba(255,255,255,0.08); border-radius:24px; padding:14px; }
@@ -919,7 +932,7 @@ function TransportPage() {
         .tr-eta{ display:flex; gap:10px; align-items:center; margin-top:24px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.08); }
         .tr-eta-label{ font-family:'JetBrains Mono',monospace; font-size:10px; color:#7A6E60; text-transform:uppercase; }
         .tr-eta-value{ font-family:'Inter',sans-serif; font-size:13px; color:#F0EAE0; font-weight:600; }
-      `}</style>
+      `)}</style>
     </>
   );
 }
@@ -929,6 +942,7 @@ function TransportPage() {
    ============================================================ */
 
 function CommunicationPage() {
+  const siteText = useSiteText();
   const [channel, setChannel] = useState("WhatsApp");
   const messages = [
     "PTA meeting moved to Friday, 4 PM.",
@@ -940,13 +954,13 @@ function CommunicationPage() {
 
   return (
     <>
-      <Hero title="One message, every channel." sub="Broadcast to parents on WhatsApp, SMS, or push — preview exactly how it lands." />
+      <Hero title={siteText("One message, every channel.")} sub="Broadcast to parents on WhatsApp, SMS, or push — preview exactly how it lands." />
       <div className="cm-grid">
         <div className="cm-bubbles-card">
           {messages.map((m, i) => (
             <div key={m} className="cm-bubble" style={{ animationDelay: `${i * 180}ms` }}>
               <Bell size={12} color="#D49A58" />
-              <span>{m}</span>
+              <span>{siteText(m)}</span>
             </div>
           ))}
         </div>
@@ -958,7 +972,7 @@ function CommunicationPage() {
                 {c === "WhatsApp" && <MessageCircle size={13} />}
                 {c === "SMS" && <Smartphone size={13} />}
                 {c === "Push" && <Bell size={13} />}
-                {c}
+                {siteText(c)}
               </button>
             ))}
           </div>
@@ -966,15 +980,15 @@ function CommunicationPage() {
           <div key={key} className={`cm-phone-frame cm-frame-${channel}`}>
             {channel === "WhatsApp" && (
               <div className="cm-wa">
-                <div className="cm-wa-head"><span className="cm-wa-avatar">RV</span> Revenex School</div>
-                <div className="cm-wa-bubble">PTA meeting moved to Friday, 4 PM. See you there! 🎒</div>
-                <div className="cm-wa-time">10:42 AM · Read</div>
+                <div className="cm-wa-head"><span className="cm-wa-avatar">{siteText("RV")}</span>{siteText(" Revenex School")}</div>
+                <div className="cm-wa-bubble">{siteText("PTA meeting moved to Friday, 4 PM. See you there! 🎒")}</div>
+                <div className="cm-wa-time">{siteText("10:42 AM · Read")}</div>
               </div>
             )}
             {channel === "SMS" && (
               <div className="cm-sms">
-                <div className="cm-sms-sender">REVENEX</div>
-                <div className="cm-sms-bubble">Fee reminder: Rs 15,000 due in 3 days. Pay via app to avoid late fee.</div>
+                <div className="cm-sms-sender">{siteText("REVENEX")}</div>
+                <div className="cm-sms-bubble">{siteText("Fee reminder: Rs 15,000 due in 3 days. Pay via app to avoid late fee.")}</div>
               </div>
             )}
             {channel === "Push" && (
@@ -982,10 +996,10 @@ function CommunicationPage() {
                 <div className="cm-push-card">
                   <div className="cm-push-icon"><GraduationCap size={14} color="#18120E" /></div>
                   <div>
-                    <div className="cm-push-title">Revenex School</div>
-                    <div className="cm-push-body">Sara's bus arrived safely at school.</div>
+                    <div className="cm-push-title">{siteText("Revenex School")}</div>
+                    <div className="cm-push-body">{siteText("Sara's bus arrived safely at school.")}</div>
                   </div>
-                  <div className="cm-push-time">now</div>
+                  <div className="cm-push-time">{siteText("now")}</div>
                 </div>
               </div>
             )}
@@ -993,7 +1007,7 @@ function CommunicationPage() {
         </div>
       </div>
 
-      <style>{`
+      <style>{siteText(`
         .cm-grid{ display:grid; grid-template-columns: 1fr 0.85fr; gap:24px; align-items:start; }
         @media (max-width:800px){ .cm-grid{ grid-template-columns: 1fr; } }
         .cm-bubbles-card{ display:flex; flex-direction:column; gap:12px; }
@@ -1028,7 +1042,7 @@ function CommunicationPage() {
         .cm-push-title{ font-family:'Inter',sans-serif; font-size:12px; font-weight:700; color:#18120E; }
         .cm-push-body{ font-family:'Inter',sans-serif; font-size:11.5px; color:#5A4E3E; margin-top:2px; }
         .cm-push-time{ font-family:'Inter',sans-serif; font-size:10px; color:#9C8F80; margin-left:auto; }
-      `}</style>
+      `)}</style>
     </>
   );
 }
@@ -1055,9 +1069,10 @@ function FooterColumn({ title, links, hovered, setHovered, onNavigate }: {
   setHovered: (id: string | null) => void
   onNavigate: (id: string) => void
 }) {
+  const siteText = useSiteText();
   return (
     <div className="ft-col">
-      <div className="ft-col-title">{title}</div>
+      <div className="ft-col-title">{siteText(title)}</div>
       <div className="ft-links">
         {links.map((l) => (
           <button
@@ -1068,7 +1083,7 @@ function FooterColumn({ title, links, hovered, setHovered, onNavigate }: {
             onClick={() => onNavigate(l.id)}
           >
             <span className={`ft-pill ${hovered === l.id ? "is-hovered" : ""}`} />
-            <span className="ft-link-label">{l.label}</span>
+            <span className="ft-link-label">{siteText(l.label)}</span>
             <ArrowRight size={13} className={`ft-arrow ${hovered === l.id ? "is-visible" : ""}`} strokeWidth={2.4} />
           </button>
         ))}
@@ -1078,49 +1093,50 @@ function FooterColumn({ title, links, hovered, setHovered, onNavigate }: {
 }
 
 function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
+  const siteText = useSiteText();
   const [hovered, setHovered] = useState<string | null>(null);
   return (
     <footer className="ft-root">
       <div className="ft-inner">
         <div className="ft-brand">
           <div className="ft-logo">
-            <div className="ft-logo-mark">R</div>
-            <span>VENTURES PRIVATE LIMITED</span>
+            <div className="ft-logo-mark">{siteText("R")}</div>
+            <span>{siteText("VENTURES PRIVATE LIMITED")}</span>
           </div>
-          <p className="ft-tagline">India's modern School ERP platform built for educators.</p>
+          <p className="ft-tagline">{siteText("India's modern School ERP platform built for educators.")}</p>
           <div className="ft-socials">
-            <a href="#" className="ft-social" aria-label="LinkedIn"><Linkedin size={15} /></a>
-            <a href="#" className="ft-social" aria-label="Github"><Github size={15} /></a>
-            <a href="#" className="ft-social" aria-label="Instagram"><Instagram size={15} /></a>
-            <a href="#" className="ft-social" aria-label="Email"><Mail size={15} /></a>
+            <a href="#" className="ft-social" aria-label={siteText("LinkedIn")}><Linkedin size={15} /></a>
+            <a href="#" className="ft-social" aria-label={siteText("Github")}><Github size={15} /></a>
+            <a href="#" className="ft-social" aria-label={siteText("Instagram")}><Instagram size={15} /></a>
+            <a href="#" className="ft-social" aria-label={siteText("Email")}><Mail size={15} /></a>
           </div>
         </div>
 
-        <FooterColumn title="PRODUCT" links={NAV.product} hovered={hovered} setHovered={setHovered} onNavigate={onNavigate} />
-        <FooterColumn title="SOLUTIONS" links={NAV.solutions} hovered={hovered} setHovered={setHovered} onNavigate={onNavigate} />
+        <FooterColumn title={siteText("PRODUCT")} links={NAV.product} hovered={hovered} setHovered={setHovered} onNavigate={onNavigate} />
+        <FooterColumn title={siteText("SOLUTIONS")} links={NAV.solutions} hovered={hovered} setHovered={setHovered} onNavigate={onNavigate} />
 
         <div className="ft-col">
-          <div className="ft-col-title">COMPANY</div>
+          <div className="ft-col-title">{siteText("COMPANY")}</div>
           <div className="ft-links">
             {["About Us", "Our Team", "Careers", "Contact"].map((c) => (
-              <button key={c} className="ft-link ft-link-static"><span className="ft-link-label">{c}</span></button>
+              <button key={c} className="ft-link ft-link-static"><span className="ft-link-label">{siteText(c)}</span></button>
             ))}
           </div>
         </div>
 
         <div className="ft-col">
-          <div className="ft-col-title">STAY UPDATED</div>
+          <div className="ft-col-title">{siteText("STAY UPDATED")}</div>
           <div className="ft-subscribe">
-            <input placeholder="Enter school email" className="ft-input" />
-            <button className="ft-join"><Send size={12} /> Join</button>
+            <input placeholder={siteText("Enter school email")} className="ft-input" />
+            <button className="ft-join"><Send size={12} />{siteText(" Join")}</button>
           </div>
-          <div className="ft-contact-line"><Mail size={12} /> team@revenex.in</div>
+          <div className="ft-contact-line"><Mail size={12} />{siteText(" team@revenex.in")}</div>
           <div className="ft-contact-line"><Lock size={12} /> +91 90217 44355</div>
-          <div className="ft-contact-line"><MapPin size={12} /> Pune &amp; Sangamner, Maharashtra</div>
+          <div className="ft-contact-line"><MapPin size={12} />{siteText(" Pune & Sangamner, Maharashtra")}</div>
         </div>
       </div>
 
-      <style>{`
+      <style>{siteText(`
         .ft-root{ border-top:1px solid rgba(255,255,255,0.08); padding: 44px clamp(20px,5vw,64px) 40px; }
         .ft-inner{ max-width:1180px; margin:0 auto; display:grid; grid-template-columns: 1.3fr 0.85fr 0.85fr 0.85fr 1.1fr; gap: 24px; }
         @media (max-width: 900px){ .ft-inner{ grid-template-columns: 1fr 1fr; } }
@@ -1162,7 +1178,7 @@ function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
         }
         .ft-join:hover{ transform: translateY(-1px); }
         .ft-contact-line{ display:flex; align-items:center; gap:8px; font-family:'Inter',sans-serif; font-size:12.5px; color:#9C8F80; margin-bottom:8px; }
-      `}</style>
+      `)}</style>
     </footer>
   );
 }
@@ -1172,17 +1188,18 @@ function Footer({ onNavigate }: { onNavigate: (id: string) => void }) {
    ============================================================ */
 
 function HomeHero() {
+  const siteText = useSiteText();
   return (
     <div className="hh-root">
-      <Eyebrow><Sparkles size={12} /> REVENEX SCHOOL ERP</Eyebrow>
-      <h1 className="hh-title">Eight modules.<br />One calm command center.</h1>
-      <p className="hh-sub">Explore the platform below — every card in the footer opens a fully interactive preview of that module.</p>
+      <Eyebrow><Sparkles size={12} />{siteText(" REVENEX SCHOOL ERP")}</Eyebrow>
+      <h1 className="hh-title">{siteText("Eight modules.")}<br />{siteText("One calm command center.")}</h1>
+      <p className="hh-sub">{siteText("Explore the platform below — every card in the footer opens a fully interactive preview of that module.")}</p>
       <div className="hh-chips">
         {[...NAV.product, ...NAV.solutions].map((l) => (
-          <span key={l.id} className="hh-chip"><Radio size={10} /> {l.label}</span>
+          <span key={l.id} className="hh-chip"><Radio size={10} /> {siteText(l.label)}</span>
         ))}
       </div>
-      <style>{`
+      <style>{siteText(`
         .hh-root{ max-width:900px; margin: 0 auto; padding: 96px clamp(20px,5vw,64px) 60px; text-align:center; }
         .hh-root .ev-eyebrow{ justify-content:center; }
         .hh-title{
@@ -1196,7 +1213,7 @@ function HomeHero() {
           color:#C9BFB2; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:6px 12px;
           background: rgba(255,255,255,0.02);
         }
-      `}</style>
+      `)}</style>
     </div>
   );
 }
@@ -1206,13 +1223,14 @@ function HomeHero() {
    ============================================================ */
 
 export default function App() {
+  const siteText = useSiteText();
   const [view, setView] = useState<ViewId | "home">("home");
   const ActivePage = view !== "home" ? PAGES[view] : null;
   const navigate = (id: string) => setView(id as ViewId | "home");
 
   return (
     <div className="ev-app">
-      <style>{FONTS}</style>
+      <style>{siteText(FONTS)}</style>
       {view === "home" ? (
         <HomeHero />
       ) : (
@@ -1221,7 +1239,7 @@ export default function App() {
         </PageShell>
       )}
       <Footer onNavigate={navigate} />
-      <style>{`
+      <style>{siteText(`
         .ev-app{
           background: #18120E; min-height: 100vh; color:#F9F6F0;
           font-family:'Inter',sans-serif;
@@ -1233,7 +1251,7 @@ export default function App() {
         @media (prefers-reduced-motion: reduce){
           .ev-app *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
         }
-      `}</style>
+      `)}</style>
     </div>
   );
 }

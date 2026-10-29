@@ -3,6 +3,7 @@ import { Router, type IRouter } from "express";
 import { randomUUID } from "crypto";
 import { ChatMemory } from "../lib/chat-memory";
 import { schemas, validateBody } from "../lib/validation";
+import { callGemini } from "../lib/gemini-chat";
 
 const router: IRouter = Router();
 const KEY = (process.env["OPENROUTER_API_KEY"] ?? "").trim();
@@ -51,12 +52,19 @@ router.post("/chat", validateBody(schemas.chat), async (req, res) => {
     res.json({ reply: getFaqAnswer(message, language ?? "en"), model: "public-knowledge" });
     return;
   }
+  const geminiKey = (process.env.GEMINI_API_KEY ?? "").trim();
+  const useGemini = process.env.CHAT_PROVIDER === "gemini" ||
+    (process.env.CHAT_PROVIDER !== "openrouter" && Boolean(geminiKey));
   const publicReply = getPublicAnswer(message, language ?? "en");
-  if (publicReply) {
+  const wantsExplanation = /\b(how|why|explain|compare|details?|examples?|steps?)\b|कैसे|क्यों|समझ|विस्तार/u.test(message.toLowerCase());
+  const protectedTopic = /\b(pric\w*|cost|demo|contact|support|secur\w*|privacy|password|token|secret)\b|कीमत|मूल्य|डेमो|संपर्क|सुरक्षा|पासवर्ड/u.test(message.toLowerCase());
+  // Keep authoritative basic answers and sensitive topics deterministic. Gemini
+  // expands substantive workflow questions using the same public website facts.
+  if (publicReply && (!useGemini || !wantsExplanation || protectedTopic)) {
     res.json({ reply: publicReply, model: "public-knowledge" });
     return;
   }
-  if (!KEY) {
+  if (useGemini ? !geminiKey : !KEY) {
     res.status(503).json({ error: "AI not configured" });
     return;
   }
@@ -83,11 +91,16 @@ router.post("/chat", validateBody(schemas.chat), async (req, res) => {
     const msgs = [system, ...memory, { role: "user", content: message }];
 
     let r: Response | null = null;
-    let usedModel = FREE_MODELS[0]!;
-    for (const model of FREE_MODELS) {
+    const models = useGemini
+      ? [(process.env.GEMINI_MODEL ?? "gemini-3.5-flash-lite").trim()]
+      : FREE_MODELS;
+    let usedModel = models[0]!;
+    for (const model of models) {
       usedModel = model;
       try {
-        r = await callOpenRouter(model, msgs);
+        r = useGemini
+          ? await callGemini(model, msgs, geminiKey)
+          : await callOpenRouter(model, msgs);
       } catch {
         req.log.warn({ model }, "AI provider request timed out or failed");
         continue;
@@ -113,7 +126,7 @@ router.post("/chat", validateBody(schemas.chat), async (req, res) => {
     }
 
     if (!r || !r.ok) {
-      req.log.error({ status: r?.status }, "OpenRouter all-models-failed");
+      req.log.error({ status: r?.status }, "AI provider unavailable");
       res.status(502).json({
         error: "AI is temporarily unavailable. Please try again later.",
       });

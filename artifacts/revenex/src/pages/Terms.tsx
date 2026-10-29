@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { motion } from 'framer-motion'
 import { FileText, ArrowLeft } from 'lucide-react'
 import { Link } from 'wouter'
@@ -99,6 +100,7 @@ const sections = [
 ]
 
 export default function Terms() {
+  const siteText = useSiteText();
   return (
     <main className="min-h-screen">
       <Navbar />
@@ -109,22 +111,18 @@ export default function Terms() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <Link href="/">
               <span className="inline-flex items-center gap-2 text-sm text-[#6B5D52] hover:text-aqua transition-colors cursor-pointer mb-8 group">
-                <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
-                Back to Home
-              </span>
+                <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />{siteText("Back to Home")}</span>
             </Link>
             <div className="flex items-center gap-4 mb-4">
               <div className="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center">
                 <FileText className="h-6 w-6 text-black" />
               </div>
               <div>
-                <h1 className="text-4xl font-black text-[#1A1410] sm:text-5xl">Terms of Service</h1>
-                <p className="text-[#6B5D52] text-sm mt-1">Last updated: June 2026</p>
+                <h1 className="text-4xl font-black text-[#1A1410] sm:text-5xl">{siteText("Terms of Service")}</h1>
+                <p className="text-[#6B5D52] text-sm mt-1">{siteText("Last updated: June 2026")}</p>
               </div>
             </div>
-            <p className="text-[#3D3128] leading-relaxed mt-4">
-              Please read these Terms of Service carefully before using the REVENEX platform operated by REVENEX VENTURES PRIVATE LIMITED. These Terms govern your access to and use of the REVENEX school ERP platform and services.
-            </p>
+            <p className="text-[#3D3128] leading-relaxed mt-4">{siteText("Please read these Terms of Service carefully before using the REVENEX platform operated by REVENEX VENTURES PRIVATE LIMITED. These Terms govern your access to and use of the REVENEX school ERP platform and services.")}</p>
           </motion.div>
         </div>
       </section>
@@ -140,12 +138,12 @@ export default function Terms() {
                 transition={{ delay: i * 0.04 }}
                 className="glass-card rounded-2xl p-7"
               >
-                <h2 className="text-lg font-bold text-aqua mb-4">{section.title}</h2>
+                <h2 className="text-lg font-bold text-aqua mb-4">{siteText(section.title)}</h2>
                 <ul className="space-y-2.5">
                   {section.content.map((item, j) => (
                     <li key={item} className="flex items-start gap-3">
                       <div className="w-1.5 h-1.5 rounded-full bg-aqua/50 mt-2 shrink-0" />
-                      <p className="text-sm text-[#3D3128] leading-relaxed">{item}</p>
+                      <p className="text-sm text-[#3D3128] leading-relaxed">{siteText(item)}</p>
                     </li>
                   ))}
                 </ul>
@@ -158,9 +156,8 @@ export default function Terms() {
             animate={{ opacity: 1, y: 0 }}
             className="mt-8 glass-card rounded-2xl p-6 border border-aqua/10 text-center"
           >
-            <p className="text-sm text-[#6B5D52]">
-              Questions about these Terms? Contact us at{' '}
-              <a href="mailto:team@revenex.in" className="text-aqua hover:underline">team@revenex.in</a>
+            <p className="text-sm text-[#6B5D52]">{siteText("Questions about these Terms? Contact us at")}{' '}
+              <a href="mailto:team@revenex.in" className="text-aqua hover:underline">{siteText("team@revenex.in")}</a>
             </p>
           </motion.div>
         </div>

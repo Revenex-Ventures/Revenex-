@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { BrandLogo } from '@/components/BrandLogo'
 import { useState } from "react"
 import { motion } from "framer-motion"
@@ -40,6 +41,7 @@ function buildDataPath() {
 }
 
 function RadarChart() {
+  const siteText = useSiteText();
   const dataPath = buildDataPath()
 
   const ringPoints = [0.25, 0.5, 0.75, 1].map((scale) =>
@@ -124,8 +126,8 @@ function RadarChart() {
             transition={{ delay: 0.9 + i * 0.08, duration: 0.4, ease: EASE }}
             className="flex items-center justify-between rounded-xl border border-[#E5DDD2] bg-white/70 px-3 py-2"
           >
-            <span className="text-[11px] font-medium text-[#61544A]">{s.label}</span>
-            <span className="counter-num text-[11px] font-black text-[#A34E17]">{s.value}</span>
+            <span className="text-[11px] font-medium text-[#61544A]">{siteText(s.label)}</span>
+            <span className="counter-num text-[11px] font-black text-[#A34E17]">{siteText(s.value)}</span>
           </motion.div>
         ))}
       </div>
@@ -143,6 +145,7 @@ const GRADES = [
 ]
 
 function ReportCardFlip() {
+  const siteText = useSiteText();
   const [flipped, setFlipped] = useState(false)
   return (
     <div className="w-full cursor-pointer [perspective:1400px]" onClick={() => setFlipped((f) => !f)}>
@@ -156,35 +159,30 @@ function ReportCardFlip() {
           <div aria-hidden className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-[#D49A58]/15 blur-[70px]" />
           <div className="flex items-center justify-between">
             <BrandLogo tone="dark" size="sm" />
-            <span className="rounded-full border border-[#D49A58]/40 bg-[#D49A58]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#A34E17]">
-              Term 2 · 2025-26
-            </span>
+            <span className="rounded-full border border-[#D49A58]/40 bg-[#D49A58]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#A34E17]">{siteText("Term 2 · 2025-26")}</span>
           </div>
 
           <div className="mt-8 flex items-center gap-4">
-            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#F0E8DC] text-xl font-black text-[#221910]">
-              AN
-            </span>
+            <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#F0E8DC] text-xl font-black text-[#221910]">{siteText("AN")}</span>
             <div>
-              <h3 className="text-lg font-black text-[#221910]">Ananya Nair</h3>
-              <p className="text-xs text-[#8A7A6B]">Roll No. 27 · Grade VIII-A</p>
+              <h3 className="text-lg font-black text-[#221910]">{siteText("Ananya Nair")}</h3>
+              <p className="text-xs text-[#8A7A6B]">{siteText("Roll No. 27 · Grade VIII-A")}</p>
             </div>
           </div>
 
           <div className="mt-7 grid grid-cols-2 gap-3">
             {GRADES.slice(0, 4).map((g) => (
               <div key={g.subject} className="rounded-xl border border-[#E5DDD2] bg-white/70 px-3.5 py-2.5">
-                <p className="text-[10px] uppercase tracking-widest text-[#8A7A6B]">{g.subject}</p>
-                <p className="mt-0.5 text-sm font-black text-[#A34E17]">{g.grade}</p>
+                <p className="text-[10px] uppercase tracking-widest text-[#8A7A6B]">{siteText(g.subject)}</p>
+                <p className="mt-0.5 text-sm font-black text-[#A34E17]">{siteText(g.grade)}</p>
               </div>
             ))}
           </div>
 
           <div className="absolute inset-x-7 bottom-6 flex items-center justify-between text-[11px] text-[#8A7A6B]">
-            <span>Overall · 90.4%</span>
+            <span>{siteText("Overall · 90.4%")}</span>
             <span className="inline-flex items-center gap-1.5 text-[#A34E17]">
-              <RotateCw className="h-3.5 w-3.5" /> Tap to flip
-            </span>
+              <RotateCw className="h-3.5 w-3.5" />{siteText(" Tap to flip")}</span>
           </div>
         </div>
 
@@ -192,33 +190,31 @@ function ReportCardFlip() {
         <div className="absolute inset-0 overflow-hidden rounded-3xl border border-[#D49A58]/25 bg-[#FFFDF8] p-6 text-[#1A1410] [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <div className="flex items-start justify-between border-b-2 border-dotted border-[#D49A58]/40 pb-3">
             <div>
-              <p className="font-serif text-sm font-black tracking-wide">REVENEX GLOBAL SCHOOL</p>
-              <p className="text-[10px] text-[#6B5D52]">Affiliated to CBSE · Pune, Maharashtra</p>
+              <p className="font-serif text-sm font-black tracking-wide">{siteText("REVENEX GLOBAL SCHOOL")}</p>
+              <p className="text-[10px] text-[#6B5D52]">{siteText("Affiliated to CBSE · Pune, Maharashtra")}</p>
             </div>
-            <span className="rounded-lg bg-[#1A1410] px-2.5 py-1 text-[10px] font-black text-[#F9F6F0]">
-              Term 2
-            </span>
+            <span className="rounded-lg bg-[#1A1410] px-2.5 py-1 text-[10px] font-black text-[#F9F6F0]">{siteText("Term 2")}</span>
           </div>
 
           <div className="mt-3 flex items-center justify-between text-[11px]">
-            <p><span className="font-bold">Ananya Nair</span> · Roll 27 · VIII-A</p>
+            <p><span className="font-bold">{siteText("Ananya Nair")}</span>{siteText(" · Roll 27 · VIII-A")}</p>
             <p className="counter-num font-black text-[#A34E17]">90.4%</p>
           </div>
 
           <table className="mt-3 w-full text-[11px]">
             <thead>
               <tr className="border-b border-[#1A1410]/15 text-left text-[9px] uppercase tracking-widest text-[#6B5D52]">
-                <th className="py-1.5 font-bold">Subject</th>
-                <th className="py-1.5 font-bold">Marks</th>
-                <th className="py-1.5 font-bold">Grade</th>
+                <th className="py-1.5 font-bold">{siteText("Subject")}</th>
+                <th className="py-1.5 font-bold">{siteText("Marks")}</th>
+                <th className="py-1.5 font-bold">{siteText("Grade")}</th>
               </tr>
             </thead>
             <tbody>
               {GRADES.map((g) => (
                 <tr key={g.subject} className="border-b border-[#1A1410]/5">
-                  <td className="py-1.5 font-semibold">{g.subject}</td>
-                  <td className="py-1.5">{g.marks}</td>
-                  <td className="py-1.5 font-black text-[#A34E17]">{g.grade}</td>
+                  <td className="py-1.5 font-semibold">{siteText(g.subject)}</td>
+                  <td className="py-1.5">{siteText(g.marks)}</td>
+                  <td className="py-1.5 font-black text-[#A34E17]">{siteText(g.grade)}</td>
                 </tr>
               ))}
             </tbody>
@@ -226,46 +222,38 @@ function ReportCardFlip() {
 
           <div className="mt-3 flex items-end justify-between">
             <div>
-              <p className="text-[9px] uppercase tracking-widest text-[#6B5D52]">Class Teacher&apos;s Remark</p>
-              <p className="mt-0.5 max-w-[180px] text-[11px] font-semibold italic leading-snug">
-                "A focused, curious learner with outstanding consistency."
-              </p>
+              <p className="text-[9px] uppercase tracking-widest text-[#6B5D52]">{siteText("Class Teacher's Remark")}</p>
+              <p className="mt-0.5 max-w-[180px] text-[11px] font-semibold italic leading-snug">{siteText("\"A focused, curious learner with outstanding consistency.\"")}</p>
             </div>
             <motion.span
               className="rounded-md border-2 border-[#A34E17]/60 px-2 py-1 text-[10px] font-black uppercase tracking-wider text-[#A34E17]"
               animate={{ rotate: [-4, -1, -4] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <Stamp className="mr-1 inline h-3 w-3" />
-              Excellent
-            </motion.span>
+              <Stamp className="mr-1 inline h-3 w-3" />{siteText("Excellent")}</motion.span>
           </div>
         </div>
       </motion.div>
 
       <p className="mt-5 text-center text-xs text-[#8A7A6B]">
-        <RotateCw className="mr-1 inline h-3.5 w-3.5" />
-        Tap the card to flip between the live summary and the official report card
-      </p>
+        <RotateCw className="mr-1 inline h-3.5 w-3.5" />{siteText("Tap the card to flip between the live summary and the official report card")}</p>
     </div>
   )
 }
 
 export default function ReportCards() {
+  const siteText = useSiteText();
   return (
     <ShowcaseShell
       section="Product"
-      label="Report Cards"
+      label={siteText("Report Cards")}
       accent={GOLD}
       title={
-        <>
-          Report cards that{" "}
-          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">
-            draw themselves
-          </span>
+        <>{siteText("Report cards that")}{" "}
+          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">{siteText("draw themselves")}</span>
         </>
       }
-      subtitle="Radar-sharp performance analytics and official term report cards generated the moment exams close — no spreadsheets, no printer queues."
+      subtitle={siteText("Radar-sharp performance analytics and official term report cards generated the moment exams close — no spreadsheets, no printer queues.")}
     >
       {/* ── Hero: radar + flip card ── */}
       <section className="mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
@@ -277,8 +265,8 @@ export default function ReportCards() {
                   <BarChart3 className="h-4.5 w-4.5 text-[#A34E17]" />
                 </span>
                 <div>
-                  <h3 className="text-sm font-bold text-[#221910]">Subject Radar</h3>
-                  <p className="text-[11px] text-[#8A7A6B]">Live performance across all six domains</p>
+                  <h3 className="text-sm font-bold text-[#221910]">{siteText("Subject Radar")}</h3>
+                  <p className="text-[11px] text-[#8A7A6B]">{siteText("Live performance across all six domains")}</p>
                 </div>
               </div>
               <RadarChart />
@@ -291,8 +279,8 @@ export default function ReportCards() {
               ].map(({ icon: Icon, value, label }) => (
                 <div key={label} className="flex flex-col items-center gap-1 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-4 text-center backdrop-blur-md">
                   <Icon className="h-4 w-4 text-[#A34E17]" />
-                  <span className="counter-num text-base font-black text-[#221910]">{value}</span>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{label}</span>
+                  <span className="counter-num text-base font-black text-[#221910]">{siteText(value)}</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText(label)}</span>
                 </div>
               ))}
             </div>
@@ -310,8 +298,8 @@ export default function ReportCards() {
           <SectionHeading
             kicker="CBSE · ICSE · State Board ready"
             accent={GOLD}
-            title="One click from marks to masterpiece"
-            subtitle="Grading schemes, remark banks, and printable PDFs tailored to your board — ready the moment results are locked."
+            title={siteText("One click from marks to masterpiece")}
+            subtitle={siteText("Grading schemes, remark banks, and printable PDFs tailored to your board — ready the moment results are locked.")}
           />
         </Reveal>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
@@ -325,8 +313,8 @@ export default function ReportCards() {
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D49A58]/40 bg-[#D49A58]/10">
                   <Icon className="h-6 w-6 text-[#A34E17]" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-[#221910]">{title}</h3>
-                <p className="text-sm leading-relaxed text-[#61544A]">{desc}</p>
+                <h3 className="mb-2 text-lg font-bold text-[#221910]">{siteText(title)}</h3>
+                <p className="text-sm leading-relaxed text-[#61544A]">{siteText(desc)}</p>
               </GlassCard>
             </Reveal>
           ))}
@@ -340,12 +328,8 @@ export default function ReportCards() {
             <div aria-hidden className="absolute -top-20 right-1/4 h-80 w-80 rounded-full bg-[#D49A58]/20 blur-[110px]" />
             <div className="relative">
               <Award className="mx-auto mb-4 h-9 w-9 text-[#A34E17]" />
-              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">
-                Close this term on autopilot
-              </h3>
-              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">
-                See report cards generated for your actual board and grading scheme in a live demo.
-              </p>
+              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">{siteText("Close this term on autopilot")}</h3>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">{siteText("See report cards generated for your actual board and grading scheme in a live demo.")}</p>
               <div className="mt-8 flex justify-center">
                 <DemoButton />
               </div>

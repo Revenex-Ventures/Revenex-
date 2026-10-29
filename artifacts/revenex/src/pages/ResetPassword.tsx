@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { BrandLogo } from '@/components/BrandLogo'
 import { apiRequest } from '@/lib/api'
 import { useState, useEffect } from 'react'
@@ -6,6 +7,7 @@ import { useState, useEffect } from 'react'
   import { Eye, EyeOff, Lock, ArrowRight, CheckCircle2, AlertCircle, KeyRound } from 'lucide-react'
 
   export default function ResetPassword() {
+  const siteText = useSiteText();
     const [, navigate] = useLocation()
     const [token, setToken] = useState('')
     const [form, setForm] = useState({ password: '', confirm: '' })
@@ -73,16 +75,16 @@ import { useState, useEffect } from 'react'
                 <div className="mx-auto mb-4 w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center">
                   <KeyRound className="h-7 w-7 text-[#1A1410]" />
                 </div>
-                <h1 className="text-2xl font-black text-[#1A1410] mb-1">Set New Password</h1>
-                <p className="text-sm text-[#6B5D52]">Enter your new password below</p>
+                <h1 className="text-2xl font-black text-[#1A1410] mb-1">{siteText("Set New Password")}</h1>
+                <p className="text-sm text-[#6B5D52]">{siteText("Enter your new password below")}</p>
               </div>
 
               {success ? (
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-4">
                   <CheckCircle2 className="h-16 w-16 text-aqua mx-auto mb-4" />
-                  <h2 className="text-xl font-bold text-[#1A1410] mb-2">Password Updated!</h2>
-                  <p className="text-[#3D3128] text-sm mb-1">Your password has been reset successfully.</p>
-                  <p className="text-[#6B5D52] text-xs">A confirmation email has been sent. Redirecting to sign in...</p>
+                  <h2 className="text-xl font-bold text-[#1A1410] mb-2">{siteText("Password Updated!")}</h2>
+                  <p className="text-[#3D3128] text-sm mb-1">{siteText("Your password has been reset successfully.")}</p>
+                  <p className="text-[#6B5D52] text-xs">{siteText("A confirmation email has been sent. Redirecting to sign in...")}</p>
                 </motion.div>
               ) : (
                 <>
@@ -90,9 +92,9 @@ import { useState, useEffect } from 'react'
                     <div className="flex items-start gap-3 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-4 mb-6">
                       <AlertCircle className="h-5 w-5 text-red-400 shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-sm text-red-400 font-medium">Invalid Reset Link</p>
-                        <p className="text-xs text-red-300/70 mt-1">{error}</p>
-                        <Link href="/login"><span className="text-xs text-aqua hover:underline cursor-pointer mt-2 inline-block">← Back to Sign In</span></Link>
+                        <p className="text-sm text-red-400 font-medium">{siteText("Invalid Reset Link")}</p>
+                        <p className="text-xs text-red-300/70 mt-1">{siteText(error)}</p>
+                        <Link href="/login"><span className="text-xs text-aqua hover:underline cursor-pointer mt-2 inline-block">{siteText("← Back to Sign In")}</span></Link>
                       </div>
                     </div>
                   ) : (
@@ -101,15 +103,15 @@ import { useState, useEffect } from 'react'
                         <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
                           className="flex items-center gap-3 bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3">
                           <AlertCircle className="h-4 w-4 text-red-400 shrink-0" />
-                          <p className="text-sm text-red-400">{error}</p>
+                          <p className="text-sm text-red-400">{siteText(error)}</p>
                         </motion.div>
                       )}
 
                       <div>
-                        <label className="block text-sm font-medium text-[#3D3128] mb-2">New Password</label>
+                        <label className="block text-sm font-medium text-[#3D3128] mb-2">{siteText("New Password")}</label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
-                          <input type={showPass ? 'text' : 'password'} placeholder="Min. 8 characters" required autoComplete="new-password"
+                          <input type={showPass ? 'text' : 'password'} placeholder={siteText("Min. 8 characters")} required autoComplete="new-password"
                             value={form.password} onChange={e => { setForm(f => ({ ...f, password: e.target.value })); setError('') }}
                             className={inputClass} />
                           <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B5D52] hover:text-[#3D3128]">
@@ -121,16 +123,16 @@ import { useState, useEffect } from 'react'
                             <div className="flex-1 h-1 bg-[#E8E0D4] rounded-full overflow-hidden">
                               <div className={`h-full rounded-full transition-all ${passwordStrength()!.color} ${passwordStrength()!.width}`} />
                             </div>
-                            <span className="text-xs text-[#6B5D52]">{passwordStrength()!.label}</span>
+                            <span className="text-xs text-[#6B5D52]">{siteText(passwordStrength()!.label)}</span>
                           </div>
                         )}
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-[#3D3128] mb-2">Confirm Password</label>
+                        <label className="block text-sm font-medium text-[#3D3128] mb-2">{siteText("Confirm Password")}</label>
                         <div className="relative">
                           <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
-                          <input type={showConfirm ? 'text' : 'password'} placeholder="Re-enter password" required autoComplete="new-password"
+                          <input type={showConfirm ? 'text' : 'password'} placeholder={siteText("Re-enter password")} required autoComplete="new-password"
                             value={form.confirm} onChange={e => { setForm(f => ({ ...f, confirm: e.target.value })); setError('') }}
                             className={inputClass} />
                           <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6B5D52] hover:text-[#3D3128]">
@@ -142,12 +144,12 @@ import { useState, useEffect } from 'react'
                       <motion.button type="submit" disabled={loading} whileHover={!loading ? { scale: 1.02, boxShadow: '0 0 30px rgba(124, 61, 15,0.3)' } : {}} whileTap={!loading ? { scale: 0.98 } : {}}
                         className="w-full gradient-bg text-[#1A1410] font-bold py-4 rounded-2xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed mt-2">
                         {loading ? (
-                          <><motion.div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />Updating password...</>
-                        ) : (<>Update Password<ArrowRight className="h-4 w-4" /></>)}
+                          <><motion.div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />{siteText("Updating password...")}</>
+                        ) : (<>{siteText("Update Password")}<ArrowRight className="h-4 w-4" /></>)}
                       </motion.button>
 
                       <p className="text-center text-xs text-[#6B5D52]">
-                        <Link href="/login"><span className="text-aqua/70 hover:text-aqua cursor-pointer hover:underline">← Back to Sign In</span></Link>
+                        <Link href="/login"><span className="text-aqua/70 hover:text-aqua cursor-pointer hover:underline">{siteText("← Back to Sign In")}</span></Link>
                       </p>
                     </form>
                   )}

@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import StudentHero3D from '@/components/StudentHero3D'
 import { useRef, useState, useEffect, useCallback, useMemo, useLayoutEffect, Suspense, type CSSProperties } from 'react'
 import { Link } from 'wouter'
@@ -29,10 +30,11 @@ import twilioLogo from '@assets/image_1783259146914.png'
 
 /* ─── Section badge ─── */
 function SectionBadge({ label }: { label: string }) {
+  const siteText = useSiteText();
   return (
     <div className="flex justify-center mb-5">
       <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC]">
-        <span className="text-[11px] font-black text-[#3D3128] uppercase tracking-widest">{label}</span>
+        <span className="text-[11px] font-black text-[#3D3128] uppercase tracking-widest">{siteText(label)}</span>
       </div>
     </div>
   )
@@ -72,6 +74,7 @@ function SectionDivider() {
 
 /* ─── 3D tilt card wrapper ─── */
 function TiltCard({ children, className = '', style }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+  const siteText = useSiteText();
   const ref = useRef<HTMLDivElement>(null)
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -99,7 +102,7 @@ function TiltCard({ children, className = '', style }: { children: React.ReactNo
       className={className}
       style={{ willChange: 'transform', transformStyle: 'preserve-3d', ...style }}
     >
-      {children}
+      {siteText(children)}
     </div>
   )
 }
@@ -124,6 +127,8 @@ const partners = [
 ]
 
 function PartnersMarquee() {
+  const siteText = useSiteText();
+  const { language } = useLanguage()
   const doubled = [...partners, ...partners, ...partners]
   return (
     <div className="relative overflow-hidden py-3">
@@ -134,7 +139,9 @@ function PartnersMarquee() {
             className="flex items-center justify-center gap-3 shrink-0 w-48 h-14 px-6 rounded-2xl bg-white border border-[#E8E0D4] hover:shadow-lg transition-all"
             style={{ boxShadow: '0 2px 8px rgba(139,69,19,0.06)' }}
           >
-            <img src={p.logo} alt={p.name} className={`block ${p.heightClass} w-auto object-contain`} />
+            {language === 'hi'
+              ? <span className="text-lg font-bold text-[#3D3128]">{siteText(p.name)}</span>
+              : <img src={p.logo} alt={p.name} className={`block ${p.heightClass} w-auto object-contain`} />}
           </div>
         ))}
       </div>
@@ -146,6 +153,7 @@ function PartnersMarquee() {
 
 /* ─── Reviews section ─── */
 function ReviewsSection() {
+  const siteText = useSiteText();
   const queryClient = useQueryClient()
   const { data: reviewsData, isLoading } = useListReviews()
   const reviews = Array.isArray(reviewsData) ? reviewsData : []
@@ -181,9 +189,9 @@ function ReviewsSection() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-14"
         >
-          <SectionBadge label="Reviews" />
-          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-3">What people are saying</h2>
-          <p className="text-[#6B5D52]">Real feedback from schools and educators trying REVENEX.</p>
+          <SectionBadge label={siteText("Reviews")} />
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-3">{siteText("What people are saying")}</h2>
+          <p className="text-[#6B5D52]">{siteText("Real feedback from schools and educators trying REVENEX.")}</p>
         </motion.div>
 
         {/* Review cards — floating marquee right to left */}
@@ -215,15 +223,15 @@ function ReviewsSection() {
                       />
                     ))}
                     <span className="ml-auto text-xs text-[#6B5D52]">
-                      {new Date(review.createdAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
+                      {siteText(new Date(review.createdAt).toLocaleDateString('en-IN', { month: 'short', year: 'numeric' }))}
                     </span>
                   </div>
-                  <p className="text-[#3D3128] text-sm leading-relaxed mb-4 italic line-clamp-3">"{review.content}"</p>
+                  <p className="text-[#3D3128] text-sm leading-relaxed mb-4 italic line-clamp-3">"{siteText(review.content)}"</p>
                   <div className="flex items-center gap-2.5">
                     <div className="w-7 h-7 rounded-full gradient-bg flex items-center justify-center text-white text-xs font-black shrink-0">
-                      {review.name ? review.name.charAt(0).toUpperCase() : '?'}
+                      {review.name ? siteText(review.name).charAt(0).toUpperCase() : '?'}
                     </div>
-                    <span className="text-sm font-semibold text-[#1A1410]">{review.name || 'Anonymous'}</span>
+                    <span className="text-sm font-semibold text-[#1A1410]">{siteText(review.name || 'Anonymous')}</span>
                   </div>
                 </div>
               ))}
@@ -236,37 +244,37 @@ function ReviewsSection() {
             className="text-center py-12 mb-12"
           >
             <Star className="h-10 w-10 text-[#8B4513]/30 mx-auto mb-3" />
-            <p className="text-[#6B5D52] font-medium">No reviews yet — be the first to share your experience!</p>
+            <p className="text-[#6B5D52] font-medium">{siteText("No reviews yet — be the first to share your experience!")}</p>
           </motion.div>
         )}
 
-        {mutation.isError && <p role="alert" className="mb-4 text-center text-sm text-red-700">Unable to submit your review. Please try again.</p>}
+        {mutation.isError && <p role="alert" className="mb-4 text-center text-sm text-red-700">{siteText("Unable to submit your review. Please try again.")}</p>}
         {/* Leave a review form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-2xl mx-auto form-card glass-card animated-border rounded-3xl p-8"
         >
-          <h3 className="text-xl font-black text-[#1A1410] mb-1">Leave a review</h3>
-          <p className="text-[#6B5D52] text-sm mb-6">Share your experience with REVENEX.</p>
+          <h3 className="text-xl font-black text-[#1A1410] mb-1">{siteText("Leave a review")}</h3>
+          <p className="text-[#6B5D52] text-sm mb-6">{siteText("Share your experience with REVENEX.")}</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">Your Name *</label>
+                <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">{siteText("Your Name *")}</label>
                 <input
                   type="text"
-                  placeholder="e.g., Rajesh Sharma"
+                  placeholder={siteText("e.g., Rajesh Sharma")}
                   value={form.name}
                   onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                   className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-4 py-3 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">Your Role</label>
+                <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">{siteText("Your Role")}</label>
                 <input
                   type="text"
-                  placeholder="e.g., Principal, Teacher, Admin"
+                  placeholder={siteText("e.g., Principal, Teacher, Admin")}
                   value={form.role}
                   onChange={(e) => setForm((p) => ({ ...p, role: e.target.value }))}
                   className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-4 py-3 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
@@ -275,10 +283,10 @@ function ReviewsSection() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">School / Institution</label>
+              <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">{siteText("School / Institution")}</label>
               <input
                 type="text"
-                placeholder="e.g., Pune Public School"
+                placeholder={siteText("e.g., Pune Public School")}
                 value={form.school}
                 onChange={(e) => setForm((p) => ({ ...p, school: e.target.value }))}
                 className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-4 py-3 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
@@ -286,7 +294,7 @@ function ReviewsSection() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">Rating *</label>
+              <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">{siteText("Rating *")}</label>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((s) => (
                   <button
@@ -307,10 +315,10 @@ function ReviewsSection() {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">Your Review</label>
+              <label className="block text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-2">{siteText("Your Review")}</label>
               <textarea
                 rows={4}
-                placeholder="Share your experience..."
+                placeholder={siteText("Share your experience...")}
                 value={form.content}
                 onChange={(e) => setForm((p) => ({ ...p, content: e.target.value }))}
                 className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-4 py-3 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors resize-none"
@@ -332,12 +340,10 @@ function ReviewsSection() {
                 />
               ) : submitted ? (
                 <>
-                  <CheckCircle2 className="h-4 w-4" /> Review sent for approval!
-                </>
+                  <CheckCircle2 className="h-4 w-4" />{siteText(" Review sent for approval!")}</>
               ) : (
                 <>
-                  <Send className="h-4 w-4" /> Submit Review
-                </>
+                  <Send className="h-4 w-4" />{siteText(" Submit Review")}</>
               )}
             </motion.button>
           </form>
@@ -349,6 +355,7 @@ function ReviewsSection() {
 
 /* ─── Let's Talk section ─── */
 function LetsTalkSection({ language }: { language: string }) {
+  const siteText = useSiteText();
   const [form, setForm] = useState({ name: '', institution: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
@@ -380,11 +387,9 @@ function LetsTalkSection({ language }: { language: string }) {
     <section className="py-20 lg:py-28 border-t border-[#E8E0D4]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <SectionBadge label="Get in Touch" />
-          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl">Let's talk.</h2>
-          <p className="text-[#6B5D52] mt-3 max-w-lg mx-auto">
-            Have a question or want to partner with us? We'd love to hear from you.
-          </p>
+          <SectionBadge label={siteText("Get in Touch")} />
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl">{siteText("Let's talk.")}</h2>
+          <p className="text-[#6B5D52] mt-3 max-w-lg mx-auto">{siteText("Have a question or want to partner with us? We'd love to hear from you.")}</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -413,16 +418,14 @@ function LetsTalkSection({ language }: { language: string }) {
                   <Icon className="h-4.5 w-4.5 text-aqua h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-0.5">{label}</p>
-                  <a href={href} className="text-[#3D3128] hover:text-aqua transition-colors text-sm">{value}</a>
+                  <p className="text-xs font-semibold text-[#6B5D52] uppercase tracking-wider mb-0.5">{siteText(label)}</p>
+                  <a href={href} className="text-[#3D3128] hover:text-aqua transition-colors text-sm">{siteText(value)}</a>
                 </div>
               </div>
             ))}
 
             <div className="pt-4 border-t border-[#E8E0D4] relative z-10">
-              <p className="text-xs text-[#6B5D52] leading-relaxed">
-                We reply to all messages within 24 hours — no auto-replies, real humans.
-              </p>
+              <p className="text-xs text-[#6B5D52] leading-relaxed">{siteText("We reply to all messages within 24 hours — no auto-replies, real humans.")}</p>
             </div>
           </motion.div>
 
@@ -441,26 +444,26 @@ function LetsTalkSection({ language }: { language: string }) {
                 ease: 'linear',
               }}
             />
-            <h3 className="text-lg font-black text-[#1A1410] mb-1 relative z-10">Send Message</h3>
-            <p className="text-[#6B5D52] text-sm mb-6 relative z-10">We'll get back to you within 24 hours.</p>
+            <h3 className="text-lg font-black text-[#1A1410] mb-1 relative z-10">{siteText("Send Message")}</h3>
+            <p className="text-[#6B5D52] text-sm mb-6 relative z-10">{siteText("We'll get back to you within 24 hours.")}</p>
 
             <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">Your Name</label>
+                  <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">{siteText("Your Name")}</label>
                   <input
                     type="text"
-                    placeholder="Rahul Sharma"
+                    placeholder={siteText("Rahul Sharma")}
                     value={form.name}
                     onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                     className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-3 py-2.5 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">Email Address</label>
+                  <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">{siteText("Email Address")}</label>
                   <input
                     type="email"
-                    placeholder="rahul@school.in"
+                    placeholder={siteText("rahul@school.in")}
                     value={form.email}
                     onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                     className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-3 py-2.5 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
@@ -469,10 +472,10 @@ function LetsTalkSection({ language }: { language: string }) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">Institution / School Name</label>
+                <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">{siteText("Institution / School Name")}</label>
                 <input
                   type="text"
-                  placeholder="St. Mary's High School"
+                  placeholder={siteText("St. Mary's High School")}
                   value={form.institution}
                   onChange={(e) => setForm((p) => ({ ...p, institution: e.target.value }))}
                   className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-3 py-2.5 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors"
@@ -480,10 +483,10 @@ function LetsTalkSection({ language }: { language: string }) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">Message</label>
+                <label className="block text-xs font-semibold text-[#6B5D52] mb-1.5">{siteText("Message")}</label>
                 <textarea
                   rows={4}
-                  placeholder="Tell us about your school and what you need..."
+                  placeholder={siteText("Tell us about your school and what you need...")}
                   value={form.message}
                   onChange={(e) => setForm((p) => ({ ...p, message: e.target.value }))}
                   className="w-full bg-[#F0E8DC] border border-[#E8E0D4] rounded-xl px-3 py-2.5 text-[#1A1410] text-sm placeholder:text-[#6B5D52] focus:outline-none focus:border-aqua/40 transition-colors resize-none"
@@ -491,7 +494,7 @@ function LetsTalkSection({ language }: { language: string }) {
               </div>
 
               {error && (
-                <p className="text-red-400 text-xs font-medium">{error}</p>
+                <p className="text-red-400 text-xs font-medium">{siteText(error)}</p>
               )}
 
               <motion.button
@@ -502,11 +505,11 @@ function LetsTalkSection({ language }: { language: string }) {
                 className="w-full gradient-bg text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {sent ? (
-                  <><CheckCircle2 className="h-4 w-4" /> Message sent!</>
+                  <><CheckCircle2 className="h-4 w-4" />{siteText(" Message sent!")}</>
                 ) : isPending ? (
-                  <><Zap className="h-4 w-4 animate-pulse" /> Sending…</>
+                  <><Zap className="h-4 w-4 animate-pulse" />{siteText(" Sending…")}</>
                 ) : (
-                  <><Send className="h-4 w-4" /> Send Message</>
+                  <><Send className="h-4 w-4" />{siteText(" Send Message")}</>
                 )}
               </motion.button>
             </form>
@@ -708,6 +711,7 @@ function StrengthCard({
   onHoverEnd: () => void
   onClick: () => void
 }) {
+  const siteText = useSiteText();
   return (
     <motion.div className={className} onHoverStart={onHoverStart} onHoverEnd={onHoverEnd} onClick={onClick} style={{ cursor: 'pointer', transformStyle: 'preserve-3d' }}>
       <motion.div
@@ -755,8 +759,8 @@ function StrengthCard({
               <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: `linear-gradient(145deg, ${node.accent}45, ${node.accent}14)`, border: `1px solid ${node.accent}50`, boxShadow: 'inset 0 1px 0 rgba(255,246,230,0.2)' }}>
                 <node.icon className="h-4 w-4" style={{ color: node.accent }} />
               </div>
-              <h4 className="text-[14px] font-black text-[#FBF4E8] tracking-tight leading-tight">{node.title}</h4>
-              <p className="text-[11.5px] text-[#E8D6B8] leading-snug">{node.blurb}</p>
+              <h4 className="text-[14px] font-black text-[#FBF4E8] tracking-tight leading-tight">{siteText(node.title)}</h4>
+              <p className="text-[11.5px] text-[#E8D6B8] leading-snug">{siteText(node.blurb)}</p>
             </div>
           </div>
 
@@ -777,7 +781,7 @@ function StrengthCard({
               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shrink-0" style={{ background: `linear-gradient(145deg, ${node.accent}52, ${node.accent}1F)`, border: `1.5px solid ${node.accent}`, boxShadow: `0 0 22px -4px ${node.accent}66` }}>
                 <node.icon className="h-4 w-4 sm:h-5 sm:w-5" style={{ color: node.accent }} />
               </div>
-              <h4 className="mt-2 text-[15px] sm:text-[16px] font-black text-[#FBF4E8] tracking-tight">{node.title}</h4>
+              <h4 className="mt-2 text-[15px] sm:text-[16px] font-black text-[#FBF4E8] tracking-tight">{siteText(node.title)}</h4>
               <div className="mt-1.5 w-8 h-px" style={{ background: `linear-gradient(90deg, transparent, ${node.accent}, transparent)` }} />
             </div>
             <ul className="relative flex-1 flex flex-col justify-center gap-2 py-2.5">
@@ -786,12 +790,11 @@ function StrengthCard({
                   <span className="w-4 h-4 rounded-full flex items-center justify-center shrink-0" style={{ background: `${node.accent}2E`, border: `1px solid ${node.accent}70` }}>
                     <CheckCircle2 className="h-2.5 w-2.5" style={{ color: node.accent }} />
                   </span>
-                  {pt}
+                  {siteText(pt)}
                 </li>
               ))}
             </ul>
-            <Link href={node.href} className="relative w-full rounded-full px-3 py-1.5 sm:py-2 flex items-center justify-center gap-1.5 text-[11.5px] sm:text-[12px] font-black text-[#2A1A0C] hover:brightness-110 transition" style={{ background: 'linear-gradient(140deg, #F0CF9E, #D9AE63)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.55), 0 8px 20px -10px rgba(0,0,0,0.6)' }}>
-              Learn More <ArrowRight className="h-3.5 w-3.5" />
+            <Link href={node.href} className="relative w-full rounded-full px-3 py-1.5 sm:py-2 flex items-center justify-center gap-1.5 text-[11.5px] sm:text-[12px] font-black text-[#2A1A0C] hover:brightness-110 transition" style={{ background: 'linear-gradient(140deg, #F0CF9E, #D9AE63)', boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.55), 0 8px 20px -10px rgba(0,0,0,0.6)' }}>{siteText("Learn More ")}<ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </motion.div>
@@ -801,6 +804,7 @@ function StrengthCard({
 }
 
 function WhyCore({ pulseKey }: { pulseKey: string | null }) {
+  const siteText = useSiteText();
   return (
     <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
       <motion.div
@@ -824,7 +828,7 @@ function WhyCore({ pulseKey }: { pulseKey: string | null }) {
         <div className="absolute inset-0 rounded-full pointer-events-none" style={{ background: 'radial-gradient(72% 72% at 50% 50%, rgba(227,181,129,0.3), transparent 70%)' }} />
         <div className="absolute inset-2 rounded-full pointer-events-none" style={{ border: '1px solid rgba(227,181,129,0.22)' }} />
         <div className="relative flex items-center justify-center px-3">
-          <img src="/brand/mark-dark.svg" alt="REVENEX" className="w-full max-w-[72px] sm:max-w-[88px] md:max-w-[108px] lg:max-w-[128px] h-auto object-contain drop-shadow-[0_4px_14px_rgba(139,69,19,0.18)]" />
+          <img src="/brand/mark-dark.svg" alt={siteText("REVENEX")} className="w-full max-w-[72px] sm:max-w-[88px] md:max-w-[108px] lg:max-w-[128px] h-auto object-contain drop-shadow-[0_4px_14px_rgba(139,69,19,0.18)]" />
         </div>
         <AnimatePresence>
           {pulseKey && (
@@ -859,12 +863,13 @@ function WhyCore({ pulseKey }: { pulseKey: string | null }) {
         ))}
       </motion.div>
 
-      <p className="absolute left-1/2 -bottom-9 -translate-x-1/2 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8B4513]/60 whitespace-nowrap">The Core</p>
+      <p className="absolute left-1/2 -bottom-9 -translate-x-1/2 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#8B4513]/60 whitespace-nowrap">{siteText("The Core")}</p>
     </div>
   )
 }
 
 function WhyRevenexSection({ language }: { language: string }) {
+  const siteText = useSiteText();
   const [hovered, setHovered] = useState<string | null>(null)
   const [pinned, setPinned] = useState<string | null>(null)
 
@@ -906,18 +911,18 @@ function WhyRevenexSection({ language }: { language: string }) {
           viewport={{ once: true }}
           className="text-center mb-10 sm:mb-14"
         >
-          <SectionBadge label="Why REVENEX" />
+          <SectionBadge label={siteText("Why REVENEX")} />
           <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl leading-[1.05] mb-4">
             {language === 'en' ? (
-              <>Built Different.<br className="hidden sm:block" /> <span className="gradient-text">Built for Schools.</span></>
+              <>{siteText("Built Different.")}<br className="hidden sm:block" /> <span className="gradient-text">{siteText("Built for Schools.")}</span></>
             ) : (
               <>अलग तरह से बना।<br className="hidden sm:block" /> <span className="gradient-text">स्कूलों के लिए बना।</span></>
             )}
           </h2>
           <p className="text-[#6B5D52] text-base sm:text-lg max-w-2xl mx-auto">
-            {language === 'en'
+            {siteText(language === 'en'
               ? 'Every strength of REVENEX flows from one unified platform — calm, precise, and built for the way schools actually work.'
-              : 'REVENEX की हर क्षमता एक एकीकृत प्लेटफ़ॉर्म से आती है — शांत, सटीक, और स्कूलों की ज़रूरतों के लिए बनी।'}
+              : 'REVENEX की हर क्षमता एक एकीकृत प्लेटफ़ॉर्म से आती है — शांत, सटीक, और स्कूलों की ज़रूरतों के लिए बनी।')}
           </p>
         </motion.div>
 
@@ -1015,7 +1020,7 @@ function WhyRevenexSection({ language }: { language: string }) {
           </svg>
 
           <WhyCore pulseKey={hovered} />
-          {stageCards}
+          {siteText(stageCards)}
         </div>
 
         <div className="sm:hidden mt-10 space-y-5">
@@ -1041,7 +1046,7 @@ function WhyRevenexSection({ language }: { language: string }) {
           transition={{ delay: 0.4, duration: 0.8 }}
           className="mt-10 text-center text-[11px] font-black uppercase tracking-[0.35em] text-[#8B4513]/60"
         >
-          {language === 'en' ? 'One Platform · One Core · Zero Compromise' : 'एक प्लेटफ़ॉर्म · एक कोर · शून्य समझौता'}
+          {siteText(language === 'en' ? 'One Platform · One Core · Zero Compromise' : 'एक प्लेटफ़ॉर्म · एक कोर · शून्य समझौता')}
         </motion.p>
       </div>
     </section>
@@ -1072,6 +1077,7 @@ function FeatureCard({ title, description, background, character, reverse, chara
   descriptionShiftX?: number;
   aspectRatio?: string;
 }) {
+  const siteText = useSiteText();
   const aspect = aspectRatio || '17 / 9'
   const imgs = useFeatureImages()
   const smoothEase: [number, number, number, number] = [0.33, 0, 0.2, 1]
@@ -1116,7 +1122,7 @@ function FeatureCard({ title, description, background, character, reverse, chara
           {/* Full-size background illustration */}
           <img
             src={imgs ? (imgs[background] ?? background) : undefined}
-            alt=""
+            alt={""}
             className="absolute inset-0 w-full h-full object-cover"
             loading="lazy"
             decoding="async"
@@ -1137,7 +1143,7 @@ function FeatureCard({ title, description, background, character, reverse, chara
         {/* Layer 2 — Character: same canvas as background, rendered exactly on top, never rotates or darkens */}
         <motion.img
           src={imgs ? (imgs[character] ?? character) : undefined}
-          alt=""
+          alt={""}
           className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
           loading="lazy"
           decoding="async"
@@ -1164,14 +1170,14 @@ function FeatureCard({ title, description, background, character, reverse, chara
             className="text-[#2B2017] text-[15px] md:text-base leading-relaxed"
             style={{ fontFamily: "'Playfair Display', Georgia, serif", textShadow: '0 2px 10px rgba(255,255,255,0.9)' }}
           >
-            {description}
+            {siteText(description)}
           </p>
         </motion.div>
       </motion.div>
 
       {/* Title — outside the card, centered below, does not animate with the card */}
       <h3 className="text-center font-bold text-[20px] md:text-[22px] text-[#1A1410] mt-5 md:mt-6 leading-snug">
-        {title}
+        {siteText(title)}
       </h3>
     </div>
   )
@@ -1380,6 +1386,7 @@ function EcosystemBackground({
 
 /* ─── Features section ─── */
 function FeaturesSection({ t }: { t: (key: string) => string }) {
+  const siteText = useSiteText();
   const sectionRef = useRef<HTMLElement | null>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const [nodes, setNodes] = useState<EcoNode[]>([])
@@ -1427,16 +1434,14 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
       <div className="absolute inset-0 section-glow-left pointer-events-none" />
       <div className="absolute inset-0 section-glow-right pointer-events-none" />
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <span className="text-[9rem] sm:text-[13rem] lg:text-[17rem] font-black text-[#1A1410]/[0.03] leading-none whitespace-nowrap tracking-tighter">
-          FEATURES
-        </span>
+        <span className="text-[9rem] sm:text-[13rem] lg:text-[17rem] font-black text-[#1A1410]/[0.03] leading-none whitespace-nowrap tracking-tighter">{siteText("FEATURES")}</span>
       </div>
       <div className="absolute inset-0 noise-overlay pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-20">
-          <SectionBadge label="Features" />
-          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{t('features.title')}</h2>
-          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{t('features.subtitle')}</p>
+          <SectionBadge label={siteText("Features")} />
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{siteText(t('features.title'))}</h2>
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{siteText(t('features.subtitle'))}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-x-14 md:gap-y-16 lg:gap-y-20">
@@ -1455,8 +1460,8 @@ function FeaturesSection({ t }: { t: (key: string) => string }) {
                 transition={{ duration: 0.7, ease: 'easeOut', delay: i * 0.14 }}
               >
                 <FeatureCard
-                  title={feature.title}
-                  description={feature.desc}
+                  title={siteText(feature.title)}
+                  description={siteText(feature.desc)}
                   background={feature.background}
                   character={feature.character}
                   reverse
@@ -1495,20 +1500,19 @@ const problemAfter = [
 ]
 
 function ProblemSection() {
+  const siteText = useSiteText();
   const [afterFlipped, setAfterFlipped] = useState(false)
 
   return (
     <section className="py-20 lg:py-28 relative border-t border-[#E8E0D4] overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <span className="text-[9rem] sm:text-[13rem] lg:text-[17rem] font-black text-[#1A1410]/[0.03] leading-none whitespace-nowrap tracking-tighter">
-          PROBLEM
-        </span>
+        <span className="text-[9rem] sm:text-[13rem] lg:text-[17rem] font-black text-[#1A1410]/[0.03] leading-none whitespace-nowrap tracking-tighter">{siteText("PROBLEM")}</span>
       </div>
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
-          <SectionBadge label="The Problem" />
-          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Running an institution shouldn't feel this hard</h2>
-          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Most schools juggle spreadsheets, paper registers, and disconnected apps. REVENEX brings it all together.</p>
+          <SectionBadge label={siteText("The Problem")} />
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{siteText("Running an institution shouldn't feel this hard")}</h2>
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{siteText("Most schools juggle spreadsheets, paper registers, and disconnected apps. REVENEX brings it all together.")}</p>
         </motion.div>
 
         <div className="relative grid md:grid-cols-2 gap-8 md:gap-0 items-stretch max-w-5xl mx-auto">
@@ -1520,18 +1524,16 @@ function ProblemSection() {
             className="relative z-0 rounded-3xl p-8 md:p-10 md:-mr-6 md:scale-[0.94]"
             style={{ background: 'linear-gradient(155deg, #2A1210 0%, #1A0D0C 100%)', boxShadow: '0 25px 50px -12px rgba(80,10,10,0.35)' }}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/15 text-red-400 text-xs font-bold uppercase tracking-widest mb-7 border border-red-500/25">
-              Before REVENEX
-            </div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-500/15 text-red-400 text-xs font-bold uppercase tracking-widest mb-7 border border-red-500/25">{siteText("Before REVENEX")}</div>
             <ul className="space-y-5">
               {problemBefore.map((item, i) => (
                 <li key={item.text} className="flex items-start gap-4">
                   <span className="shrink-0 w-7 h-7 rounded-full bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-[11px] font-black">
-                    {i + 1}
+                    {siteText(i + 1)}
                   </span>
                   <div className="flex items-start gap-2.5 flex-1">
                     <item.icon className="h-4 w-4 text-red-400/60 mt-0.5 shrink-0" />
-                    <p className="text-white/65 text-sm leading-relaxed">{item.text}</p>
+                    <p className="text-white/65 text-sm leading-relaxed">{siteText(item.text)}</p>
                   </div>
                 </li>
               ))}
@@ -1547,7 +1549,7 @@ function ProblemSection() {
               animate={{ x: [0, 8, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
               className="w-14 h-14 rounded-full gradient-bg flex items-center justify-center shadow-xl border-4 border-[#F5F0E8] cursor-pointer"
-              aria-label="Flip After card"
+              aria-label={siteText("Flip After card")}
             >
               <ArrowRight className="h-6 w-6 text-white" />
             </motion.button>
@@ -1560,7 +1562,7 @@ function ProblemSection() {
               animate={{ y: [0, 6, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
               className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center shadow-xl border-4 border-[#F5F0E8] rotate-90 cursor-pointer"
-              aria-label="Flip After card"
+              aria-label={siteText("Flip After card")}
             >
               <ArrowRight className="h-5 w-5 text-white" />
             </motion.button>
@@ -1598,12 +1600,8 @@ function ProblemSection() {
                   >
                     <span className="text-2xl font-black text-[#7C3D0F]/40">?</span>
                   </motion.div>
-                  <p className="text-[#7C3D0F] text-sm font-bold uppercase tracking-widest mb-3">
-                    With REVENEX
-                  </p>
-                  <p className="px-3 py-1.5 rounded-full bg-[#7C3D0F]/10 border border-[#7C3D0F]/25 text-[#7C3D0F]/90 text-xs font-semibold">
-                    Click the arrow to reveal
-                  </p>
+                  <p className="text-[#7C3D0F] text-sm font-bold uppercase tracking-widest mb-3">{siteText("With REVENEX")}</p>
+                  <p className="px-3 py-1.5 rounded-full bg-[#7C3D0F]/10 border border-[#7C3D0F]/25 text-[#7C3D0F]/90 text-xs font-semibold">{siteText("Click the arrow to reveal")}</p>
                 </div>
               </div>
 
@@ -1618,18 +1616,16 @@ function ProblemSection() {
                   boxShadow: '0 35px 70px -15px rgba(124,61,15,0.28), 0 0 0 1px rgba(124,61,15,0.1)',
                 }}
               >
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7C3D0F] text-white text-xs font-bold uppercase tracking-widest mb-7 shadow-md">
-                  With REVENEX
-                </div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7C3D0F] text-white text-xs font-bold uppercase tracking-widest mb-7 shadow-md">{siteText("With REVENEX")}</div>
                 <ul className="space-y-5">
                   {problemAfter.map((item, i) => (
                     <li key={item.text} className="flex items-start gap-4">
                       <span className="shrink-0 w-7 h-7 rounded-full bg-[#7C3D0F] flex items-center justify-center text-white text-[11px] font-black">
-                        {i + 1}
+                        {siteText(i + 1)}
                       </span>
                       <div className="flex items-start gap-2.5 flex-1">
                         <item.icon className="h-4 w-4 text-[#7C3D0F] mt-0.5 shrink-0" />
-                        <p className="text-[#1A1410] text-sm font-medium leading-relaxed">{item.text}</p>
+                        <p className="text-[#1A1410] text-sm font-medium leading-relaxed">{siteText(item.text)}</p>
                       </div>
                     </li>
                   ))}
@@ -1645,6 +1641,7 @@ function ProblemSection() {
 
 /* ─── Products section (School ERP) ─── */
 function ProductsSection() {
+  const siteText = useSiteText();
   const schoolProduct = {
     label: 'School ERP',
     blurb: 'Everything a K-12 or higher-ed institution needs to run smoothly — from admissions to alumni.',
@@ -1671,13 +1668,13 @@ function ProductsSection() {
     <section id="products" className="py-20 lg:py-28 relative border-t border-[#E8E0D4] scroll-mt-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-10">
-          <SectionBadge label="Products" />
-          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">Empower Your Institution</h2>
-          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">Purpose-built software to digitize and automate all aspects of school operations.</p>
+          <SectionBadge label={siteText("Products")} />
+          <h2 className="text-4xl font-black text-[#1A1410] sm:text-5xl mb-4">{siteText("Empower Your Institution")}</h2>
+          <p className="text-[#6B5D52] text-lg max-w-2xl mx-auto">{siteText("Purpose-built software to digitize and automate all aspects of school operations.")}</p>
         </motion.div>
 
         <p className="text-center text-[#6B5D52] max-w-xl mx-auto mb-12">
-          {schoolProduct.blurb}
+          {siteText(schoolProduct.blurb)}
         </p>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="grid gap-6 sm:grid-cols-3">
@@ -1713,7 +1710,7 @@ function ProductsSection() {
                 />
                 <div className="relative p-8">
                   <span className="absolute top-6 right-6 text-5xl font-black text-[#F0E8DC] opacity-50 pointer-events-none select-none">
-                    {String(i + 1).padStart(2, '0')}
+                    {siteText(String(i + 1).padStart(2, '0'))}
                   </span>
                   <motion.div
                     whileHover={{ rotate: [0, -10, 10, 0] }}
@@ -1723,27 +1720,23 @@ function ProductsSection() {
                   >
                     <card.icon className="h-8 w-8 text-white" />
                   </motion.div>
-                  <h3 className="text-2xl font-bold text-[#1A1410] mb-2">{card.title}</h3>
-                  <p className="text-[#6B5D52] text-sm leading-relaxed mb-6">{card.desc}</p>
+                  <h3 className="text-2xl font-bold text-[#1A1410] mb-2">{siteText(card.title)}</h3>
+                  <p className="text-[#6B5D52] text-sm leading-relaxed mb-6">{siteText(card.desc)}</p>
                   <div className="h-px mb-6" style={{ background: 'linear-gradient(90deg, transparent, #E8E0D4, transparent)' }} />
                   <ul className="mb-6">
                     {card.features.map((f) => (
                       <li key={f} className="group/item flex items-start gap-3 py-2.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#8B4513] mt-2 shrink-0 transition-all duration-200 group-hover/item:w-3 group-hover/item:h-3" />
                         <span className="text-[#3D3128] text-sm font-medium transition-all duration-200 group-hover/item:translate-x-1.5 group-hover/item:text-[#8B4513]">
-                          {f}
+                          {siteText(f)}
                         </span>
                       </li>
                     ))}
                   </ul>
                   <div className="flex items-center justify-between">
-                    <span className="bg-[#F0E8DC] text-[#8B4513] rounded-full px-4 py-2 text-xs font-bold uppercase">
-                      School ERP
-                    </span>
+                    <span className="bg-[#F0E8DC] text-[#8B4513] rounded-full px-4 py-2 text-xs font-bold uppercase">{siteText("School ERP")}</span>
                     <Link href={`/features/${card.slug}`}>
-                      <span className="text-[#8B4513] font-bold text-sm hover:translate-x-1.5 inline-block transition-transform">
-                        Explore →
-                      </span>
+                      <span className="text-[#8B4513] font-bold text-sm hover:translate-x-1.5 inline-block transition-transform">{siteText("Explore →")}</span>
                     </Link>
                   </div>
                 </div>
@@ -1757,6 +1750,7 @@ function ProductsSection() {
 }
 
 export default function Home() {
+  const siteText = useSiteText();
   const { language, t } = useLanguage()
 
   return (
@@ -1778,7 +1772,7 @@ export default function Home() {
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="inline-flex items-center gap-2 mb-8">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-[#8B4513]/20 bg-[#8B4513]/5 backdrop-blur-sm">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#8B4513] animate-pulse" />
-                  <span className="text-xs font-semibold text-[#7C3D0F] tracking-widest uppercase">{t('hero.badge')}</span>
+                  <span className="text-xs font-semibold text-[#7C3D0F] tracking-widest uppercase">{siteText(t('hero.badge'))}</span>
                 </div>
               </motion.div>
 
@@ -1789,9 +1783,9 @@ export default function Home() {
                 className="mb-5 text-[clamp(1.3rem,6.5vw,1.6rem)] min-[600px]:text-[clamp(1.15rem,3.15vw,3.15rem)] font-black leading-[1.08] tracking-[-.045em]"
               >
                 {language === 'en' ? <>
-                  <span className="block whitespace-nowrap text-[#1A1410]">Streamline School</span>
-                  <span className="block whitespace-nowrap text-[#1A1410]">Management <span className="gradient-text">with REVENEX.</span></span>
-                </> : <><span className="block text-[#1A1410]">स्कूल प्रबंधन आसान,</span><span className="block gradient-text">REVENEX के साथ।</span></>}
+                  <span className="block whitespace-nowrap text-[#1A1410]">{siteText("Streamline School")}</span>
+                  <span className="block whitespace-nowrap text-[#1A1410]">{siteText("Management ")}<span className="gradient-text">{siteText("with REVENEX.")}</span></span>
+                </> : <><span className="block text-[#1A1410]">स्कूल प्रबंधन आसान,</span><span className="block gradient-text">{siteText("REVENEX के साथ।")}</span></>}
               </motion.h1>
 
               <motion.p
@@ -1800,7 +1794,7 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.25 }}
                 className="mb-7 max-w-[36rem] text-base min-[600px]:text-xs md:text-sm leading-relaxed text-[#6B5D52] lg:text-[17px]"
               >
-                {language === 'en' ? <><span className="block sm:hidden">Attendance, fees &amp; communication.</span><span className="hidden sm:block">One cloud ERP for attendance, fees and communication.</span><span className="block sm:hidden">Less admin. More school time.</span><span className="hidden sm:block">Less admin. More time for your school.</span></> : 'उपस्थिति, शुल्क और संचार के लिए एक क्लाउड ERP। कम प्रशासनिक काम, स्कूल के लिए ज़्यादा समय।'}
+                {language === 'en' ? <><span className="block sm:hidden">{siteText("Attendance, fees & communication.")}</span><span className="hidden sm:block">{siteText("One cloud ERP for attendance, fees and communication.")}</span><span className="block sm:hidden">{siteText("Less admin. More school time.")}</span><span className="hidden sm:block">{siteText("Less admin. More time for your school.")}</span></> : 'उपस्थिति, शुल्क और संचार के लिए एक क्लाउड ईआरपी। कम प्रशासनिक काम, स्कूल के लिए ज़्यादा समय।'}
               </motion.p>
 
               <motion.div
@@ -1815,7 +1809,7 @@ export default function Home() {
                     whileTap={{ scale: 0.97 }}
                     className="inline-flex items-center justify-center gap-2 gradient-bg text-white font-bold px-8 py-4 min-[600px]:px-3 min-[600px]:text-xs lg:px-8 lg:text-base rounded-2xl text-base transition-all cursor-pointer shadow-lg"
                   >
-                    {t('hero.cta.demo')} <ArrowRight className="h-5 w-5" />
+                    {siteText(t('hero.cta.demo'))} <ArrowRight className="h-5 w-5" />
                   </motion.span>
                 </Link>
                 <Link href="/login">
@@ -1824,7 +1818,7 @@ export default function Home() {
                     whileTap={{ scale: 0.97 }}
                     className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-8 py-4 min-[600px]:px-3 min-[600px]:text-xs lg:px-8 lg:text-base rounded-2xl text-base transition-all hover:bg-[#F0E8DC] cursor-pointer"
                   >
-                    {language === 'en' ? 'Sign In' : 'साइन इन करें'} <ArrowRight className="h-5 w-5 opacity-60" />
+                    {siteText(language === 'en' ? 'Sign In' : 'साइन इन करें')} <ArrowRight className="h-5 w-5 opacity-60" />
                   </motion.span>
                 </Link>
               </motion.div>
@@ -1841,9 +1835,7 @@ export default function Home() {
       {/* ── TECH PARTNERS (white pill badges) ── */}
       <section className="py-10 border-y border-[#E8E0D4] overflow-hidden bg-[#EDE8DC]">
         <div className="mx-auto max-w-7xl px-4 mb-5">
-          <p className="text-center text-[11px] font-black text-[#6B5D52] uppercase tracking-widest">
-            Trusted Partners Powering the REVENEX Platform
-          </p>
+          <p className="text-center text-[11px] font-black text-[#6B5D52] uppercase tracking-widest">{siteText("Trusted Partners Powering the REVENEX Platform")}</p>
         </div>
         <PartnersMarquee />
       </section>

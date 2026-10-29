@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion, Transition, Variants } from 'motion/react';
 import { useMemo, useId, type ElementType } from 'react';
@@ -19,6 +20,7 @@ export function TextMorph({
   variants,
   transition,
 }: TextMorphProps) {
+  const siteText = useSiteText();
   const uniqueId = useId();
   const Tag: ElementType = Component;
 
@@ -64,7 +66,7 @@ export function TextMorph({
             variants={variants || defaultVariants}
             transition={transition || defaultTransition}
           >
-            {character.label}
+            {siteText(character.label)}
           </motion.span>
         ))}
       </AnimatePresence>

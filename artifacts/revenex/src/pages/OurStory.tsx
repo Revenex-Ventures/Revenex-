@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useRef } from 'react'
 import { Link } from 'wouter'
 import { motion, useScroll, useSpring, useInView } from 'framer-motion'
@@ -57,6 +58,7 @@ const timeline = [
 
 /* ─── 3D tilt card for values ─── */
 function TiltCard({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  const siteText = useSiteText();
   const ref = useRef<HTMLDivElement>(null)
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const el = ref.current; if (!el) return
@@ -74,12 +76,13 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
   return (
     <div ref={ref} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave}
       className={className} style={{ willChange: 'transform', transformStyle: 'preserve-3d' }}>
-      {children}
+      {siteText(children)}
     </div>
   )
 }
 
 function ContentBlock({ item, isInView, flip = false }: { item: typeof timeline[0]; isInView: boolean; flip?: boolean }) {
+  const siteText = useSiteText();
   return (
     <div className={`pt-1 ${flip ? 'text-right' : 'text-left'}`}>
       <motion.div animate={isInView ? { opacity: 1 } : { opacity: 0.4 }} className="mb-3">
@@ -87,7 +90,7 @@ function ContentBlock({ item, isInView, flip = false }: { item: typeof timeline[
           className="inline-block text-[11px] font-black tracking-widest px-3 py-1 rounded-full"
           style={{ color: item.color, background: item.color + '18', border: `1px solid ${item.color}30` }}
         >
-          {item.period}
+          {siteText(item.period)}
         </span>
       </motion.div>
       <motion.h3
@@ -96,7 +99,7 @@ function ContentBlock({ item, isInView, flip = false }: { item: typeof timeline[
         className="text-2xl font-black text-[#1A1410] mb-3"
         style={{ color: item.titleEn === 'The Problem' ? item.color : undefined }}
       >
-        {item.titleEn}
+        {siteText(item.titleEn)}
       </motion.h3>
       <motion.p
         animate={isInView ? { opacity: 1 } : { opacity: 0.35 }}
@@ -104,7 +107,7 @@ function ContentBlock({ item, isInView, flip = false }: { item: typeof timeline[
         className="text-[#1A1410]/55 leading-relaxed mb-4 max-w-sm"
         style={{ marginLeft: flip ? 'auto' : undefined }}
       >
-        {item.descEn}
+        {siteText(item.descEn)}
       </motion.p>
       <motion.div
         animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: flip ? 10 : -10 }}
@@ -112,13 +115,14 @@ function ContentBlock({ item, isInView, flip = false }: { item: typeof timeline[
         className={`py-1 ${flip ? 'border-r-2 pr-4' : 'border-l-2 pl-4'}`}
         style={{ borderColor: item.color + '60' }}
       >
-        <p className="text-sm italic" style={{ color: item.color + 'cc' }}>{item.quoteEn}</p>
+        <p className="text-sm italic" style={{ color: item.color + 'cc' }}>{siteText(item.quoteEn)}</p>
       </motion.div>
     </div>
   )
 }
 
 function TimelineItem({ item, index }: { item: typeof timeline[0]; index: number }) {
+  const siteText = useSiteText();
   const ref = useRef(null)
   const isInView = useInView(ref, { once: false, margin: '-15% 0px -15% 0px' })
   const isEven = index % 2 === 0
@@ -145,7 +149,7 @@ function TimelineItem({ item, index }: { item: typeof timeline[0]; index: number
     >
       {/* Mobile layout (linear, icon on left) */}
       <div className="flex gap-8 pb-16 last:pb-0 lg:hidden">
-        <div className="flex-shrink-0">{iconNode}</div>
+        <div className="flex-shrink-0">{siteText(iconNode)}</div>
         <ContentBlock item={item} isInView={isInView} />
       </div>
 
@@ -156,7 +160,7 @@ function TimelineItem({ item, index }: { item: typeof timeline[0]; index: number
           {isEven && <div className="max-w-sm w-full"><ContentBlock item={item} isInView={isInView} flip /></div>}
         </div>
         {/* Center icon */}
-        <div className="flex justify-center pt-1">{iconNode}</div>
+        <div className="flex justify-center pt-1">{siteText(iconNode)}</div>
         {/* Right column */}
         <div className="flex justify-start">
           {!isEven && <div className="max-w-sm w-full"><ContentBlock item={item} isInView={isInView} /></div>}
@@ -167,6 +171,7 @@ function TimelineItem({ item, index }: { item: typeof timeline[0]; index: number
 }
 
 export default function OurStory() {
+  const siteText = useSiteText();
   const { language } = useLanguage()
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -188,15 +193,15 @@ export default function OurStory() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-6">
-              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">Our Story</span>
+              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">{siteText("Our Story")}</span>
             </div>
             <h1 className="text-5xl font-black text-[#1A1410] sm:text-6xl lg:text-7xl mb-6">
-              {language === 'en' ? 'Our Story' : 'हमारी कहानी'}
+              {siteText(language === 'en' ? 'Our Story' : 'हमारी कहानी')}
             </h1>
             <p className="mx-auto max-w-xl text-lg text-[#6B5D52]">
-              {language === 'en'
+              {siteText(language === 'en'
                 ? 'The journey of REVENEX — from idea to platform'
-                : 'REVENEX की यात्रा — विचार से प्लेटफॉर्म तक'}
+                : 'REVENEX की यात्रा — विचार से प्लेटफॉर्म तक')}
             </p>
           </motion.div>
         </div>
@@ -208,18 +213,18 @@ export default function OurStory() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <TiltCard className="glass-card animated-border rounded-3xl p-8 lg:p-10">
               <h2 className="text-2xl font-black text-[#1A1410] mb-5">
-                {language === 'en' ? 'Why We Built REVENEX' : 'हमने REVENEX क्यों बनाया'}
+                {siteText(language === 'en' ? 'Why We Built REVENEX' : 'हमने REVENEX क्यों बनाया')}
               </h2>
               <div className="space-y-4 text-[#3D3128] leading-relaxed text-[15px]">
                 <p>
-                  {language === 'en'
+                  {siteText(language === 'en'
                     ? 'Indian schools were still using paper registers, WhatsApp groups, and broken spreadsheets to run their institutions. Manual attendance, offline fee collection, zero parent visibility.'
-                    : 'भारतीय स्कूल अभी भी कागज़ के रजिस्टर और WhatsApp ग्रुप से चल रहे थे।'}
+                    : 'भारतीय स्कूल अभी भी कागज़ के रजिस्टर और WhatsApp ग्रुप से चल रहे थे।')}
                 </p>
                 <p>
-                  {language === 'en'
+                  {siteText(language === 'en'
                     ? "We believed a single, unified platform — built specifically for Indian schools — could change this. That's why we started in April 2025."
-                    : 'हमने अप्रैल 2025 में REVENEX बनाना शुरू किया।'}
+                    : 'हमने अप्रैल 2025 में REVENEX बनाना शुरू किया।')}
                 </p>
               </div>
             </TiltCard>
@@ -242,10 +247,10 @@ export default function OurStory() {
             className="text-center mb-16"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-4">
-              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">Journey</span>
+              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">{siteText("Journey")}</span>
             </div>
             <h2 className="text-3xl font-black text-[#1A1410] sm:text-4xl">
-              {language === 'en' ? 'From Idea to Reality' : 'विचार से वास्तविकता तक'}
+              {siteText(language === 'en' ? 'From Idea to Reality' : 'विचार से वास्तविकता तक')}
             </h2>
           </motion.div>
 
@@ -282,10 +287,10 @@ export default function OurStory() {
             className="text-center mb-10"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-4">
-              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">Values</span>
+              <span className="text-xs font-black text-[#3D3128] uppercase tracking-widest">{siteText("Values")}</span>
             </div>
             <h2 className="text-3xl font-black text-[#1A1410] sm:text-4xl">
-              {language === 'en' ? 'What Drives Us' : 'हमें क्या प्रेरित करता है'}
+              {siteText(language === 'en' ? 'What Drives Us' : 'हमें क्या प्रेरित करता है')}
             </h2>
           </motion.div>
           <div className="grid gap-5 md:grid-cols-3">
@@ -304,8 +309,8 @@ export default function OurStory() {
                   <div className="mx-auto mb-4 inline-flex rounded-2xl bg-aqua/10 p-4 group-hover:bg-aqua/15 transition-colors">
                     <value.icon className="h-7 w-7 text-aqua" />
                   </div>
-                  <h3 className="text-lg font-bold text-[#1A1410] mb-2">{value.titleEn}</h3>
-                  <p className="text-[#6B5D52] text-sm leading-relaxed">{value.descEn}</p>
+                  <h3 className="text-lg font-bold text-[#1A1410] mb-2">{siteText(value.titleEn)}</h3>
+                  <p className="text-[#6B5D52] text-sm leading-relaxed">{siteText(value.descEn)}</p>
                 </TiltCard>
               </motion.div>
             ))}
@@ -319,14 +324,12 @@ export default function OurStory() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <TiltCard className="glass-card animated-border rounded-3xl p-10 text-center">
               <div className="text-5xl text-aqua mb-4 font-serif leading-none">"</div>
-              <p className="text-lg text-[#1A1410]/65 leading-relaxed italic mb-8">
-                Every school in India deserves world-class tools. REVENEX is our commitment to making that happen.
-              </p>
+              <p className="text-lg text-[#1A1410]/65 leading-relaxed italic mb-8">{siteText("Every school in India deserves world-class tools. REVENEX is our commitment to making that happen.")}</p>
               <div className="flex justify-center gap-10 flex-wrap">
                 {['Rounak Vijay Sute — CEO', 'Rohan Rajendra Raundal — CTO'].map((n) => (
                   <div key={n} className="text-center">
-                    <div className="text-sm font-bold text-aqua">{n.split(' — ')[0]}</div>
-                    <div className="text-xs text-[#6B5D52]">{n.split(' — ')[1]}</div>
+                    <div className="text-sm font-bold text-aqua">{siteText(n.split(' — ')[0])}</div>
+                    <div className="text-xs text-[#6B5D52]">{siteText(n.split(' — ')[1])}</div>
                   </div>
                 ))}
               </div>

@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { BrandLogo } from '@/components/BrandLogo'
 import { apiRequest } from '@/lib/api'
 import { useState } from 'react'
@@ -9,6 +10,7 @@ import { useAuth } from '@/lib/auth-context'
 import StudentHero3D from '@/components/StudentHero3D'
 
 export default function Login() {
+  const siteText = useSiteText();
   const [, navigate] = useLocation()
   const { login } = useAuth()
   const [form, setForm] = useState({ email: '', password: '' })
@@ -93,15 +95,15 @@ export default function Login() {
                 <div className="mx-auto mb-3 w-12 h-12 gradient-bg rounded-2xl flex items-center justify-center shadow-md shadow-[#1A1410]/20">
                   <LogIn className="h-6 w-6 text-white" />
                 </div>
-                <h1 className="text-2xl font-black text-[#1A1410] tracking-tight mb-1">Welcome Back</h1>
-                <p className="text-sm text-[#6B5D52] font-medium">Sign in to your REVENEX account</p>
+                <h1 className="text-2xl font-black text-[#1A1410] tracking-tight mb-1">{siteText("Welcome Back")}</h1>
+                <p className="text-sm text-[#6B5D52] font-medium">{siteText("Sign in to your REVENEX account")}</p>
               </div>
 
               {errors.general && (
                 <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
                   className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-2.5 mb-4">
                   <AlertCircle className="h-4 w-4 text-red-500 shrink-0" />
-                  <p className="text-sm text-red-700 font-medium">{errors.general}</p>
+                  <p className="text-sm text-red-700 font-medium">{siteText(errors.general)}</p>
                 </motion.div>
               )}
 
@@ -110,50 +112,50 @@ export default function Login() {
               <div className="relative my-4">
                 <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[#E8E0D4]" /></div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-3 bg-[#FCFAF7] text-[#6B5D52] font-semibold tracking-wider uppercase">or continue with email</span>
+                  <span className="px-3 bg-[#FCFAF7] text-[#6B5D52] font-semibold tracking-wider uppercase">{siteText("or continue with email")}</span>
                 </div>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">Email Address</label>
+                  <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">{siteText("Email Address")}</label>
                   <div className="relative group">
                     <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#6B5D52] group-focus-within:text-[#7C3D0F] transition-colors" />
-                    <input type="email" placeholder="your@email.com" required autoComplete="email" value={form.email}
+                    <input type="email" placeholder={siteText("your@email.com")} required autoComplete="email" value={form.email}
                       onChange={e => { setForm(f => ({ ...f, email: e.target.value })); setErrors(er => ({ ...er, email: undefined, general: undefined })) }}
                       className={inputClass(errors.email)} />
                   </div>
-                  {errors.email && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{errors.email}</p>}
+                  {errors.email && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{siteText(errors.email)}</p>}
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-1.5">
-                    <label className="text-sm font-bold text-[#3D3128] tracking-wide">Password</label>
-                    <button type="button" onClick={() => { setShowForgot(true); setForgotSuccess(false); setForgotError(''); setForgotEmail('') }} className="text-xs font-bold text-[#7C3D0F] hover:underline transition-all">Forgot password?</button>
+                    <label className="text-sm font-bold text-[#3D3128] tracking-wide">{siteText("Password")}</label>
+                    <button type="button" onClick={() => { setShowForgot(true); setForgotSuccess(false); setForgotError(''); setForgotEmail('') }} className="text-xs font-bold text-[#7C3D0F] hover:underline transition-all">{siteText("Forgot password?")}</button>
                   </div>
                   <div className="relative group">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#6B5D52] group-focus-within:text-[#7C3D0F] transition-colors" />
-                    <input type={showPass ? 'text' : 'password'} placeholder="••••••••" required autoComplete="current-password" value={form.password}
+                    <input type={showPass ? 'text' : 'password'} placeholder={"••••••••"} required autoComplete="current-password" value={form.password}
                       onChange={e => { setForm(f => ({ ...f, password: e.target.value })); setErrors(er => ({ ...er, password: undefined, general: undefined })) }}
                       className={`${inputClass(errors.password)} pr-12`} />
                     <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B5D52] hover:text-[#3D3128] transition-colors">
                       {showPass ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                     </button>
                   </div>
-                  {errors.password && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{errors.password}</p>}
+                  {errors.password && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{siteText(errors.password)}</p>}
                 </div>
 
                 <motion.button type="submit" disabled={loading} whileHover={!loading ? { scale: 1.01, translateY: -1 } : {}} whileTap={!loading ? { scale: 0.99 } : {}}
                   className="w-full gradient-bg text-white font-bold py-3 rounded-2xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed mt-2 shadow-md shadow-[#1A1410]/20 hover:shadow-[#1A1410]/35 transition-all duration-300">
                   {loading ? (
-                    <><motion.div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />Signing in...</>
-                  ) : (<>Sign In <ArrowRight className="h-4 w-4" /></>)}
+                    <><motion.div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />{siteText("Signing in...")}</>
+                  ) : (<>{siteText("Sign In ")}<ArrowRight className="h-4 w-4" /></>)}
                 </motion.button>
               </form>
 
               <div className="mt-6 pt-5 border-t border-[#E8E0D4] text-center">
-                <p className="text-sm text-[#6B5D52] font-medium">Don't have an account?{' '}
-                  <Link href="/signup"><span className="text-[#7C3D0F] font-bold hover:underline cursor-pointer">Create one</span></Link>
+                <p className="text-sm text-[#6B5D52] font-medium">{siteText("Don't have an account?")}{' '}
+                  <Link href="/signup"><span className="text-[#7C3D0F] font-bold hover:underline cursor-pointer">{siteText("Create one")}</span></Link>
                 </p>
               </div>
             </div>
@@ -162,7 +164,7 @@ export default function Login() {
 
         {/* Lower section: Footer link */}
         <div className="text-center">
-          <Link href="/"><span className="text-xs text-[#6B5D52] font-semibold hover:text-[#1A1410] transition-colors cursor-pointer">← Back to home</span></Link>
+          <Link href="/"><span className="text-xs text-[#6B5D52] font-semibold hover:text-[#1A1410] transition-colors cursor-pointer">{siteText("← Back to home")}</span></Link>
         </div>
       </div>
 
@@ -191,34 +193,34 @@ export default function Login() {
               <div className="p-7">
                 <div className="flex justify-between items-start mb-6">
                   <div>
-                    <h2 className="text-lg font-bold text-[#1A1410]">Reset Password</h2>
-                    <p className="text-xs text-[#6B5D52] mt-1">We'll send a reset link to your email</p>
+                    <h2 className="text-lg font-bold text-[#1A1410]">{siteText("Reset Password")}</h2>
+                    <p className="text-xs text-[#6B5D52] mt-1">{siteText("We'll send a reset link to your email")}</p>
                   </div>
                   <button onClick={() => setShowForgot(false)} className="text-[#6B5D52] hover:text-[#1A1410] transition-colors"><X className="h-5 w-5" /></button>
                 </div>
                 {forgotSuccess ? (
                   <div className="flex flex-col items-center gap-4 py-4 text-center">
                     <CheckCircle2 className="h-12 w-12 text-[#7C3D0F]" />
-                    <p className="text-[#1A1410] font-semibold">Reset link sent!</p>
-                    <p className="text-sm text-[#3D3128]">Check your inbox and click the link to reset your password. The link expires in 1 hour.</p>
-                    <button onClick={() => setShowForgot(false)} className="text-xs text-[#7C3D0F] hover:underline mt-2">Close</button>
+                    <p className="text-[#1A1410] font-semibold">{siteText("Reset link sent!")}</p>
+                    <p className="text-sm text-[#3D3128]">{siteText("Check your inbox and click the link to reset your password. The link expires in 1 hour.")}</p>
+                    <button onClick={() => setShowForgot(false)} className="text-xs text-[#7C3D0F] hover:underline mt-2">{siteText("Close")}</button>
                   </div>
                 ) : (
                   <form onSubmit={handleForgotPassword} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-[#3D3128] mb-2">Email Address</label>
+                      <label className="block text-sm font-medium text-[#3D3128] mb-2">{siteText("Email Address")}</label>
                       <div className="relative">
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#6B5D52]" />
-                        <input type="email" placeholder="your@email.com" value={forgotEmail}
+                        <input type="email" placeholder={siteText("your@email.com")} value={forgotEmail}
                           onChange={e => { setForgotEmail(e.target.value); setForgotError('') }}
                           className="w-full rounded-xl border border-[#E8E0D4] bg-[#FCFAF7] pl-10 pr-4 py-3.5 text-[#1A1410] placeholder-[#6B5D52] outline-none focus:border-[#7C3D0F] focus:ring-4 focus:ring-[#7C3D0F]/10 transition-all text-sm" />
                       </div>
-                      {forgotError && <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1"><AlertCircle className="h-3 w-3" />{forgotError}</p>}
+                      {forgotError && <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1"><AlertCircle className="h-3 w-3" />{siteText(forgotError)}</p>}
                     </div>
                     <motion.button type="submit" disabled={forgotLoading} whileHover={!forgotLoading ? { scale: 1.02 } : {}} whileTap={!forgotLoading ? { scale: 0.98 } : {}}
                       className="w-full gradient-bg text-white font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 text-sm disabled:opacity-60">
                       {forgotLoading ? (
-                        <><motion.div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />Sending...</>
+                        <><motion.div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />{siteText("Sending...")}</>
                       ) : 'Send Reset Link'}
                     </motion.button>
                   </form>

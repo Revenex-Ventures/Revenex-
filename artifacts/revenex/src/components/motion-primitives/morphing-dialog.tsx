@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 
 import React, {
   useCallback,
@@ -96,6 +97,7 @@ function MorphingDialogTrigger({
   style,
   triggerRef,
 }: MorphingDialogTriggerProps) {
+  const siteText = useSiteText();
   const { setIsOpen, isOpen, uniqueId } = useMorphingDialog();
 
   const handleClick = useCallback(() => {
@@ -123,7 +125,7 @@ function MorphingDialogTrigger({
       aria-haspopup='dialog'
       aria-expanded={isOpen}
       aria-controls={`motion-ui-morphing-dialog-content-${uniqueId}`}
-      aria-label={`Open dialog ${uniqueId}`}
+      aria-label={siteText(`Open dialog ${uniqueId}`)}
     >
       {children}
     </motion.button>
@@ -357,12 +359,13 @@ function MorphingDialogImage({
   className,
   style,
 }: MorphingDialogImageProps) {
+  const siteText = useSiteText();
   const { uniqueId } = useMorphingDialog();
 
   return (
     <motion.img
       src={src}
-      alt={alt}
+      alt={siteText(alt)}
       className={cn(className)}
       layoutId={`dialog-img-${uniqueId}`}
       style={style}
@@ -385,6 +388,7 @@ function MorphingDialogClose({
   className,
   variants,
 }: MorphingDialogCloseProps) {
+  const siteText = useSiteText();
   const { setIsOpen, uniqueId } = useMorphingDialog();
 
   const handleClose = useCallback(() => {
@@ -395,7 +399,7 @@ function MorphingDialogClose({
     <motion.button
       onClick={handleClose}
       type='button'
-      aria-label='Close dialog'
+      aria-label={siteText("Close dialog")}
       key={`dialog-close-${uniqueId}`}
       className={cn('absolute top-6 right-6', className)}
       initial='initial'

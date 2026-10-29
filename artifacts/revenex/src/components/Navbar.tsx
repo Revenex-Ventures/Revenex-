@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { BrandLogo } from "@/components/BrandLogo";
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
@@ -35,6 +36,7 @@ const productColumns = [
 ];
 
 function ProductsMenu({ closeMobile }: { closeMobile?: () => void }) {
+  const siteText = useSiteText();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const [location, navigate] = useLocation();
@@ -54,9 +56,7 @@ function ProductsMenu({ closeMobile }: { closeMobile?: () => void }) {
         whileHover={{ y: -1 }}
         onClick={() => setOpen((v) => !v)}
         className="flex items-center gap-1 rounded-full px-4 py-2 text-sm font-semibold transition-all duration-200 cursor-pointer text-[#D4C9BD] hover:text-white"
-      >
-        Products
-        <ChevronDown
+      >{siteText("Products")}<ChevronDown
           className={`h-3.5 w-3.5 text-[#D4C9BD] transition-transform ${open ? "rotate-180" : ""}`}
         />
       </motion.button>
@@ -76,7 +76,7 @@ function ProductsMenu({ closeMobile }: { closeMobile?: () => void }) {
                     <col.icon className="h-3.5 w-3.5 text-[#7C3D0F]" />
                   </div>
                   <span className="text-xs font-black uppercase tracking-widest text-[#1A1410]">
-                    {col.title}
+                    {siteText(col.title)}
                   </span>
                 </div>
                 <ul className="space-y-1">
@@ -102,7 +102,7 @@ function ProductsMenu({ closeMobile }: { closeMobile?: () => void }) {
                         }}
                         className="block rounded-lg px-2 py-1.5 text-sm text-[#6B5D52] hover:text-[#1A1410] hover:bg-[#F0E8DC] transition-colors cursor-pointer"
                       >
-                        {it.label}
+                        {siteText(it.label)}
                       </span>
                     </li>
                   ))}
@@ -122,6 +122,7 @@ function scrollToSection(id: string) {
 }
 
 function UserMenu() {
+  const siteText = useSiteText();
   const { user, logout } = useAuth();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -161,10 +162,10 @@ function UserMenu() {
         className="flex items-center gap-2 border border-[#E8E0D4] bg-[#F0E8DC] px-3 py-2 rounded-xl text-sm font-medium text-[#6B5D52] hover:bg-[#F0E8DC] hover:border-[#E8E0D4] transition-all"
       >
         <div className="w-7 h-7 rounded-lg gradient-bg flex items-center justify-center text-white text-xs font-black">
-          {initials}
+          {siteText(initials)}
         </div>
         <span className="max-w-[120px] truncate">
-          {user.name.split(" ")[0]}
+          {siteText(user.name.split(" ")[0])}
         </span>
         <ChevronDown
           className={`h-3.5 w-3.5 text-[#3D3128] transition-transform ${open ? "rotate-180" : ""}`}
@@ -182,10 +183,10 @@ function UserMenu() {
           >
             <div className="px-4 py-3 border-b border-[#E8E0D4]">
               <p className="text-sm font-semibold text-[#1A1410] truncate">
-                {user.name}
+                {siteText(user.name)}
               </p>
               <p className="text-xs text-[#6B5D52] truncate mt-0.5">
-                {user.email}
+                {siteText(user.email)}
               </p>
             </div>
             <div className="py-1">
@@ -195,18 +196,14 @@ function UserMenu() {
                     onClick={() => setOpen(false)}
                     className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-aqua hover:bg-[#F0E8DC] transition-colors text-left"
                   >
-                    <Shield className="h-4 w-4" />
-                    Admin Dashboard
-                  </button>
+                    <Shield className="h-4 w-4" />{siteText("Admin Dashboard")}</button>
                 </Link>
               )}
               <button
                 onClick={() => void handleLogout()}
                 className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-[#3D3128] hover:bg-[#F0E8DC] hover:text-[#1A1410] transition-colors text-left"
               >
-                <LogOut className="h-4 w-4" />
-                Sign Out
-              </button>
+                <LogOut className="h-4 w-4" />{siteText("Sign Out")}</button>
             </div>
           </motion.div>
         )}
@@ -216,6 +213,7 @@ function UserMenu() {
 }
 
 export function Navbar() {
+  const siteText = useSiteText();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
@@ -292,7 +290,7 @@ export function Navbar() {
                       }}
                     />
                   )}
-                  <span className="relative z-10">{navItems[0].label}</span>
+                  <span className="relative z-10">{siteText(navItems[0].label)}</span>
                 </motion.span>
               </Link>
             )}
@@ -305,7 +303,7 @@ export function Navbar() {
                   onClick={item.onClick}
                   className="relative rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-200 cursor-pointer text-[#D4C9BD] hover:text-white"
                 >
-                  {item.label}
+                  {siteText(item.label)}
                 </motion.button>
               ) : (
                 <Link key={item.href} href={item.href}>
@@ -324,7 +322,7 @@ export function Navbar() {
                         }}
                       />
                     )}
-                    <span className="relative z-10">{item.label}</span>
+                    <span className="relative z-10">{siteText(item.label)}</span>
                   </motion.span>
                 </Link>
               ),
@@ -338,11 +336,12 @@ export function Navbar() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setLanguage(language === "en" ? "hi" : "en")}
+              aria-label={language === "en" ? "Switch to Hindi" : "अंग्रेज़ी में बदलें"}
               className="flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-[#D4C9BD] transition-all hover:bg-white/5 hover:text-white border border-white/10"
             >
               <Globe className="h-4 w-4 text-[#E3B581]" />
               <span className="hidden sm:inline font-semibold">
-                {language === "en" ? "EN" : "हिं"}
+                {siteText(language === "en" ? "EN" : "हिं")}
               </span>
             </motion.button>
 
@@ -356,9 +355,7 @@ export function Navbar() {
               >
                 <Link href="/login">
                   <span className="inline-flex items-center gap-1.5 border border-white/10 text-[#D4C9BD] font-semibold px-4 py-2.5 rounded-full text-sm transition-all hover:bg-white/5 hover:text-white cursor-pointer">
-                    <LogIn className="h-3.5 w-3.5 text-[#E3B581]" />
-                    Sign In
-                  </span>
+                    <LogIn className="h-3.5 w-3.5 text-[#E3B581]" />{siteText("Sign In")}</span>
                 </Link>
               </motion.div>
             )}
@@ -369,9 +366,7 @@ export function Navbar() {
               className="hidden sm:block"
             >
               <Link href="/book-demo">
-                <span className="inline-flex items-center gap-2 bg-gradient-to-br from-[#E3B581] to-[#8B4513] text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:brightness-110 cursor-pointer shadow-[0_8px_20px_-8px_rgba(139,69,19,0.9)]">
-                  Get Started
-                  <ArrowRight className="h-4 w-4" />
+                <span className="inline-flex items-center gap-2 bg-gradient-to-br from-[#E3B581] to-[#8B4513] text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all hover:brightness-110 cursor-pointer shadow-[0_8px_20px_-8px_rgba(139,69,19,0.9)]">{siteText("Get Started")}<ArrowRight className="h-4 w-4" />
                 </span>
               </Link>
             </motion.div>
@@ -414,15 +409,13 @@ export function Navbar() {
             >
               <img
                 src="/brand/mark-light.svg"
-                alt="Revenex"
+                alt={siteText("Revenex")}
                 className="h-5 w-6 object-contain"
               />
             </span>
             <span
               className={`text-[8px] font-semibold ${location === "/" ? "text-[#E3B581]" : "text-[#C9BBA9]"}`}
-            >
-              Home
-            </span>
+            >{siteText("Home")}</span>
           </Link>
 
           <button
@@ -432,9 +425,7 @@ export function Navbar() {
             <span className="w-8 h-8 rounded-full flex items-center justify-center text-[#C9BBA9] hover:text-white transition-all">
               <Sparkles className="h-3.5 w-3.5" />
             </span>
-            <span className="text-[8px] font-semibold text-[#C9BBA9]">
-              Features
-            </span>
+            <span className="text-[8px] font-semibold text-[#C9BBA9]">{siteText("Features")}</span>
           </button>
 
           <Link
@@ -444,7 +435,7 @@ export function Navbar() {
             <span className="w-9 h-9 rounded-full bg-gradient-to-br from-[#E3B581] to-[#8B4513] text-white flex items-center justify-center shadow-[0_6px_18px_-4px_rgba(227,181,129,0.55)]">
               <CalendarCheck className="h-4 w-4" />
             </span>
-            <span className="text-[8px] font-bold text-[#E3B581]">Demo</span>
+            <span className="text-[8px] font-bold text-[#E3B581]">{siteText("Demo")}</span>
           </Link>
 
           <Link
@@ -454,9 +445,7 @@ export function Navbar() {
             <span className="w-8 h-8 rounded-full flex items-center justify-center text-[#C9BBA9] hover:text-white transition-all">
               <Mail className="h-3.5 w-3.5" />
             </span>
-            <span className="text-[8px] font-semibold text-[#C9BBA9]">
-              Contact
-            </span>
+            <span className="text-[8px] font-semibold text-[#C9BBA9]">{siteText("Contact")}</span>
           </Link>
 
           <button
@@ -470,9 +459,7 @@ export function Navbar() {
                 <Menu className="h-3.5 w-3.5" />
               )}
             </span>
-            <span className="text-[8px] font-semibold text-[#C9BBA9]">
-              Menu
-            </span>
+            <span className="text-[8px] font-semibold text-[#C9BBA9]">{siteText("Menu")}</span>
           </button>
         </div>
       </nav>
@@ -499,14 +486,14 @@ export function Navbar() {
                       onClick={item.onClick}
                       className="block w-full text-left rounded-xl px-4 py-3 text-base font-medium text-[#E8E0D4] hover:bg-[#2A2119] hover:text-white transition-all"
                     >
-                      {item.label}
+                      {siteText(item.label)}
                     </button>
                   ) : (
                     <Link href={item.href}>
                       <span
                         className={`block rounded-xl px-4 py-3 text-base font-medium transition-all cursor-pointer ${location === item.href ? "bg-[#2A2119] text-[#E3B581] border border-[#3D2810]" : "text-[#E8E0D4] hover:bg-[#2A2119] hover:text-white"}`}
                       >
-                        {item.label}
+                        {siteText(item.label)}
                       </span>
                     </Link>
                   )}
@@ -535,7 +522,7 @@ export function Navbar() {
                             }}
                             className="block rounded-lg px-4 py-2 text-sm text-[#C9BBA9] hover:text-white hover:bg-[#2A2119] transition-colors cursor-pointer"
                           >
-                            {it.label}
+                            {siteText(it.label)}
                           </span>
                         ))}
                     </div>
@@ -551,19 +538,19 @@ export function Navbar() {
                   >
                     <div className="flex items-center gap-3 px-4 py-3 border border-[#3D2810] rounded-xl mb-1">
                       <div className="w-8 h-8 rounded-lg gradient-bg flex items-center justify-center text-white text-xs font-black flex-shrink-0">
-                        {user.name
+                        {siteText(user.name
                           .split(" ")
                           .map((w: string) => w[0])
                           .join("")
                           .slice(0, 2)
-                          .toUpperCase()}
+                          .toUpperCase())}
                       </div>
                       <div className="min-w-0">
                         <p className="text-sm font-semibold text-white truncate">
-                          {user.name}
+                          {siteText(user.name)}
                         </p>
                         <p className="text-xs text-[#C9BBA9] truncate">
-                          {user.email}
+                          {siteText(user.email)}
                         </p>
                       </div>
                     </div>
@@ -579,9 +566,7 @@ export function Navbar() {
                           onClick={() => setIsMobileMenuOpen(false)}
                           className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-[#E3B581] hover:bg-[#2A2119] transition-all cursor-pointer border border-[#3D2810] mb-1"
                         >
-                          <Shield className="h-4 w-4" />
-                          Admin Dashboard
-                        </span>
+                          <Shield className="h-4 w-4" />{siteText("Admin Dashboard")}</span>
                       </Link>
                     </motion.div>
                   )}
@@ -597,9 +582,7 @@ export function Navbar() {
                       }}
                       className="flex items-center gap-2 w-full rounded-xl px-4 py-3 text-base font-medium text-[#E8E0D4] hover:bg-[#2A2119] hover:text-white transition-all"
                     >
-                      <LogOut className="h-4 w-4 text-red-400" />
-                      Sign Out
-                    </button>
+                      <LogOut className="h-4 w-4 text-red-400" />{siteText("Sign Out")}</button>
                   </motion.div>
                 </>
               ) : (
@@ -610,9 +593,7 @@ export function Navbar() {
                 >
                   <Link href="/login">
                     <span className="flex items-center gap-2 rounded-xl px-4 py-3 text-base font-medium text-[#E8E0D4] hover:bg-[#2A2119] hover:text-white transition-all cursor-pointer border border-[#3D2810] mb-2">
-                      <LogIn className="h-4 w-4 text-[#E3B581]" />
-                      Sign In
-                    </span>
+                      <LogIn className="h-4 w-4 text-[#E3B581]" />{siteText("Sign In")}</span>
                   </Link>
                 </motion.div>
               )}
@@ -623,9 +604,7 @@ export function Navbar() {
                 className="pt-1"
               >
                 <Link href="/book-demo">
-                  <span className="block bg-[#F5F0E8] text-[#1A1410] font-bold px-4 py-3 rounded-xl text-center cursor-pointer">
-                    Get Started →
-                  </span>
+                  <span className="block bg-[#F5F0E8] text-[#1A1410] font-bold px-4 py-3 rounded-xl text-center cursor-pointer">{siteText("Get Started →")}</span>
                 </Link>
               </motion.div>
             </div>

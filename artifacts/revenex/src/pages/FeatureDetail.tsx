@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useParams, Link } from 'wouter'
 import { motion } from 'framer-motion'
 import { ArrowLeft, CheckCircle2, ArrowRight, Server, Sparkles, Globe2, Zap, Shield, Users, CreditCard, Bell, Calendar, BarChart3, BookOpen, Cloud } from 'lucide-react'
@@ -325,6 +326,7 @@ const moduleData: Record<string, {
 }
 
 export default function FeatureDetail() {
+  const siteText = useSiteText();
   const params = useParams<{ slug: string }>()
   const slug = params.slug ?? ''
 
@@ -335,9 +337,9 @@ export default function FeatureDetail() {
       <main className="min-h-screen flex items-center justify-center">
         <Navbar />
         <div className="text-center pt-32">
-          <h1 className="text-3xl font-black text-[#1A1410] mb-4">Feature Not Found</h1>
+          <h1 className="text-3xl font-black text-[#1A1410] mb-4">{siteText("Feature Not Found")}</h1>
           <Link href="/">
-            <span className="text-aqua hover:underline cursor-pointer">← Back to home</span>
+            <span className="text-aqua hover:underline cursor-pointer">{siteText("← Back to home")}</span>
           </Link>
         </div>
       </main>
@@ -361,8 +363,7 @@ export default function FeatureDetail() {
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <Link href="/">
               <motion.span whileHover={{ x: -3 }} className="inline-flex items-center gap-2 text-sm text-[#6B5D52] hover:text-[#1A1410] transition-colors cursor-pointer mb-8">
-                <ArrowLeft className="h-4 w-4" /> Back to home
-              </motion.span>
+                <ArrowLeft className="h-4 w-4" />{siteText(" Back to home")}</motion.span>
             </Link>
 
             <div className="flex items-center gap-3 mb-6">
@@ -370,14 +371,14 @@ export default function FeatureDetail() {
                 <Icon className="h-7 w-7" style={{ color: data.color }} />
               </div>
               <span className="text-xs font-black uppercase tracking-widest px-3 py-1.5 rounded-full" style={{ color: data.color, background: `${data.color}14`, border: `1px solid ${data.color}25` }}>
-                {data.badge}
+                {siteText(data.badge)}
               </span>
             </div>
 
             <h1 className="text-4xl font-black text-[#1A1410] sm:text-5xl lg:text-6xl mb-6 leading-tight">
-              {data.title}
+              {siteText(data.title)}
             </h1>
-            <p className="text-xl text-[#3D3128] leading-relaxed max-w-2xl">{data.subtitle}</p>
+            <p className="text-xl text-[#3D3128] leading-relaxed max-w-2xl">{siteText(data.subtitle)}</p>
           </motion.div>
         </div>
       </section>
@@ -389,8 +390,8 @@ export default function FeatureDetail() {
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
               {full.stats.map((stat, i) => (
                 <motion.div key={stat.label} initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }} className="text-center">
-                  <div className="text-3xl font-black mb-1" style={{ color: full.color }}>{stat.value}</div>
-                  <div className="text-sm text-[#6B5D52]">{stat.label}</div>
+                  <div className="text-3xl font-black mb-1" style={{ color: full.color }}>{siteText(stat.value)}</div>
+                  <div className="text-sm text-[#6B5D52]">{siteText(stat.label)}</div>
                 </motion.div>
               ))}
             </div>
@@ -410,14 +411,14 @@ export default function FeatureDetail() {
               className="glass-card rounded-3xl p-8 lg:p-10"
               style={{ border: `1px solid ${full.color}18` }}
             >
-              <h2 className="text-2xl font-black text-[#1A1410] mb-4">{section.heading}</h2>
-              <p className="text-[#1A1410]/55 leading-relaxed mb-6">{section.body}</p>
+              <h2 className="text-2xl font-black text-[#1A1410] mb-4">{siteText(section.heading)}</h2>
+              <p className="text-[#1A1410]/55 leading-relaxed mb-6">{siteText(section.body)}</p>
               {section.points && (
                 <div className="grid gap-3 sm:grid-cols-2">
                   {section.points.map((point, j) => (
                     <div key={point} className="flex items-start gap-3">
                       <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" style={{ color: full.color }} />
-                      <span className="text-sm text-[#1A1410]/65">{point}</span>
+                      <span className="text-sm text-[#1A1410]/65">{siteText(point)}</span>
                     </div>
                   ))}
                 </div>
@@ -427,13 +428,13 @@ export default function FeatureDetail() {
 
           {mod && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card rounded-3xl p-8 lg:p-10" style={{ border: `1px solid ${mod.color}18` }}>
-              <h2 className="text-2xl font-black text-[#1A1410] mb-4">What's Included</h2>
-              <p className="text-[#1A1410]/55 leading-relaxed mb-6">{mod.desc}</p>
+              <h2 className="text-2xl font-black text-[#1A1410] mb-4">{siteText("What's Included")}</h2>
+              <p className="text-[#1A1410]/55 leading-relaxed mb-6">{siteText(mod.desc)}</p>
               <div className="grid gap-3 sm:grid-cols-2">
                 {mod.points.map((point, j) => (
                   <div key={point} className="flex items-start gap-3">
                     <CheckCircle2 className="h-4 w-4 mt-0.5 shrink-0" style={{ color: mod.color }} />
-                    <span className="text-sm text-[#1A1410]/65">{point}</span>
+                    <span className="text-sm text-[#1A1410]/65">{siteText(point)}</span>
                   </div>
                 ))}
               </div>

@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useToast } from "@/hooks/use-toast"
 import {
   Toast,
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/toast"
 
 export function Toaster() {
+  const siteText = useSiteText();
   const { toasts } = useToast()
 
   return (
@@ -17,12 +19,12 @@ export function Toaster() {
         return (
           <Toast key={id} {...props}>
             <div className="grid gap-1">
-              {title && <ToastTitle>{title}</ToastTitle>}
+              {title && <ToastTitle>{siteText(title)}</ToastTitle>}
               {description && (
-                <ToastDescription>{description}</ToastDescription>
+                <ToastDescription>{siteText(description)}</ToastDescription>
               )}
             </div>
-            {action}
+            {siteText(action)}
             <ToastClose />
           </Toast>
         )

@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
@@ -129,6 +130,7 @@ const ChartTooltipContent = React.forwardRef<
     },
     ref
   ) => {
+  const siteText = useSiteText();
     const { config } = useChart()
 
     const tooltipLabel = React.useMemo(() => {
@@ -147,7 +149,7 @@ const ChartTooltipContent = React.forwardRef<
       if (labelFormatter) {
         return (
           <div className={cn("font-medium", labelClassName)}>
-            {labelFormatter(value, payload)}
+            {siteText(labelFormatter(value, payload))}
           </div>
         )
       }
@@ -156,7 +158,7 @@ const ChartTooltipContent = React.forwardRef<
         return null
       }
 
-      return <div className={cn("font-medium", labelClassName)}>{value}</div>
+      return <div className={cn("font-medium", labelClassName)}>{siteText(value)}</div>
     }, [
       label,
       labelFormatter,
@@ -181,7 +183,7 @@ const ChartTooltipContent = React.forwardRef<
           className
         )}
       >
-        {!nestLabel ? tooltipLabel : null}
+        {siteText(!nestLabel ? tooltipLabel : null)}
         <div className="grid gap-1.5">
           {payload
             .filter((item) => item.type !== "none")
@@ -233,14 +235,14 @@ const ChartTooltipContent = React.forwardRef<
                         )}
                       >
                         <div className="grid gap-1.5">
-                          {nestLabel ? tooltipLabel : null}
+                          {siteText(nestLabel ? tooltipLabel : null)}
                           <span className="text-muted-foreground">
-                            {itemConfig?.label || item.name}
+                            {siteText(itemConfig?.label || item.name)}
                           </span>
                         </div>
                         {item.value && (
                           <span className="font-mono font-medium tabular-nums text-foreground">
-                            {item.value.toLocaleString()}
+                            {siteText(item.value.toLocaleString())}
                           </span>
                         )}
                       </div>
@@ -270,6 +272,7 @@ const ChartLegendContent = React.forwardRef<
     { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
     ref
   ) => {
+  const siteText = useSiteText();
     const { config } = useChart()
 
     if (!payload?.length) {
@@ -308,7 +311,7 @@ const ChartLegendContent = React.forwardRef<
                     }}
                   />
                 )}
-                {itemConfig?.label}
+                {siteText(itemConfig?.label)}
               </div>
             )
           })}

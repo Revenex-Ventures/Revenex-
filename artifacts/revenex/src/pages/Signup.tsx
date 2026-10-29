@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { BrandLogo } from '@/components/BrandLogo'
 import { apiRequest } from '@/lib/api'
 import { useState } from 'react'
@@ -9,6 +10,7 @@ import { useAuth } from '@/lib/auth-context'
 import StudentHero3D from '@/components/StudentHero3D'
 
 export default function Signup() {
+  const siteText = useSiteText();
   const [, navigate] = useLocation()
   const { login } = useAuth()
   const [form, setForm] = useState({ name: '', email: '', phone: '', school: '', password: '', confirm: '' })
@@ -76,9 +78,9 @@ export default function Signup() {
         <div className="w-20 h-20 gradient-bg rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-[#1A1410]/20">
           <CheckCircle2 className="h-10 w-10 text-white" />
         </div>
-        <h1 className="text-2xl font-black text-[#1A1410] mb-2">Welcome, {googleName.split(' ')[0]}!</h1>
-        <p className="text-[#3D3128] text-sm mb-2 font-medium">Your account has been created successfully.</p>
-        <p className="text-[#6B5D52] text-xs font-semibold">Redirecting you home...</p>
+        <h1 className="text-2xl font-black text-[#1A1410] mb-2">{siteText("Welcome, ")}{siteText(googleName.split(' ')[0])}!</h1>
+        <p className="text-[#3D3128] text-sm mb-2 font-medium">{siteText("Your account has been created successfully.")}</p>
+        <p className="text-[#6B5D52] text-xs font-semibold">{siteText("Redirecting you home...")}</p>
       </motion.div>
     </main>
   )
@@ -114,15 +116,15 @@ export default function Signup() {
                 <div className="mx-auto mb-3 w-12 h-12 gradient-bg rounded-2xl flex items-center justify-center shadow-md shadow-[#1A1410]/20">
                   <UserPlus className="h-6 w-6 text-white" />
                 </div>
-                <h1 className="text-2xl sm:text-3xl font-black text-[#1A1410] tracking-tight mb-1">Create Account</h1>
-                <p className="text-sm text-[#6B5D52] font-medium">Join REVENEX — India's School ERP Platform</p>
+                <h1 className="text-2xl sm:text-3xl font-black text-[#1A1410] tracking-tight mb-1">{siteText("Create Account")}</h1>
+                <p className="text-sm text-[#6B5D52] font-medium">{siteText("Join REVENEX — India's School ERP Platform")}</p>
               </div>
 
               {(errors as { general?: string }).general && (
                 <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
                   className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-2.5 mb-4">
                   <AlertCircle className="h-4 w-4 text-red-500 shrink-0" />
-                  <p className="text-sm text-red-700 font-medium">{(errors as { general?: string }).general}</p>
+                  <p className="text-sm text-red-700 font-medium">{siteText((errors as { general?: string }).general)}</p>
                 </motion.div>
               )}
 
@@ -131,7 +133,7 @@ export default function Signup() {
               <div className="relative my-4">
                 <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[#E8E0D4]" /></div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-3 bg-[#FCFAF7] text-[#6B5D52] font-semibold tracking-wider uppercase">or sign up with email</span>
+                  <span className="px-3 bg-[#FCFAF7] text-[#6B5D52] font-semibold tracking-wider uppercase">{siteText("or sign up with email")}</span>
                 </div>
               </div>
 
@@ -139,58 +141,58 @@ export default function Signup() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Full Name */}
                   <div>
-                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">Full Name</label>
+                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">{siteText("Full Name")}</label>
                     <div className="relative group">
                       <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#6B5D52] group-focus-within:text-[#7C3D0F] transition-colors" />
-                      <input type="text" placeholder="Your full name" required autoComplete="name"
+                      <input type="text" placeholder={siteText("Your full name")} required autoComplete="name"
                         value={form.name} onChange={set('name')}
                         className={inputClass(errors.name)} />
                     </div>
-                    {errors.name && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{errors.name}</p>}
+                    {errors.name && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{siteText(errors.name)}</p>}
                   </div>
 
                   {/* Email Address */}
                   <div>
-                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">Email Address</label>
+                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">{siteText("Email Address")}</label>
                     <div className="relative group">
                       <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#6B5D52] group-focus-within:text-[#7C3D0F] transition-colors" />
-                      <input type="email" placeholder="your@email.com" required autoComplete="email"
+                      <input type="email" placeholder={siteText("your@email.com")} required autoComplete="email"
                         value={form.email} onChange={set('email')}
                         className={inputClass(errors.email)} />
                     </div>
-                    {errors.email && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{errors.email}</p>}
+                    {errors.email && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{siteText(errors.email)}</p>}
                   </div>
 
                   {/* Mobile Number */}
                   <div>
-                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">Mobile Number</label>
+                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">{siteText("Mobile Number")}</label>
                     <div className="relative group">
                       <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#6B5D52] group-focus-within:text-[#7C3D0F] transition-colors" />
-                      <input type="tel" placeholder="9XXXXXXXXX" required autoComplete="tel"
+                      <input type="tel" placeholder={siteText("9XXXXXXXXX")} required autoComplete="tel"
                         value={form.phone} onChange={set('phone')}
                         className={inputClass(errors.phone)} />
                     </div>
-                    {errors.phone && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{errors.phone}</p>}
+                    {errors.phone && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{siteText(errors.phone)}</p>}
                   </div>
 
                   {/* School / Institution */}
                   <div>
-                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">School / Institution</label>
+                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">{siteText("School / Institution")}</label>
                     <div className="relative group">
                       <Building2 className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#6B5D52] group-focus-within:text-[#7C3D0F] transition-colors" />
-                      <input type="text" placeholder="Name of institution" required autoComplete="organization"
+                      <input type="text" placeholder={siteText("Name of institution")} required autoComplete="organization"
                         value={form.school} onChange={set('school')}
                         className={inputClass(errors.school)} />
                     </div>
-                    {errors.school && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{errors.school}</p>}
+                    {errors.school && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{siteText(errors.school)}</p>}
                   </div>
 
                   {/* Password */}
                   <div>
-                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">Password</label>
+                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">{siteText("Password")}</label>
                     <div className="relative group">
                       <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#6B5D52] group-focus-within:text-[#7C3D0F] transition-colors" />
-                      <input type={showPass ? 'text' : 'password'} placeholder="Min. 8 characters" required autoComplete="new-password" value={form.password}
+                      <input type={showPass ? 'text' : 'password'} placeholder={siteText("Min. 8 characters")} required autoComplete="new-password" value={form.password}
                         onChange={e => { setForm(f => ({ ...f, password: e.target.value })); setErrors(er => ({ ...er, password: undefined })) }}
                         className={`${inputClass(errors.password)} pr-12`} />
                       <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B5D52] hover:text-[#3D3128] transition-colors">
@@ -202,39 +204,39 @@ export default function Signup() {
                         <div className="flex-1 h-1.5 bg-[#E8E0D4] rounded-full overflow-hidden">
                           <div className={`h-full rounded-full transition-all ${strength.color} ${strength.width}`} />
                         </div>
-                        <span className="text-xs font-semibold text-[#6B5D52]">{strength.label}</span>
+                        <span className="text-xs font-semibold text-[#6B5D52]">{siteText(strength.label)}</span>
                       </div>
                     )}
-                    {errors.password && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{errors.password}</p>}
+                    {errors.password && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{siteText(errors.password)}</p>}
                   </div>
 
                   {/* Confirm Password */}
                   <div>
-                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">Confirm Password</label>
+                    <label className="block text-sm font-bold text-[#3D3128] mb-1.5 tracking-wide">{siteText("Confirm Password")}</label>
                     <div className="relative group">
                       <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-[#6B5D52] group-focus-within:text-[#7C3D0F] transition-colors" />
-                      <input type={showConfirm ? 'text' : 'password'} placeholder="Re-enter password" required autoComplete="new-password" value={form.confirm}
+                      <input type={showConfirm ? 'text' : 'password'} placeholder={siteText("Re-enter password")} required autoComplete="new-password" value={form.confirm}
                         onChange={e => { setForm(f => ({ ...f, confirm: e.target.value })); setErrors(er => ({ ...er, confirm: undefined })) }}
                         className={`${inputClass(errors.confirm)} pr-12`} />
                       <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#6B5D52] hover:text-[#3D3128] transition-colors">
                         {showConfirm ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                       </button>
                     </div>
-                    {errors.confirm && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{errors.confirm}</p>}
+                    {errors.confirm && <p className="text-xs text-red-500 mt-1 flex items-center gap-1 font-medium"><AlertCircle className="h-3 w-3" />{siteText(errors.confirm)}</p>}
                   </div>
                 </div>
 
                 <motion.button type="submit" disabled={loading} whileHover={!loading ? { scale: 1.01, translateY: -1 } : {}} whileTap={!loading ? { scale: 0.99 } : {}}
                   className="w-full gradient-bg text-white font-bold py-3 rounded-2xl flex items-center justify-center gap-2 text-sm disabled:opacity-60 disabled:cursor-not-allowed mt-2 shadow-md shadow-[#1A1410]/20 hover:shadow-[#1A1410]/35 transition-all duration-300">
                   {loading ? (
-                    <><motion.div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />Creating Account...</>
-                  ) : (<>Create Account<ArrowRight className="h-4 w-4" /></>)}
+                    <><motion.div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full" animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }} />{siteText("Creating Account...")}</>
+                  ) : (<>{siteText("Create Account")}<ArrowRight className="h-4 w-4" /></>)}
                 </motion.button>
               </form>
 
               <div className="mt-6 pt-5 border-t border-[#E8E0D4] text-center">
-                <p className="text-sm text-[#6B5D52] font-medium">Already have an account?{' '}
-                  <Link href="/login"><span className="text-[#7C3D0F] font-bold hover:underline cursor-pointer">Sign in</span></Link>
+                <p className="text-sm text-[#6B5D52] font-medium">{siteText("Already have an account?")}{' '}
+                  <Link href="/login"><span className="text-[#7C3D0F] font-bold hover:underline cursor-pointer">{siteText("Sign in")}</span></Link>
                 </p>
               </div>
             </div>
@@ -243,7 +245,7 @@ export default function Signup() {
 
         {/* Lower section: Footer link */}
         <div className="text-center">
-          <Link href="/"><span className="text-xs text-[#6B5D52] font-semibold hover:text-[#1A1410] transition-colors cursor-pointer">← Back to home</span></Link>
+          <Link href="/"><span className="text-xs text-[#6B5D52] font-semibold hover:text-[#1A1410] transition-colors cursor-pointer">{siteText("← Back to home")}</span></Link>
         </div>
       </div>
 

@@ -8,8 +8,9 @@ const output = path.resolve("tests/.build");
 await mkdir(output, { recursive: true });
 try {
   await build({
-    entryPoints: ["tests/api.test.ts"],
-    outfile: path.join(output, "api.test.mjs"),
+    entryPoints: ["tests/api.test.ts", "tests/gemini.test.ts", "tests/hindi-text.test.ts"],
+    outdir: output,
+    outExtension: { ".js": ".mjs" },
     bundle: true,
     platform: "node",
     format: "esm",
@@ -38,7 +39,7 @@ try {
   });
   const result = spawnSync(
     process.execPath,
-    ["--test", path.join(output, "api.test.mjs")],
+    ["--test", ...["api.test.mjs", "gemini.test.mjs", "hindi-text.test.mjs"].map(file => path.join(output, file))],
     {
       stdio: "inherit",
       env: {
@@ -50,6 +51,8 @@ try {
         GOOGLE_CLIENT_ID: "test-client.apps.googleusercontent.com",
         RESEND_API_KEY: "test-email-key",
         CHAT_MODE: "ai",
+        CHAT_PROVIDER: "openrouter",
+        GEMINI_API_KEY: "",
         OPENROUTER_API_KEY: "test-ai-key",
         OPENROUTER_MODELS: "test/primary,test/fallback",
         APP_URL: "http://localhost:5173",

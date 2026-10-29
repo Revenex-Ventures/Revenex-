@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { BrandLogo } from '@/components/BrandLogo'
 import { useState, useEffect } from 'react'
 import { Link } from 'wouter'
@@ -109,6 +110,7 @@ const content = {
 }
 
 export default function About() {
+  const siteText = useSiteText();
   const { language } = useLanguage()
   const tCopy = content[language] || content.en
   const [activeTab, setActiveTab] = useState(0)
@@ -139,17 +141,17 @@ export default function About() {
       preview: (
         <div className="space-y-6">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-[10px] font-black tracking-widest text-[#FF453A] uppercase">LIVE STREAM: GATE ENTRY SCANS</span>
+            <span className="text-[10px] font-black tracking-widest text-[#FF453A] uppercase">{siteText("LIVE STREAM: GATE ENTRY SCANS")}</span>
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-[9px] text-green-400 font-bold">ONLINE</span>
+              <span className="text-[9px] text-green-400 font-bold">{siteText("ONLINE")}</span>
             </div>
           </div>
           
           <div className="grid md:grid-cols-12 gap-6 items-stretch">
             {/* Live scans list */}
             <div className="md:col-span-7 bg-[#1C1612] border border-white/5 rounded-2xl p-4 space-y-3">
-              <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block mb-1">Recent check-ins</span>
+              <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block mb-1">{siteText("Recent check-ins")}</span>
               <div className="space-y-2">
                 {[
                   { name: "Rohan Raundal", class: "Class X-A", time: "07:28 AM", status: "On Time", statusColor: "text-green-400" },
@@ -159,16 +161,16 @@ export default function About() {
                   <div key={i} className="flex justify-between items-center bg-black/30 p-2.5 rounded-lg border border-white/5 text-[10px]">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-[#FF453A]/10 border border-[#FF453A]/20 flex items-center justify-center font-bold text-white text-[8px]">
-                        {s.name.split(' ').map(n => n[0]).join('')}
+                        {siteText(s.name.split(' ').map(n => n[0]).join(''))}
                       </div>
                       <div>
-                        <div className="font-bold text-white">{s.name}</div>
-                        <div className="text-[8px] text-white/40">{s.class}</div>
+                        <div className="font-bold text-white">{siteText(s.name)}</div>
+                        <div className="text-[8px] text-white/40">{siteText(s.class)}</div>
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-white/60 font-mono">{s.time}</div>
-                      <div className={`text-[8px] font-bold ${s.statusColor}`}>{s.status}</div>
+                      <div className="text-white/60 font-mono">{siteText(s.time)}</div>
+                      <div className={`text-[8px] font-bold ${s.statusColor}`}>{siteText(s.status)}</div>
                     </div>
                   </div>
                 ))}
@@ -178,21 +180,18 @@ export default function About() {
             {/* WhatsApp notification simulation */}
             <div className="md:col-span-5 flex flex-col justify-between bg-[#0B141A] border border-emerald-950/30 rounded-2xl p-4 shadow-lg text-left">
               <div className="flex items-center justify-between pb-2 border-b border-emerald-950/50">
-                <span className="text-[8px] text-emerald-400 font-black tracking-widest uppercase">WhatsApp Gateway</span>
-                <span className="text-[7px] text-emerald-400 font-semibold bg-emerald-950 px-1.5 py-0.5 rounded-full border border-emerald-900/30">DISPATCHED</span>
+                <span className="text-[8px] text-emerald-400 font-black tracking-widest uppercase">{siteText("WhatsApp Gateway")}</span>
+                <span className="text-[7px] text-emerald-400 font-semibold bg-emerald-950 px-1.5 py-0.5 rounded-full border border-emerald-900/30">{siteText("DISPATCHED")}</span>
               </div>
               <div className="flex-1 flex flex-col justify-center py-4">
                 <div className="bg-[#1F2C34] text-white p-3 rounded-lg rounded-tl-none border border-[#2b3941] text-[10px] space-y-1.5 max-w-[180px] self-start relative">
-                  <div className="text-[7px] text-emerald-400 font-bold">REVENEX ALERTS</div>
-                  <p className="leading-relaxed text-white/90">
-                    "Dear Parent, <b>Rohan</b> has scanned in at the school gate at <b>07:28 AM</b>. Status: <b>Present</b>."
+                  <div className="text-[7px] text-emerald-400 font-bold">{siteText("REVENEX ALERTS")}</div>
+                  <p className="leading-relaxed text-white/90">{siteText("\"Dear Parent, ")}<b>{siteText("Rohan")}</b>{siteText(" has scanned in at the school gate at ")}<b>{siteText("07:28 AM")}</b>{siteText(". Status: ")}<b>{siteText("Present")}</b>."
                   </p>
-                  <span className="text-[6px] text-white/30 text-right block font-mono">07:28 AM</span>
+                  <span className="text-[6px] text-white/30 text-right block font-mono">{siteText("07:28 AM")}</span>
                 </div>
               </div>
-              <p className="text-[8px] text-white/30 italic">
-                * Automatic alerts sent to parents' verified mobile numbers instantly.
-              </p>
+              <p className="text-[8px] text-white/30 italic">{siteText("* Automatic alerts sent to parents' verified mobile numbers instantly.")}</p>
             </div>
           </div>
         </div>
@@ -223,37 +222,35 @@ export default function About() {
       preview: (
         <div className="space-y-6">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-[10px] font-black tracking-widest text-[#FF453A] uppercase">ADMISSIONS PIPELINE & GEMINI OCR</span>
-            <span className="text-purple-400 text-xs font-bold">✨ AI ACTIVE</span>
+            <span className="text-[10px] font-black tracking-widest text-[#FF453A] uppercase">{siteText("ADMISSIONS PIPELINE & GEMINI OCR")}</span>
+            <span className="text-purple-400 text-xs font-bold">{siteText("✨ AI ACTIVE")}</span>
           </div>
 
           <div className="grid md:grid-cols-12 gap-6 items-stretch">
             {/* Input scan file simulation */}
             <div className="md:col-span-5 bg-[#1C1612] border border-white/5 rounded-2xl p-4 flex flex-col justify-between text-left">
               <div>
-                <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block mb-2">Uploaded Document</span>
+                <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block mb-2">{siteText("Uploaded Document")}</span>
                 <div className="bg-black/50 border border-white/10 p-3 rounded-xl flex items-center gap-2.5 mb-3">
                   <div className="w-9 h-9 rounded-lg bg-red-950/40 border border-red-900/30 flex items-center justify-center text-red-500">
-                    <span className="font-bold text-xs">PDF</span>
+                    <span className="font-bold text-xs">{siteText("PDF")}</span>
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="text-[10px] font-bold text-white truncate">Birth_Certificate.pdf</div>
-                    <div className="text-[8px] text-white/40">1.4 MB • Uploaded today</div>
+                    <div className="text-[10px] font-bold text-white truncate">{siteText("Birth_Certificate.pdf")}</div>
+                    <div className="text-[8px] text-white/40">{siteText("1.4 MB • Uploaded today")}</div>
                   </div>
                 </div>
               </div>
               <div className="space-y-1">
-                <div className="text-[8px] text-white/40">OCR Status:</div>
+                <div className="text-[8px] text-white/40">{siteText("OCR Status:")}</div>
                 <div className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  Classification Success
-                </div>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />{siteText("Classification Success")}</div>
               </div>
             </div>
 
             {/* Extracted form data */}
             <div className="md:col-span-7 bg-[#1C1612] border border-white/5 rounded-2xl p-4 space-y-4 text-left">
-              <span className="text-[9px] font-black text-purple-400 uppercase tracking-widest block">Extracted data summary</span>
+              <span className="text-[9px] font-black text-purple-400 uppercase tracking-widest block">{siteText("Extracted data summary")}</span>
               <div className="space-y-2 bg-black/40 p-3 rounded-xl border border-purple-900/30">
                 {[
                   { field: "Student Name", value: "Rounak Vijay Sute", conf: "99.8% confidence" },
@@ -263,16 +260,14 @@ export default function About() {
                 ].map((row, i) => (
                   <div key={i} className="flex justify-between items-center text-[10px] py-1 border-b border-white/5 last:border-b-0">
                     <div>
-                      <div className="text-white/40 text-[8px] font-bold uppercase">{row.field}</div>
-                      <div className="text-white font-semibold">{row.value}</div>
+                      <div className="text-white/40 text-[8px] font-bold uppercase">{siteText(row.field)}</div>
+                      <div className="text-white font-semibold">{siteText(row.value)}</div>
                     </div>
-                    <div className="text-emerald-400 text-[8px] font-bold bg-emerald-950 px-1.5 py-0.5 rounded-full border border-emerald-900/30">{row.conf}</div>
+                    <div className="text-emerald-400 text-[8px] font-bold bg-emerald-950 px-1.5 py-0.5 rounded-full border border-emerald-900/30">{siteText(row.conf)}</div>
                   </div>
                 ))}
               </div>
-              <button className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-[10px] font-bold transition-all shadow-md">
-                Approve & Sync to Student Records
-              </button>
+              <button className="w-full py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-[10px] font-bold transition-all shadow-md">{siteText("Approve & Sync to Student Records")}</button>
             </div>
           </div>
         </div>
@@ -303,34 +298,32 @@ export default function About() {
       preview: (
         <div className="space-y-6">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-[10px] font-black tracking-widest text-[#FF453A] uppercase">RAZORPAY INTEGRATION & AUTO-SETTLEMENTS</span>
-            <div className="text-xs text-emerald-400 font-bold bg-emerald-950/50 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-              Settle Target Met: 92%
-            </div>
+            <span className="text-[10px] font-black tracking-widest text-[#FF453A] uppercase">{siteText("RAZORPAY INTEGRATION & AUTO-SETTLEMENTS")}</span>
+            <div className="text-xs text-emerald-400 font-bold bg-emerald-950/50 border border-emerald-500/20 px-2 py-0.5 rounded-full">{siteText("Settle Target Met: 92%")}</div>
           </div>
 
           <div className="grid md:grid-cols-12 gap-6 items-stretch">
             {/* Live ledger stats */}
             <div className="md:col-span-5 bg-[#1C1612] border border-white/5 rounded-2xl p-4 flex flex-col justify-between text-left">
               <div>
-                <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block mb-1">Settled Balance</span>
+                <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block mb-1">{siteText("Settled Balance")}</span>
                 <h3 className="text-2xl font-black text-[#F5F0E8] leading-none mb-1">₹1,84,200</h3>
-                <p className="text-[9px] text-[#FF453A] font-bold">14 Online Payments Collected</p>
+                <p className="text-[9px] text-[#FF453A] font-bold">{siteText("14 Online Payments Collected")}</p>
               </div>
               <div className="space-y-1.5 pt-3 border-t border-white/5">
                 <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
                   <div className="bg-[#FF453A] h-full" style={{ width: '92%' }} />
                 </div>
                 <div className="flex justify-between text-[8px] text-white/40 font-bold">
-                  <span>Target: ₹2,00,000</span>
-                  <span>92% Collected</span>
+                  <span>{siteText("Target: ₹2,00,000")}</span>
+                  <span>{siteText("92% Collected")}</span>
                 </div>
               </div>
             </div>
 
             {/* Transactions audit log */}
             <div className="md:col-span-7 bg-[#1C1612] border border-white/5 rounded-2xl p-4 space-y-3 text-left">
-              <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block">Live transaction settlements</span>
+              <span className="text-[9px] font-black text-white/50 uppercase tracking-widest block">{siteText("Live transaction settlements")}</span>
               <div className="space-y-2">
                 {[
                   { id: "pay_N92jL0s1fM", parent: "Prasanna Mate", amount: "₹12,500", method: "UPI", date: "01:28 PM" },
@@ -339,12 +332,12 @@ export default function About() {
                 ].map((t, i) => (
                   <div key={i} className="flex justify-between items-center bg-black/30 p-2 border border-white/5 rounded-lg text-[9px]">
                     <div>
-                      <div className="font-bold text-white">{t.parent}</div>
-                      <div className="text-[7px] text-white/30 font-mono">{t.id}</div>
+                      <div className="font-bold text-white">{siteText(t.parent)}</div>
+                      <div className="text-[7px] text-white/30 font-mono">{siteText(t.id)}</div>
                     </div>
                     <div className="text-right">
-                      <div className="font-black text-emerald-400">{t.amount}</div>
-                      <div className="text-[7px] text-white/40">{t.method} • {t.date}</div>
+                      <div className="font-black text-emerald-400">{siteText(t.amount)}</div>
+                      <div className="text-[7px] text-white/40">{siteText(t.method)} • {siteText(t.date)}</div>
                     </div>
                   </div>
                 ))}
@@ -379,8 +372,8 @@ export default function About() {
       preview: (
         <div className="space-y-6">
           <div className="flex items-center justify-between pb-3 border-b border-white/10">
-            <span className="text-[10px] font-black tracking-widest text-[#FF453A] uppercase">GEMINI OPERATIONAL REPORT FOR PRINCIPALS</span>
-            <span className="text-purple-400 text-xs font-bold">✨ READY FOR BROADCAST</span>
+            <span className="text-[10px] font-black tracking-widest text-[#FF453A] uppercase">{siteText("GEMINI OPERATIONAL REPORT FOR PRINCIPALS")}</span>
+            <span className="text-purple-400 text-xs font-bold">{siteText("✨ READY FOR BROADCAST")}</span>
           </div>
 
           <div className="grid md:grid-cols-12 gap-6 items-stretch">
@@ -393,9 +386,9 @@ export default function About() {
                 { label: "AI Resolutions", value: "12", change: "Chatbot answers", color: "text-purple-400" }
               ].map((stat, i) => (
                 <div key={i} className="bg-[#1C1612] border border-white/5 p-3 rounded-xl text-left space-y-1">
-                  <div className="text-white/40 text-[8px] font-bold uppercase">{stat.label}</div>
-                  <div className={`text-sm font-black ${stat.color}`}>{stat.value}</div>
-                  <div className="text-[7px] text-white/50">{stat.change}</div>
+                  <div className="text-white/40 text-[8px] font-bold uppercase">{siteText(stat.label)}</div>
+                  <div className={`text-sm font-black ${stat.color}`}>{siteText(stat.value)}</div>
+                  <div className="text-[7px] text-white/50">{siteText(stat.change)}</div>
                 </div>
               ))}
             </div>
@@ -404,20 +397,14 @@ export default function About() {
             <div className="md:col-span-7 bg-[#1C1612] border border-white/5 rounded-2xl p-4 flex flex-col justify-between text-left space-y-4">
               <div className="space-y-1.5 flex-1">
                 <div className="text-[9px] font-black text-purple-400 uppercase tracking-widest flex items-center gap-1.5">
-                  <span>✨ Gemini Daily Briefing</span>
+                  <span>{siteText("✨ Gemini Daily Briefing")}</span>
                 </div>
-                <p className="text-[11px] text-white/80 leading-relaxed font-sans bg-black/40 p-3 rounded-xl border border-purple-900/30">
-                  "Today's school operations concluded successfully. Fee reconciliation target was met with <b>₹1,84,200</b> settled. No hardware connectivity failures reported. Outbound parent check-in notifications were sent to <b>1,248 parents</b> with a 99.8% delivery success rate."
-                </p>
+                <p className="text-[11px] text-white/80 leading-relaxed font-sans bg-black/40 p-3 rounded-xl border border-purple-900/30">{siteText("\"Today's school operations concluded successfully. Fee reconciliation target was met with ")}<b>₹1,84,200</b>{siteText(" settled. No hardware connectivity failures reported. Outbound parent check-in notifications were sent to ")}<b>{siteText("1,248 parents")}</b>{siteText(" with a 99.8% delivery success rate.\"")}</p>
               </div>
               
               <div className="flex gap-2">
-                <button className="flex-1 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-[9px] font-bold border border-white/10 transition-all">
-                  Download Exec PDF
-                </button>
-                <button className="flex-1 py-2 bg-[#FF453A] hover:bg-[#FF453A]/90 text-white rounded-xl text-[9px] font-bold transition-all">
-                  Broadcast to Staff
-                </button>
+                <button className="flex-1 py-2 bg-white/5 hover:bg-white/10 text-white rounded-xl text-[9px] font-bold border border-white/10 transition-all">{siteText("Download Exec PDF")}</button>
+                <button className="flex-1 py-2 bg-[#FF453A] hover:bg-[#FF453A]/90 text-white rounded-xl text-[9px] font-bold transition-all">{siteText("Broadcast to Staff")}</button>
               </div>
             </div>
           </div>
@@ -440,7 +427,7 @@ export default function About() {
             transition={{ duration: 0.5 }}
             className="text-[11px] font-black tracking-[0.2em] text-[#3D3128]/60 uppercase mb-3"
           >
-            {tCopy.subAbout}
+            {siteText(tCopy.subAbout)}
           </motion.p>
           
           <motion.h1 
@@ -449,7 +436,7 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl sm:text-5xl lg:text-7xl font-black text-[#1A1410] tracking-tight leading-none mb-6"
           >
-            {tCopy.heroTitle}
+            {siteText(tCopy.heroTitle)}
           </motion.h1>
           
           <motion.p 
@@ -458,7 +445,7 @@ export default function About() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl sm:text-2xl font-serif italic text-[#7C3D0F] leading-relaxed max-w-3xl"
           >
-            {tCopy.heroItalic}
+            {siteText(tCopy.heroItalic)}
           </motion.p>
         </div>
 
@@ -476,11 +463,11 @@ export default function About() {
           {/* Left Column: Core selling points */}
           <div className="lg:col-span-7 space-y-6 relative z-10">
             <span className="inline-block text-xs font-black tracking-widest text-[#FF453A] border border-[#FF453A]/30 bg-[#FF453A]/10 px-3 py-1 rounded-full uppercase">
-              {tCopy.badgeText}
+              {siteText(tCopy.badgeText)}
             </span>
             
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#F5F0E8] leading-tight tracking-tight">
-              {tCopy.cardHeading}
+              {siteText(tCopy.cardHeading)}
             </h2>
             
             <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-[#F5F0E8]/10">
@@ -492,7 +479,7 @@ export default function About() {
                       <BulletIcon className="w-4 h-4" />
                     </div>
                     <span className="text-xs text-[#F5F0E8]/85 leading-tight font-medium">
-                      {bullet.text}
+                      {siteText(bullet.text)}
                     </span>
                   </div>
                 )
@@ -516,23 +503,23 @@ export default function About() {
                 {/* Dynamic Screen Data */}
                 <div className="flex-1 py-1.5 space-y-1.5 overflow-hidden">
                   <div className="bg-white p-1 rounded-lg border border-[#E8E0D4] shadow-xs">
-                    <div className="text-[6px] text-gray-500 font-medium">Fee Collection</div>
-                    <div className="font-black text-[#7C3D0F] text-[10px]">₹12.45 Lakhs</div>
+                    <div className="text-[6px] text-gray-500 font-medium">{siteText("Fee Collection")}</div>
+                    <div className="font-black text-[#7C3D0F] text-[10px]">{siteText("₹12.45 Lakhs")}</div>
                     <div className="w-full bg-gray-100 h-1 rounded-full mt-0.5 overflow-hidden">
                       <div className="bg-[#7C3D0F] h-full" style={{ width: '78%' }} />
                     </div>
                   </div>
                   <div className="bg-white p-1 rounded-lg border border-[#E8E0D4] shadow-xs flex justify-between items-center">
                     <div>
-                      <div className="text-[6px] text-gray-500 font-medium">Live Attendance</div>
+                      <div className="text-[6px] text-gray-500 font-medium">{siteText("Live Attendance")}</div>
                       <div className="font-black text-[#1A1410] text-[9px]">96.8%</div>
                     </div>
-                    <div className="text-green-600 font-bold text-[6px]">ON TARGET</div>
+                    <div className="text-green-600 font-bold text-[6px]">{siteText("ON TARGET")}</div>
                   </div>
                   <div className="bg-white/80 p-1.5 rounded-lg border border-purple-200 shadow-xs relative overflow-hidden">
                     <div className="absolute top-0.5 right-0.5 text-[6px] text-purple-600">✨</div>
-                    <div className="text-[5px] font-bold text-purple-700">Gemini Insight</div>
-                    <p className="text-[5px] leading-tight text-gray-600">Fee arrears down 18%</p>
+                    <div className="text-[5px] font-bold text-purple-700">{siteText("Gemini Insight")}</div>
+                    <p className="text-[5px] leading-tight text-gray-600">{siteText("Fee arrears down 18%")}</p>
                   </div>
                 </div>
                 {/* Home Indicator */}
@@ -554,14 +541,14 @@ export default function About() {
               </div>
               <div>
                 <p className="text-[10px] text-[#F5F0E8]/70 font-semibold tracking-wide uppercase leading-tight">
-                  {tCopy.qrTitle}
+                  {siteText(tCopy.qrTitle)}
                 </p>
                 <p className="text-xs text-white font-bold mb-3">
-                  {tCopy.qrSub}
+                  {siteText(tCopy.qrSub)}
                 </p>
                 
                 <span className="text-[9px] text-[#F5F0E8]/50 block mb-2 font-black tracking-widest uppercase">
-                  {tCopy.availableFor}
+                  {siteText(tCopy.availableFor)}
                 </span>
                 
                 {/* Custom app badges */}
@@ -570,13 +557,13 @@ export default function About() {
                     <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.82M15.97 4.17c.66-.81 1.11-1.93.99-3.06-.96.04-2.13.64-2.82 1.45-.6.69-1.12 1.83-.98 2.94.1.08.2.12.3.12.9 0 2.02-.62 2.51-1.45"/>
                     </svg>
-                    <span className="text-[8px] font-black tracking-wider uppercase text-white">App Store</span>
+                    <span className="text-[8px] font-black tracking-wider uppercase text-white">{siteText("App Store")}</span>
                   </div>
                   <div className="bg-white/5 border border-white/10 px-2.5 py-1 rounded-md flex items-center gap-1.5 cursor-pointer hover:bg-white/10 transition-colors">
                     <svg className="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M3.25 2.3c-.15.15-.25.38-.25.68v18.04c0 .3.1.53.25.68l.06.06L13.7 11.95v-.2L3.31 2.24l-.06.06zM17.15 8.5l-3.45 3.45v.2l3.45 3.45.06-.03 4.08-2.32c1.17-.66 1.17-1.75 0-2.42l-4.08-2.32-.06-.03zM13.7 11.75L3.62 1.66c-.36-.36-.96-.13-1.16.4l11.24 9.69zM13.7 12.25L2.46 21.94c.2.53.8.76 1.16.4l10.08-10.09z"/>
                     </svg>
-                    <span className="text-[8px] font-black tracking-wider uppercase text-white">Google Play</span>
+                    <span className="text-[8px] font-black tracking-wider uppercase text-white">{siteText("Google Play")}</span>
                   </div>
                 </div>
               </div>
@@ -592,19 +579,19 @@ export default function About() {
           {/* Left Column: Dark Side Narrative */}
           <div className="lg:col-span-6 space-y-6">
             <span className="text-[11px] font-black tracking-[0.2em] text-[#FF453A] uppercase block">
-              {tCopy.subInnovation}
+              {siteText(tCopy.subInnovation)}
             </span>
             
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#F5F0E8] tracking-tight leading-tight">
-              {tCopy.innovationTitle}
+              {siteText(tCopy.innovationTitle)}
             </h2>
             
             <p className="text-xl sm:text-2xl font-serif italic text-[#FF453A] leading-relaxed">
-              {tCopy.innovationItalic}
+              {siteText(tCopy.innovationItalic)}
             </p>
             
             <p className="text-sm sm:text-base text-[#F5F0E8]/75 leading-relaxed max-w-xl">
-              {tCopy.innovationDesc}
+              {siteText(tCopy.innovationDesc)}
             </p>
           </div>
 
@@ -625,14 +612,14 @@ export default function About() {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2.5">
                     <h3 className="font-extrabold text-sm sm:text-base text-[#F5F0E8]">
-                      {card.title}
+                      {siteText(card.title)}
                     </h3>
                     <span className="text-[8px] font-black tracking-widest text-[#FF453A] bg-[#FF453A]/10 border border-[#FF453A]/25 px-2 py-0.5 rounded-full uppercase shrink-0">
-                      {card.badge}
+                      {siteText(card.badge)}
                     </span>
                   </div>
                   <p className="text-xs text-[#F5F0E8]/60 leading-relaxed font-medium">
-                    {card.desc}
+                    {siteText(card.desc)}
                   </p>
                 </div>
               </motion.div>
@@ -647,13 +634,13 @@ export default function About() {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
           <span className="text-[11px] font-black tracking-[0.2em] text-[#7C3D0F] uppercase block">
-            {tCopy.timelineSub}
+            {siteText(tCopy.timelineSub)}
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#1A1410] tracking-tight leading-tight">
-            {tCopy.timelineTitle}
+            {siteText(tCopy.timelineTitle)}
           </h2>
           <p className="text-sm sm:text-base text-[#6B5D52] font-medium leading-relaxed">
-            {tCopy.timelineDesc}
+            {siteText(tCopy.timelineDesc)}
           </p>
         </div>
 
@@ -686,17 +673,17 @@ export default function About() {
                       <span className={`text-[10px] font-black tracking-wider px-2 py-0.5 rounded-full ${
                         isActive ? 'bg-[#FF453A]/10 text-[#FF453A]' : 'bg-[#3D3128]/5 text-[#3D3128]/60'
                       }`}>
-                        {item.time}
+                        {siteText(item.time)}
                       </span>
                       <span className="text-[8px] font-black tracking-widest text-[#7C3D0F] uppercase">
-                        {item.badge}
+                        {siteText(item.badge)}
                       </span>
                     </div>
                     <h3 className="font-extrabold text-sm sm:text-base text-[#1A1410]">
-                      {item.title}
+                      {siteText(item.title)}
                     </h3>
                     <p className="text-xs text-[#6B5D52] leading-relaxed line-clamp-2">
-                      {item.desc}
+                      {siteText(item.desc)}
                     </p>
                   </div>
                 </button>
@@ -713,10 +700,10 @@ export default function About() {
               <div className="relative z-10 flex-1 flex flex-col justify-between">
                 {/* Simulated Screen header */}
                 <div className="flex justify-between items-center text-[10px] text-white/40 uppercase tracking-widest border-b border-white/5 pb-4 mb-6">
-                  <span>Revenex Active Console</span>
+                  <span>{siteText("Revenex Active Console")}</span>
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#FF453A] animate-pulse" />
-                    <span>SYSTEM ONLINE</span>
+                    <span>{siteText("SYSTEM ONLINE")}</span>
                   </div>
                 </div>
 
@@ -728,13 +715,13 @@ export default function About() {
                   transition={{ duration: 0.3 }}
                   className="flex-1 flex flex-col justify-center"
                 >
-                  {timelineItems[activeTab].preview}
+                  {siteText(timelineItems[activeTab].preview)}
                 </motion.div>
 
                 {/* Screen footer */}
                 <div className="border-t border-white/5 pt-4 mt-6 flex justify-between items-center text-[8px] text-white/30 uppercase tracking-widest">
-                  <span>Node: AP-SOUTH-1</span>
-                  <span>SSL SECURED</span>
+                  <span>{siteText("Node: AP-SOUTH-1")}</span>
+                  <span>{siteText("SSL SECURED")}</span>
                 </div>
               </div>
             </div>
@@ -758,13 +745,13 @@ export default function About() {
                     <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#FF453A]/10 bg-[#FF453A]/5 text-[#FF453A] w-fit mb-4">
                       <Sparkles className="w-3.5 h-3.5" />
                       <span className="text-[9px] font-black uppercase tracking-wider">
-                        {timelineItems[activeTab].explanation.badge}
+                        {siteText(timelineItems[activeTab].explanation.badge)}
                       </span>
                     </div>
 
                     {/* Title */}
                     <h3 className="text-lg font-black text-[#1A1410] leading-snug mb-4">
-                      {timelineItems[activeTab].explanation.title}
+                      {siteText(timelineItems[activeTab].explanation.title)}
                     </h3>
 
                     {/* Bullets */}
@@ -778,7 +765,7 @@ export default function About() {
                           className="flex gap-2.5 items-start text-xs text-[#6B5D52] leading-relaxed"
                         >
                           <span className="text-[#FF453A] font-bold mt-0.5">•</span>
-                          <span>{bullet}</span>
+                          <span>{siteText(bullet)}</span>
                         </motion.li>
                       ))}
                     </ul>
@@ -787,10 +774,10 @@ export default function About() {
                   {/* AI Insight Box */}
                   <div className="bg-white border border-[#E8E0D4] p-4 rounded-2xl shadow-xs mt-6">
                     <div className="text-[9px] font-black text-[#7C3D0F] uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                      <span>✨ Gemini Operational Tip</span>
+                      <span>{siteText("✨ Gemini Operational Tip")}</span>
                     </div>
                     <p className="text-[11px] text-[#3D3128] font-medium leading-relaxed italic">
-                      "{timelineItems[activeTab].explanation.insight}"
+                      "{siteText(timelineItems[activeTab].explanation.insight)}"
                     </p>
                   </div>
                 </div>

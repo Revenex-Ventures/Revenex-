@@ -1,5 +1,7 @@
 "use client"
 
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
+
 import { useMemo } from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -191,6 +193,7 @@ function FieldError({
 }: React.ComponentProps<"div"> & {
   errors?: Array<{ message?: string } | undefined>
 }) {
+  const siteText = useSiteText();
   const content = useMemo(() => {
     if (children) {
       return children
@@ -208,7 +211,7 @@ function FieldError({
       <ul className="ml-4 flex list-disc flex-col gap-1">
         {errors.map(
           (error, index) =>
-            error?.message && <li key={index}>{error.message}</li>
+            error?.message && <li key={index}>{siteText(error.message)}</li>
         )}
       </ul>
     )
@@ -225,7 +228,7 @@ function FieldError({
       className={cn("text-destructive text-sm font-normal", className)}
       {...props}
     >
-      {content}
+      {siteText(content)}
     </div>
   )
 }

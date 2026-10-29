@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { Link } from 'wouter'
 import { Sparkles, Linkedin, Mail } from 'lucide-react'
 import { Navbar } from '@/components/Navbar'
@@ -61,6 +62,7 @@ const team = [
 ]
 
 export default function OurTeam() {
+  const siteText = useSiteText();
   const { language } = useLanguage()
 
   return (
@@ -86,21 +88,21 @@ export default function OurTeam() {
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC]">
                   <Sparkles className="h-3.5 w-3.5" style={{ color: member.accentColor }} />
                   <span className="text-xs font-semibold text-[#3D3128] uppercase tracking-widest">
-                    {language === 'en' ? 'Our Team' : 'हमारी टीम'}
+                    {siteText(language === 'en' ? 'Our Team' : 'हमारी टीम')}
                   </span>
                 </div>
 
                 <div className="space-y-3">
                   <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1410] leading-tight font-display tracking-tight">
-                    {member.name}
+                    {siteText(member.name)}
                   </h2>
                   <p className="text-lg lg:text-xl font-bold uppercase tracking-wide" style={{ color: member.accentColor }}>
-                    {language === 'en' ? member.role : member.roleHi}
+                    {siteText(language === 'en' ? member.role : member.roleHi)}
                   </p>
                 </div>
 
                 <p className="text-base sm:text-lg text-[#3D3128] leading-relaxed max-w-xl">
-                  {language === 'en' ? member.bioEn : member.bioHi}
+                  {siteText(language === 'en' ? member.bioEn : member.bioHi)}
                 </p>
 
                 {/* Expertise pills */}
@@ -110,7 +112,7 @@ export default function OurTeam() {
                       key={skill} 
                       className="px-3 py-1 rounded-full text-xs font-medium border border-[#E8E0D4] bg-[#F0E8DC] text-[#3D3128] hover:text-[#1A1410] hover:border-[#1A1410]/20 transition-colors"
                     >
-                      {skill}
+                      {siteText(skill)}
                     </span>
                   ))}
                 </div>
@@ -133,8 +135,8 @@ export default function OurTeam() {
                     }}
                   >
                     <div className="flex flex-col text-left">
-                      <span className="text-[10px] font-semibold text-[#6B5D52] uppercase tracking-wider leading-none mb-0.5">Visit Profile</span>
-                      <span className="text-xs font-extrabold text-[#1A1410]">LinkedIn Profile</span>
+                      <span className="text-[10px] font-semibold text-[#6B5D52] uppercase tracking-wider leading-none mb-0.5">{siteText("Visit Profile")}</span>
+                      <span className="text-xs font-extrabold text-[#1A1410]">{siteText("LinkedIn Profile")}</span>
                     </div>
                     <span className="text-sm font-bold transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" style={{ color: member.accentColor }}>↗</span>
                   </a>
@@ -145,7 +147,7 @@ export default function OurTeam() {
                       className="inline-flex items-center gap-2 text-sm font-semibold text-[#3D3128] hover:text-[#1A1410] transition-colors"
                     >
                       <Mail className="h-4.5 w-4.5" />
-                      {language === 'en' ? 'Contact Direct' : 'सीधे संपर्क करें'}
+                      {siteText(language === 'en' ? 'Contact Direct' : 'सीधे संपर्क करें')}
                     </a>
                   )}
                 </div>
@@ -166,7 +168,7 @@ export default function OurTeam() {
                   {/* Clean cutout image */}
                   <img
                     src={member.photo}
-                    alt={member.name}
+                    alt={siteText(member.name)}
                     className={`max-w-full h-full object-contain transition-transform duration-700 ease-out group-hover:scale-105 z-20 ${member.photoClass || 'scale-100'}`}
                     style={{
                       filter: `drop-shadow(0 20px 40px ${member.accentColor}10)`

@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { cn } from '@/lib/utils';
 import {
   AnimatePresence,
@@ -116,10 +117,11 @@ const AnimationComponent: React.FC<{
   per: 'line' | 'word' | 'char';
   segmentWrapperClassName?: string;
 }> = React.memo(({ segment, variants, per, segmentWrapperClassName }) => {
+  const siteText = useSiteText();
   const content =
     per === 'line' ? (
       <motion.span variants={variants} className='block'>
-        {segment}
+        {siteText(segment)}
       </motion.span>
     ) : per === 'word' ? (
       <motion.span
@@ -127,7 +129,7 @@ const AnimationComponent: React.FC<{
         variants={variants}
         className='inline-block whitespace-pre'
       >
-        {segment}
+        {siteText(segment)}
       </motion.span>
     ) : (
       <motion.span className='inline-block whitespace-pre'>
@@ -138,7 +140,7 @@ const AnimationComponent: React.FC<{
             variants={variants}
             className='inline-block whitespace-pre'
           >
-            {char}
+            {siteText(char)}
           </motion.span>
         ))}
       </motion.span>
@@ -152,7 +154,7 @@ const AnimationComponent: React.FC<{
 
   return (
     <span className={cn(defaultWrapperClassName, segmentWrapperClassName)}>
-      {content}
+      {siteText(content)}
     </span>
   );
 });

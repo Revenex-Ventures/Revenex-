@@ -232,15 +232,54 @@ const translations: Record<Language, Record<string, string>> = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>('en')
+  const [language, setLanguageState] = useState<Language>(() => {
+    try { return localStorage.getItem('revenex-language') === 'hi' ? 'hi' : 'en' }
+    catch { return 'en' }
+  })
 
   useEffect(() => {
-    let saved: string | null = null
-    try { saved = localStorage.getItem('revenex-language') } catch { /* Storage may be disabled. */ }
-    if (saved && (saved === 'en' || saved === 'hi')) {
-      setLanguageState(saved)
+    document.documentElement.lang = language
+    document.title = language === 'hi'
+      ? 'रेवेनेक्स वेंचर्स | विद्यालय प्रबंधन और सॉफ़्टवेयर समाधान'
+      : 'REVENEX Ventures | School ERP & Software Solutions'
+  }, [language])
+
+  useEffect(() => {
+    // Browser validation popovers otherwise follow the browser's UI language.
+    // Localize their messages without changing field values or validation rules.
+    const managed = new Set<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>()
+    const clear = (event: Event) => {
+      const field = event.target
+      if ((field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement || field instanceof HTMLSelectElement) && managed.has(field)) {
+        field.setCustomValidity('')
+        managed.delete(field)
+      }
     }
-  }, [])
+    const invalid = (event: Event) => {
+      if (language !== 'hi') return
+      const field = event.target
+      if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement || field instanceof HTMLSelectElement)) return
+      const validity = field.validity
+      if (validity.customError) return
+      const message = validity.valueMissing ? 'कृपया यह जानकारी भरें।'
+        : validity.typeMismatch ? 'कृपया सही प्रारूप में जानकारी दर्ज करें।'
+        : validity.tooShort ? 'दर्ज की गई जानकारी बहुत छोटी है। कृपया और अक्षर लिखें।'
+        : validity.tooLong ? 'दर्ज की गई जानकारी बहुत लंबी है। कृपया कम अक्षर लिखें।'
+        : validity.rangeUnderflow || validity.rangeOverflow ? 'कृपया निर्धारित सीमा के भीतर मान चुनें।'
+        : 'कृपया सही मान दर्ज करें।'
+      field.setCustomValidity(message)
+      managed.add(field)
+    }
+    document.addEventListener('invalid', invalid, true)
+    document.addEventListener('input', clear, true)
+    document.addEventListener('change', clear, true)
+    return () => {
+      document.removeEventListener('invalid', invalid, true)
+      document.removeEventListener('input', clear, true)
+      document.removeEventListener('change', clear, true)
+      for (const field of managed) field.setCustomValidity('')
+    }
+  }, [language])
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)

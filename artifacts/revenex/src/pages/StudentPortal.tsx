@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { motion } from 'framer-motion'
 import { Link } from 'wouter'
 import {
@@ -67,6 +68,7 @@ const highlights = [
 ]
 
 export default function StudentPortal() {
+  const siteText = useSiteText();
   const { language } = useLanguage()
 
   return (
@@ -84,26 +86,25 @@ export default function StudentPortal() {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#E8E0D4] bg-[#F0E8DC] mb-6">
               <GraduationCap className="h-3.5 w-3.5 text-[#8B4513]" />
               <span className="text-xs font-semibold text-[#3D3128] uppercase tracking-widest">
-                {language === 'en' ? 'Student Portal' : 'छात्र पोर्टल'}
+                {siteText(language === 'en' ? 'Student Portal' : 'छात्र पोर्टल')}
               </span>
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1410] leading-[1.1] font-display tracking-tight mb-6 max-w-3xl">
-              Your child's entire school life, <span className="gradient-text">in one secure portal</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#1A1410] leading-[1.1] font-display tracking-tight mb-6 max-w-3xl">{siteText("Your child's entire school life, ")}<span className="gradient-text">{siteText("in one secure portal")}</span>
             </h1>
             <p className="max-w-2xl text-lg text-[#3D3128] leading-relaxed mb-8">
-              {language === 'en'
+              {siteText(language === 'en'
                 ? 'Grades, attendance, fees, homework, transport, and circulars — everything a parent needs, updated in real time and available on any device.'
-                : 'ग्रेड, उपस्थिति, शुल्क, होमवर्क, परिवहन और परिपत्र — एक माता-पिता को जो कुछ भी चाहिए, वह वास्तविक समय में अपडेट होता है और किसी भी डिवाइस पर उपलब्ध होता है।'}
+                : 'ग्रेड, उपस्थिति, शुल्क, होमवर्क, परिवहन और परिपत्र — एक माता-पिता को जो कुछ भी चाहिए, वह वास्तविक समय में अपडेट होता है और किसी भी डिवाइस पर उपलब्ध होता है।')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/book-demo">
                 <span className="inline-flex items-center gap-2 btn-primary cursor-pointer">
-                  {language === 'en' ? 'Book a Demo' : 'डेमो बुक करें'} <ArrowRight className="h-5 w-5" />
+                  {siteText(language === 'en' ? 'Book a Demo' : 'डेमो बुक करें')} <ArrowRight className="h-5 w-5" />
                 </span>
               </Link>
               <Link href="/login">
                 <span className="inline-flex items-center justify-center gap-2 border border-[#1A1410]/20 text-[#1A1410] font-semibold px-7 py-3.5 rounded-xl text-base transition-all hover:bg-[#1A1410]/5 cursor-pointer">
-                  {language === 'en' ? 'Open the Portal' : 'पोर्टल खोलें'}
+                  {siteText(language === 'en' ? 'Open the Portal' : 'पोर्टल खोलें')}
                 </span>
               </Link>
             </div>
@@ -115,10 +116,8 @@ export default function StudentPortal() {
       <section className="py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-14">
-            <span className="text-[11px] font-black text-[#8B4513] uppercase tracking-widest mb-3">One Portal, Everything</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">
-              Eight modules parents actually use
-            </h2>
+            <span className="text-[11px] font-black text-[#8B4513] uppercase tracking-widest mb-3">{siteText("One Portal, Everything")}</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">{siteText("Eight modules parents actually use")}</h2>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -134,8 +133,8 @@ export default function StudentPortal() {
                 <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style={{ background: `${color}14`, border: `1px solid ${color}25` }}>
                   <Icon className="h-6 w-6" style={{ color }} />
                 </div>
-                <h3 className="text-base font-bold text-[#1A1410] mb-2">{title}</h3>
-                <p className="text-sm text-[#6B5D52] leading-relaxed">{desc}</p>
+                <h3 className="text-base font-bold text-[#1A1410] mb-2">{siteText(title)}</h3>
+                <p className="text-sm text-[#6B5D52] leading-relaxed">{siteText(desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -146,10 +145,8 @@ export default function StudentPortal() {
       <section className="py-20">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center mb-14">
-            <span className="text-[11px] font-black text-[#8B4513] uppercase tracking-widest mb-3">Why Parents Love It</span>
-            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">
-              Simple for parents, powerful for schools
-            </h2>
+            <span className="text-[11px] font-black text-[#8B4513] uppercase tracking-widest mb-3">{siteText("Why Parents Love It")}</span>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#1A1410] font-display tracking-tight">{siteText("Simple for parents, powerful for schools")}</h2>
           </div>
 
           <div className="grid sm:grid-cols-3 gap-6">
@@ -165,8 +162,8 @@ export default function StudentPortal() {
                 <div className="w-12 h-12 mx-auto rounded-2xl flex items-center justify-center bg-[#F0E8DC] border border-[#E8E0D4] mb-4">
                   <Icon className="h-6 w-6 text-[#8B4513]" />
                 </div>
-                <h3 className="text-base font-bold text-[#1A1410] mb-2">{title}</h3>
-                <p className="text-sm text-[#6B5D52] leading-relaxed">{desc}</p>
+                <h3 className="text-base font-bold text-[#1A1410] mb-2">{siteText(title)}</h3>
+                <p className="text-sm text-[#6B5D52] leading-relaxed">{siteText(desc)}</p>
               </motion.div>
             ))}
           </div>
@@ -186,15 +183,10 @@ export default function StudentPortal() {
             <div className="absolute -top-20 left-1/3 w-[380px] h-[380px] bg-[#D49A58]/15 rounded-full blur-[110px] pointer-events-none" />
             <div className="relative">
               <Smartphone className="h-10 w-10 text-[#D49A58] mx-auto mb-5" />
-              <h2 className="text-2xl sm:text-4xl font-black text-[#F9F6F0] font-display tracking-tight mb-3">
-                Open a portal your parents will actually use
-              </h2>
-              <p className="max-w-xl mx-auto text-white/50 text-base leading-relaxed mb-8">
-                A quick demo shows how REVENEX keeps every family in the loop without adding a single task to your staff.
-              </p>
+              <h2 className="text-2xl sm:text-4xl font-black text-[#F9F6F0] font-display tracking-tight mb-3">{siteText("Open a portal your parents will actually use")}</h2>
+              <p className="max-w-xl mx-auto text-white/50 text-base leading-relaxed mb-8">{siteText("A quick demo shows how REVENEX keeps every family in the loop without adding a single task to your staff.")}</p>
               <Link href="/book-demo">
-                <span className="inline-flex items-center gap-2 bg-[#D49A58] text-[#18120E] font-semibold px-8 py-4 rounded-xl text-base transition-all hover:bg-[#E0AA6E] hover:shadow-[0_0_24px_rgba(212,154,88,0.35)] cursor-pointer">
-                  Schedule a Demo <ArrowRight className="h-5 w-5" />
+                <span className="inline-flex items-center gap-2 bg-[#D49A58] text-[#18120E] font-semibold px-8 py-4 rounded-xl text-base transition-all hover:bg-[#E0AA6E] hover:shadow-[0_0_24px_rgba(212,154,88,0.35)] cursor-pointer">{siteText("Schedule a Demo ")}<ArrowRight className="h-5 w-5" />
                 </span>
               </Link>
             </div>

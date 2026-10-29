@@ -1,3 +1,4 @@
+import { useHindiText as useSiteText } from "@/lib/hindi-text";
 import { useEffect, useMemo, useState } from "react"
 import { motion, AnimatePresence, animate, useMotionValue, useTransform } from "framer-motion"
 import {
@@ -19,6 +20,7 @@ const ITEMS = [
 ]
 
 function RollingNumber({ to }: { to: number }) {
+  const siteText = useSiteText();
   const value = useMotionValue(0)
 
   useEffect(() => {
@@ -50,7 +52,7 @@ function RollingNumber({ to }: { to: number }) {
               <span key={`${si}-${i}`} className="relative inline-block h-[1em] w-[0.62em] overflow-hidden text-center">
                 <motion.span style={{ y }} className="absolute left-0 top-0 flex flex-col">
                   {Array.from({ length: 10 }).map((_, d) => (
-                    <span key={d} className="h-[1em] leading-[1em]">{d}</span>
+                    <span key={d} className="h-[1em] leading-[1em]">{siteText(d)}</span>
                   ))}
                 </motion.span>
               </span>
@@ -65,6 +67,7 @@ function RollingNumber({ to }: { to: number }) {
 const fmt = (n: number) => n.toLocaleString("en-IN")
 
 function InstallmentBuilder() {
+  const siteText = useSiteText();
   const [down, setDown] = useState(40)
   const [paid, setPaid] = useState(false)
 
@@ -83,8 +86,8 @@ function InstallmentBuilder() {
             <Banknote className="h-4 w-4 text-[#A34E17]" />
           </span>
           <div>
-            <h3 className="text-sm font-bold text-[#221910]">Split into 3 installments</h3>
-            <p className="text-[11px] text-[#8A7A6B]">Drag the dial to adjust the down payment</p>
+            <h3 className="text-sm font-bold text-[#221910]">{siteText("Split into 3 installments")}</h3>
+            <p className="text-[11px] text-[#8A7A6B]">{siteText("Drag the dial to adjust the down payment")}</p>
           </div>
         </div>
         <AnimatePresence mode="wait">
@@ -96,8 +99,7 @@ function InstallmentBuilder() {
               exit={{ opacity: 0 }}
               className="inline-flex items-center gap-1.5 rounded-full bg-[#4ADE80]/20 px-3 py-1 text-[11px] font-bold text-[#2E8B52]"
             >
-              <CheckCircle2 className="h-3.5 w-3.5" /> Paid
-            </motion.span>
+              <CheckCircle2 className="h-3.5 w-3.5" />{siteText(" Paid")}</motion.span>
           ) : (
             <motion.span
               key="due"
@@ -106,17 +108,16 @@ function InstallmentBuilder() {
               exit={{ opacity: 0 }}
               className="inline-flex items-center gap-1.5 rounded-full bg-[#F5F0E6] px-3 py-1 text-[11px] font-bold text-[#8A7A6B]"
             >
-              <CalendarClock className="h-3.5 w-3.5" /> Plan active
-            </motion.span>
+              <CalendarClock className="h-3.5 w-3.5" />{siteText(" Plan active")}</motion.span>
           )}
         </AnimatePresence>
       </div>
 
       {/* Slider */}
       <div className="mb-2 flex items-center justify-between text-xs">
-        <span className="font-semibold text-[#61544A]">Down payment</span>
+        <span className="font-semibold text-[#61544A]">{siteText("Down payment")}</span>
         <motion.span key={down} initial={{ scale: 1.2 }} animate={{ scale: 1 }} className="counter-num font-black text-[#A34E17]">
-          {down}%
+          {siteText(down)}%
         </motion.span>
       </div>
       <input
@@ -127,7 +128,7 @@ function InstallmentBuilder() {
         value={down}
         onChange={(e) => { setDown(Number(e.target.value)); setPaid(false) }}
         className="h-2 w-full cursor-pointer appearance-none rounded-full bg-[#E5DDD2] accent-[#D49A58]"
-        aria-label="Down payment percentage"
+        aria-label={siteText("Down payment percentage")}
       />
       <div className="mt-1 flex justify-between text-[10px] text-[#B8A995]">
         <span>20%</span>
@@ -135,16 +136,14 @@ function InstallmentBuilder() {
       </div>
 
       <div className="mt-3 flex items-center gap-2 text-[11px] text-[#8A7A6B]">
-        <Percent className="h-3.5 w-3.5 text-[#A34E17]" />
-        Remaining balance split equally across the next two installments
-      </div>
+        <Percent className="h-3.5 w-3.5 text-[#A34E17]" />{siteText("Remaining balance split equally across the next two installments")}</div>
 
       {/* Receipt */}
       <div className="mt-6 rounded-2xl border border-[#E5DDD2] bg-white/70 p-5">
         <div className="mb-4 flex items-center gap-2 border-b border-dashed border-[#E5DDD2] pb-4">
           <Receipt className="h-4 w-4 text-[#A34E17]" />
-          <p className="text-[11px] font-bold uppercase tracking-widest text-[#61544A]">Digital receipt</p>
-          <span className="ml-auto text-[10px] font-semibold text-[#B8A995]">RCP-2025-04271</span>
+          <p className="text-[11px] font-bold uppercase tracking-widest text-[#61544A]">{siteText("Digital receipt")}</p>
+          <span className="ml-auto text-[10px] font-semibold text-[#B8A995]">{siteText("RCP-2025-04271")}</span>
         </div>
 
         <ul className="space-y-2">
@@ -156,29 +155,29 @@ function InstallmentBuilder() {
               transition={{ delay: 0.3 + i * 0.08, duration: 0.4, ease: EASE }}
               className="flex items-center justify-between text-xs"
             >
-              <span className="text-[#61544A]">{item.label}</span>
-              <span className="counter-num font-semibold text-[#221910]">₹{fmt(item.amount)}</span>
+              <span className="text-[#61544A]">{siteText(item.label)}</span>
+              <span className="counter-num font-semibold text-[#221910]">₹{siteText(fmt(item.amount))}</span>
             </motion.li>
           ))}
         </ul>
 
         <div className="mt-4 flex items-center justify-between border-t border-[#E5DDD2] pt-4">
-          <span className="text-sm font-bold text-[#221910]">Total fee</span>
-          <span className="counter-num text-lg font-black text-[#A34E17]">₹{fmt(TOTAL_FEE)}</span>
+          <span className="text-sm font-bold text-[#221910]">{siteText("Total fee")}</span>
+          <span className="counter-num text-lg font-black text-[#A34E17]">₹{siteText(fmt(TOTAL_FEE))}</span>
         </div>
 
         <div className="mt-4 space-y-1.5 rounded-xl border border-[#E5DDD2] bg-[#F9F6F0]/80 p-3.5 text-[11px]">
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-[#61544A]">Subtotal</span>
-            <span className="counter-num font-semibold text-[#221910]">₹{fmt(TOTAL_FEE - 8100)}</span>
+            <span className="font-semibold text-[#61544A]">{siteText("Subtotal")}</span>
+            <span className="counter-num font-semibold text-[#221910]">₹{siteText(fmt(TOTAL_FEE - 8100))}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="font-semibold text-[#61544A]">GST (18%) — tuition &amp; services</span>
-            <span className="counter-num font-semibold text-[#8A7A6B]">₹{fmt(8100)}</span>
+            <span className="font-semibold text-[#61544A]">{siteText("GST (18%) — tuition & services")}</span>
+            <span className="counter-num font-semibold text-[#8A7A6B]">₹{siteText(fmt(8100))}</span>
           </div>
           <div className="mt-1 flex items-center justify-between border-t border-dashed border-[#E5DDD2] pt-1.5">
-            <span className="text-xs font-black text-[#221910]">Billable total</span>
-            <span className="counter-num text-xs font-black text-[#A34E17]">₹{fmt(TOTAL_FEE)}</span>
+            <span className="text-xs font-black text-[#221910]">{siteText("Billable total")}</span>
+            <span className="counter-num text-xs font-black text-[#A34E17]">₹{siteText(fmt(TOTAL_FEE))}</span>
           </div>
         </div>
       </div>
@@ -199,9 +198,9 @@ function InstallmentBuilder() {
           >
             <div className="mb-2 flex items-center justify-between">
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#61544A]">
-                {i === 0 ? `Down ${down}%` : inst.label}
+                {siteText(i === 0 ? `Down ${down}%` : inst.label)}
               </span>
-              <span className="text-[10px] text-[#B8A995]">{inst.when}</span>
+              <span className="text-[10px] text-[#B8A995]">{siteText(inst.when)}</span>
             </div>
             <AnimatePresence mode="popLayout">
               <motion.p
@@ -213,7 +212,7 @@ function InstallmentBuilder() {
                 className="counter-num text-lg font-black"
                 style={{ color: inst.accent }}
               >
-                ₹{fmt(inst.amount)}
+                ₹{siteText(fmt(inst.amount))}
               </motion.p>
             </AnimatePresence>
           </motion.div>
@@ -225,28 +224,25 @@ function InstallmentBuilder() {
         onClick={() => setPaid(true)}
         className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#D49A58] py-3 text-sm font-bold text-[#221910] transition-all hover:bg-[#E0AA6E] hover:shadow-[0_0_20px_rgba(212,154,88,0.5)]"
       >
-        <IndianRupee className="h-4 w-4" />
-        Pay down payment · ₹{fmt(first)}
+        <IndianRupee className="h-4 w-4" />{siteText("Pay down payment · ₹")}{siteText(fmt(first))}
       </button>
     </GlassCard>
   )
 }
 
 export default function FeeManagement() {
+  const siteText = useSiteText();
   return (
     <ShowcaseShell
       section="Solutions"
-      label="Fee Management"
+      label={siteText("Fee Management")}
       accent={GOLD}
       title={
-        <>
-          Fees that{" "}
-          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">
-            collect themselves
-          </span>
+        <>{siteText("Fees that")}{" "}
+          <span className="bg-gradient-to-r from-[#D49A58] to-[#E9B97E] bg-clip-text text-transparent">{siteText("collect themselves")}</span>
         </>
       }
-      subtitle="Odometer-accurate collections, flexible installment plans, and digital receipts — real-time visibility into every rupee your school is owed."
+      subtitle={siteText("Odometer-accurate collections, flexible installment plans, and digital receipts — real-time visibility into every rupee your school is owed.")}
     >
       {/* ── Hero: odometer + builder ── */}
       <section className="mx-auto max-w-7xl px-4 pb-16 pt-12 sm:px-6 lg:px-8">
@@ -259,9 +255,7 @@ export default function FeeManagement() {
                 style={{ background: "linear-gradient(90deg, transparent, rgba(212,154,88,0.6), transparent)" }}
               />
               <div className="mb-3 flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-[#8A7A6B]">
-                <Wallet className="h-4 w-4 text-[#A34E17]" />
-                Collected this month
-              </div>
+                <Wallet className="h-4 w-4 text-[#A34E17]" />{siteText("Collected this month")}</div>
               <div className="flex items-baseline gap-2">
                 <span className="text-4xl font-black text-[#A34E17] sm:text-5xl">₹</span>
                 <span className="text-5xl font-black tracking-tight text-[#221910] sm:text-7xl">
@@ -274,19 +268,19 @@ export default function FeeManagement() {
                   <span className="counter-num text-lg font-black text-[#3BA855]">
                     <CountUp to={92.4} decimals={1} suffix="%" />
                   </span>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Collection rate</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Collection rate")}</span>
                 </div>
                 <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-4">
                   <span className="counter-num text-lg font-black text-[#221910]">
                     <CountUp to={418} />
                   </span>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Paid students</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Paid students")}</span>
                 </div>
                 <div className="flex flex-col items-center gap-1 rounded-2xl border border-[#E5DDD2] bg-white/70 px-3 py-4">
                   <span className="counter-num text-lg font-black text-[#A34E17]">
                     <CountUp to={12} suffix=" days" />
                   </span>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">Faster cycle</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-[#8A7A6B]">{siteText("Faster cycle")}</span>
                 </div>
               </div>
             </GlassCard>
@@ -298,7 +292,7 @@ export default function FeeManagement() {
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-center gap-3 rounded-2xl border border-[#E5DDD2] bg-white/70 px-4 py-3.5 backdrop-blur-md">
                   <Icon className="h-5 w-5 shrink-0 text-[#A34E17]" />
-                  <p className="text-xs leading-relaxed text-[#61544A]">{text}</p>
+                  <p className="text-xs leading-relaxed text-[#61544A]">{siteText(text)}</p>
                 </div>
               ))}
             </div>
@@ -314,8 +308,8 @@ export default function FeeManagement() {
           <SectionHeading
             kicker="The finance office, unclogged"
             accent={GOLD}
-            title="Stop chasing parents for money"
-            subtitle="Auto-reminders, flexible plans, and instant receipts turn fee collection from the office's biggest headache into a background task."
+            title={siteText("Stop chasing parents for money")}
+            subtitle={siteText("Auto-reminders, flexible plans, and instant receipts turn fee collection from the office's biggest headache into a background task.")}
           />
         </Reveal>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
@@ -329,8 +323,8 @@ export default function FeeManagement() {
                 <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-[#D49A58]/40 bg-[#D49A58]/10">
                   <Icon className="h-6 w-6 text-[#A34E17]" />
                 </div>
-                <h3 className="mb-2 text-lg font-bold text-[#221910]">{title}</h3>
-                <p className="text-sm leading-relaxed text-[#61544A]">{desc}</p>
+                <h3 className="mb-2 text-lg font-bold text-[#221910]">{siteText(title)}</h3>
+                <p className="text-sm leading-relaxed text-[#61544A]">{siteText(desc)}</p>
               </GlassCard>
             </Reveal>
           ))}
@@ -344,12 +338,8 @@ export default function FeeManagement() {
             <div aria-hidden className="absolute -top-20 left-1/3 h-80 w-80 rounded-full bg-[#D49A58]/20 blur-[110px]" />
             <div className="relative">
               <IndianRupee className="mx-auto mb-4 h-9 w-9 text-[#A34E17]" />
-              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">
-                See your collection rate climb
-              </h3>
-              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">
-                A live demo shows how schools recover lakhs of previously-stuck fees every term.
-              </p>
+              <h3 className="mx-auto max-w-xl font-display text-2xl font-black tracking-tight text-[#221910] sm:text-3xl">{siteText("See your collection rate climb")}</h3>
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-relaxed text-[#61544A]">{siteText("A live demo shows how schools recover lakhs of previously-stuck fees every term.")}</p>
               <div className="mt-8 flex justify-center">
                 <DemoButton />
               </div>
